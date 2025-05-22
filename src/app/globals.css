@@ -1,0 +1,442 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🎨 Variáveis CSS customizadas para tema claro */
+:root {
+  --color-primary: #16a34a;
+  --color-primary-light: #22c55e;
+  --color-primary-dark: #15803d;
+  --color-secondary: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-border-hover: #cbd5e1;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-green: 0 10px 40px rgba(22, 163, 74, 0.15);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --border-radius: 0.75rem;
+  --border-radius-lg: 1.5rem;
+}
+
+/* 🎯 Scrollbar personalizada para tema claro */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  border-radius: 10px;
+  border: 2px solid #f1f5f9;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #15803d, #16a34a);
+  box-shadow: 0 0 10px rgba(22, 163, 74, 0.3);
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1f5f9;
+}
+
+/* 🌐 Base styles para tema claro */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+html,
+body {
+  @apply bg-gray-50 text-gray-900 m-0 p-0 box-border font-sans antialiased;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* 🔤 Tipografia melhorada para tema claro */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+h1 {
+  @apply text-4xl md:text-6xl lg:text-7xl;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl lg:text-5xl text-gray-900;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl text-gray-800;
+}
+
+p {
+  @apply text-gray-700 leading-relaxed;
+}
+
+/* 🔗 Links melhorados para tema claro */
+a {
+  @apply cursor-pointer transition-all duration-300;
+  text-decoration: none;
+  color: var(--color-primary);
+}
+
+a:hover {
+  transform: translateY(-1px);
+  color: var(--color-primary-dark);
+}
+
+/* 🎯 Estados de foco para tema claro */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  @apply ring-2 ring-green-500 ring-offset-2 ring-offset-white;
+  border-radius: var(--border-radius);
+}
+
+/* 🎨 Botões base para tema claro */
+button {
+  @apply cursor-pointer transition-all duration-300;
+  transform-origin: center;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+  transform: none;
+}
+
+/* 📝 Inputs melhorados para tema claro */
+input,
+textarea,
+select {
+  @apply bg-white border border-gray-300 text-gray-900 rounded-xl px-4 py-3;
+  @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500;
+  @apply placeholder:text-gray-400 transition-all duration-300;
+  box-shadow: var(--shadow-sm);
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  @apply border-gray-400;
+  box-shadow: var(--shadow-md);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  box-shadow: var(--shadow-lg), 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* 🎨 Placeholder para tema claro */
+::placeholder {
+  @apply text-gray-400;
+  opacity: 1;
+}
+
+/* 🌟 Classes utilitárias customizadas para tema claro */
+
+/* Container centralizado */
+.container-center {
+  @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
+}
+
+/* Cards com sombra */
+.card {
+  @apply bg-white border border-gray-200 rounded-2xl shadow-lg;
+  transition: var(--transition-smooth);
+}
+
+.card:hover {
+  @apply border-gray-300 shadow-xl;
+  transform: translateY(-2px);
+}
+
+/* Gradiente de texto verde */
+.text-gradient {
+  background: linear-gradient(135deg, #16a34a, #22c55e, #15803d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-hover:hover {
+  background: linear-gradient(135deg, #15803d, #16a34a, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Links com hover elegante */
+.link-hover {
+  @apply text-gray-700 hover:text-green-600 transition-all duration-300 relative;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  transition: width 0.3s ease;
+}
+
+.link-hover:hover::after {
+  width: 100%;
+}
+
+/* Card com hover elegante */
+.card-hover {
+  @apply transition-all duration-300 cursor-pointer bg-white border border-gray-200 rounded-2xl;
+  transform: translateY(0);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl), var(--shadow-green);
+  @apply border-green-200;
+}
+
+/* Botão primário */
+.btn-primary {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+  @apply bg-green-600 text-white hover:bg-green-700;
+  @apply shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1;
+  @apply focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-white;
+}
+
+.btn-primary:active {
+  transform: scale(0.98) translateY(0);
+}
+
+/* Botão secundário */
+.btn-secondary {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+  @apply bg-white text-green-700 border-2 border-green-600;
+  @apply hover:bg-green-50 hover:border-green-700;
+  @apply shadow-md hover:shadow-lg transform hover:scale-105 hover:-translate-y-1;
+  @apply focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-white;
+}
+
+.btn-secondary:active {
+  transform: scale(0.98) translateY(0);
+}
+
+/* Botão outline */
+.btn-outline {
+  @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+  @apply bg-transparent text-gray-700 border-2 border-gray-300;
+  @apply hover:bg-gray-50 hover:border-gray-400 hover:text-gray-900;
+  @apply shadow-sm hover:shadow-md transform hover:scale-105;
+}
+
+/* Badge/Tag */
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  @apply bg-green-100 text-green-800 border border-green-200;
+}
+
+.badge-secondary {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  @apply bg-gray-100 text-gray-800 border border-gray-200;
+}
+
+/* Divider */
+.divider {
+  @apply w-full h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent;
+}
+
+/* Animações customizadas */
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.bounce-in {
+  animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efeito de brilho sutil */
+.glow-green {
+  box-shadow: 0 0 20px rgba(22, 163, 74, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.glow-green:hover {
+  box-shadow: 0 0 30px rgba(22, 163, 74, 0.4);
+}
+
+/* Backgrounds especiais */
+.bg-pattern {
+  background-image: 
+    linear-gradient(45deg, rgba(22, 163, 74, 0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(22, 163, 74, 0.05) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(22, 163, 74, 0.05) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(22, 163, 74, 0.05) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.bg-gradient-light {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+}
+
+.bg-gradient-green {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%);
+}
+
+/* Responsividade para textos */
+@media (max-width: 640px) {
+  h1 {
+    @apply text-3xl;
+  }
+  
+  h2 {
+    @apply text-2xl;
+  }
+  
+  h3 {
+    @apply text-xl;
+  }
+  
+  .container-center {
+    @apply px-4;
+  }
+}
+
+/* Remove highlight no mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Seleção de texto personalizada */
+::selection {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #0f172a;
+}
+
+::-moz-selection {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #0f172a;
+}
+
+/* Estados de loading */
+.skeleton {
+  @apply bg-gray-200 animate-pulse rounded;
+}
+
+.skeleton-text {
+  @apply h-4 bg-gray-200 animate-pulse rounded;
+}
+
+.skeleton-avatar {
+  @apply w-10 h-10 bg-gray-200 animate-pulse rounded-full;
+}
+
+/* Utilitários para acessibilidade */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Dark mode support (opcional) */
+@media (prefers-color-scheme: dark) {
+  .dark-auto {
+    @apply bg-gray-900 text-white;
+  }
+  
+  .dark-auto .card {
+    @apply bg-gray-800 border-gray-700;
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "entropia-site-2",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "description": "Entropia Cursinho - Sistema de gestão e calculadora de notas",
+  "author": "Yvens Rabelo",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "22.15.21",
+    "@types/react": "19.1.5",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.3",
+    "typescript": "5.8.3"
+  },
+  "dependencies": {
+    "framer-motion": "^12.12.1",
+    "lucide-react": "^0.511.0",
+    "next": "^14.2.29",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
