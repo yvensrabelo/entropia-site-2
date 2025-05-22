@@ -60,22 +60,7 @@ export const metadata = {
     title: 'Entropia - Cursinho Pré-Vestibular | #1 em Aprovações',
     description: 'O melhor cursinho pré-vestibular de Manaus. Mais de 850 aprovados em universidades como UFAM, UEA, FURG e UNEMAT. Metodologia exclusiva e comprovada.',
     siteName: 'Entropia Cursinho',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Entropia Cursinho Pré-Vestibular - O melhor de Manaus',
-        type: 'image/jpeg',
-      },
-      {
-        url: '/og-image-square.jpg',
-        width: 1200,
-        height: 1200,
-        alt: 'Entropia Cursinho - Aprovação Garantida',
-        type: 'image/jpeg',
-      }
-    ],
+    images: [],
   },
   twitter: {
     card: 'summary_large_image',
@@ -83,7 +68,7 @@ export const metadata = {
     creator: '@entropiacursinho',
     title: 'Entropia - Cursinho Pré-Vestibular | #1 em Aprovações',
     description: 'O melhor cursinho pré-vestibular de Manaus. Mais de 850 aprovados!',
-    images: ['/og-image.jpg'],
+    images: [],
   },
   facebook: {
     appId: '1234567890123456', // Substitua pelo seu App ID do Facebook
@@ -97,7 +82,6 @@ export const metadata = {
       'pt-BR': 'https://entropia.edu.br',
     },
   },
-  manifest: '/manifest.json',
   verification: {
     google: 'sua-chave-de-verificacao-google', // Substitua pela sua chave
     // yandex: 'sua-chave-yandex',
@@ -140,25 +124,6 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         
-        {/* 📱 PWA e ícones */}
-        <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/icons/android-icon-192x192.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#16a34a" />
-        <meta name="msapplication-TileColor" content="#f8fafc" />
-        <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png" />
-        <meta name="msapplication-config" content="/browserconfig.xml" />
         
         {/* 🎨 Tema e cores para diferentes dispositivos */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,8 +149,6 @@ export default function RootLayout({
               "name": "Entropia Cursinho Pré-Vestibular",
               "description": "O melhor cursinho pré-vestibular de Manaus com mais de 850 aprovados",
               "url": "https://entropia.edu.br",
-              "logo": "https://entropia.edu.br/logo.png",
-              "image": "https://entropia.edu.br/og-image.jpg",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Rua Exemplo, 123",
@@ -214,60 +177,7 @@ export default function RootLayout({
           }}
         />
         
-        {/* 🏃‍♂️ Preload de assets críticos */}
-        <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/images/hero-bg.webp" as="image" type="image/webp" />
         
-        {/* 📊 Analytics (Google Analytics 4) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-XXXXXXXXXX', {
-                page_title: document.title,
-                page_location: window.location.href,
-                send_page_view: true
-              });
-            `,
-          }}
-        />
-        
-        {/* 📊 Meta Pixel (Facebook) */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', 'SEU_PIXEL_ID_AQUI');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
-        
-        {/* 📊 Hotjar */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(h,o,t,j,a,r){
-                  h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-                  h._hjSettings={hjid:SEU_HOTJAR_ID,hjsv:6};
-                  a=o.getElementsByTagName('head')[0];
-                  r=o.createElement('script');r.async=1;
-                  r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-                  a.appendChild(r);
-              })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-            `,
-          }}
-        />
       </head>
       
       <body className={`
@@ -411,22 +321,6 @@ export default function RootLayout({
           `
         }} />
         
-        {/* 📱 Service Worker registration (PWA) */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            if ('serviceWorker' in navigator) {
-              window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js', {
-                  scope: '/'
-                }).then(function(registration) {
-                  console.log('SW registered: ', registration);
-                }).catch(function(registrationError) {
-                  console.log('SW registration failed: ', registrationError);
-                });
-              });
-            }
-          `
-        }} />
         
         {/* 🎯 Page Load Performance */}
         <script dangerouslySetInnerHTML={{
