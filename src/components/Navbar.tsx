@@ -10,13 +10,7 @@ import {
   X, 
   Sparkles, 
   Zap, 
-  BookOpen,
   Calculator,
-  Users,
-  Mail,
-  Award,
-  FileText,
-  Star,
   Leaf,
   Lightbulb
 } from 'lucide-react';
@@ -34,10 +28,7 @@ export default function Navbar() {
   }, []);
 
   const menuItems = [
-    { href: '/sobre', label: 'Sobre', icon: Star },
-    { href: '/materiais', label: 'Materiais', icon: FileText },
-    { href: '/calculadora', label: 'Calculadora', icon: Calculator },
-    { href: '/contato', label: 'Contato', icon: Mail }
+    { href: '/calculadora', label: 'Calculadora', icon: Calculator }
   ];
 
   // Partículas flutuantes

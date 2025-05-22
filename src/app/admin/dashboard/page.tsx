@@ -22,16 +22,24 @@ import {
   Clock
 } from 'lucide-react'
 
-// Lazy loading dos componentes pesados
-const RelatorioAulas = lazy(() => import('@/components/RelatorioAulas'))
-const RegistrosRelatorios = lazy(() => import('@/components/RegistrosRelatorios'))
+// Lazy loading dos componentes pesados com preload otimizado
+const RelatorioAulas = lazy(() => 
+  import('@/components/RelatorioAulas').catch(() => 
+    import('@/components/LoadingSpinner').then(() => ({ default: () => <div>Erro ao carregar relatórios</div> }))
+  )
+)
+const RegistrosRelatorios = lazy(() => 
+  import('@/components/RegistrosRelatorios').catch(() => 
+    import('@/components/LoadingSpinner').then(() => ({ default: () => <div>Erro ao carregar registros</div> }))
+  )
+)
 
-// Componente de loading
-const ComponentLoading = () => (
+// Componente de loading otimizado
+const ComponentLoading = ({ message = "Carregando componente..." }: { message?: string }) => (
   <div className="flex items-center justify-center p-8">
     <div className="flex items-center gap-3">
       <div className="w-6 h-6 border-2 border-green-400 border-t-transparent rounded-full animate-spin"></div>
-      <span className="text-gray-400">Carregando componente...</span>
+      <span className="text-gray-400">{message}</span>
     </div>
   </div>
 )
@@ -41,6 +49,21 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [webhookStatus, setWebhookStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [webhookMessage, setWebhookMessage] = useState('')
+  const [preloadedTabs, setPreloadedTabs] = useState<Set<string>>(new Set(['dashboard']))
+
+  // Preload de componentes quando o usuário passa o mouse sobre as abas
+  const handleTabHover = (tabId: string) => {
+    if (!preloadedTabs.has(tabId)) {
+      setPreloadedTabs(prev => new Set(Array.from(prev).concat(tabId)))
+      
+      // Preload dinâmico dos componentes
+      if (tabId === 'relatorios') {
+        import('@/components/RelatorioAulas').catch(() => null)
+      } else if (tabId === 'registros') {
+        import('@/components/RegistrosRelatorios').catch(() => null)
+      }
+    }
+  }
 
   // Simular teste de webhook N8N
   const testarWebhook = async () => {
@@ -152,6 +175,7 @@ export default function AdminDashboardPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
+                  onMouseEnter={() => handleTabHover(tab.id)}
                   className={`flex items-center gap-3 px-6 py-4 border-b-2 transition-all whitespace-nowrap ${
                     activeTab === tab.id
                       ? 'border-green-400 text-green-400 bg-green-900/20'
@@ -274,7 +298,7 @@ export default function AdminDashboardPage() {
                 <p className="text-gray-400">Visualize dados detalhados sobre as aulas e desempenho.</p>
               </div>
               
-              <Suspense fallback={<ComponentLoading />}>
+              <Suspense fallback={<ComponentLoading message="Carregando relatórios de aulas..." />}>
                 <RelatorioAulas />
               </Suspense>
             </div>
@@ -287,7 +311,7 @@ export default function AdminDashboardPage() {
                 <p className="text-gray-400">Logs e atividades do sistema para auditoria.</p>
               </div>
               
-              <Suspense fallback={<ComponentLoading />}>
+              <Suspense fallback={<ComponentLoading message="Carregando registros do sistema..." />}>
                 <RegistrosRelatorios />
               </Suspense>
             </div>

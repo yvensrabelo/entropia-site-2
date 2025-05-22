@@ -82,6 +82,7 @@ export const metadata = {
       'pt-BR': 'https://entropia.edu.br',
     },
   },
+  manifest: '/manifest.json',
   verification: {
     google: 'sua-chave-de-verificacao-google', // Substitua pela sua chave
     // yandex: 'sua-chave-yandex',
@@ -121,8 +122,6 @@ export default function RootLayout({
         {/* 🚀 Preload de recursos críticos */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         
         
         {/* 🎨 Tema e cores para diferentes dispositivos */}
