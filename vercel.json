@@ -1,6 +1,18 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": ".next",
+  "outputDirectory": ".next", 
   "framework": "nextjs",
-  "regions": ["gru1"]
+  "regions": ["gru1"],
+  "installCommand": "npm ci",
+  "functions": {
+    "app/**/*.{js,ts,tsx}": {
+      "maxDuration": 30
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/revalidate",
+      "schedule": "0 */6 * * *"
+    }
+  ]
 }
