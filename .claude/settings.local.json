@@ -2,7 +2,17 @@
   "permissions": {
     "allow": [
       "Bash(npm run dev:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm:*)",
+      "Bash(npm run build:*)",
+      "Bash(gh repo view:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(git commit:*)",
+      "Bash(lsof:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:www.vercel.com)"
     ],
     "deny": []
   }
