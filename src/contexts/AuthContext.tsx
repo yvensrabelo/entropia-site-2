@@ -40,6 +40,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Remove formatação do CPF
       const cpfLimpo = cpf.replace(/\D/g, '')
       
+      // Verificar se Supabase está configurado
+      if (!supabase) {
+        // Fallback: Login de demonstração
+        if (cpfLimpo === '12345678901' && senha === 'demo123') {
+          const usuarioDemo = {
+            id: 'demo-user',
+            nome: 'Usuário Demonstração',
+            cpf: cpfLimpo,
+            email: 'demo@entropia.edu.br',
+            turma: 'Turma Demo',
+            situacao: 'ativo' as const,
+            data_matricula: new Date().toISOString(),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }
+          setUsuario(usuarioDemo)
+          localStorage.setItem('entropia_usuario', JSON.stringify(usuarioDemo))
+          return { success: true }
+        }
+        return { success: false, error: 'Credenciais inválidas (modo demonstração)' }
+      }
+      
       // Buscar usuário pelo CPF
       const { data: usuarios, error } = await supabase
         .from('usuarios')
