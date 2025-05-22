@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -15,7 +15,7 @@ import {
   Lightbulb
 } from 'lucide-react';
 
-export default function Navbar() {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -61,45 +61,37 @@ export default function Navbar() {
         {/* Ondas de fundo */}
         <motion.div
           animate={{
-            x: [-100, 100, -100],
-            scale: [1, 1.1, 1],
+            x: [-50, 50, -50],
+            opacity: [0.1, 0.2, 0.1]
           }}
           transition={{
-            duration: 8,
+            duration: 12,
             repeat: Infinity,
             ease: "easeInOut"
           }}
+          style={{ willChange: 'transform' }}
           className="absolute -top-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-xl"
         />
-        
-        <motion.div
-          animate={{
-            x: [100, -100, 100],
-            scale: [1.1, 1, 1.1],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-          className="absolute -top-2 right-1/4 w-24 h-24 bg-white/5 rounded-full blur-lg"
-        />
 
-        {/* Partículas flutuantes */}
-        {[...Array(6)].map((_, i) => (
+        {/* Partículas otimizadas - reduzidas para 3 */}
+        {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
-            variants={particleVariants}
-            animate="animate"
+            animate={{
+              y: [-10, -30, -10],
+              x: [-5, 5, -5],
+              opacity: [0.3, 0.6, 0.3]
+            }}
             style={{
-              left: `${15 + i * 15}%`,
-              top: `${10 + (i % 2) * 20}px`,
+              left: `${20 + i * 30}%`,
+              top: `${15}px`,
+              willChange: 'transform'
             }}
             transition={{
-              delay: i * 0.5,
-              duration: 3 + i * 0.5,
+              delay: i * 1,
+              duration: 4,
               repeat: Infinity,
+              ease: "easeInOut"
             }}
             className="absolute w-2 h-2 bg-white/30 rounded-full"
           />
@@ -422,4 +414,6 @@ export default function Navbar() {
       </AnimatePresence>
     </motion.nav>
   );
-}
+};
+
+export default React.memo(Navbar);

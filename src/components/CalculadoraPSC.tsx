@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // 🔥 Dados de referência completos
@@ -98,7 +98,7 @@ const descricoesCota = {
   'PPI': 'Pretos, Pardos e Indígenas'
 }
 
-export default function CalculadoraVestibular() {
+const CalculadoraVestibular = () => {
   const [processo, setProcesso] = useState('PSC')
   const [cota, setCota] = useState('AC')
   const [notas, setNotas] = useState([])
@@ -811,3 +811,5 @@ export default function CalculadoraVestibular() {
     </div>
   )
 }
+
+export default React.memo(CalculadoraVestibular)
