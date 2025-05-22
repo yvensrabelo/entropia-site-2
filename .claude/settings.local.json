@@ -12,7 +12,9 @@
       "Bash(git commit:*)",
       "Bash(lsof:*)",
       "Bash(ls:*)",
-      "WebFetch(domain:www.vercel.com)"
+      "WebFetch(domain:www.vercel.com)",
+      "Bash(cp:*)",
+      "Bash(git rm:*)"
     ],
     "deny": []
   }
