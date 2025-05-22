@@ -55,13 +55,34 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  /* Otimizações para scroll suave */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Otimizações de performance para scroll */
+* {
+  will-change: auto;
+}
+
+/* Elementos fixos otimizados */
+[data-fixed="true"], 
+.fixed {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Animações otimizadas */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-element {
+    will-change: transform, opacity;
+  }
 }
 
 html,
 body {
   @apply bg-gray-50 text-gray-900 m-0 p-0 box-border font-sans antialiased;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
-  background-attachment: fixed;
   min-height: 100vh;
   line-height: 1.6;
 }
