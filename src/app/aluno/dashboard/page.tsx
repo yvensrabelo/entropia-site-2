@@ -1,94 +1,158 @@
 'use client'
 
-import { useAuth } from '@/contexts/AuthContext'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
+  User, 
+  Calendar, 
   BookOpen, 
-  Clock, 
-  Trophy, 
-  Target, 
-  Calendar,
-  PlayCircle,
+  TrendingUp, 
+  DollarSign, 
+  Download,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
   FileText,
-  Users,
-  LogOut,
-  Settings,
-  Bell
+  BarChart3
 } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
+import type { Presenca, Nota, Financeiro, Material } from '@/lib/supabase'
 
-export default function DashboardPage() {
-  const { usuario, logout } = useAuth()
+export default function AlunosDashboard() {
+  const { usuario } = useAuth()
+  const [presencas, setPresencas] = useState<Presenca[]>([])
+  const [notas, setNotas] = useState<Nota[]>([])
+  const [financeiro, setFinanceiro] = useState<Financeiro[]>([])
+  const [materiais, setMateriais] = useState<Material[]>([])
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('resumo')
 
-  const handleLogout = () => {
-    logout()
-    window.location.href = '/login'
+  useEffect(() => {
+    if (usuario) {
+      carregarDados()
+    }
+  }, [usuario])
+
+  const carregarDados = async () => {
+    if (!usuario) return
+
+    try {
+      const [presencasRes, notasRes, financeiroRes, materiaisRes] = await Promise.all([
+        supabase.from('presencas').select('*').eq('usuario_id', usuario.id).order('data_aula', { ascending: false }).limit(10),
+        supabase.from('notas').select('*').eq('usuario_id', usuario.id).order('data_aplicacao', { ascending: false }).limit(10),
+        supabase.from('financeiro').select('*').eq('usuario_id', usuario.id).order('vencimento', { ascending: false }),
+        supabase.from('materiais').select('*').contains('disponivel_para_turma', [usuario.turma]).order('created_at', { ascending: false })
+      ])
+
+      setPresencas(presencasRes.data || [])
+      setNotas(notasRes.data || [])
+      setFinanceiro(financeiroRes.data || [])
+      setMateriais(materiaisRes.data || [])
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const calcularEstatisticas = () => {
+    const totalPresencas = presencas.length
+    const presencasPositivas = presencas.filter(p => p.presente).length
+    const percentualPresenca = totalPresencas > 0 ? (presencasPositivas / totalPresencas) * 100 : 0
+
+    const mediaNotas = notas.length > 0 
+      ? notas.reduce((acc, nota) => acc + (nota.nota / nota.nota_maxima) * 100, 0) / notas.length 
+      : 0
+
+    const pendenciasFinanceiras = financeiro.filter(f => f.status === 'pendente').length
+    const valorPendente = financeiro
+      .filter(f => f.status === 'pendente')
+      .reduce((acc, f) => acc + f.valor, 0)
+
+    return {
+      percentualPresenca: Math.round(percentualPresenca),
+      mediaNotas: Math.round(mediaNotas),
+      pendenciasFinanceiras,
+      valorPendente
+    }
+  }
+
+  const stats = calcularEstatisticas()
+
+  const formatarData = (data: string) => {
+    return new Date(data).toLocaleDateString('pt-BR')
+  }
+
+  const formatarMoeda = (valor: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(valor)
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Carregando seus dados...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b-2 border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="bg-green-600 w-10 h-10 rounded-xl flex items-center justify-center">
-              <BookOpen className="text-white" size={24} />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">
-                Entropia <span className="text-green-600">Cursinho</span>
-              </h1>
-              <p className="text-sm text-gray-600">Área do Aluno</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
-              <Bell size={20} className="text-gray-600" />
-            </button>
-            <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
-              <Settings size={20} className="text-gray-600" />
-            </button>
-            <button 
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
-            >
-              <LogOut size={18} />
-              <span className="font-medium">Sair</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Boas-vindas */}
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="bg-white rounded-2xl shadow-lg p-6 mb-6"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Olá, <span className="text-green-600">{usuario?.nome}</span>! 👋
-          </h2>
-          <p className="text-lg text-gray-600">
-            Bem-vindo à sua área de estudos. Turma: {usuario?.turma}
-          </p>
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
+            <div className="flex items-center gap-4 mb-4 md:mb-0">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center">
+                <User className="text-white" size={32} />
+              </div>
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                  Olá, {usuario?.nome.split(' ')[0]}! 👋
+                </h1>
+                <p className="text-gray-600">
+                  {usuario?.turma} • Matrícula: {usuario?.data_matricula ? formatarData(usuario.data_matricula) : ''}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="text-sm text-gray-600">Status</p>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                  <CheckCircle size={16} className="mr-1" />
+                  {usuario?.situacao || 'Ativo'}
+                </span>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
-        {/* Cards de Estatísticas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Estatísticas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-3xl border-2 border-gray-200 p-6 shadow-lg"
+            className="bg-white rounded-2xl shadow-lg p-6"
           >
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-100 p-3 rounded-2xl">
-                <Clock className="text-blue-600" size={24} />
-              </div>
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Horas de Estudo</p>
-                <p className="text-2xl font-bold text-gray-900">24h</p>
+                <p className="text-gray-600 text-sm font-medium">Frequência</p>
+                <p className="text-3xl font-bold text-green-600">{stats.percentualPresenca}%</p>
+              </div>
+              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                <Calendar className="text-green-600" size={24} />
               </div>
             </div>
           </motion.div>
@@ -97,15 +161,15 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-3xl border-2 border-gray-200 p-6 shadow-lg"
+            className="bg-white rounded-2xl shadow-lg p-6"
           >
-            <div className="flex items-center gap-4">
-              <div className="bg-green-100 p-3 rounded-2xl">
-                <Trophy className="text-green-600" size={24} />
-              </div>
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Simulados</p>
-                <p className="text-2xl font-bold text-gray-900">12</p>
+                <p className="text-gray-600 text-sm font-medium">Média Geral</p>
+                <p className="text-3xl font-bold text-blue-600">{stats.mediaNotas}%</p>
+              </div>
+              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                <TrendingUp className="text-blue-600" size={24} />
               </div>
             </div>
           </motion.div>
@@ -114,15 +178,15 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-3xl border-2 border-gray-200 p-6 shadow-lg"
+            className="bg-white rounded-2xl shadow-lg p-6"
           >
-            <div className="flex items-center gap-4">
-              <div className="bg-purple-100 p-3 rounded-2xl">
-                <Target className="text-purple-600" size={24} />
-              </div>
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Desempenho</p>
-                <p className="text-2xl font-bold text-gray-900">85%</p>
+                <p className="text-gray-600 text-sm font-medium">Pendências</p>
+                <p className="text-3xl font-bold text-orange-600">{stats.pendenciasFinanceiras}</p>
+              </div>
+              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                <AlertCircle className="text-orange-600" size={24} />
               </div>
             </div>
           </motion.div>
@@ -131,204 +195,262 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white rounded-3xl border-2 border-gray-200 p-6 shadow-lg"
+            className="bg-white rounded-2xl shadow-lg p-6"
           >
-            <div className="flex items-center gap-4">
-              <div className="bg-orange-100 p-3 rounded-2xl">
-                <Calendar className="text-orange-600" size={24} />
-              </div>
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Dias até ENEM</p>
-                <p className="text-2xl font-bold text-gray-900">156</p>
+                <p className="text-gray-600 text-sm font-medium">Materiais</p>
+                <p className="text-3xl font-bold text-purple-600">{materiais.length}</p>
+              </div>
+              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                <BookOpen className="text-purple-600" size={24} />
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* Seções Principais */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Acesso Rápido */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-white rounded-3xl border-2 border-gray-200 p-8 shadow-lg"
-          >
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Acesso <span className="text-green-600">Rápido</span>
-            </h3>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <button className="flex flex-col items-center gap-3 p-4 bg-gray-50 hover:bg-green-50 hover:border-green-200 border-2 border-gray-200 rounded-2xl transition-all hover:scale-105">
-                <PlayCircle className="text-green-600" size={32} />
-                <span className="font-medium text-gray-900">Videoaulas</span>
-              </button>
-              
-              <button className="flex flex-col items-center gap-3 p-4 bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border-2 border-gray-200 rounded-2xl transition-all hover:scale-105">
-                <FileText className="text-blue-600" size={32} />
-                <span className="font-medium text-gray-900">Simulados</span>
-              </button>
-              
-              <button className="flex flex-col items-center gap-3 p-4 bg-gray-50 hover:bg-purple-50 hover:border-purple-200 border-2 border-gray-200 rounded-2xl transition-all hover:scale-105">
-                <BookOpen className="text-purple-600" size={32} />
-                <span className="font-medium text-gray-900">Materiais</span>
-              </button>
-              
-              <button className="flex flex-col items-center gap-3 p-4 bg-gray-50 hover:bg-orange-50 hover:border-orange-200 border-2 border-gray-200 rounded-2xl transition-all hover:scale-105">
-                <Users className="text-orange-600" size={32} />
-                <span className="font-medium text-gray-900">Fórum</span>
-              </button>
-            </div>
-          </motion.div>
-
-          {/* Cronograma de Hoje */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6 }}
-            className="bg-white rounded-3xl border-2 border-gray-200 p-8 shadow-lg"
-          >
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Cronograma de <span className="text-green-600">Hoje</span>
-            </h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 bg-green-50 border-2 border-green-200 rounded-2xl">
-                <div className="w-3 h-3 bg-green-600 rounded-full"></div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">Matemática</h4>
-                  <p className="text-sm text-gray-600">Função Quadrática</p>
-                </div>
-                <span className="text-sm text-green-600 font-medium">08:00</span>
-              </div>
-              
-              <div className="flex items-center gap-4 p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl">
-                <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">Português</h4>
-                  <p className="text-sm text-gray-600">Interpretação de Texto</p>
-                </div>
-                <span className="text-sm text-gray-600 font-medium">10:00</span>
-              </div>
-              
-              <div className="flex items-center gap-4 p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl">
-                <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">Física</h4>
-                  <p className="text-sm text-gray-600">Cinemática</p>
-                </div>
-                <span className="text-sm text-gray-600 font-medium">14:00</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Progresso Semanal */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="mt-8 bg-white rounded-3xl border-2 border-gray-200 p-8 shadow-lg"
-        >
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">
-            Progresso <span className="text-green-600">Semanal</span>
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="relative w-24 h-24 mx-auto mb-4">
-                <svg className="w-24 h-24 transform -rotate-90">
-                  <circle
-                    cx="48"
-                    cy="48"
-                    r="40"
-                    stroke="currentColor"
-                    strokeWidth="8"
-                    fill="none"
-                    className="text-gray-200"
-                  />
-                  <circle
-                    cx="48"
-                    cy="48"
-                    r="40"
-                    stroke="currentColor"
-                    strokeWidth="8"
-                    fill="none"
-                    className="text-green-600"
-                    strokeDasharray={`${(75 * 251.2) / 100} 251.2`}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xl font-bold text-gray-900">75%</span>
-                </div>
-              </div>
-              <p className="font-medium text-gray-900">Matemática</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="relative w-24 h-24 mx-auto mb-4">
-                <svg className="w-24 h-24 transform -rotate-90">
-                  <circle
-                    cx="48"
-                    cy="48"
-                    r="40"
-                    stroke="currentColor"
-                    strokeWidth="8"
-                    fill="none"
-                    className="text-gray-200"
-                  />
-                  <circle
-                    cx="48"
-                    cy="48"
-                    r="40"
-                    stroke="currentColor"
-                    strokeWidth="8"
-                    fill="none"
-                    className="text-blue-600"
-                    strokeDasharray={`${(60 * 251.2) / 100} 251.2`}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xl font-bold text-gray-900">60%</span>
-                </div>
-              </div>
-              <p className="font-medium text-gray-900">Português</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="relative w-24 h-24 mx-auto mb-4">
-                <svg className="w-24 h-24 transform -rotate-90">
-                  <circle
-                    cx="48"
-                    cy="48"
-                    r="40"
-                    stroke="currentColor"
-                    strokeWidth="8"
-                    fill="none"
-                    className="text-gray-200"
-                  />
-                  <circle
-                    cx="48"
-                    cy="48"
-                    r="40"
-                    stroke="currentColor"
-                    strokeWidth="8"
-                    fill="none"
-                    className="text-purple-600"
-                    strokeDasharray={`${(85 * 251.2) / 100} 251.2`}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xl font-bold text-gray-900">85%</span>
-                </div>
-              </div>
-              <p className="font-medium text-gray-900">Física</p>
-            </div>
+        {/* Tabs Navigation */}
+        <div className="bg-white rounded-2xl shadow-lg mb-6">
+          <div className="border-b border-gray-200">
+            <nav className="flex overflow-x-auto">
+              {[
+                { id: 'resumo', label: 'Resumo', icon: BarChart3 },
+                { id: 'notas', label: 'Notas', icon: TrendingUp },
+                { id: 'presencas', label: 'Presenças', icon: Calendar },
+                { id: 'financeiro', label: 'Financeiro', icon: DollarSign },
+                { id: 'materiais', label: 'Materiais', icon: BookOpen },
+              ].map((tab) => {
+                const Icon = tab.icon
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+                      activeTab === tab.id
+                        ? 'border-green-500 text-green-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    <Icon size={18} />
+                    {tab.label}
+                  </button>
+                )
+              })}
+            </nav>
           </div>
-        </motion.div>
+
+          <div className="p-6">
+            {/* Tab Content */}
+            {activeTab === 'resumo' && (
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold text-gray-900">Resumo Acadêmico</h2>
+                
+                {/* Gráfico de Desempenho Simulado */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h3 className="font-semibold text-gray-900 mb-4">Últimas Notas</h3>
+                    <div className="space-y-3">
+                      {notas.slice(0, 5).map((nota, index) => (
+                        <div key={nota.id} className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium text-gray-900">{nota.disciplina}</p>
+                            <p className="text-sm text-gray-600">{formatarData(nota.data_aplicacao)}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-green-600">
+                              {nota.nota}/{nota.nota_maxima}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {Math.round((nota.nota / nota.nota_maxima) * 100)}%
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h3 className="font-semibold text-gray-900 mb-4">Frequência Recente</h3>
+                    <div className="space-y-3">
+                      {presencas.slice(0, 5).map((presenca, index) => (
+                        <div key={presenca.id} className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium text-gray-900">{presenca.disciplina}</p>
+                            <p className="text-sm text-gray-600">{formatarData(presenca.data_aula)}</p>
+                          </div>
+                          <div className="flex items-center">
+                            {presenca.presente ? (
+                              <CheckCircle className="text-green-500" size={20} />
+                            ) : (
+                              <XCircle className="text-red-500" size={20} />
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'notas' && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold text-gray-900">Histórico de Notas</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="text-xs text-gray-500 border-b border-gray-200">
+                      <tr>
+                        <th className="py-3 px-4 text-left">Disciplina</th>
+                        <th className="py-3 px-4 text-center">Tipo</th>
+                        <th className="py-3 px-4 text-center">Nota</th>
+                        <th className="py-3 px-4 text-center">Percentual</th>
+                        <th className="py-3 px-4 text-center">Data</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {notas.map((nota, index) => (
+                        <tr key={nota.id} className="border-b border-gray-100 hover:bg-gray-50">
+                          <td className="py-4 px-4 font-medium text-gray-900">{nota.disciplina}</td>
+                          <td className="py-4 px-4 text-center">
+                            <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                              {nota.tipo_avaliacao}
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 text-center font-semibold">
+                            {nota.nota}/{nota.nota_maxima}
+                          </td>
+                          <td className="py-4 px-4 text-center">
+                            <span className={`font-bold ${
+                              (nota.nota / nota.nota_maxima) * 100 >= 70 
+                                ? 'text-green-600' 
+                                : 'text-red-600'
+                            }`}>
+                              {Math.round((nota.nota / nota.nota_maxima) * 100)}%
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 text-center text-gray-600">
+                            {formatarData(nota.data_aplicacao)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'presencas' && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold text-gray-900">Registro de Presenças</h2>
+                <div className="grid gap-4">
+                  {presencas.map((presenca, index) => (
+                    <div key={presenca.id} className="bg-gray-50 rounded-xl p-4 flex items-center justify-between">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{presenca.disciplina}</h3>
+                        <p className="text-sm text-gray-600">
+                          {presenca.professor} • {formatarData(presenca.data_aula)}
+                        </p>
+                        {presenca.justificativa && (
+                          <p className="text-sm text-gray-500 mt-1">
+                            Justificativa: {presenca.justificativa}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {presenca.presente ? (
+                          <div className="flex items-center gap-2 text-green-600">
+                            <CheckCircle size={20} />
+                            <span className="font-medium">Presente</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 text-red-600">
+                            <XCircle size={20} />
+                            <span className="font-medium">Ausente</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'financeiro' && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold text-gray-900">Situação Financeira</h2>
+                <div className="grid gap-4">
+                  {financeiro.map((item, index) => (
+                    <div key={item.id} className="bg-gray-50 rounded-xl p-4 flex items-center justify-between">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{item.descricao}</h3>
+                        <p className="text-sm text-gray-600">
+                          Vencimento: {formatarData(item.vencimento)}
+                        </p>
+                        {item.data_pagamento && (
+                          <p className="text-sm text-green-600">
+                            Pago em: {formatarData(item.data_pagamento)}
+                          </p>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xl font-bold text-gray-900">
+                          {formatarMoeda(item.valor)}
+                        </p>
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                          item.status === 'pago' 
+                            ? 'bg-green-100 text-green-800'
+                            : item.status === 'vencido'
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {item.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'materiais' && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold text-gray-900">Materiais Disponíveis</h2>
+                <div className="grid gap-4">
+                  {materiais.map((material, index) => (
+                    <div key={material.id} className="bg-gray-50 rounded-xl p-4 flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                          <FileText className="text-green-600" size={24} />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">{material.titulo}</h3>
+                          <p className="text-sm text-gray-600">
+                            {material.disciplina} • {material.tipo}
+                          </p>
+                          {material.descricao && (
+                            <p className="text-sm text-gray-500 mt-1">
+                              {material.descricao}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {material.arquivo_url ? (
+                          <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <Download size={16} />
+                            Baixar
+                          </button>
+                        ) : (
+                          <span className="text-gray-400 text-sm">Em breve</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

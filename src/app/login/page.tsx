@@ -50,22 +50,16 @@ export default function LoginPage() {
       return
     }
 
-    // Simulação de login (substituir por API real depois)
-    setTimeout(() => {
-      if (cpfLimpo === '98660608291' && senha === 'yvens123') {
-        login({
-          id: '1',
-          nome: 'Yvens Silva',
-          cpf: cpfLimpo,
-          email: 'yvens@exemplo.com',
-          turma: 'Extensivo 2025'
-        })
-        router.push('/aluno/dashboard')
-      } else {
-        setErro('CPF ou senha incorretos')
-      }
-      setCarregando(false)
-    }, 1000)
+    // Login com Supabase
+    const resultado = await login(cpf, senha)
+    
+    if (resultado.success) {
+      router.push('/aluno/dashboard')
+    } else {
+      setErro(resultado.error || 'Erro no login')
+    }
+    
+    setCarregando(false)
   }
 
   return (

@@ -1,20 +1,13 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-
-// Tipos
-interface Usuario {
-  id: string
-  nome: string
-  cpf: string
-  email: string
-  turma: string
-}
+import { supabase } from '@/lib/supabase'
+import type { Usuario } from '@/lib/supabase'
 
 interface AuthContextType {
   usuario: Usuario | null
   logado: boolean
-  login: (userData: Usuario) => void
+  login: (cpf: string, senha: string) => Promise<{ success: boolean; error?: string }>
   logout: () => void
   carregando: boolean
 }
@@ -42,9 +35,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCarregando(false)
   }, [])
 
-  const login = (userData: Usuario) => {
-    setUsuario(userData)
-    localStorage.setItem('entropia_usuario', JSON.stringify(userData))
+  const login = async (cpf: string, senha: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      // Remove formatação do CPF
+      const cpfLimpo = cpf.replace(/\D/g, '')
+      
+      // Buscar usuário pelo CPF
+      const { data: usuarios, error } = await supabase
+        .from('usuarios')
+        .select('*')
+        .eq('cpf', cpfLimpo)
+        .eq('situacao', 'ativo')
+        .single()
+
+      if (error || !usuarios) {
+        return { success: false, error: 'CPF não encontrado ou usuário inativo' }
+      }
+
+      // Por enquanto, usar senha simples (em produção, usar hash)
+      // TODO: Implementar bcrypt para hash de senhas
+      if (senha !== 'yvens123') {
+        return { success: false, error: 'Senha incorreta' }
+      }
+
+      const usuarioLogado: Usuario = {
+        id: usuarios.id,
+        nome: usuarios.nome,
+        cpf: usuarios.cpf,
+        email: usuarios.email,
+        telefone: usuarios.telefone,
+        turma: usuarios.turma,
+        situacao: usuarios.situacao,
+        data_matricula: usuarios.data_matricula,
+        created_at: usuarios.created_at,
+        updated_at: usuarios.updated_at
+      }
+
+      setUsuario(usuarioLogado)
+      localStorage.setItem('entropia_usuario', JSON.stringify(usuarioLogado))
+      
+      return { success: true }
+    } catch (error) {
+      console.error('Erro no login:', error)
+      return { success: false, error: 'Erro interno do servidor' }
+    }
   }
 
   const logout = () => {
