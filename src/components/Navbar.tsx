@@ -151,6 +151,14 @@ const Navbar = () => {
               >
                 Cursinho
               </motion.span>
+              <motion.span
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-green-200/60 text-[10px] font-light mt-0.5"
+              >
+                Atualizado: 22/05/2025 12:35
+              </motion.span>
             </div>
             
             {/* Sparkles animados */}
