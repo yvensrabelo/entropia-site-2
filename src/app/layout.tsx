@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: 'Entropia Cursinho | PSC UFAM, ENEM, SIS UEA, MACRO | +850 Aprovações',
   description: 'Cursinho pré-vestibular em Manaus com mais de 850 aprovações. Prepare-se para PSC UFAM, ENEM, SIS UEA e MACRO com o melhor material e professores.',
   keywords: 'cursinho manaus, psc ufam, enem, sis uea, macro, vestibular manaus, cursinho pré-vestibular',
+  viewport: 'width=device-width, initial-scale=1, user-scalable=yes',
   openGraph: {
     title: 'Entropia Cursinho - +850 Aprovações em Vestibulares',
     description: 'O cursinho que mais aprova em Manaus. PSC, ENEM, SIS, MACRO.',
@@ -29,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={inter.variable}>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased bg-black text-white`}>
         {children}
       </body>
     </html>

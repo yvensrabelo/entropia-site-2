@@ -99,32 +99,9 @@
   background: #f1f5f9;
 }
 
-/* 🌐 Base styles para tema claro */
+/* 🌐 Base styles para scroll normal */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
-  /* Otimizações para scroll suave */
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-}
-
-/* Otimizações de performance para scroll */
-* {
-  will-change: auto;
-}
-
-/* Elementos fixos otimizados */
-[data-fixed="true"], 
-.fixed {
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-}
-
-/* Animações otimizadas */
-@media (prefers-reduced-motion: no-preference) {
-  .motion-element {
-    will-change: transform, opacity;
-  }
 }
 
 html,
@@ -133,10 +110,6 @@ body {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
   min-height: 100vh;
   line-height: 1.6;
-}
-
-body {
-  overscroll-behavior-y: contain;
 }
 
 /* 🔤 Tipografia melhorada para tema claro */
@@ -466,55 +439,7 @@ input[type="number"] {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* iOS Safe Area Support */
-@supports (padding: max(0px)) {
-  .safe-area-top {
-    padding-top: max(1rem, env(safe-area-inset-top));
-  }
-
-  .safe-area-bottom {
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-
-  .safe-area-left {
-    padding-left: max(1rem, env(safe-area-inset-left));
-  }
-
-  .safe-area-right {
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
-
-  .safe-area-x {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
-
-  .safe-area-y {
-    padding-top: max(1rem, env(safe-area-inset-top));
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-
-  .safe-area-all {
-    padding-top: max(1rem, env(safe-area-inset-top));
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
-}
-
-/* Prevent elastic scroll on iOS */
-@supports (-webkit-touch-callout: none) {
-  body {
-    /* Only apply fixed positioning on iOS devices */
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* iOS optimizations for interactive elements */
+/* Mobile optimizations for smooth scrolling */
 button, a, input, textarea, select {
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;

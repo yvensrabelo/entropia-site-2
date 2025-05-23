@@ -9,7 +9,7 @@ import Timestamp from '@/components/Timestamp'
 
 export default function DiagonalPageClient() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="bg-black">
       <NavbarDiagonal />
       <HeroSection />
       <TurmasSection />

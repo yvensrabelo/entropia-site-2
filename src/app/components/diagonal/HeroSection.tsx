@@ -21,7 +21,7 @@ export default function HeroSection() {
   }, [isVideoLoaded])
 
   return (
-    <section id="inicio" className="relative min-h-screen overflow-hidden bg-black">
+    <section id="inicio" className="relative min-h-screen bg-black">
       {/* Diagonal Split Background */}
       <div className="absolute inset-0">
         {/* Video Section - Upper Diagonal */}
