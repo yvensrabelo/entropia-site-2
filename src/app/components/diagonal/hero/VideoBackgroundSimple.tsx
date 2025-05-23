@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { Volume2, VolumeX } from 'lucide-react'
-import { useVideo } from '@/hooks/useVideo'
 
 interface VideoBackgroundProps {
   videoSrc?: string
@@ -11,26 +10,43 @@ interface VideoBackgroundProps {
   autoPlay?: boolean
 }
 
-export default function VideoBackground({ 
+export default function VideoBackgroundSimple({ 
   videoSrc = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
   className = "",
   showMuteButton = true,
   autoPlay = true
 }: VideoBackgroundProps) {
-  const {
-    videoRef,
-    isMuted,
-    isLoaded,
-    hasError,
-    toggleMute
-  } = useVideo({
-    autoPlay,
-    loop: true,
-    muted: true,
-    persistMuteState: true,
-    onLoadedData: () => console.log('Video loaded successfully'),
-    onError: () => console.error('Video failed to load')
-  })
+  const [isMuted, setIsMuted] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [hasError, setHasError] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current && isLoaded && autoPlay) {
+      videoRef.current.play().catch(() => {
+        console.log('Auto-play was blocked')
+      })
+    }
+  }, [isLoaded, autoPlay])
+
+  const toggleMute = () => {
+    const newMutedState = !isMuted
+    setIsMuted(newMutedState)
+    
+    if (videoRef.current) {
+      videoRef.current.muted = newMutedState
+    }
+  }
+
+  const handleLoadedData = () => {
+    setIsLoaded(true)
+    console.log('Video loaded successfully')
+  }
+
+  const handleError = () => {
+    setHasError(true)
+    console.error('Video failed to load')
+  }
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
@@ -38,7 +54,12 @@ export default function VideoBackground({
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover scale-110"
+          autoPlay={autoPlay}
+          loop
+          muted={isMuted}
           playsInline
+          onLoadedData={handleLoadedData}
+          onError={handleError}
         >
           <source src={videoSrc} type="video/mp4" />
         </video>

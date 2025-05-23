@@ -31,10 +31,3 @@ export {
 export { 
   useVideo 
 } from './useVideo'
-
-// Re-export defaults
-export { default as useIsMobile } from './useIsMobile'
-export { default as useLocalStorage } from './useLocalStorage'
-export { default as useDebounce } from './useDebounce'
-export { default as useIntersectionObserver } from './useIntersectionObserver'
-export { default as useVideo } from './useVideo'

@@ -1,11 +1,12 @@
 'use client'
 
 import React from 'react'
-import VideoBackground from './hero/VideoBackground'
+import VideoBackgroundSimple from './hero/VideoBackgroundSimple'
 import HeroContent from './hero/HeroContent'
 import ParticleSystem from './ParticleSystem'
 
 export default function HeroSection() {
+
   return (
     <section id="inicio" className="relative min-h-screen bg-black">
       {/* Diagonal Split Background */}
@@ -17,7 +18,7 @@ export default function HeroSection() {
             clipPath: 'polygon(0 0, 100% 0, 100% 65%, 0 85%)'
           }}
         >
-          <VideoBackground 
+          <VideoBackgroundSimple 
             showMuteButton={true}
           />
         </div>
@@ -32,11 +33,7 @@ export default function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-800" />
           
           {/* Particle System */}
-          <ParticleSystem 
-            className="absolute inset-0" 
-            particleCount={50}
-            color="rgba(34, 197, 94, 0.4)"
-          />
+          <ParticleSystem />
         </div>
 
         {/* Diagonal Pattern Overlay */}
