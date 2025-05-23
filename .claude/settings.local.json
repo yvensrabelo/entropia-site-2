@@ -39,7 +39,8 @@
       "Bash(railway status:*)",
       "Bash(npx tsc:*)",
       "Bash(railway login:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(railway up:*)"
     ],
     "deny": []
   }

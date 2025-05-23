@@ -208,8 +208,8 @@ export function useLongPress(
   } = {}
 ) {
   const { delay = 500, shouldPreventDefault = true } = options
-  const timeout = useRef<NodeJS.Timeout>()
-  const target = useRef<EventTarget>()
+  const timeout = useRef<NodeJS.Timeout | null>(null)
+  const target = useRef<EventTarget | null>(null)
 
   const start = useCallback(
     (event: React.TouchEvent | React.MouseEvent) => {
