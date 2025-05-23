@@ -1,8 +1,10 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
-import SwipeNavigation from '@/app/components/SwipeNavigation';
-import MobileOptimized from '@/app/components/MobileOptimized';
+// import SwipeNavigation from '@/app/components/SwipeNavigation';
+// import MobileOptimized from '@/app/components/MobileOptimized';
+import MobileOptimizedSimple from '@/app/components/MobileOptimizedSimple';
+import SwipeNavigationSimple from '@/app/components/SwipeNavigationSimple';
 // import Navbar from '@/components/Navbar';
 // import ScrollToTopButton from '@/components/ScrollToTopButton';
 
@@ -186,8 +188,8 @@ export default function RootLayout({
         min-h-screen overflow-x-hidden
         selection:bg-green-500/20 selection:text-green-200
       `}>
-        <MobileOptimized preventZoom={true} allowPullToRefresh={false}>
-          <SwipeNavigation enabled={true} showIndicators={true}>
+        <MobileOptimizedSimple>
+          <SwipeNavigationSimple>
           {/* 🌟 Background Pattern Sutil */}
           <div className="fixed inset-0 -z-10">
             {/* Gradiente base escuro */}
@@ -374,8 +376,8 @@ export default function RootLayout({
             </p>
           </div>
         </noscript>
-          </SwipeNavigation>
-        </MobileOptimized>
+          </SwipeNavigationSimple>
+        </MobileOptimizedSimple>
       </body>
     </html>
   );
