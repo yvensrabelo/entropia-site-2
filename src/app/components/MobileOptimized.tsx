@@ -47,8 +47,11 @@ export function useIsMobile() {
 /**
  * Hook para prevenir zoom indesejado em dispositivos móveis
  */
-export function usePreventZoom() {
+export function usePreventZoom(enabled: boolean = true) {
+  const { isMobile } = useIsMobile()
+  
   useEffect(() => {
+    if (!enabled || !isMobile) return
     // Prevenir zoom por double tap
     let lastTouchEnd = 0
     
@@ -83,14 +86,18 @@ export function usePreventZoom() {
       document.removeEventListener('touchstart', preventPinchZoom)
       document.removeEventListener('keydown', preventKeyboardZoom)
     }
-  }, [])
+  }, [enabled, isMobile])
 }
 
 /**
  * Hook para controlar pull-to-refresh
  */
 export function usePullToRefreshControl(enabled: boolean = false) {
+  const { isMobile } = useIsMobile()
+  
   useEffect(() => {
+    if (!isMobile) return
+    
     if (!enabled) {
       // CSS para prevenir pull-to-refresh
       const style = document.createElement('style')
@@ -125,7 +132,7 @@ export function usePullToRefreshControl(enabled: boolean = false) {
         style.remove()
       }
     }
-  }, [enabled])
+  }, [enabled, isMobile])
 }
 
 interface MobileOptimizedProps {
@@ -151,13 +158,9 @@ export default function MobileOptimized({
 }: MobileOptimizedProps) {
   const { isMobile } = useIsMobile()
   
-  // Aplicar prevenções apenas em dispositivos móveis
-  if (isMobile) {
-    if (preventZoom) {
-      usePreventZoom()
-    }
-    usePullToRefreshControl(allowPullToRefresh)
-  }
+  // Hooks devem ser chamados sempre, não condicionalmente
+  usePreventZoom(preventZoom)
+  usePullToRefreshControl(allowPullToRefresh)
 
   // Adicionar meta tags para prevenir zoom no viewport
   useEffect(() => {
@@ -282,9 +285,9 @@ export function useDeviceOrientation() {
 export function useVirtualKeyboard() {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
   const [keyboardHeight, setKeyboardHeight] = useState(0)
+  const { isMobile } = useIsMobile()
 
   useEffect(() => {
-    const { isMobile } = useIsMobile()
     if (!isMobile) return
 
     const initialHeight = window.innerHeight
