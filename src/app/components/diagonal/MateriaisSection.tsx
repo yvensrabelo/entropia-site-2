@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { FileText, Video, Headphones, Download, Filter, BookOpen, Archive } from 'lucide-react'
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const materiais = [
   {
@@ -13,7 +13,6 @@ const materiais = [
     paginas: 245,
     tamanho: '18 MB',
     downloads: 1543,
-    preview: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400',
     cor: 'from-blue-500 to-indigo-600',
     height: 320
   },
@@ -25,7 +24,6 @@ const materiais = [
     duracao: '2h 30min',
     tamanho: '1.2 GB',
     downloads: 2890,
-    preview: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400',
     cor: 'from-purple-500 to-pink-600',
     height: 280
   },
@@ -37,7 +35,6 @@ const materiais = [
     episodios: 12,
     tamanho: '450 MB',
     downloads: 987,
-    preview: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400',
     cor: 'from-green-500 to-emerald-600',
     height: 350
   },
@@ -49,7 +46,6 @@ const materiais = [
     questoes: 180,
     tamanho: '25 MB',
     downloads: 3421,
-    preview: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400',
     cor: 'from-orange-500 to-red-600',
     height: 300
   },
@@ -61,7 +57,6 @@ const materiais = [
     paginas: 180,
     tamanho: '12 MB',
     downloads: 2100,
-    preview: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
     cor: 'from-rose-500 to-pink-600',
     height: 340
   },
@@ -73,7 +68,6 @@ const materiais = [
     duracao: '4h 15min',
     tamanho: '2.8 GB',
     downloads: 4521,
-    preview: 'https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=400',
     cor: 'from-cyan-500 to-blue-600',
     height: 290
   },
@@ -85,7 +79,6 @@ const materiais = [
     episodios: 8,
     tamanho: '320 MB',
     downloads: 1234,
-    preview: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400',
     cor: 'from-teal-500 to-green-600',
     height: 310
   },
@@ -97,7 +90,6 @@ const materiais = [
     questoes: 200,
     tamanho: '30 MB',
     downloads: 2876,
-    preview: 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400',
     cor: 'from-emerald-500 to-green-600',
     height: 330
   }
@@ -114,27 +106,6 @@ const tipos = [
 
 function MaterialCard({ material, index }: { material: any, index: number }) {
   const [isHovered, setIsHovered] = useState(false)
-  const cardRef = useRef<HTMLDivElement>(null)
-  
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  
-  const rotateX = useTransform(y, [-100, 100], [5, -5])
-  const rotateY = useTransform(x, [-100, 100], [-5, 5])
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    x.set(e.clientX - centerX)
-    y.set(e.clientY - centerY)
-  }
-  
-  const handleMouseLeave = () => {
-    x.set(0)
-    y.set(0)
-  }
 
   const getIcon = () => {
     switch (material.tipo) {
@@ -150,40 +121,18 @@ function MaterialCard({ material, index }: { material: any, index: number }) {
 
   return (
     <motion.div
-      ref={cardRef}
-      className="relative group cursor-pointer"
+      className="relative group cursor-pointer break-inside-avoid"
       style={{
         height: material.height,
-        transform: `rotate(${index % 2 === 0 ? '-2deg' : '2deg'})`
       }}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseOut={() => setIsHovered(false)}
-      whileHover={{ scale: 1.02 }}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ scale: 1.02, rotate: 0 }}
     >
-      <motion.div
-        className="h-full relative overflow-hidden rounded-2xl"
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: 'preserve-3d',
-          perspective: 1000
-        }}
-      >
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <img
-            src={material.preview}
-            alt={material.titulo}
-            className="w-full h-full object-cover"
-          />
-          <div className={`absolute inset-0 bg-gradient-to-br ${material.cor} opacity-80`} />
-        </div>
-
+      <div className={`h-full relative overflow-hidden rounded-2xl bg-gradient-to-br ${material.cor} shadow-lg hover:shadow-2xl transition-all duration-300`}>
         {/* Content */}
         <div className="relative h-full p-6 flex flex-col justify-between text-white">
           <div>
@@ -245,7 +194,7 @@ function MaterialCard({ material, index }: { material: any, index: number }) {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </div>
     </motion.div>
   )
 }
@@ -301,7 +250,7 @@ export default function MateriaisSection() {
             Biblioteca <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">Digital</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Explore nossa coleção de materiais em layout diagonal interativo
+            Explore nossa coleção de materiais didáticos exclusivos
           </p>
         </motion.div>
 
@@ -362,9 +311,11 @@ export default function MateriaisSection() {
         </div>
 
         {/* Masonry Grid */}
-        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6">
           {filteredMateriais.map((material, index) => (
-            <MaterialCard key={material.id} material={material} index={index} />
+            <div key={material.id} className="mb-6">
+              <MaterialCard material={material} index={index} />
+            </div>
           ))}
         </div>
 

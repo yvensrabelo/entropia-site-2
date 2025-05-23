@@ -1,76 +1,41 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-interface Particle {
-  id: number
-  x: number
-  y: number
-  size: number
-  vx: number
-  vy: number
-  life: number
-  delay: number
-}
-
 export default function NavbarDiagonal() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
-  const [particles, setParticles] = useState<Particle[]>([])
-  const logoRef = useRef<HTMLDivElement>(null)
-  const particleIdRef = useRef(0)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (isHovering && logoRef.current) {
-      const rect = logoRef.current.getBoundingClientRect()
-      const newParticles: Particle[] = []
-
-      for (let i = 0; i < 40; i++) {
-        newParticles.push({
-          id: particleIdRef.current++,
-          x: rect.left + Math.random() * rect.width,
-          y: rect.top + rect.height / 2,
-          size: Math.random() * 4 + 2,
-          vx: (Math.random() - 0.5) * 3,
-          vy: (Math.random() - 0.5) * 3 - 1,
-          life: 1,
-          delay: Math.random() * 0.2
-        })
-      }
-
-      setParticles(prev => [...prev, ...newParticles])
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll)
+      return () => window.removeEventListener('scroll', handleScroll)
     }
-  }, [isHovering])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setParticles(prev => 
-        prev
-          .map(particle => ({
-            ...particle,
-            x: particle.x + particle.vx,
-            y: particle.y + particle.vy,
-            vy: particle.vy + 0.1,
-            life: particle.life - 0.02
-          }))
-          .filter(particle => particle.life > 0)
-      )
-    }, 16)
-
-    return () => clearInterval(interval)
   }, [])
+
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            <div className="text-white font-black text-2xl bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+              ENTROPIA
+            </div>
+          </div>
+        </div>
+      </nav>
+    )
+  }
 
   const navItems = [
     { href: '#inicio', label: 'Início' },
@@ -91,47 +56,14 @@ export default function NavbarDiagonal() {
         
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            <Link 
-              href="/" 
-              className="relative group"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
+            <Link href="/" className="relative group">
               <div className="relative">
-                {/* Glow effect */}
-                <div className={`absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl blur-xl transition-all duration-500 ${
-                  isHovering ? 'opacity-100 scale-150' : 'opacity-50 scale-100'
-                }`} />
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl blur-xl opacity-50 group-hover:opacity-100 group-hover:scale-150 transition-all duration-500" />
                 
-                {/* Logo container */}
-                <div 
-                  ref={logoRef}
-                  className="relative bg-black/50 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/10 overflow-visible"
-                >
-                  <motion.span 
-                    className="text-white font-black text-2xl bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent relative z-10"
-                    animate={{
-                      opacity: isHovering ? [1, 0.7, 1] : 1,
-                    }}
-                    transition={{
-                      duration: 0.8,
-                      repeat: isHovering ? Infinity : 0,
-                    }}
-                  >
+                <div className="relative bg-black/50 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/10">
+                  <span className="text-white font-black text-2xl bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                     ENTROPIA
-                  </motion.span>
-                  
-                  {/* Disintegration effect overlay */}
-                  {isHovering && (
-                    <motion.div
-                      className="absolute inset-0 pointer-events-none"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-green-500/20 to-transparent animate-pulse" />
-                    </motion.div>
-                  )}
+                  </span>
                 </div>
               </div>
             </Link>
@@ -160,7 +92,6 @@ export default function NavbarDiagonal() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden text-white p-2 relative"
             >
-              <div className="absolute inset-0 bg-white/10 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300" />
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -209,41 +140,6 @@ export default function NavbarDiagonal() {
           )}
         </AnimatePresence>
       </nav>
-
-      {/* Particles layer */}
-      <div className="fixed inset-0 pointer-events-none z-40">
-        <AnimatePresence>
-          {particles.map(particle => (
-            <motion.div
-              key={particle.id}
-              className="absolute rounded-full bg-gradient-to-r from-green-400 to-emerald-400"
-              initial={{ 
-                opacity: 0,
-                scale: 0,
-                x: particle.x,
-                y: particle.y
-              }}
-              animate={{ 
-                opacity: particle.life,
-                scale: 1,
-                x: particle.x,
-                y: particle.y
-              }}
-              exit={{ opacity: 0, scale: 0 }}
-              transition={{ 
-                duration: 0.5,
-                delay: particle.delay
-              }}
-              style={{
-                width: particle.size,
-                height: particle.size,
-                filter: 'blur(1px)',
-                boxShadow: `0 0 ${particle.size * 2}px rgba(16, 185, 129, 0.6)`
-              }}
-            />
-          ))}
-        </AnimatePresence>
-      </div>
     </>
   )
 }

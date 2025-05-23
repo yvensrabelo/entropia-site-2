@@ -35,7 +35,9 @@
       "Bash(brew install:*)",
       "Bash(kill:*)",
       "Bash(npm install)",
-      "Bash(PORT=4000 npm run dev)"
+      "Bash(PORT=4000 npm run dev)",
+      "Bash(railway status:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": []
   }

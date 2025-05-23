@@ -1,8 +1,8 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
-import Navbar from '@/components/Navbar';
-import ScrollToTopButton from '@/components/ScrollToTopButton';
+// import Navbar from '@/components/Navbar';
+// import ScrollToTopButton from '@/components/ScrollToTopButton';
 
 // 🔤 Configuração da fonte Inter
 const inter = Inter({ 
@@ -207,7 +207,7 @@ export default function RootLayout({
           </div>
           
           {/* 🧭 Navegação */}
-          <Navbar />
+          {/* <Navbar /> */}
           
           {/* 📄 Conteúdo principal */}
           <main className="relative pt-20 min-h-screen">
@@ -274,7 +274,7 @@ export default function RootLayout({
           </main>
           
           {/* 🔝 Botão de voltar ao topo */}
-          <ScrollToTopButton />
+          {/* <ScrollToTopButton /> */}
         
         {/* 🎨 Estilos globais embutidos */}
         <style dangerouslySetInnerHTML={{

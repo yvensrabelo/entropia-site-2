@@ -7,17 +7,10 @@ import { motion } from 'framer-motion'
 import ParticleSystem from './ParticleSystem'
 
 export default function HeroSection() {
-  const [currentTime, setCurrentTime] = useState('00:00')
   const [isMuted, setIsMuted] = useState(true)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  useEffect(() => {
-    setCurrentTime(new Date().toLocaleTimeString('pt-BR', { 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    }))
-  }, [])
 
   useEffect(() => {
     if (videoRef.current) {
@@ -164,15 +157,6 @@ export default function HeroSection() {
               </Link>
             </motion.div>
 
-            {/* Timestamp */}
-            <motion.div 
-              className="mt-8 text-sm font-medium text-gray-400"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              {currentTime} - yvens
-            </motion.div>
           </div>
         </div>
       </div>

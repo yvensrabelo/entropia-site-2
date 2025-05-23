@@ -2,6 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🎭 Animações customizadas */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px) rotate(-5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(-5deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-fadeInLeft {
+  animation: fadeInLeft 0.8s ease-out 0.2s both;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+}
+
+.bg-300\% {
+  background-size: 300% 300%;
+}
+
 /* 🎨 Variáveis CSS customizadas para tema claro */
 :root {
   --color-primary: #16a34a;

@@ -1,3 +1,3 @@
-import PageNova from '../page-nova'
+import Home from '../page'
 
-export default PageNova
+export default Home
