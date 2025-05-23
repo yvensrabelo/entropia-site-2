@@ -17,7 +17,25 @@
       "Bash(git rm:*)",
       "Bash(mv:*)",
       "Bash(grep:*)",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "Bash(PORT=3001 npm run dev)",
+      "Bash(pkill:*)",
+      "Bash(npx next:*)",
+      "Bash(npm start)",
+      "Bash(curl:*)",
+      "Bash(sudo lsof:*)",
+      "Bash(node:*)",
+      "Bash(sudo dscacheutil:*)",
+      "Bash(python3:*)",
+      "Bash(npm outdated:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(touch:*)",
+      "Bash(true)",
+      "Bash(brew install:*)",
+      "Bash(kill:*)",
+      "Bash(npm install)",
+      "Bash(PORT=4000 npm run dev)"
     ],
     "deny": []
   }

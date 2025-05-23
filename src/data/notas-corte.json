@@ -1,0 +1,210 @@
+{
+  "PSC": {
+    "AC": {
+      "Medicina": 720,
+      "Direito": 650,
+      "Engenharia": 630,
+      "Psicologia": 610,
+      "Pedagogia": 580,
+      "Licenciaturas": 560
+    },
+    "PP1": {
+      "Medicina": 700,
+      "Direito": 630,
+      "Engenharia": 610,
+      "Psicologia": 590,
+      "Pedagogia": 560,
+      "Licenciaturas": 540
+    },
+    "PP2": {
+      "Medicina": 690,
+      "Direito": 620,
+      "Engenharia": 600,
+      "Psicologia": 580,
+      "Pedagogia": 550,
+      "Licenciaturas": 530
+    },
+    "IND1": {
+      "Medicina": 680,
+      "Direito": 610,
+      "Engenharia": 590,
+      "Psicologia": 570,
+      "Pedagogia": 540,
+      "Licenciaturas": 520
+    },
+    "IND2": {
+      "Medicina": 670,
+      "Direito": 600,
+      "Engenharia": 580,
+      "Psicologia": 560,
+      "Pedagogia": 530,
+      "Licenciaturas": 510
+    },
+    "QLB1": {
+      "Medicina": 660,
+      "Direito": 590,
+      "Engenharia": 570,
+      "Psicologia": 550,
+      "Pedagogia": 520,
+      "Licenciaturas": 500
+    },
+    "QLB2": {
+      "Medicina": 650,
+      "Direito": 580,
+      "Engenharia": 560,
+      "Psicologia": 540,
+      "Pedagogia": 510,
+      "Licenciaturas": 490
+    },
+    "PCD1": {
+      "Medicina": 640,
+      "Direito": 570,
+      "Engenharia": 550,
+      "Psicologia": 530,
+      "Pedagogia": 500,
+      "Licenciaturas": 480
+    },
+    "PCD2": {
+      "Medicina": 630,
+      "Direito": 560,
+      "Engenharia": 540,
+      "Psicologia": 520,
+      "Pedagogia": 490,
+      "Licenciaturas": 470
+    },
+    "NDC1": {
+      "Medicina": 620,
+      "Direito": 550,
+      "Engenharia": 530,
+      "Psicologia": 510,
+      "Pedagogia": 480,
+      "Licenciaturas": 460
+    },
+    "NDC2": {
+      "Medicina": 610,
+      "Direito": 540,
+      "Engenharia": 520,
+      "Psicologia": 500,
+      "Pedagogia": 470,
+      "Licenciaturas": 450
+    }
+  },
+  "MACRO": {
+    "AC": {
+      "Medicina": 750,
+      "Direito": 680,
+      "Engenharia": 660,
+      "Psicologia": 640,
+      "Pedagogia": 600,
+      "Licenciaturas": 590
+    },
+    "Escola Pública": {
+      "Medicina": 730,
+      "Direito": 660,
+      "Engenharia": 640,
+      "Psicologia": 620,
+      "Pedagogia": 580,
+      "Licenciaturas": 570
+    },
+    "Negros": {
+      "Medicina": 720,
+      "Direito": 650,
+      "Engenharia": 630,
+      "Psicologia": 610,
+      "Pedagogia": 570,
+      "Licenciaturas": 560
+    },
+    "Indígenas": {
+      "Medicina": 710,
+      "Direito": 640,
+      "Engenharia": 620,
+      "Psicologia": 600,
+      "Pedagogia": 560,
+      "Licenciaturas": 550
+    },
+    "PCD": {
+      "Medicina": 700,
+      "Direito": 630,
+      "Engenharia": 610,
+      "Psicologia": 590,
+      "Pedagogia": 550,
+      "Licenciaturas": 540
+    }
+  },
+  "SIS": {
+    "AC": {
+      "Medicina": 800,
+      "Direito": 700,
+      "Engenharia": 680,
+      "Psicologia": 660,
+      "Pedagogia": 620,
+      "Licenciaturas": 610
+    },
+    "Escola Pública": {
+      "Medicina": 780,
+      "Direito": 680,
+      "Engenharia": 660,
+      "Psicologia": 640,
+      "Pedagogia": 600,
+      "Licenciaturas": 590
+    },
+    "PPI": {
+      "Medicina": 770,
+      "Direito": 670,
+      "Engenharia": 650,
+      "Psicologia": 630,
+      "Pedagogia": 590,
+      "Licenciaturas": 580
+    },
+    "PCD": {
+      "Medicina": 760,
+      "Direito": 660,
+      "Engenharia": 640,
+      "Psicologia": 620,
+      "Pedagogia": 580,
+      "Licenciaturas": 570
+    },
+    "Indígenas": {
+      "Medicina": 750,
+      "Direito": 650,
+      "Engenharia": 630,
+      "Psicologia": 610,
+      "Pedagogia": 570,
+      "Licenciaturas": 560
+    }
+  },
+  "ENEM": {
+    "AC": {
+      "Medicina": 780,
+      "Direito": 690,
+      "Engenharia": 670,
+      "Psicologia": 650,
+      "Pedagogia": 610,
+      "Licenciaturas": 600
+    },
+    "Escola Pública": {
+      "Medicina": 760,
+      "Direito": 670,
+      "Engenharia": 650,
+      "Psicologia": 630,
+      "Pedagogia": 590,
+      "Licenciaturas": 580
+    },
+    "PPI": {
+      "Medicina": 750,
+      "Direito": 660,
+      "Engenharia": 640,
+      "Psicologia": 620,
+      "Pedagogia": 580,
+      "Licenciaturas": 570
+    },
+    "PCD": {
+      "Medicina": 740,
+      "Direito": 650,
+      "Engenharia": 630,
+      "Psicologia": 610,
+      "Pedagogia": 570,
+      "Licenciaturas": 560
+    }
+  }
+}

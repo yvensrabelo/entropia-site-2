@@ -3,8 +3,6 @@ import { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { AdminAuthProvider } from '@/contexts/AdminAuthContext';
 
 // 🔤 Configuração da fonte Inter
 const inter = Inter({ 
@@ -185,8 +183,6 @@ export default function RootLayout({
         min-h-screen overflow-x-hidden
         selection:bg-green-500/20 selection:text-green-900
       `}>
-        <AuthProvider>
-          <AdminAuthProvider>
           {/* 🌟 Background Pattern Sutil */}
           <div className="fixed inset-0 -z-10">
             {/* Gradiente base claro */}
@@ -279,8 +275,6 @@ export default function RootLayout({
           
           {/* 🔝 Botão de voltar ao topo */}
           <ScrollToTopButton />
-        </AdminAuthProvider>
-        </AuthProvider>
         
         {/* 🎨 Estilos globais embutidos */}
         <style dangerouslySetInnerHTML={{

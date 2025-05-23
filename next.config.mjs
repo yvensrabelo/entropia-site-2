@@ -5,6 +5,13 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   
+  // Otimizações de desenvolvimento
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{member}}',
+    },
+  },
+  
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
@@ -76,7 +83,16 @@ const nextConfig = {
     ]
   },
 
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
+    // Otimizações de desenvolvimento
+    if (dev) {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+        ignored: ['**/node_modules', '**/.git', '**/.next'],
+      }
+    }
+    
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -86,6 +102,11 @@ const nextConfig = {
       }
     }
     return config
+  },
+  
+  // Configurações experimentais para melhor performance
+  experimental: {
+    scrollRestoration: true,
   },
 }
 
