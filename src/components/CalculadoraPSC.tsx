@@ -101,23 +101,23 @@ const descricoesCota = {
 const CalculadoraVestibular = () => {
   const [processo, setProcesso] = useState('PSC')
   const [cota, setCota] = useState('AC')
-  const [notas, setNotas] = useState([])
+  const [notas, setNotas] = useState<number[]>([])
   const [notaTotal, setNotaTotal] = useState(0)
   const [showAnimation, setShowAnimation] = useState(false)
 
   // Estados para identificação
-  const [escola, setEscola] = useState(null)
-  const [renda, setRenda] = useState(null)
-  const [cor, setCor] = useState(null)
-  const [grupo, setGrupo] = useState(null)
+  const [escola, setEscola] = useState<string | null>(null)
+  const [renda, setRenda] = useState<string | null>(null)
+  const [cor, setCor] = useState<string | null>(null)
+  const [grupo, setGrupo] = useState<string | null>(null)
 
   // Estados para feedback visual
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<Record<number, string>>({})
   const [isCalculating, setIsCalculating] = useState(false)
 
   // Inicializa as notas quando o processo muda
   useEffect(() => {
-    const newNotas = new Array(camposPorProcesso[processo].length).fill(0)
+    const newNotas = new Array(camposPorProcesso[processo as keyof typeof camposPorProcesso].length).fill(0)
     setNotas(newNotas)
     setNotaTotal(0)
     setErrors({})
@@ -202,8 +202,8 @@ const CalculadoraVestibular = () => {
   }, [escola, renda, cor, grupo, processo])
 
   // Função para validar e atualizar notas
-  const handleNotaChange = (index, value) => {
-    const campo = camposPorProcesso[processo][index]
+  const handleNotaChange = (index: number, value: string) => {
+    const campo = camposPorProcesso[processo as keyof typeof camposPorProcesso][index]
     const min = campo.min ?? 0
     const max = campo.max ?? 1000
     const numValue = Number(value) || 0
@@ -235,7 +235,7 @@ const CalculadoraVestibular = () => {
     setRenda(null)
     setCor(null)
     setGrupo(null)
-    setNotas(new Array(camposPorProcesso[processo].length).fill(0))
+    setNotas(new Array(camposPorProcesso[processo as keyof typeof camposPorProcesso].length).fill(0))
     setNotaTotal(0)
     setCota('AC')
     setErrors({})
@@ -243,7 +243,7 @@ const CalculadoraVestibular = () => {
 
   // Função para determinar classes do grid responsivo
   const getGridCols = () => {
-    const numCampos = camposPorProcesso[processo].length
+    const numCampos = camposPorProcesso[processo as keyof typeof camposPorProcesso].length
     if (numCampos <= 2) return 'grid-cols-1 md:grid-cols-2'
     if (numCampos <= 3) return 'grid-cols-1 md:grid-cols-3'
     if (numCampos <= 4) return 'grid-cols-2 md:grid-cols-4'
@@ -251,14 +251,14 @@ const CalculadoraVestibular = () => {
   }
 
   // Função para obter cor baseada no status de aprovação
-  const getStatusColor = (aprovado, falta) => {
+  const getStatusColor = (aprovado: boolean, falta: number) => {
     if (aprovado) return 'text-green-600'
     if (falta <= 50) return 'text-yellow-600'
     return 'text-red-500'
   }
 
   // Função para obter emoji baseado no status
-  const getStatusEmoji = (aprovado, falta) => {
+  const getStatusEmoji = (aprovado: boolean, falta: number) => {
     if (aprovado) return '✅'
     if (falta <= 50) return '⚠️'
     return '❌'
@@ -438,7 +438,7 @@ const CalculadoraVestibular = () => {
                 <span className="text-gray-600 text-sm block mb-1">🎯 Sua modalidade de concorrência:</span>
                 <div className="text-xl font-bold text-green-700">{cota}</div>
                 <div className="text-xs text-gray-500 mt-1">
-                  {descricoesCota[cota] || cota}
+                  {descricoesCota[cota as keyof typeof descricoesCota] || cota}
                 </div>
               </motion.div>
             </div>
@@ -457,7 +457,7 @@ const CalculadoraVestibular = () => {
               </h2>
               
               <div className={`grid ${getGridCols()} gap-4 md:gap-6 mb-8`}>
-                {camposPorProcesso[processo].map((campo, i) => (
+                {camposPorProcesso[processo as keyof typeof camposPorProcesso].map((campo, i) => (
                   <div className="space-y-2" key={i}>
                     <label className="text-sm font-medium text-gray-700 block">
                       {campo.label}

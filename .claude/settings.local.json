@@ -14,7 +14,10 @@
       "Bash(ls:*)",
       "WebFetch(domain:www.vercel.com)",
       "Bash(cp:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(mv:*)",
+      "Bash(grep:*)",
+      "Bash(sed:*)"
     ],
     "deny": []
   }

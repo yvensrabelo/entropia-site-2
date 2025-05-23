@@ -36,7 +36,7 @@ export default function AlunosDashboard() {
   }, [usuario])
 
   const carregarDados = async () => {
-    if (!usuario) return
+    if (!usuario || !supabase) return
 
     try {
       const [presencasRes, notasRes, financeiroRes, materiaisRes] = await Promise.all([

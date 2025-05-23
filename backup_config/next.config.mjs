@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Otimizações de performance
+  // Otimizações de performance combinadas
   experimental: {
     scrollRestoration: true,
+    optimizeCss: true,
+    optimizePackageImports: ['framer-motion', 'lucide-react'],
+    turbo: {
+      rules: {
+        '*.svg': ['@svgr/webpack'],
+      },
+    },
   },
   
   // Compressor de imagens
@@ -11,7 +18,7 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 dias
   },
   
-  // Headers de segurança
+  // Headers combinados (segurança + performance)
   async headers() {
     return [
       {
@@ -26,8 +33,16 @@ const nextConfig = {
             value: 'nosniff',
           },
           {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -63,24 +78,40 @@ const nextConfig = {
     ]
   },
   
-  // Otimização de bundle
+  // Webpack otimizado combinado
   webpack: (config, { dev, isServer }) => {
     // Otimizações de produção
     if (!dev && !isServer) {
-      config.optimization.splitChunks.cacheGroups = {
-        ...config.optimization.splitChunks.cacheGroups,
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-          priority: 10,
-        },
-        common: {
-          name: 'common',
-          minChunks: 2,
-          chunks: 'async',
-          priority: 5,
-          reuseExistingChunk: true,
+      // Otimizar framer-motion
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'framer-motion': 'framer-motion/dist/framer-motion.js',
+      }
+      
+      // Code splitting otimizado combinado
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 5,
+            reuseExistingChunk: true,
+            enforce: true,
+          },
+          animations: {
+            test: /[\\/]node_modules[\\/](framer-motion)[\\/]/,
+            name: 'animations',
+            chunks: 'all',
+            priority: 15,
+          },
         },
       }
     }
