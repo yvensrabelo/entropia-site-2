@@ -56,6 +56,7 @@ export default function HeroContent({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-black leading-none"
+                data-version="v2-unified"
               >
                 <span className="block text-white">SUA</span>
                 <span className="block bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent">
