@@ -51,19 +51,27 @@ export default function HeroContent({
 
             {/* Main Heading */}
             <div className="space-y-4">
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-black leading-none"
-                data-version="v2-unified"
+              <div 
+                className="relative"
+                style={{
+                  transform: 'rotate(-2deg)',
+                  transformOrigin: 'center left'
+                }}
               >
-                <span className="block text-white">SUA</span>
-                <span className="block bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent">
-                  APROVAÇÃO
-                </span>
-                <span className="block text-white">COMEÇA AQUI</span>
-              </motion.h1>
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-black leading-tight drop-shadow-2xl"
+                  data-version="v2-unified"
+                >
+                  <span className="block text-white">SUA</span>
+                  <span className="block text-green-400" style={{ letterSpacing: '0.05em' }}>
+                    APROVAÇÃO
+                  </span>
+                  <span className="block text-white">COMEÇA AQUI</span>
+                </motion.h1>
+              </div>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
