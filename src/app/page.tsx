@@ -1,14 +1,11 @@
 import dynamic from 'next/dynamic'
+import { HeroSkeleton } from '@/components/Skeleton'
 
 const DiagonalPageClient = dynamic(
   () => import('./diagonal/DiagonalPageClient'),
   {
     ssr: false,
-    loading: () => (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-green-400 text-2xl animate-pulse">Carregando...</div>
-      </div>
-    ),
+    loading: () => <HeroSkeleton />,
   }
 )
 
