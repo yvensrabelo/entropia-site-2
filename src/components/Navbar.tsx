@@ -157,7 +157,7 @@ const Navbar = () => {
                 transition={{ delay: 0.4 }}
                 className="text-green-200/60 text-[10px] font-light mt-0.5"
               >
-                Atualizado: 22/05/2025 12:47 (FORCE)
+                Atualizado: 22/05/2025 21:31 (RAILWAY)
               </motion.span>
             </div>
             
@@ -433,4 +433,4 @@ const Navbar = () => {
   );
 };
 
-export default React.memo(Navbar);// Force update Thu May 22 19:24:26 -04 2025
+export default React.memo(Navbar);// Railway deployment Thu May 22 21:31:00 -04 2025
