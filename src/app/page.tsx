@@ -1,11 +1,11 @@
 import dynamic from 'next/dynamic'
-import { HeroSkeleton } from '@/components/Skeleton'
+import { SimpleHeroSkeleton } from '@/components/SimpleSkeleton'
 
 const DiagonalPageClient = dynamic(
   () => import('./diagonal/DiagonalPageClient'),
   {
     ssr: false,
-    loading: () => <HeroSkeleton />,
+    loading: () => <SimpleHeroSkeleton />,
   }
 )
 

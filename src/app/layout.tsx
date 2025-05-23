@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import ErrorBoundary from '@/components/ErrorBoundary'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -32,9 +31,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={inter.variable}>
       <body className={`${inter.className} antialiased bg-black text-white`}>
-        <ErrorBoundary>
-          {children}
-        </ErrorBoundary>
+        {children}
       </body>
     </html>
   )
