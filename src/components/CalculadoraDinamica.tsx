@@ -174,19 +174,19 @@ export default function CalculadoraDinamica() {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Coluna Esquerda - Inputs */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-white rounded-2xl shadow-xl p-6"
+          className="bg-white rounded-2xl shadow-xl p-4 sm:p-6"
         >
           {/* Seleção de Processo */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-base font-semibold text-gray-800 mb-3">
               Processo Seletivo
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {PROCESSOS.map(processo => (
                 <button
                   key={processo}
@@ -194,7 +194,7 @@ export default function CalculadoraDinamica() {
                     setProcessoSelecionado(processo);
                     setNotas({});
                   }}
-                  className={`py-3 px-4 rounded-xl font-medium transition-all ${
+                  className={`min-h-[48px] py-3 px-4 rounded-xl font-medium transition-all w-full ${
                     processoSelecionado === processo
                       ? 'bg-green-600 text-white shadow-lg'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -214,7 +214,7 @@ export default function CalculadoraDinamica() {
             </h3>
 
             {/* Escola Pública */}
-            <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+            <label className="flex items-center gap-3 p-4 min-h-[56px] bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
               <input
                 type="checkbox"
                 checked={dadosCotas.escolaPublica}
@@ -232,7 +232,7 @@ export default function CalculadoraDinamica() {
               <motion.label
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors ml-8"
+                className="flex items-center gap-3 p-4 min-h-[56px] bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors ml-4 sm:ml-8"
               >
                 <input
                   type="checkbox"
@@ -241,7 +241,7 @@ export default function CalculadoraDinamica() {
                   className="w-5 h-5 text-green-600 rounded border-gray-300 focus:ring-green-500"
                 />
                 <DollarSign size={20} className="text-gray-600" />
-                <span className="flex-1 text-gray-700">
+                <span className="flex-1 text-gray-700 text-sm sm:text-base">
                   Renda familiar per capita até 1,5 salário mínimo
                 </span>
               </motion.label>
@@ -249,13 +249,13 @@ export default function CalculadoraDinamica() {
 
             {/* Etnia */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-base font-medium text-gray-800 mb-2">
                 Como você se declara?
               </label>
               <select
                 value={dadosCotas.etnia}
                 onChange={(e) => setDadosCotas(prev => ({ ...prev, etnia: e.target.value as any }))}
-                className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors"
+                className="w-full px-4 py-3 min-h-[48px] border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-base"
               >
                 <option value="branco">Branco(a)</option>
                 <option value="preto">Preto(a)</option>
@@ -267,7 +267,7 @@ export default function CalculadoraDinamica() {
 
             {/* Outras condições */}
             <div className="space-y-2">
-              <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+              <label className="flex items-center gap-3 p-4 min-h-[56px] bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
                 <input
                   type="checkbox"
                   checked={dadosCotas.pcd}
@@ -281,7 +281,7 @@ export default function CalculadoraDinamica() {
               </label>
 
               {processoSelecionado === 'PSC' && (
-                <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                <label className="flex items-center gap-3 p-4 min-h-[56px] bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
                   <input
                     type="checkbox"
                     checked={dadosCotas.quilombola}
@@ -330,21 +330,23 @@ export default function CalculadoraDinamica() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-base font-medium text-gray-800 mb-2">
                   {campo.label}
                 </label>
                 <div className="relative">
                   <input
                     type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     value={notas[campo.label] || ''}
                     onChange={(e) => handleNotaChange(campo.label, e.target.value)}
                     min={campo.min}
                     max={campo.max}
                     step={campo.max > 100 ? 10 : 1}
-                    className="w-full px-4 py-2 pr-16 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors"
+                    className="w-full px-4 py-3 pr-20 min-h-[48px] border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-base"
                     placeholder={`0 - ${campo.max}`}
                   />
-                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base font-medium">
                     /{campo.max}
                   </span>
                 </div>
@@ -369,7 +371,7 @@ export default function CalculadoraDinamica() {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-white rounded-2xl shadow-xl p-6"
+          className="bg-white rounded-2xl shadow-xl p-4 sm:p-6"
         >
           <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <TrendingUp size={20} className="text-green-600" />

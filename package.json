@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p ${PORT:-3000}",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server:start": "./start-server.sh",
+    "server:stop": "./stop-server.sh"
   },
   "description": "Entropia Cursinho - Sistema de gestão e calculadora de notas",
   "author": "Yvens Rabelo",

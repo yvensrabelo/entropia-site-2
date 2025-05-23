@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   BookOpen, 
   Download, 
@@ -17,6 +17,8 @@ import {
   Calendar,
   Award
 } from 'lucide-react'
+import LongPressCard, { commonActions } from '@/app/components/LongPressCard'
+import MobileOptimized from '@/app/components/MobileOptimized'
 
 export default function MateriaisPage() {
   const [filtroAtivo, setFiltroAtivo] = useState('todos')
@@ -131,18 +133,18 @@ export default function MateriaisPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-50 to-white py-20">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="bg-gradient-to-br from-green-50 to-white py-12 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6">
               Materiais de <span className="text-green-600">Estudo</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Acesse nossa biblioteca completa de apostilas, exercícios, simulados e videoaulas 
               desenvolvidos pelos melhores professores de Manaus.
             </p>
@@ -168,8 +170,8 @@ export default function MateriaisPage() {
                   <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <Icon className="text-green-600" size={32} />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900 mb-2">{stat.number}</div>
-                  <div className="text-gray-600 font-medium">{stat.label}</div>
+                  <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">{stat.number}</div>
+                  <div className="text-sm sm:text-base text-gray-600 font-medium">{stat.label}</div>
                 </motion.div>
               )
             })}
@@ -178,23 +180,40 @@ export default function MateriaisPage() {
       </section>
 
       {/* Filtros e Busca */}
-      <section className="py-8 bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
+      <section className="py-6 sm:py-8 bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="space-y-4">
             {/* Busca */}
-            <div className="relative flex-1 max-w-md">
+            <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
                 placeholder="Buscar materiais..."
                 value={busca}
                 onChange={(e) => setBusca(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 min-h-[48px] border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
               />
             </div>
 
-            {/* Filtros */}
-            <div className="flex gap-2 overflow-x-auto">
+            {/* Filtros - Mobile Dropdown */}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Filtrar por categoria:</label>
+              <select
+                value={filtroAtivo}
+                onChange={(e) => setFiltroAtivo(e.target.value)}
+                className="w-full px-4 py-3 min-h-[48px] border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-base appearance-none bg-white pr-10"
+              >
+                {categorias.map((categoria) => (
+                  <option key={categoria.id} value={categoria.id}>
+                    {categoria.label}
+                  </option>
+                ))}
+              </select>
+              <Filter className="absolute right-3 top-[60%] transform -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+            </div>
+
+            {/* Filtros Desktop - Hidden on Mobile */}
+            <div className="hidden sm:flex gap-2 overflow-x-auto pb-2">
               {categorias.map((categoria) => {
                 const Icon = categoria.icon
                 return (
@@ -218,25 +237,35 @@ export default function MateriaisPage() {
       </section>
 
       {/* Lista de Materiais */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="mb-8">
             <p className="text-gray-600">
               Encontrados <span className="font-semibold text-green-600">{materiaisFiltrados.length}</span> materiais
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {materiaisFiltrados.map((material, index) => (
-              <motion.div
+              <LongPressCard
                 key={material.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden"
+                actions={[
+                  material.categoria === 'videos' 
+                    ? commonActions.view(() => console.log('Assistir:', material.titulo))
+                    : commonActions.download(() => console.log('Baixar:', material.titulo)),
+                  commonActions.share(() => console.log('Compartilhar:', material.titulo)),
+                  commonActions.favorite(() => console.log('Favoritar:', material.titulo)),
+                ]}
+                disabled={!material.disponivel}
               >
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden"
+                >
                 {/* Header do Card */}
-                <div className="p-6 pb-4">
+                <div className="p-4 sm:p-6 pb-3 sm:pb-4">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
@@ -270,10 +299,10 @@ export default function MateriaisPage() {
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 line-clamp-2">
                     {material.titulo}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-600 text-sm mb-3 sm:mb-4 line-clamp-2">
                     {material.descricao}
                   </p>
 
@@ -291,7 +320,7 @@ export default function MateriaisPage() {
                 </div>
 
                 {/* Footer do Card */}
-                <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
+                <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-100">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-4 text-xs text-gray-500">
                       {material.categoria === 'videos' ? (
@@ -323,19 +352,19 @@ export default function MateriaisPage() {
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className={`text-sm font-medium ${
+                  <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+                    <span className={`text-sm font-medium text-center sm:text-left ${
                       material.nivel === 'Básico' ? 'text-green-600' :
                       material.nivel === 'Intermediário' ? 'text-yellow-600' :
                       material.nivel === 'Avançado' ? 'text-red-600' :
                       'text-blue-600'
                     }`}>
-                      {material.nivel}
+                      Nível: {material.nivel}
                     </span>
 
                     <button
                       disabled={!material.disponivel}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                      className={`flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-lg font-medium transition-colors w-full sm:w-auto ${
                         material.disponivel
                           ? 'bg-green-600 text-white hover:bg-green-700'
                           : 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -343,12 +372,12 @@ export default function MateriaisPage() {
                     >
                       {material.categoria === 'videos' ? (
                         <>
-                          <Play size={16} />
+                          <Play size={18} />
                           Assistir
                         </>
                       ) : (
                         <>
-                          <Download size={16} />
+                          <Download size={18} />
                           Baixar
                         </>
                       )}
@@ -356,6 +385,7 @@ export default function MateriaisPage() {
                   </div>
                 </div>
               </motion.div>
+              </LongPressCard>
             ))}
           </div>
 

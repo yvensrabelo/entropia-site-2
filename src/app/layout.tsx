@@ -1,6 +1,8 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
+import SwipeNavigation from '@/app/components/SwipeNavigation';
+import MobileOptimized from '@/app/components/MobileOptimized';
 // import Navbar from '@/components/Navbar';
 // import ScrollToTopButton from '@/components/ScrollToTopButton';
 
@@ -102,6 +104,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
+  viewportFit: 'cover', // Important for iPhone notch support
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#16a34a' },
     { media: '(prefers-color-scheme: dark)', color: '#22c55e' }
@@ -179,41 +182,43 @@ export default function RootLayout({
       
       <body className={`
         ${inter.className}
-        bg-gray-50 text-gray-900 antialiased
+        bg-black text-white antialiased
         min-h-screen overflow-x-hidden
-        selection:bg-green-500/20 selection:text-green-900
+        selection:bg-green-500/20 selection:text-green-200
       `}>
+        <MobileOptimized preventZoom={true} allowPullToRefresh={false}>
+          <SwipeNavigation enabled={true} showIndicators={true}>
           {/* 🌟 Background Pattern Sutil */}
           <div className="fixed inset-0 -z-10">
-            {/* Gradiente base claro */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100" />
+            {/* Gradiente base escuro */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
             
             {/* Grid pattern muito sutil */}
             <div 
               className="absolute inset-0 opacity-[0.02]"
               style={{
                 backgroundImage: `
-                  linear-gradient(rgba(22, 163, 74, 0.1) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(22, 163, 74, 0.1) 1px, transparent 1px)
+                  linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px)
                 `,
                 backgroundSize: '60px 60px'
               }}
             />
             
             {/* Pontos de luz verde muito sutis */}
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/[0.02] rounded-full blur-3xl" />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-400/[0.015] rounded-full blur-3xl" />
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-500/[0.01] rounded-full blur-3xl" />
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/[0.05] rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/[0.05] rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-400/[0.03] rounded-full blur-3xl" />
           </div>
           
-          {/* 🧭 Navegação */}
-          {/* <Navbar /> */}
-          
-          {/* 📄 Conteúdo principal */}
-          <main className="relative pt-20 min-h-screen">
-            <div className="relative z-10">
-              {children}
-            </div>
+            {/* 🧭 Navegação */}
+            {/* <Navbar /> */}
+            
+            {/* 📄 Conteúdo principal */}
+            <main className="relative pt-20 min-h-screen">
+              <div className="relative z-10">
+                {children}
+              </div>
             
             {/* 📊 Rodapé com informações adicionais */}
             <footer className="relative z-10 mt-20 bg-white border-t border-gray-200">
@@ -369,6 +374,8 @@ export default function RootLayout({
             </p>
           </div>
         </noscript>
+          </SwipeNavigation>
+        </MobileOptimized>
       </body>
     </html>
   );

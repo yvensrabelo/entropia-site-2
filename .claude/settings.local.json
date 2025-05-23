@@ -37,7 +37,9 @@
       "Bash(npm install)",
       "Bash(PORT=4000 npm run dev)",
       "Bash(railway status:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(railway login:*)",
+      "Bash(chmod:*)"
     ],
     "deny": []
   }

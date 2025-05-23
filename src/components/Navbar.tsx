@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Menu, 
   X, 
   Sparkles, 
   Calculator,
@@ -40,6 +39,19 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const menuItems = [
     { href: '/sobre', label: 'Sobre', icon: Info },
@@ -221,43 +233,163 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               tabIndex={0}
+              aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
             >
-              <motion.div
-                initial={{ opacity: 0, rotate: 180 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {isOpen ? <X className="text-white" size={24} /> : <Menu className="text-white" size={24} />}
-              </motion.div>
+              <div className="relative w-6 h-6">
+                <motion.span
+                  className="absolute top-0 left-0 w-6 h-0.5 bg-white origin-center"
+                  animate={{
+                    rotate: isOpen ? 45 : 0,
+                    y: isOpen ? 11 : 0,
+                  }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                />
+                <motion.span
+                  className="absolute top-[11px] left-0 w-6 h-0.5 bg-white"
+                  animate={{
+                    opacity: isOpen ? 0 : 1,
+                    x: isOpen ? -20 : 0,
+                  }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                />
+                <motion.span
+                  className="absolute bottom-0 left-0 w-6 h-0.5 bg-white origin-center"
+                  animate={{
+                    rotate: isOpen ? -45 : 0,
+                    y: isOpen ? -11 : 0,
+                  }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                />
+              </div>
             </motion.button>
           </div>
         </div>
       </motion.nav>
 
-      {/* Menu Mobile Expandido */}
+      {/* Backdrop com blur */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-20 left-0 right-0 z-40 bg-gradient-to-b from-green-700 to-green-800 backdrop-blur-xl shadow-2xl md:hidden"
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md md:hidden"
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Drawer lateral animado */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ 
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              mass: 0.8,
+            }}
+            className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] z-50 bg-gradient-to-b from-green-700 via-green-600 to-emerald-700 backdrop-blur-2xl shadow-2xl md:hidden"
           >
-            <div className="px-6 py-4 space-y-3">
-              {menuItems.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <motion.div
-                    className="flex items-center gap-3 px-4 py-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-white hover:bg-white/20 transition-all"
-                    whileHover={{ x: 10 }}
-                    whileTap={{ scale: 0.95 }}
+            {/* Header do drawer */}
+            <div className="flex items-center justify-between p-6 border-b border-white/10">
+              <div className="flex items-center gap-3">
+                <div className="relative bg-white/20 backdrop-blur-sm p-2.5 rounded-2xl border border-white/30">
+                  <Leaf className="text-white" size={24} />
+                </div>
+                <div>
+                  <h2 className="text-white font-bold text-xl">ENTROPIA</h2>
+                  <p className="text-green-200/60 text-xs">Menu Principal</p>
+                </div>
+              </div>
+              <motion.button
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-xl hover:bg-white/10 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Fechar menu"
+              >
+                <X className="text-white" size={24} />
+              </motion.button>
+            </div>
+
+            {/* Conteúdo do drawer */}
+            <nav className="p-6 space-y-3">
+              {menuItems.map((item, index) => (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
+                >
+                  <Link href={item.href}>
+                    <motion.div
+                      className="flex items-center gap-4 px-4 py-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all group"
+                      whileHover={{ x: 10 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <div className="p-2 rounded-xl bg-white/10 group-hover:bg-white/20 transition-colors">
+                        <item.icon size={20} />
+                      </div>
+                      <div className="flex-1">
+                        <span className="font-medium text-base">{item.label}</span>
+                        <p className="text-xs text-green-200/60 mt-0.5">
+                          {item.label === 'Sobre' && 'Conheça nossa história'}
+                          {item.label === 'Materiais' && 'Recursos de estudo'}
+                          {item.label === 'Calculadora' && 'Calcule suas notas'}
+                          {item.label === 'Contato' && 'Fale conosco'}
+                        </p>
+                      </div>
+                      <motion.div
+                        className="text-white/40"
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ 
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        →
+                      </motion.div>
+                    </motion.div>
+                  </Link>
+                </motion.div>
+              ))}
+
+              {/* Botão CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+                className="pt-6"
+              >
+                <Link href="/matricula">
+                  <motion.button
+                    className="w-full py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-green-900 font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => setIsOpen(false)}
                   >
-                    <item.icon size={20} />
-                    <span className="font-medium">{item.label}</span>
-                  </motion.div>
+                    <div className="flex items-center justify-center gap-2">
+                      <Calendar size={20} />
+                      <span>Matricule-se Agora</span>
+                    </div>
+                  </motion.button>
                 </Link>
-              ))}
+              </motion.div>
+            </nav>
+
+            {/* Footer do drawer */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10">
+              <div className="text-center text-green-200/40 text-xs">
+                <p>© 2025 Entropia Cursinho</p>
+                <p className="mt-1">Transformando vidas através da educação</p>
+              </div>
             </div>
           </motion.div>
         )}

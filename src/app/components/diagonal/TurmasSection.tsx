@@ -53,16 +53,16 @@ export default function TurmasSection() {
       <DiagonalDivider position="top" />
       
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 sm:mb-4">
             Nossas <span className="text-green-600">Turmas</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Escolha o curso ideal para sua jornada rumo à aprovação
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {turmas.map((turma, index) => (
             <div
               key={index}
@@ -76,41 +76,51 @@ export default function TurmasSection() {
                 </div>
               )}
               
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{turma.nome}</h3>
-                <p className="text-gray-600 mb-6">{turma.descricao}</p>
+              <div className="p-4 sm:p-6 md:p-8">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">{turma.nome}</h3>
+                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">{turma.descricao}</p>
                 
-                <div className="space-y-4 mb-6">
+                <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
                   <div className="flex items-center gap-3 text-gray-700">
-                    <Clock className="w-5 h-5 text-green-500" />
-                    <span>Período: {turma.periodo}</span>
+                    <div className="p-2 rounded-lg bg-green-50 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                      <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                    </div>
+                    <span className="text-sm sm:text-base">Período: {turma.periodo}</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-700">
-                    <Calendar className="w-5 h-5 text-green-500" />
-                    <span>Duração: {turma.duracao}</span>
+                    <div className="p-2 rounded-lg bg-green-50 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                      <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                    </div>
+                    <span className="text-sm sm:text-base">Duração: {turma.duracao}</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-700">
-                    <Users className="w-5 h-5 text-green-500" />
-                    <span>{turma.vagas} vagas disponíveis</span>
+                    <div className="p-2 rounded-lg bg-green-50 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                      <Users className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                    </div>
+                    <span className="text-sm sm:text-base">{turma.vagas} vagas disponíveis</span>
                   </div>
                 </div>
                 
-                <div className="border-t pt-6">
+                <div className="border-t pt-4 sm:pt-6">
                   <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-green-500" />
-                    Diferenciais
+                    <div className="p-2 rounded-lg bg-green-50 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                      <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                    </div>
+                    <span className="text-base sm:text-lg">Diferenciais</span>
                   </h4>
-                  <ul className="space-y-2">
+                  <ul className="space-y-2 ml-2">
                     {turma.diferenciais.map((diferencial, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span>{diferencial}</span>
+                      <li key={idx} className="flex items-start gap-3 text-gray-600">
+                        <div className="p-1.5 rounded-full bg-green-50 min-w-[32px] min-h-[32px] flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <CheckCircle className="w-4 h-4 text-green-500" />
+                        </div>
+                        <span className="text-sm sm:text-base">{diferencial}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
                 
-                <button className="w-full mt-8 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300">
+                <button className="w-full mt-6 sm:mt-8 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 sm:py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 min-h-[44px] text-sm sm:text-base">
                   Saiba mais
                 </button>
               </div>

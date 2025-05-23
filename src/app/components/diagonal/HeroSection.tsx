@@ -73,8 +73,8 @@ export default function HeroSection() {
       <ParticleSystem />
       
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center">
-        <div className="container mx-auto px-4">
+      <div className="relative z-10 min-h-screen flex items-center py-12 md:py-20">
+        <div className="container mx-auto px-4 safe-area-x">
           <div className="max-w-6xl mx-auto">
             {/* Diagonal Title */}
             <div 
@@ -89,7 +89,7 @@ export default function HeroSection() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-black">
                   <span className="block text-white drop-shadow-2xl">
                     TRANSFORME
                   </span>
@@ -100,58 +100,58 @@ export default function HeroSection() {
               </motion.div>
             </div>
 
-            {/* Info Cards */}
+            {/* Info Cards - Stats Section */}
             <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+              className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-12"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-6 border border-white/20">
-                <div className="inline-flex items-center gap-2 bg-green-500/20 backdrop-blur-sm border border-green-500/30 rounded-full px-4 py-1 mb-4">
-                  <Sparkles className="w-4 h-4 text-green-400" />
-                  <span className="text-green-400 font-medium text-sm">+850 Aprovações</span>
+              <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-4 md:p-6 border border-white/20">
+                <div className="mb-3">
+                  <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-green-400 mb-2" />
+                  <span className="text-green-400 font-black text-2xl md:text-3xl lg:text-4xl block">+850</span>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Excelência Comprovada</h3>
-                <p className="text-gray-300">15 anos transformando sonhos em realidade acadêmica</p>
+                <h3 className="text-sm md:text-base font-semibold text-white mb-1">Aprovações</h3>
+                <p className="text-gray-400 text-xs md:text-sm hidden sm:block">15 anos de excelência</p>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-6 border border-white/20">
-                <div className="inline-flex items-center gap-2 bg-green-500/20 backdrop-blur-sm border border-green-500/30 rounded-full px-4 py-1 mb-4">
-                  <Target className="w-4 h-4 text-green-400" />
-                  <span className="text-green-400 font-medium text-sm">98% Aprovação</span>
+              <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-4 md:p-6 border border-white/20">
+                <div className="mb-3">
+                  <Target className="w-6 h-6 md:w-8 md:h-8 text-green-400 mb-2" />
+                  <span className="text-green-400 font-black text-2xl md:text-3xl lg:text-4xl block">98%</span>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Método Eficaz</h3>
-                <p className="text-gray-300">Preparação focada para PSC, ENEM, SIS e MACRO</p>
+                <h3 className="text-sm md:text-base font-semibold text-white mb-1">Taxa de Aprovação</h3>
+                <p className="text-gray-400 text-xs md:text-sm hidden sm:block">Método comprovado</p>
               </div>
 
-              <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-6 border border-white/20">
-                <div className="inline-flex items-center gap-2 bg-green-500/20 backdrop-blur-sm border border-green-500/30 rounded-full px-4 py-1 mb-4">
-                  <Trophy className="w-4 h-4 text-green-400" />
-                  <span className="text-green-400 font-medium text-sm">1º Lugar</span>
+              <div className="backdrop-blur-xl bg-white/10 rounded-2xl p-4 md:p-6 border border-white/20 col-span-2 md:col-span-1">
+                <div className="mb-3">
+                  <Trophy className="w-6 h-6 md:w-8 md:h-8 text-green-400 mb-2" />
+                  <span className="text-green-400 font-black text-2xl md:text-3xl lg:text-4xl block">#1</span>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Líder em Manaus</h3>
-                <p className="text-gray-300">Referência em educação pré-vestibular no Amazonas</p>
+                <h3 className="text-sm md:text-base font-semibold text-white mb-1">Líder em Manaus</h3>
+                <p className="text-gray-400 text-xs md:text-sm hidden sm:block">Referência no Amazonas</p>
               </div>
             </motion.div>
 
             {/* CTA Buttons */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <Link
                 href="/matricula"
-                className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-2"
+                className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 sm:px-8 py-4 rounded-full font-bold text-base sm:text-lg hover:shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 Comece sua jornada
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="/calculadora"
-                className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all duration-300 hover:-translate-y-1"
+                className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 sm:px-8 py-4 rounded-full font-bold text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:-translate-y-1 text-center w-full sm:w-auto"
               >
                 Calcule suas chances
               </Link>
