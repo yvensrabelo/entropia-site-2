@@ -37,7 +37,7 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
   delay: number,
   deps: React.DependencyList = []
 ): T {
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const debouncedCallback = useCallback(
     ((...args: Parameters<T>) => {
@@ -77,7 +77,7 @@ export function useThrottledCallback<T extends (...args: any[]) => any>(
   deps: React.DependencyList = []
 ): T {
   const lastCallTime = useRef<number>(0)
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const throttledCallback = useCallback(
     ((...args: Parameters<T>) => {

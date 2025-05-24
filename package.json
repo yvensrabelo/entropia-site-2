@@ -8,12 +8,15 @@
     "start": "next start -p ${PORT:-3000}",
     "lint": "next lint",
     "server:start": "./start-server.sh",
-    "server:stop": "./stop-server.sh"
+    "server:stop": "./stop-server.sh",
+    "analyze": "ANALYZE=true next build",
+    "build:analyze": "npm run analyze"
   },
   "description": "Entropia Cursinho - Sistema de gestão e calculadora de notas",
   "author": "Yvens Rabelo",
   "license": "MIT",
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.1.8",
     "@types/node": "22.15.21",
     "@types/react": "19.1.5",
     "autoprefixer": "^10.4.21",

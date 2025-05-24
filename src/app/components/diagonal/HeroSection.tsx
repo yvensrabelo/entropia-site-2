@@ -1,9 +1,16 @@
 'use client'
 
 import React from 'react'
-import VideoBackgroundSimple from './hero/VideoBackgroundSimple'
+import dynamic from 'next/dynamic'
+import VideoBackgroundSSR from './hero/VideoBackgroundSSR'
+
 import HeroContent from './hero/HeroContent'
-import ParticleSystem from './ParticleSystem'
+
+// Lazy load apenas ParticleSystem pois não é essencial
+const ParticleSystem = dynamic(() => import('./ParticleSystem'), {
+  ssr: false,
+  loading: () => null
+})
 
 export default function HeroSection() {
 
@@ -18,7 +25,7 @@ export default function HeroSection() {
             clipPath: 'polygon(0 0, 100% 0, 100% 65%, 0 85%)'
           }}
         >
-          <VideoBackgroundSimple 
+          <VideoBackgroundSSR 
             showMuteButton={true}
           />
         </div>

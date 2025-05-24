@@ -17,11 +17,9 @@ export default function Timestamp() {
     }))
   }, [])
 
-  if (!timestamp) return null
-
   return (
     <div className="text-xs text-gray-500 text-center mt-4">
-      Deploy: {timestamp} (Manaus)
+      Deploy: {timestamp || 'Carregando...'} {timestamp && '(Manaus)'}
     </div>
   )
 }

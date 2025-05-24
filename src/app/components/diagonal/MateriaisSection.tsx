@@ -104,7 +104,7 @@ const tipos = [
   { value: 'simulado', label: 'Simulados', icon: BookOpen }
 ]
 
-function MaterialCard({ material, index }: { material: any, index: number }) {
+const MaterialCard = React.memo(function MaterialCard({ material, index }: { material: any, index: number }) {
   const [isHovered, setIsHovered] = useState(false)
 
   const getIcon = () => {
@@ -197,9 +197,9 @@ function MaterialCard({ material, index }: { material: any, index: number }) {
       </div>
     </motion.div>
   )
-}
+})
 
-function LiquidFilter({ isActive, onClick, children }: { isActive: boolean, onClick: () => void, children: React.ReactNode }) {
+const LiquidFilter = React.memo(function LiquidFilter({ isActive, onClick, children }: { isActive: boolean, onClick: () => void, children: React.ReactNode }) {
   return (
     <motion.button
       onClick={onClick}
@@ -223,7 +223,7 @@ function LiquidFilter({ isActive, onClick, children }: { isActive: boolean, onCl
       )}
     </motion.button>
   )
-}
+})
 
 export default function MateriaisSection() {
   const [selectedCategoria, setSelectedCategoria] = useState('Todos')

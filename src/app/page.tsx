@@ -1,13 +1,4 @@
-import dynamic from 'next/dynamic'
-import { SimpleHeroSkeleton } from '@/components/SimpleSkeleton'
-
-const DiagonalPageClient = dynamic(
-  () => import('./diagonal/DiagonalPageClient'),
-  {
-    ssr: false,
-    loading: () => <SimpleHeroSkeleton />,
-  }
-)
+import DiagonalPageClient from './diagonal/DiagonalPageClient'
 
 export default function Home() {
   return <DiagonalPageClient />

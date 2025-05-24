@@ -1,3 +1,9 @@
+import bundleAnalyzer from '@next/bundle-analyzer'
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -5,7 +11,7 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   
-  // Otimizações de desenvolvimento
+  // Tree shaking otimizado apenas para lucide-react
   modularizeImports: {
     'lucide-react': {
       transform: 'lucide-react/dist/esm/icons/{{member}}',
@@ -108,6 +114,9 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
   },
+  
+  // Transpile para Safari
+  transpilePackages: ['framer-motion'],
 }
 
-export default nextConfig
+export default withBundleAnalyzer(nextConfig)

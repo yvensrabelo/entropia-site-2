@@ -4,8 +4,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles, Target, Trophy } from 'lucide-react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/Button'
-import { HeroSectionProps, StatsCardProps } from '@/types/entropia'
+// Removidos imports que não existem
 
 interface HeroContentProps {
   className?: string
@@ -52,25 +51,24 @@ export default function HeroContent({
             {/* Main Heading */}
             <div className="space-y-4">
               <div 
-                className="relative"
-                style={{
-                  transform: 'rotate(-2deg)',
-                  transformOrigin: 'center left'
-                }}
+                className="relative hero-title-rotated"
               >
-                <motion.h1
+                <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.6 }}
-                  className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-black leading-tight drop-shadow-2xl"
-                  data-version="v2-unified"
+                  className="text-center lg:text-left"
                 >
-                  <span className="block text-white">SUA</span>
-                  <span className="block text-green-400" style={{ letterSpacing: '0.05em' }}>
+                  <div className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-2">
+                    SUA
+                  </div>
+                  <div className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-green-400 mb-2">
                     APROVAÇÃO
-                  </span>
-                  <span className="block text-white">COMEÇA AQUI</span>
-                </motion.h1>
+                  </div>
+                  <div className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white">
+                    COMEÇA AQUI
+                  </div>
+                </motion.div>
               </div>
 
               <motion.p
@@ -95,25 +93,18 @@ export default function HeroContent({
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <Link href={primaryCTA.href}>
-                <Button
-                  size="lg"
-                  className="group px-8 py-4 text-lg font-semibold w-full sm:w-auto"
-                >
+                <button className="group px-8 py-4 text-lg font-semibold w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
                   <Target className="w-5 h-5 mr-2" />
                   {primaryCTA.text}
                   <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-                </Button>
+                </button>
               </Link>
 
               <Link href={secondaryCTA.href}>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="px-8 py-4 text-lg font-semibold w-full sm:w-auto"
-                >
+                <button className="px-8 py-4 text-lg font-semibold w-full sm:w-auto border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white rounded-xl flex items-center justify-center transition-all duration-300">
                   <Trophy className="w-5 h-5 mr-2" />
                   {secondaryCTA.text}
-                </Button>
+                </button>
               </Link>
             </motion.div>
           </motion.div>

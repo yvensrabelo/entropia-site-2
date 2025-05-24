@@ -9,7 +9,7 @@ interface ParticleProps {
   mouseY: any
 }
 
-function Particle({ index, mouseX, mouseY }: ParticleProps) {
+const Particle = React.memo(function Particle({ index, mouseX, mouseY }: ParticleProps) {
   const [windowSize, setWindowSize] = useState({ width: 1000, height: 800 })
   
   useEffect(() => {
@@ -111,7 +111,7 @@ function Particle({ index, mouseX, mouseY }: ParticleProps) {
       />
     </motion.div>
   )
-}
+})
 
 export default function ParticleSystem() {
   const [isClient, setIsClient] = useState(false)

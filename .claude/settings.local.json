@@ -41,7 +41,9 @@
       "Bash(railway login:*)",
       "Bash(chmod:*)",
       "Bash(railway up:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm run analyze:*)",
+      "Bash(ANALYZE=true npm run build)"
     ],
     "deny": []
   }

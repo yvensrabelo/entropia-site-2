@@ -1,7 +1,6 @@
 'use client'
 
 import React, { forwardRef } from 'react'
-import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -58,23 +57,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       children
     )
 
-    if (animated && hover && !loading) {
-      return (
-        <motion.div
-          ref={ref}
-          className={cardClass}
-          whileHover={{ 
-            scale: 1.02, 
-            y: -4,
-            transition: { duration: 0.2 }
-          }}
-          whileTap={{ scale: 0.98 }}
-          {...props}
-        >
-          {cardContent}
-        </motion.div>
-      )
-    }
 
     return (
       <div ref={ref} className={cardClass} {...props}>

@@ -10,7 +10,7 @@ interface VideoBackgroundProps {
   autoPlay?: boolean
 }
 
-export default function VideoBackgroundSimple({ 
+export default function VideoBackgroundSSR({ 
   videoSrc = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
   className = "",
   showMuteButton = true,
@@ -19,20 +19,19 @@ export default function VideoBackgroundSimple({
   const [isMuted, setIsMuted] = useState(true)
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [showControls, setShowControls] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   
   useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (videoRef.current && isLoaded && autoPlay) {
+    // Só mostrar controles após montar
+    setShowControls(true)
+    
+    if (videoRef.current && autoPlay) {
       videoRef.current.play().catch(() => {
         console.log('Auto-play was blocked')
       })
     }
-  }, [isLoaded, autoPlay])
+  }, [autoPlay])
 
   const toggleMute = () => {
     const newMutedState = !isMuted
@@ -45,45 +44,38 @@ export default function VideoBackgroundSimple({
 
   const handleLoadedData = () => {
     setIsLoaded(true)
-    console.log('Video loaded successfully')
   }
 
   const handleError = () => {
     setHasError(true)
-    console.error('Video failed to load')
   }
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
-      {!hasError ? (
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover scale-110"
-          autoPlay={mounted ? autoPlay : false}
-          loop
-          muted={isMuted}
-          playsInline
-          onLoadedData={handleLoadedData}
-          onError={handleError}
-          style={{ display: mounted ? 'block' : 'none' }}
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      ) : (
-        /* Fallback para quando o vídeo falha */
+      {/* Sempre renderizar o vídeo */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover scale-110"
+        autoPlay={false} // Desabilitar autoplay no HTML, controlar via JS
+        loop
+        muted
+        playsInline
+        onLoadedData={handleLoadedData}
+        onError={handleError}
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+      
+      {/* Fallback visual quando há erro */}
+      {hasError && (
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />
       )}
       
-      {/* Dark overlay for video */}
+      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/50" />
       
-      {/* Placeholder overlay quando não está montado */}
-      {!mounted && (
-        <div className="absolute inset-0 bg-black" />
-      )}
-      
-      {/* Mute/Unmute Button */}
-      {showMuteButton && isLoaded && !hasError && mounted && (
+      {/* Mute/Unmute Button - só renderizar no cliente */}
+      {showMuteButton && showControls && isLoaded && !hasError && (
         <button
           onClick={toggleMute}
           className="absolute top-6 right-6 z-10 p-3 bg-black/40 hover:bg-black/60 rounded-full backdrop-blur-sm transition-all duration-200"

@@ -110,11 +110,11 @@ export function chunk<T>(array: T[], size: number): T[][] {
 }
 
 export function unique<T>(array: T[]): T[] {
-  return [...new Set(array)]
+  return Array.from(new Set(array))
 }
 
 export function shuffle<T>(array: T[]): T[] {
-  const shuffled = [...array]
+  const shuffled = array.slice()
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]

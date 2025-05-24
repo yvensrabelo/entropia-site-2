@@ -179,29 +179,4 @@ export interface FeatureFlags {
   betaFeatures: boolean
 }
 
-export default {
-  Size,
-  Color,
-  Variant,
-  LoadingState,
-  ApiResponse,
-  PaginationParams,
-  PaginatedResponse,
-  FormField,
-  ValidationRule,
-  FormError,
-  CustomEvent,
-  BaseComponentProps,
-  ThemeColors,
-  Breakpoints,
-  NavItem,
-  MediaItem,
-  User,
-  UserPreferences,
-  AppError,
-  AnalyticsEvent,
-  Status,
-  AsyncStatus,
-  StorageItem,
-  FeatureFlags
-}
+// Export default removed to avoid TypeScript compilation issues

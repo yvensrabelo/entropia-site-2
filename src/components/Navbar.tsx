@@ -21,9 +21,16 @@ const Navbar = () => {
 
   useEffect(() => {
     setMounted(true);
+    
+    // Check initial scroll position after mount
+    if (window.scrollY > 20) {
+      setScrolled(true);
+    }
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     let ticking = false;
     
     const handleScroll = () => {
@@ -38,7 +45,7 @@ const Navbar = () => {
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -95,6 +102,8 @@ const Navbar = () => {
             ? 'bg-gradient-to-r from-green-800 via-green-700 to-emerald-700 backdrop-blur-2xl shadow-2xl' 
             : 'bg-gradient-to-r from-green-700/90 via-green-600/85 to-emerald-600/90 backdrop-blur-xl'
         }`}
+        role="navigation"
+        aria-label="Menu principal"
       >
         {/* Efeitos de fundo */}
         <div className="absolute inset-0 overflow-hidden">
@@ -126,12 +135,11 @@ const Navbar = () => {
         </div>
 
         <div className="relative max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-          <Link href="/">
+          <Link href="/" aria-label="Página inicial - Entropia Cursinho">
             <motion.div 
               className="flex items-center gap-3 cursor-pointer group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              tabIndex={0}
             >
               {/* Ícone com efeito glass */}
               <div className="relative">

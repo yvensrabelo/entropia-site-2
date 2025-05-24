@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import PWAProvider from '@/components/PWAProvider'
+import Navbar from '@/components/Navbar'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -35,8 +37,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={inter.variable}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon-192.svg" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#16a34a" />
+      </head>
       <body className={`${inter.className} antialiased bg-black text-white`}>
-        {children}
+        <PWAProvider>
+          <a href="#main-content" className="skip-to-content">
+            Pular para o conteúdo principal
+          </a>
+          <Navbar />
+          <main id="main-content">
+            {children}
+          </main>
+        </PWAProvider>
       </body>
     </html>
   )

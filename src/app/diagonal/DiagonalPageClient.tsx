@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import NavbarDiagonal from '../components/diagonal/NavbarDiagonal'
 import HeroSection from '../components/diagonal/HeroSection'
 import TurmasSection from '../components/diagonal/TurmasSection'
 import MateriaisSection from '../components/diagonal/MateriaisSection'
@@ -9,8 +8,7 @@ import Timestamp from '@/components/Timestamp'
 
 export default function DiagonalPageClient() {
   return (
-    <div className="bg-black">
-      <NavbarDiagonal />
+    <div className="bg-black pt-20">
       <HeroSection />
       <TurmasSection />
       <MateriaisSection />

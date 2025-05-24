@@ -309,37 +309,4 @@ export interface StatsCardProps extends BaseComponentProps {
   trendValue?: number
 }
 
-export default {
-  ExamType,
-  Exam,
-  Course,
-  Grade,
-  GradeCalculation,
-  Student,
-  StudentProfile,
-  StudentCourse,
-  StudentGrade,
-  Subject,
-  Address,
-  Contact,
-  AcademicInfo,
-  QuotaType,
-  QuotaEligibility,
-  CalculatorInput,
-  SubjectInput,
-  CalculatorResult,
-  Recommendation,
-  StudyPlan,
-  StudySubject,
-  StudyResource,
-  StudyTimeline,
-  StudyGoal,
-  Material,
-  MaterialReview,
-  StudentStats,
-  SubjectProgress,
-  Activity,
-  HeroSectionProps,
-  CalculatorProps,
-  StatsCardProps
-}
+// Export default removed to avoid TypeScript compilation issues

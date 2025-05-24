@@ -1,15 +1,16 @@
 {
-  "name": "Entropia Cursinho",
+  "name": "Entropia Cursinho - PSC UFAM, ENEM, SIS UEA",
   "short_name": "Entropia",
-  "description": "O melhor cursinho pré-vestibular de Manaus",
+  "description": "Cursinho pré-vestibular em Manaus com mais de 850 aprovações. PSC, ENEM, SIS, MACRO.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#000000",
   "theme_color": "#16a34a",
   "orientation": "portrait-primary",
-  "categories": ["education"],
+  "categories": ["education", "productivity"],
   "lang": "pt-BR",
   "scope": "/",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon-192.svg",
@@ -22,6 +23,36 @@
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "maskable"
+    },
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calculadora de Notas",
+      "short_name": "Calculadora",
+      "description": "Calcule suas notas PSC, ENEM, SIS",
+      "url": "/calculadora",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Materiais de Estudo",
+      "short_name": "Materiais",
+      "description": "Acesse materiais didáticos",
+      "url": "/materiais",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Página inicial do Entropia Cursinho"
     }
   ]
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { forwardRef } from 'react'
-import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -98,7 +97,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const content = (
       <>
         {loading ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
+          <Loader2 className="w-4 h-4 animate-spin" aria-label="Carregando" />
         ) : leftIcon ? (
           leftIcon
         ) : null}
@@ -109,27 +108,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       </>
     )
 
-    if (animated && !isDisabled) {
-      return (
-        <motion.button
-          ref={ref}
-          className={buttonClass}
-          disabled={isDisabled}
-          whileHover={{ scale: 1.02, y: -1 }}
-          whileTap={{ scale: 0.98, y: 0 }}
-          transition={{ duration: 0.1 }}
-          {...props}
-        >
-          {content}
-        </motion.button>
-      )
-    }
 
     return (
       <button
         ref={ref}
         className={buttonClass}
         disabled={isDisabled}
+        aria-busy={loading}
+        aria-disabled={isDisabled}
         {...props}
       >
         {content}

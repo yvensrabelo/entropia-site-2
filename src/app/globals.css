@@ -162,6 +162,35 @@ a:hover {
   border-radius: var(--border-radius);
 }
 
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(-100%);
+  background-color: #16a34a;
+  color: white;
+  padding: 0.5rem 1rem;
+  z-index: 100;
+  transition: transform 0.2s;
+}
+
+.skip-to-content:focus {
+  transform: translateY(0);
+}
+
+/* Reduzir movimento para usuários com preferência */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* 🎨 Botões base para tema claro */
 button {
   @apply cursor-pointer transition-all duration-300;
@@ -444,6 +473,15 @@ button, a, input, textarea, select {
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+/* Hero title rotation */
+.hero-title-rotated {
+  transform: rotate(-3deg);
+  transform-origin: center left;
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -ms-transform: rotate(-3deg);
 }
 
 /* Seleção de texto personalizada */
