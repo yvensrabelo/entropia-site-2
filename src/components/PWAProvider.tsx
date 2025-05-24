@@ -1,12 +1,25 @@
 'use client'
 
-import { useServiceWorker } from '@/hooks/useServiceWorker'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ToastProvider } from '@/components/Toast'
 
 export default function PWAProvider({ children }: { children: React.ReactNode }) {
-  useServiceWorker()
+  // Service worker registration moved to useEffect to avoid Safari issues
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker registrado com sucesso:', registration)
+          })
+          .catch(error => {
+            console.error('Erro ao registrar Service Worker:', error)
+          })
+      })
+    }
+  }, [])
   
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)

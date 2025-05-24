@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { Volume2, VolumeX } from 'lucide-react'
-import { useVideo } from '@/hooks/useVideo'
 
 interface VideoBackgroundProps {
   videoSrc?: string
@@ -17,20 +16,52 @@ export default function VideoBackground({
   showMuteButton = true,
   autoPlay = true
 }: VideoBackgroundProps) {
-  const {
-    videoRef,
-    isMuted,
-    isLoaded,
-    hasError,
-    toggleMute
-  } = useVideo({
-    autoPlay,
-    loop: true,
-    muted: true,
-    persistMuteState: true,
-    onLoadedData: () => console.log('Video loaded successfully'),
-    onError: () => console.error('Video failed to load')
-  })
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isMuted, setIsMuted] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [hasError, setHasError] = useState(false)
+  
+  const toggleMute = useCallback(() => {
+    if (videoRef.current) {
+      const newMutedState = !isMuted
+      videoRef.current.muted = newMutedState
+      setIsMuted(newMutedState)
+    }
+  }, [isMuted])
+  
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    
+    const handleLoadedData = () => {
+      setIsLoaded(true)
+      console.log('Video loaded successfully')
+    }
+    
+    const handleError = () => {
+      setHasError(true)
+      console.error('Video failed to load')
+    }
+    
+    video.addEventListener('loadeddata', handleLoadedData)
+    video.addEventListener('error', handleError)
+    
+    // Set initial properties
+    video.loop = true
+    video.muted = isMuted
+    
+    // Try to play if autoPlay is enabled
+    if (autoPlay) {
+      video.play().catch(err => {
+        console.warn('Autoplay failed:', err)
+      })
+    }
+    
+    return () => {
+      video.removeEventListener('loadeddata', handleLoadedData)
+      video.removeEventListener('error', handleError)
+    }
+  }, [autoPlay, isMuted])
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>

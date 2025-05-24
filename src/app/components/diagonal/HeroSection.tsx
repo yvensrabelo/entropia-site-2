@@ -1,16 +1,9 @@
 'use client'
 
 import React from 'react'
-import dynamic from 'next/dynamic'
 import VideoBackgroundSSR from './hero/VideoBackgroundSSR'
-
 import HeroContent from './hero/HeroContent'
-
-// Lazy load apenas ParticleSystem pois não é essencial
-const ParticleSystem = dynamic(() => import('./ParticleSystem'), {
-  ssr: false,
-  loading: () => null
-})
+import ParticleSystem from './ParticleSystem'
 
 export default function HeroSection() {
 
@@ -59,7 +52,7 @@ export default function HeroSection() {
       </div>
 
       {/* Main Content */}
-      <HeroContent />
+      <HeroContent showStats={false} />
     </section>
   )
 }

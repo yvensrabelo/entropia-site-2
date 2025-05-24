@@ -19,13 +19,9 @@ export default function VideoBackgroundSSR({
   const [isMuted, setIsMuted] = useState(true)
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
-  const [showControls, setShowControls] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   
   useEffect(() => {
-    // Só mostrar controles após montar
-    setShowControls(true)
-    
     if (videoRef.current && autoPlay) {
       videoRef.current.play().catch(() => {
         console.log('Auto-play was blocked')
@@ -75,7 +71,7 @@ export default function VideoBackgroundSSR({
       <div className="absolute inset-0 bg-black/50" />
       
       {/* Mute/Unmute Button - só renderizar no cliente */}
-      {showMuteButton && showControls && isLoaded && !hasError && (
+      {showMuteButton && isLoaded && !hasError && (
         <button
           onClick={toggleMute}
           className="absolute top-6 right-6 z-10 p-3 bg-black/40 hover:bg-black/60 rounded-full backdrop-blur-sm transition-all duration-200"

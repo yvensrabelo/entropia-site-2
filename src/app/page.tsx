@@ -1,5 +1,5 @@
-import DiagonalPageClient from './diagonal/DiagonalPageClient'
+import SafePage from './page-safe'
 
 export default function Home() {
-  return <DiagonalPageClient />
+  return <SafePage />
 }

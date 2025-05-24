@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import PWAProvider from '@/components/PWAProvider'
-import Navbar from '@/components/Navbar'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -45,15 +43,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#16a34a" />
       </head>
       <body className={`${inter.className} antialiased bg-black text-white`}>
-        <PWAProvider>
-          <a href="#main-content" className="skip-to-content">
-            Pular para o conteúdo principal
-          </a>
-          <Navbar />
-          <main id="main-content">
-            {children}
-          </main>
-        </PWAProvider>
+        {children}
       </body>
     </html>
   )
