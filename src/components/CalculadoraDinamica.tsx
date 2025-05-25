@@ -13,7 +13,8 @@ import {
   CheckCircle,
   XCircle,
   TrendingUp,
-  Target
+  Target,
+  Lock
 } from 'lucide-react';
 import { 
   PROCESSOS, 
@@ -23,9 +24,37 @@ import {
   NOTAS_DE_CORTE,
   DESCRICOES_COTA
 } from '@/data/vestibular-data';
+import notasDeCorte from '@/data/notas-corte-psc-2024.json';
 
 type Processo = typeof PROCESSOS[number];
 type Curso = typeof CURSOS[number];
+
+// Criar mapa de notas por processo/cota/curso
+const notasMap = notasDeCorte.reduce((acc, item) => {
+  if (!acc[item.processo]) acc[item.processo] = {};
+  if (!acc[item.processo][item.cota]) acc[item.processo][item.cota] = {};
+  acc[item.processo][item.cota][item.curso] = item.nota;
+  return acc;
+}, {} as Record<string, Record<string, Record<string, number>>>);
+
+// Extrair lista única de cursos do JSON
+const cursosUnicos = [...new Set(notasDeCorte.map(item => item.curso))];
+
+// Criar lista de cursos com suas notas AC para ordenação
+const cursosComNotaAC = cursosUnicos.map(curso => ({
+  nome: curso,
+  notaAC: notasMap['PSC']?.['AC']?.[curso] || 0
+}));
+
+// Ordenar cursos por nota de corte AC decrescente (cursos sem nota AC vão para o final)
+const cursosOrdenados = cursosComNotaAC
+  .sort((a, b) => {
+    if (a.notaAC === 0 && b.notaAC === 0) return a.nome.localeCompare(b.nome);
+    if (a.notaAC === 0) return 1;
+    if (b.notaAC === 0) return -1;
+    return b.notaAC - a.notaAC;
+  })
+  .map(item => item.nome);
 
 interface DadosCotas {
   escolaPublica: boolean;
@@ -40,8 +69,8 @@ interface NotasState {
 }
 
 interface ResultadoCurso {
-  curso: Curso;
-  notaCorte: number;
+  curso: string;
+  notaCorte: number | string;
   diferenca: number;
   aprovado: boolean;
   percentual: number;
@@ -139,24 +168,58 @@ export default function CalculadoraDinamica() {
 
   // Calcular resultados para todos os cursos
   const resultadosPorCurso = useMemo((): ResultadoCurso[] => {
-    return CURSOS.map(curso => {
-      const notaCorte = NOTAS_DE_CORTE[processoSelecionado]?.[cotaDeterminada]?.[curso] || 0;
+    // Primeiro calcular os resultados para todos os cursos
+    const resultados = cursosOrdenados.map(curso => {
+      // Buscar nota de corte no mapa de notas reais
+      const notaCorte = notasMap[processoSelecionado]?.[cotaDeterminada]?.[curso] || 0;
       const diferenca = notaTotal - notaCorte;
-      const aprovado = notaTotal >= notaCorte;
+      const aprovado = notaTotal >= notaCorte && notaCorte > 0;
       const percentual = notaCorte > 0 ? ((notaTotal / notaCorte) * 100) : 0;
       
       return {
         curso,
-        notaCorte,
+        notaCorte: notaCorte || 'SD', // Mostrar "SD" se não disponível
         diferenca,
         aprovado,
         percentual
       };
-    }).sort((a, b) => b.diferenca - a.diferenca); // Ordenar por mais próximo de passar
+    });
+    
+    // Separar cursos aprovados e não aprovados
+    const cursosAprovados = resultados
+      .filter(curso => curso.aprovado)
+      .sort((a, b) => {
+        // Ordenar por nota de corte decrescente
+        const notaA = typeof a.notaCorte === 'number' ? a.notaCorte : 0;
+        const notaB = typeof b.notaCorte === 'number' ? b.notaCorte : 0;
+        return notaB - notaA;
+      });
+      
+    const cursosReprovados = resultados
+      .filter(curso => !curso.aprovado)
+      .sort((a, b) => {
+        // Ordenar por nota de corte decrescente
+        const notaA = typeof a.notaCorte === 'number' ? a.notaCorte : 0;
+        const notaB = typeof b.notaCorte === 'number' ? b.notaCorte : 0;
+        return notaB - notaA;
+      });
+    
+    // Retornar cursos ordenados: primeiro aprovados, depois reprovados
+    return [...cursosAprovados, ...cursosReprovados];
   }, [processoSelecionado, cotaDeterminada, notaTotal]);
 
   const handleNotaChange = (campo: string, valor: string) => {
-    const numero = parseFloat(valor) || 0;
+    let numero = parseFloat(valor) || 0;
+    
+    // Validação específica para campos PSC (máximo 54)
+    if (campo.includes('PSC')) {
+      numero = Math.min(54, Math.max(0, Math.round(numero)));
+    }
+    // Validação específica para redação (máximo 9, permite decimais)
+    else if (campo.includes('Redação')) {
+      numero = Math.min(9, Math.max(0, numero));
+    }
+    
     setNotas(prev => ({ ...prev, [campo]: numero }));
   };
 
@@ -191,22 +254,34 @@ export default function CalculadoraDinamica() {
               Processo Seletivo
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {PROCESSOS.map(processo => (
-                <button
-                  key={processo}
-                  onClick={() => {
-                    setProcessoSelecionado(processo);
-                    setNotas({});
-                  }}
-                  className={`min-h-[48px] py-3 px-4 rounded-xl font-medium transition-all w-full ${
-                    processoSelecionado === processo
-                      ? 'bg-green-600 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {processo}
-                </button>
-              ))}
+              {PROCESSOS.map(processo => {
+                const isDisabled = processo !== 'PSC';
+                return (
+                  <button
+                    key={processo}
+                    onClick={() => {
+                      if (!isDisabled) {
+                        setProcessoSelecionado(processo);
+                        setNotas({});
+                      }
+                    }}
+                    disabled={isDisabled}
+                    className={`min-h-[48px] py-3 px-4 rounded-xl font-medium transition-all w-full flex items-center justify-center ${
+                      isDisabled
+                        ? 'opacity-50 cursor-not-allowed bg-gray-100 text-gray-500'
+                        : processoSelecionado === processo
+                        ? 'bg-green-600 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {isDisabled && <Lock className="w-4 h-4 mr-2" />}
+                    {processo === 'MACRO' ? 'MACRO (Em breve)' : 
+                     processo === 'SIS' ? 'SIS (Em breve)' : 
+                     processo === 'ENEM' ? 'ENEM (Em breve)' : 
+                     processo}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -340,18 +415,18 @@ export default function CalculadoraDinamica() {
                 <div className="relative">
                   <input
                     type="number"
-                    inputMode="numeric"
+                    inputMode="decimal"
                     pattern="[0-9]*"
                     value={notas[campo.label] || ''}
                     onChange={(e) => handleNotaChange(campo.label, e.target.value)}
-                    min={campo.min}
-                    max={campo.max}
-                    step={campo.max > 100 ? 10 : 1}
+                    min={0}
+                    max={campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}
+                    step={campo.label.includes('Redação') ? 0.1 : 1}
                     className="w-full px-4 py-3 pr-20 min-h-[48px] border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-base"
-                    placeholder={`0 - ${campo.max}`}
+                    placeholder={`0 - ${campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}`}
                   />
                   <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base font-medium">
-                    /{campo.max}
+                    /{campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}
                   </span>
                 </div>
               </motion.div>
@@ -377,9 +452,14 @@ export default function CalculadoraDinamica() {
           animate={{ opacity: 1, x: 0 }}
           className="bg-white rounded-2xl shadow-xl p-4 sm:p-6"
         >
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <TrendingUp size={20} className="text-green-600" />
-            Suas Chances em Cada Curso
+          <h3 className="font-semibold text-gray-900 mb-4 flex items-center justify-between">
+            <span className="flex items-center gap-2">
+              <TrendingUp size={20} className="text-green-600" />
+              Suas Chances em Cada Curso
+            </span>
+            <span className="text-sm text-gray-600">
+              {cursosOrdenados.length} cursos
+            </span>
           </h3>
 
           <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">

@@ -1,0 +1,2378 @@
+[
+  {
+    "processo": "PSC",
+    "curso": "ENFERMAGEM",
+    "cota": "AC",
+    "nota": 291
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENFERMAGEM",
+    "cota": "IND1",
+    "nota": 261
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENFERMAGEM",
+    "cota": "IND2",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENFERMAGEM",
+    "cota": "PCD1",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENFERMAGEM",
+    "cota": "PP1",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENFERMAGEM",
+    "cota": "PP2",
+    "nota": 240
+  },
+  {
+    "processo": "PSC",
+    "curso": "ADMINISTRACAO",
+    "cota": "AC",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "ADMINISTRACAO",
+    "cota": "IND1",
+    "nota": 168
+  },
+  {
+    "processo": "PSC",
+    "curso": "ADMINISTRACAO",
+    "cota": "IND2",
+    "nota": 129
+  },
+  {
+    "processo": "PSC",
+    "curso": "ADMINISTRACAO",
+    "cota": "NDC1",
+    "nota": 228
+  },
+  {
+    "processo": "PSC",
+    "curso": "ADMINISTRACAO",
+    "cota": "PCD1",
+    "nota": 138
+  },
+  {
+    "processo": "PSC",
+    "curso": "ADMINISTRACAO",
+    "cota": "PP1",
+    "nota": 195
+  },
+  {
+    "processo": "PSC",
+    "curso": "ADMINISTRACAO",
+    "cota": "PP2",
+    "nota": 192
+  },
+  {
+    "processo": "PSC",
+    "curso": "ADMINISTRACAO",
+    "cota": "QLB2",
+    "nota": 135
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARQUITETURA E URBANISMO",
+    "cota": "AC",
+    "nota": 285
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARQUITETURA E URBANISMO",
+    "cota": "IND1",
+    "nota": 249
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARQUITETURA E URBANISMO",
+    "cota": "IND2",
+    "nota": 141
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARQUITETURA E URBANISMO",
+    "cota": "NDC1",
+    "nota": 276
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARQUITETURA E URBANISMO",
+    "cota": "PCD1",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARQUITETURA E URBANISMO",
+    "cota": "PCD2",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARQUITETURA E URBANISMO",
+    "cota": "PP1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARQUITETURA E URBANISMO",
+    "cota": "PP2",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARTES VISUAIS",
+    "cota": "AC",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARTES VISUAIS",
+    "cota": "PP1",
+    "nota": 150
+  },
+  {
+    "processo": "PSC",
+    "curso": "ARTES VISUAIS",
+    "cota": "PP2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIBLIOTECONOMIA",
+    "cota": "AC",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIBLIOTECONOMIA",
+    "cota": "IND1",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIBLIOTECONOMIA",
+    "cota": "NDC1",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIBLIOTECONOMIA",
+    "cota": "NDC2",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIBLIOTECONOMIA",
+    "cota": "PP1",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIBLIOTECONOMIA",
+    "cota": "PP2",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOTECNOLOGIA",
+    "cota": "AC",
+    "nota": 273
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOTECNOLOGIA",
+    "cota": "IND1",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOTECNOLOGIA",
+    "cota": "IND2",
+    "nota": 228
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOTECNOLOGIA",
+    "cota": "PP1",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOTECNOLOGIA",
+    "cota": "PP2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA DA COMPUTACAO",
+    "cota": "AC",
+    "nota": 321
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA DA COMPUTACAO",
+    "cota": "IND1",
+    "nota": 225
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA DA COMPUTACAO",
+    "cota": "IND2",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA DA COMPUTACAO",
+    "cota": "NDC1",
+    "nota": 282
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA DA COMPUTACAO",
+    "cota": "NDC2",
+    "nota": 246
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA DA COMPUTACAO",
+    "cota": "PCD1",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA DA COMPUTACAO",
+    "cota": "PP1",
+    "nota": 255
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA DA COMPUTACAO",
+    "cota": "PP2",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS BIOLOGICAS",
+    "cota": "AC",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS BIOLOGICAS",
+    "cota": "IND1",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS BIOLOGICAS",
+    "cota": "NDC1",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS BIOLOGICAS",
+    "cota": "NDC2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS BIOLOGICAS",
+    "cota": "PCD1",
+    "nota": 126
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS BIOLOGICAS",
+    "cota": "PP1",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS BIOLOGICAS",
+    "cota": "PP2",
+    "nota": 168
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS BIOLOGICAS",
+    "cota": "QLB2",
+    "nota": 174
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS CONTABEIS",
+    "cota": "AC",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS CONTABEIS",
+    "cota": "IND1",
+    "nota": 102
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS CONTABEIS",
+    "cota": "NDC1",
+    "nota": 189
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS CONTABEIS",
+    "cota": "PCD1",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS CONTABEIS",
+    "cota": "PP1",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS CONTABEIS",
+    "cota": "PP2",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS ECONOMICAS",
+    "cota": "AC",
+    "nota": 225
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS ECONOMICAS",
+    "cota": "IND1",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS ECONOMICAS",
+    "cota": "IND2",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS ECONOMICAS",
+    "cota": "NDC1",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS ECONOMICAS",
+    "cota": "PP1",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS ECONOMICAS",
+    "cota": "PP2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS SOCIAIS",
+    "cota": "AC",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS SOCIAIS",
+    "cota": "IND1",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS SOCIAIS",
+    "cota": "NDC1",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS SOCIAIS",
+    "cota": "PP1",
+    "nota": 174
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIAS SOCIAIS",
+    "cota": "PP2",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMPUTACAO",
+    "cota": "AC",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMPUTACAO",
+    "cota": "PP1",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMPUTACAO",
+    "cota": "PP2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - JORNALISMO",
+    "cota": "AC",
+    "nota": 279
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - JORNALISMO",
+    "cota": "IND1",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - JORNALISMO",
+    "cota": "NDC1",
+    "nota": 264
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - JORNALISMO",
+    "cota": "PCD1",
+    "nota": 186
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - JORNALISMO",
+    "cota": "PP1",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - JORNALISMO",
+    "cota": "PP2",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - RELACOES PUBLICAS",
+    "cota": "AC",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - RELACOES PUBLICAS",
+    "cota": "IND1",
+    "nota": 186
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - RELACOES PUBLICAS",
+    "cota": "NDC1",
+    "nota": 207
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - RELACOES PUBLICAS",
+    "cota": "PP1",
+    "nota": 174
+  },
+  {
+    "processo": "PSC",
+    "curso": "COMUNICACAO SOCIAL - RELACOES PUBLICAS",
+    "cota": "PP2",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "DANCA",
+    "cota": "AC",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "DANCA",
+    "cota": "PP1",
+    "nota": 144
+  },
+  {
+    "processo": "PSC",
+    "curso": "DANCA",
+    "cota": "PP2",
+    "nota": 135
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN",
+    "cota": "AC",
+    "nota": 270
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN",
+    "cota": "IND1",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN",
+    "cota": "NDC1",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN",
+    "cota": "NDC2",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN",
+    "cota": "PCD1",
+    "nota": 189
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN",
+    "cota": "PP1",
+    "nota": 207
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN",
+    "cota": "PP2",
+    "nota": 198
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "AC",
+    "nota": 369
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "IND1",
+    "nota": 111
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "IND2",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "NDC1",
+    "nota": 318
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "NDC2",
+    "nota": 339
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "PCD1",
+    "nota": 267
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "PCD2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "PP1",
+    "nota": 276
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - INTEGRAL",
+    "cota": "PP2",
+    "nota": 303
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - NOTURNO",
+    "cota": "AC",
+    "nota": 339
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - NOTURNO",
+    "cota": "IND1",
+    "nota": 135
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - NOTURNO",
+    "cota": "NDC1",
+    "nota": 321
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - NOTURNO",
+    "cota": "NDC2",
+    "nota": 309
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - NOTURNO",
+    "cota": "PP1",
+    "nota": 279
+  },
+  {
+    "processo": "PSC",
+    "curso": "DIREITO - NOTURNO",
+    "cota": "PP2",
+    "nota": 273
+  },
+  {
+    "processo": "PSC",
+    "curso": "EDUCACAO FISICA",
+    "cota": "AC",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "EDUCACAO FISICA",
+    "cota": "IND1",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "EDUCACAO FISICA",
+    "cota": "NDC1",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "EDUCACAO FISICA",
+    "cota": "NDC2",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "EDUCACAO FISICA",
+    "cota": "PP1",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "EDUCACAO FISICA",
+    "cota": "PP2",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "AC",
+    "nota": 267
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "IND1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "IND2",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "NDC1",
+    "nota": 270
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "NDC2",
+    "nota": 246
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "PCD1",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "PP1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "PP2",
+    "nota": 228
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DA COMPUTACAO",
+    "cota": "AC",
+    "nota": 312
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DA COMPUTACAO",
+    "cota": "IND1",
+    "nota": 276
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DA COMPUTACAO",
+    "cota": "IND2",
+    "nota": 240
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DA COMPUTACAO",
+    "cota": "NDC1",
+    "nota": 273
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DA COMPUTACAO",
+    "cota": "PCD1",
+    "nota": 192
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DA COMPUTACAO",
+    "cota": "PP1",
+    "nota": 249
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DA COMPUTACAO",
+    "cota": "PP2",
+    "nota": 246
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE ALIMENTOS",
+    "cota": "AC",
+    "nota": 261
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE ALIMENTOS",
+    "cota": "IND1",
+    "nota": 192
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE ALIMENTOS",
+    "cota": "IND2",
+    "nota": 138
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE ALIMENTOS",
+    "cota": "NDC1",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE ALIMENTOS",
+    "cota": "NDC2",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE ALIMENTOS",
+    "cota": "PP1",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE ALIMENTOS",
+    "cota": "PP2",
+    "nota": 186
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "AC",
+    "nota": 255
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "IND1",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "NDC1",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "PP1",
+    "nota": 189
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "PP2",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PESCA",
+    "cota": "AC",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PESCA",
+    "cota": "IND1",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PESCA",
+    "cota": "IND2",
+    "nota": 168
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PESCA",
+    "cota": "PP1",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PESCA",
+    "cota": "PP2",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PETROLEO E GAS",
+    "cota": "AC",
+    "nota": 285
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PETROLEO E GAS",
+    "cota": "IND1",
+    "nota": 207
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PETROLEO E GAS",
+    "cota": "IND2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PETROLEO E GAS",
+    "cota": "NDC1",
+    "nota": 270
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PETROLEO E GAS",
+    "cota": "NDC2",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PETROLEO E GAS",
+    "cota": "PP1",
+    "nota": 225
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PETROLEO E GAS",
+    "cota": "PP2",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PRODUCAO",
+    "cota": "AC",
+    "nota": 264
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PRODUCAO",
+    "cota": "IND1",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PRODUCAO",
+    "cota": "IND2",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PRODUCAO",
+    "cota": "NDC1",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PRODUCAO",
+    "cota": "PP1",
+    "nota": 204
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE PRODUCAO",
+    "cota": "PP2",
+    "nota": 195
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE SOFTWARE",
+    "cota": "AC",
+    "nota": 297
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE SOFTWARE",
+    "cota": "IND1",
+    "nota": 252
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE SOFTWARE",
+    "cota": "IND2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE SOFTWARE",
+    "cota": "NDC1",
+    "nota": 279
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE SOFTWARE",
+    "cota": "PP1",
+    "nota": 240
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE SOFTWARE",
+    "cota": "PP2",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETRONICA",
+    "cota": "AC",
+    "nota": 282
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETRONICA",
+    "cota": "IND1",
+    "nota": 225
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETRONICA",
+    "cota": "IND2",
+    "nota": 198
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETRONICA",
+    "cota": "NDC1",
+    "nota": 273
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETRONICA",
+    "cota": "NDC2",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETRONICA",
+    "cota": "PP1",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETRONICA",
+    "cota": "PP2",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETROTECNICA",
+    "cota": "AC",
+    "nota": 276
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETROTECNICA",
+    "cota": "IND1",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETROTECNICA",
+    "cota": "IND2",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETROTECNICA",
+    "cota": "NDC1",
+    "nota": 252
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETROTECNICA",
+    "cota": "PP1",
+    "nota": 207
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - ELETROTECNICA",
+    "cota": "PP2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - TELECOMUNICACOES",
+    "cota": "AC",
+    "nota": 279
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - TELECOMUNICACOES",
+    "cota": "IND1",
+    "nota": 192
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - TELECOMUNICACOES",
+    "cota": "NDC1",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - TELECOMUNICACOES",
+    "cota": "PP1",
+    "nota": 213
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA ELETRICA - TELECOMUNICACOES",
+    "cota": "PP2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA FLORESTAL",
+    "cota": "AC",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA FLORESTAL",
+    "cota": "IND1",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA FLORESTAL",
+    "cota": "IND2",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA FLORESTAL",
+    "cota": "NDC1",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA FLORESTAL",
+    "cota": "PP1",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA FLORESTAL",
+    "cota": "PP2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA MECANICA",
+    "cota": "AC",
+    "nota": 297
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA MECANICA",
+    "cota": "IND1",
+    "nota": 213
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA MECANICA",
+    "cota": "IND2",
+    "nota": 195
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA MECANICA",
+    "cota": "NDC1",
+    "nota": 273
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA MECANICA",
+    "cota": "NDC2",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA MECANICA",
+    "cota": "PCD1",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA MECANICA",
+    "cota": "PP1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA MECANICA",
+    "cota": "PP2",
+    "nota": 225
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "AC",
+    "nota": 267
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "IND1",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "NDC1",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "PP1",
+    "nota": 195
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "PP2",
+    "nota": 189
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA QUIMICA",
+    "cota": "AC",
+    "nota": 276
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA QUIMICA",
+    "cota": "IND1",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA QUIMICA",
+    "cota": "IND2",
+    "nota": 192
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA QUIMICA",
+    "cota": "NDC1",
+    "nota": 264
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA QUIMICA",
+    "cota": "NDC2",
+    "nota": 228
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA QUIMICA",
+    "cota": "PP1",
+    "nota": 213
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA QUIMICA",
+    "cota": "PP2",
+    "nota": 207
+  },
+  {
+    "processo": "PSC",
+    "curso": "ESTATISTICA",
+    "cota": "AC",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "ESTATISTICA",
+    "cota": "IND1",
+    "nota": 186
+  },
+  {
+    "processo": "PSC",
+    "curso": "ESTATISTICA",
+    "cota": "PP1",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "ESTATISTICA",
+    "cota": "PP2",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "FARMACIA",
+    "cota": "AC",
+    "nota": 306
+  },
+  {
+    "processo": "PSC",
+    "curso": "FARMACIA",
+    "cota": "IND1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "FARMACIA",
+    "cota": "IND2",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "FARMACIA",
+    "cota": "NDC1",
+    "nota": 279
+  },
+  {
+    "processo": "PSC",
+    "curso": "FARMACIA",
+    "cota": "NDC2",
+    "nota": 258
+  },
+  {
+    "processo": "PSC",
+    "curso": "FARMACIA",
+    "cota": "PCD1",
+    "nota": 228
+  },
+  {
+    "processo": "PSC",
+    "curso": "FARMACIA",
+    "cota": "PP1",
+    "nota": 252
+  },
+  {
+    "processo": "PSC",
+    "curso": "FARMACIA",
+    "cota": "PP2",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "FILOSOFIA",
+    "cota": "AC",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "FILOSOFIA",
+    "cota": "IND1",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "FILOSOFIA",
+    "cota": "IND2",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "FILOSOFIA",
+    "cota": "NDC1",
+    "nota": 213
+  },
+  {
+    "processo": "PSC",
+    "curso": "FILOSOFIA",
+    "cota": "PP1",
+    "nota": 168
+  },
+  {
+    "processo": "PSC",
+    "curso": "FILOSOFIA",
+    "cota": "PP2",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISICA",
+    "cota": "AC",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISICA",
+    "cota": "IND1",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISICA",
+    "cota": "PP1",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISICA",
+    "cota": "PP2",
+    "nota": 150
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISIOTERAPIA",
+    "cota": "AC",
+    "nota": 291
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISIOTERAPIA",
+    "cota": "IND1",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISIOTERAPIA",
+    "cota": "IND2",
+    "nota": 207
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISIOTERAPIA",
+    "cota": "NDC1",
+    "nota": 255
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISIOTERAPIA",
+    "cota": "PCD1",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISIOTERAPIA",
+    "cota": "PP1",
+    "nota": 240
+  },
+  {
+    "processo": "PSC",
+    "curso": "FISIOTERAPIA",
+    "cota": "PP2",
+    "nota": 228
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOGRAFIA",
+    "cota": "AC",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOGRAFIA",
+    "cota": "IND1",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOGRAFIA",
+    "cota": "NDC1",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOGRAFIA",
+    "cota": "PP1",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOGRAFIA",
+    "cota": "PP2",
+    "nota": 141
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOLOGIA",
+    "cota": "AC",
+    "nota": 255
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOLOGIA",
+    "cota": "IND1",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOLOGIA",
+    "cota": "NDC1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOLOGIA",
+    "cota": "PP1",
+    "nota": 192
+  },
+  {
+    "processo": "PSC",
+    "curso": "GEOLOGIA",
+    "cota": "PP2",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "HISTORIA",
+    "cota": "AC",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "HISTORIA",
+    "cota": "IND1",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "HISTORIA",
+    "cota": "IND2",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "HISTORIA",
+    "cota": "NDC1",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "HISTORIA",
+    "cota": "PP1",
+    "nota": 174
+  },
+  {
+    "processo": "PSC",
+    "curso": "HISTORIA",
+    "cota": "PP2",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - FRANCES",
+    "cota": "AC",
+    "nota": 207
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - FRANCES",
+    "cota": "PP1",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - FRANCES",
+    "cota": "PP2",
+    "nota": 132
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - INGLES",
+    "cota": "AC",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - INGLES",
+    "cota": "IND1",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - INGLES",
+    "cota": "IND2",
+    "nota": 168
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - INGLES",
+    "cota": "PP1",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - INGLES",
+    "cota": "PP2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - JAPONES",
+    "cota": "AC",
+    "nota": 240
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - JAPONES",
+    "cota": "IND1",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - JAPONES",
+    "cota": "PP1",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - JAPONES",
+    "cota": "PP2",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - LIBRAS",
+    "cota": "AC",
+    "nota": 213
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - LIBRAS",
+    "cota": "IND1",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - LIBRAS",
+    "cota": "PP1",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - LIBRAS",
+    "cota": "PP2",
+    "nota": 135
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - PORTUGUES",
+    "cota": "AC",
+    "nota": 246
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - PORTUGUES",
+    "cota": "IND1",
+    "nota": 192
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - PORTUGUES",
+    "cota": "IND2",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - PORTUGUES",
+    "cota": "NDC1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - PORTUGUES",
+    "cota": "NDC2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - PORTUGUES",
+    "cota": "PP1",
+    "nota": 180
+  },
+  {
+    "processo": "PSC",
+    "curso": "LETRAS - PORTUGUES",
+    "cota": "PP2",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "MATEMATICA",
+    "cota": "AC",
+    "nota": 225
+  },
+  {
+    "processo": "PSC",
+    "curso": "MATEMATICA",
+    "cota": "IND1",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "MATEMATICA",
+    "cota": "IND2",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "MATEMATICA",
+    "cota": "NDC1",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "MATEMATICA",
+    "cota": "PP1",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "MATEMATICA",
+    "cota": "PP2",
+    "nota": 150
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "AC",
+    "nota": 420
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "IND1",
+    "nota": 195
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "IND2",
+    "nota": 246
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "NDC1",
+    "nota": 357
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "NDC2",
+    "nota": 414
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "PCD1",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "PCD2",
+    "nota": 291
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "PP1",
+    "nota": 318
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "PP2",
+    "nota": 381
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA",
+    "cota": "QLB2",
+    "nota": 273
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA VETERINARIA",
+    "cota": "AC",
+    "nota": 303
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA VETERINARIA",
+    "cota": "IND1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA VETERINARIA",
+    "cota": "IND2",
+    "nota": 216
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA VETERINARIA",
+    "cota": "NDC1",
+    "nota": 276
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA VETERINARIA",
+    "cota": "NDC2",
+    "nota": 252
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA VETERINARIA",
+    "cota": "PCD1",
+    "nota": 225
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA VETERINARIA",
+    "cota": "PP1",
+    "nota": 249
+  },
+  {
+    "processo": "PSC",
+    "curso": "MEDICINA VETERINARIA",
+    "cota": "PP2",
+    "nota": 240
+  },
+  {
+    "processo": "PSC",
+    "curso": "METEOROLOGIA",
+    "cota": "AC",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "METEOROLOGIA",
+    "cota": "PP1",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "METEOROLOGIA",
+    "cota": "PP2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "MUSICA",
+    "cota": "AC",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "MUSICA",
+    "cota": "IND1",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "MUSICA",
+    "cota": "PP1",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "MUSICA",
+    "cota": "PP2",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "NUTRICAO",
+    "cota": "AC",
+    "nota": 267
+  },
+  {
+    "processo": "PSC",
+    "curso": "NUTRICAO",
+    "cota": "IND1",
+    "nota": 213
+  },
+  {
+    "processo": "PSC",
+    "curso": "NUTRICAO",
+    "cota": "IND2",
+    "nota": 186
+  },
+  {
+    "processo": "PSC",
+    "curso": "NUTRICAO",
+    "cota": "NDC1",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "NUTRICAO",
+    "cota": "PCD1",
+    "nota": 195
+  },
+  {
+    "processo": "PSC",
+    "curso": "NUTRICAO",
+    "cota": "PP1",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "NUTRICAO",
+    "cota": "PP2",
+    "nota": 204
+  },
+  {
+    "processo": "PSC",
+    "curso": "ODONTOLOGIA",
+    "cota": "AC",
+    "nota": 333
+  },
+  {
+    "processo": "PSC",
+    "curso": "ODONTOLOGIA",
+    "cota": "IND1",
+    "nota": 270
+  },
+  {
+    "processo": "PSC",
+    "curso": "ODONTOLOGIA",
+    "cota": "IND2",
+    "nota": 252
+  },
+  {
+    "processo": "PSC",
+    "curso": "ODONTOLOGIA",
+    "cota": "NDC1",
+    "nota": 315
+  },
+  {
+    "processo": "PSC",
+    "curso": "ODONTOLOGIA",
+    "cota": "NDC2",
+    "nota": 285
+  },
+  {
+    "processo": "PSC",
+    "curso": "ODONTOLOGIA",
+    "cota": "PCD1",
+    "nota": 264
+  },
+  {
+    "processo": "PSC",
+    "curso": "ODONTOLOGIA",
+    "cota": "PP1",
+    "nota": 288
+  },
+  {
+    "processo": "PSC",
+    "curso": "ODONTOLOGIA",
+    "cota": "PP2",
+    "nota": 276
+  },
+  {
+    "processo": "PSC",
+    "curso": "PSICOLOGIA",
+    "cota": "AC",
+    "nota": 321
+  },
+  {
+    "processo": "PSC",
+    "curso": "PSICOLOGIA",
+    "cota": "IND1",
+    "nota": 252
+  },
+  {
+    "processo": "PSC",
+    "curso": "PSICOLOGIA",
+    "cota": "IND2",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "PSICOLOGIA",
+    "cota": "NDC1",
+    "nota": 294
+  },
+  {
+    "processo": "PSC",
+    "curso": "PSICOLOGIA",
+    "cota": "NDC2",
+    "nota": 261
+  },
+  {
+    "processo": "PSC",
+    "curso": "PSICOLOGIA",
+    "cota": "PCD1",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "PSICOLOGIA",
+    "cota": "PP1",
+    "nota": 267
+  },
+  {
+    "processo": "PSC",
+    "curso": "PSICOLOGIA",
+    "cota": "PP2",
+    "nota": 258
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA",
+    "cota": "AC",
+    "nota": 231
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA",
+    "cota": "IND1",
+    "nota": 168
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA",
+    "cota": "IND2",
+    "nota": 141
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA",
+    "cota": "PP1",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA",
+    "cota": "PP2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA INDUSTRIAL",
+    "cota": "AC",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA INDUSTRIAL",
+    "cota": "IND1",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA INDUSTRIAL",
+    "cota": "PP1",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "QUIMICA INDUSTRIAL",
+    "cota": "PP2",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "SERVICO SOCIAL",
+    "cota": "AC",
+    "nota": 228
+  },
+  {
+    "processo": "PSC",
+    "curso": "SERVICO SOCIAL",
+    "cota": "IND1",
+    "nota": 174
+  },
+  {
+    "processo": "PSC",
+    "curso": "SERVICO SOCIAL",
+    "cota": "IND2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "SERVICO SOCIAL",
+    "cota": "NDC1",
+    "nota": 204
+  },
+  {
+    "processo": "PSC",
+    "curso": "SERVICO SOCIAL",
+    "cota": "PP1",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "SERVICO SOCIAL",
+    "cota": "PP2",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "SISTEMAS DE INFORMACAO",
+    "cota": "AC",
+    "nota": 273
+  },
+  {
+    "processo": "PSC",
+    "curso": "SISTEMAS DE INFORMACAO",
+    "cota": "IND1",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "SISTEMAS DE INFORMACAO",
+    "cota": "IND2",
+    "nota": 180
+  },
+  {
+    "processo": "PSC",
+    "curso": "SISTEMAS DE INFORMACAO",
+    "cota": "NDC1",
+    "nota": 249
+  },
+  {
+    "processo": "PSC",
+    "curso": "SISTEMAS DE INFORMACAO",
+    "cota": "PP1",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "SISTEMAS DE INFORMACAO",
+    "cota": "PP2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "TEATRO",
+    "cota": "AC",
+    "nota": 213
+  },
+  {
+    "processo": "PSC",
+    "curso": "TEATRO",
+    "cota": "PP1",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "TEATRO",
+    "cota": "PP2",
+    "nota": 138
+  },
+  {
+    "processo": "PSC",
+    "curso": "ZOOTECNIA",
+    "cota": "AC",
+    "nota": 255
+  },
+  {
+    "processo": "PSC",
+    "curso": "ZOOTECNIA",
+    "cota": "IND1",
+    "nota": 180
+  },
+  {
+    "processo": "PSC",
+    "curso": "ZOOTECNIA",
+    "cota": "IND2",
+    "nota": 171
+  },
+  {
+    "processo": "PSC",
+    "curso": "ZOOTECNIA",
+    "cota": "NDC1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ZOOTECNIA",
+    "cota": "PP1",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "ZOOTECNIA",
+    "cota": "PP2",
+    "nota": 177
+  },
+  {
+    "processo": "PSC",
+    "curso": "TRADUCAO",
+    "cota": "AC",
+    "nota": 255
+  },
+  {
+    "processo": "PSC",
+    "curso": "TRADUCAO",
+    "cota": "NDC1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "TRADUCAO",
+    "cota": "PP1",
+    "nota": 195
+  },
+  {
+    "processo": "PSC",
+    "curso": "TRADUCAO",
+    "cota": "PP2",
+    "nota": 183
+  },
+  {
+    "processo": "PSC",
+    "curso": "FONOAUDIOLOGIA",
+    "cota": "AC",
+    "nota": 264
+  },
+  {
+    "processo": "PSC",
+    "curso": "FONOAUDIOLOGIA",
+    "cota": "IND1",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "FONOAUDIOLOGIA",
+    "cota": "NDC1",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "FONOAUDIOLOGIA",
+    "cota": "PP1",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "FONOAUDIOLOGIA",
+    "cota": "PP2",
+    "nota": 198
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOMEDICINA",
+    "cota": "AC",
+    "nota": 294
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOMEDICINA",
+    "cota": "IND1",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOMEDICINA",
+    "cota": "IND2",
+    "nota": 210
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOMEDICINA",
+    "cota": "NDC1",
+    "nota": 264
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOMEDICINA",
+    "cota": "PCD1",
+    "nota": 222
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOMEDICINA",
+    "cota": "PP1",
+    "nota": 243
+  },
+  {
+    "processo": "PSC",
+    "curso": "BIOMEDICINA",
+    "cota": "PP2",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA AGRICOLA",
+    "cota": "AC",
+    "nota": 234
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA AGRICOLA",
+    "cota": "PP1",
+    "nota": 165
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA AGRICOLA",
+    "cota": "PP2",
+    "nota": 156
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN DE MODA",
+    "cota": "AC",
+    "nota": 237
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN DE MODA",
+    "cota": "PP1",
+    "nota": 168
+  },
+  {
+    "processo": "PSC",
+    "curso": "DESIGN DE MODA",
+    "cota": "PP2",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "SAUDE COLETIVA",
+    "cota": "AC",
+    "nota": 228
+  },
+  {
+    "processo": "PSC",
+    "curso": "SAUDE COLETIVA",
+    "cota": "PP1",
+    "nota": 162
+  },
+  {
+    "processo": "PSC",
+    "curso": "SAUDE COLETIVA",
+    "cota": "PP2",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMACAO",
+    "cota": "AC",
+    "nota": 276
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMACAO",
+    "cota": "PP1",
+    "nota": 213
+  },
+  {
+    "processo": "PSC",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMACAO",
+    "cota": "PP2",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA E TECNOLOGIA DE ALIMENTOS",
+    "cota": "AC",
+    "nota": 219
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA E TECNOLOGIA DE ALIMENTOS",
+    "cota": "PP1",
+    "nota": 159
+  },
+  {
+    "processo": "PSC",
+    "curso": "CIENCIA E TECNOLOGIA DE ALIMENTOS",
+    "cota": "PP2",
+    "nota": 147
+  },
+  {
+    "processo": "PSC",
+    "curso": "AGRONOMIA",
+    "cota": "AC",
+    "nota": 168
+  },
+  {
+    "processo": "PSC",
+    "curso": "AGRONOMIA",
+    "cota": "PP1",
+    "nota": 153
+  },
+  {
+    "processo": "PSC",
+    "curso": "PEDAGOGIA",
+    "cota": "AC",
+    "nota": 201
+  },
+  {
+    "processo": "PSC",
+    "curso": "PEDAGOGIA",
+    "cota": "PP1",
+    "nota": 162
+  }
+]
