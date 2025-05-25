@@ -63,6 +63,7 @@ const Navbar = () => {
   const menuItems = [
     { href: '/sobre', label: 'Sobre', icon: Info },
     { href: '/materiais', label: 'Materiais', icon: BookOpen },
+    { href: '/banco-de-provas', label: 'Banco de Provas', icon: BookOpen },
     { href: '/calculadora', label: 'Calculadora', icon: Calculator },
     { href: '/contato', label: 'Contato', icon: Mail }
   ];
@@ -349,6 +350,7 @@ const Navbar = () => {
                         <p className="text-xs text-green-200/60 mt-0.5">
                           {item.label === 'Sobre' && 'Conheça nossa história'}
                           {item.label === 'Materiais' && 'Recursos de estudo'}
+                          {item.label === 'Banco de Provas' && 'Provas anteriores'}
                           {item.label === 'Calculadora' && 'Calcule suas notas'}
                           {item.label === 'Contato' && 'Fale conosco'}
                         </p>

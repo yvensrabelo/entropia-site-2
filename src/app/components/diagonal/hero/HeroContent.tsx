@@ -22,7 +22,7 @@ interface HeroContentProps {
 export default function HeroContent({ 
   className = "",
   primaryCTA = { text: "Calcular Nota de Corte", href: "/calculadora" },
-  secondaryCTA = { text: "Banco de Provas", href: "/materiais" },
+  secondaryCTA = { text: "Banco de Provas", href: "/banco-de-provas" },
   showStats = true
 }: HeroContentProps) {
   return (
