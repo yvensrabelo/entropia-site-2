@@ -38,10 +38,18 @@ export default function NovaProvaPage() {
         console.log('Sessão atual:', session);
         
         // Verifica RLS status
-        const { data: rlsStatus } = await supabase
-          .rpc('current_setting', { setting: 'row_security' })
-          .catch(() => ({ data: 'RPC não disponível' }));
-        console.log('RLS Status:', rlsStatus);
+        try {
+          const { data: rlsStatus, error } = await supabase
+            .rpc('current_setting', { setting: 'row_security' });
+          
+          if (error) {
+            console.log('RLS Status: RPC não disponível');
+          } else {
+            console.log('RLS Status:', rlsStatus);
+          }
+        } catch (rpcError) {
+          console.log('RLS Status: Erro ao verificar RPC');
+        }
       } catch (err) {
         console.error('Erro no teste:', err);
       }
