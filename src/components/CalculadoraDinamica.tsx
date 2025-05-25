@@ -109,11 +109,15 @@ export default function CalculadoraDinamica() {
     let total = 0;
     
     if (processoSelecionado === 'PSC') {
-      const psc1 = (notas['PSC 1'] || 0) * 10;
-      const psc2 = (notas['PSC 2'] || 0) * 10;
-      const psc3 = (notas['PSC 3'] || 0) * 10;
-      const redacao = (notas['Redação'] || 0) * 100;
-      total = psc1 + psc2 + psc3 + redacao;
+      // Cálculo direto do PSC sem divisão por 54 ou multiplicação por 10
+      const acertosPSC1 = parseFloat(String(notas['PSC 1'])) || 0;
+      const acertosPSC2 = parseFloat(String(notas['PSC 2'])) || 0;
+      const acertosPSC3 = parseFloat(String(notas['PSC 3'])) || 0;
+      const notaRedacao = parseFloat(String(notas['Redação'])) || 0;
+      
+      // Fórmula: soma dos acertos multiplicados por 3 mais redação multiplicada por 6
+      const notaFinal = (acertosPSC1 * 3) + (acertosPSC2 * 3) + (acertosPSC3 * 3) + (notaRedacao * 6);
+      total = notaFinal;
     } else if (processoSelecionado === 'MACRO') {
       total = (notas['Conhecimentos Gerais'] || 0) * 3 + 
                (notas['Conhecimentos Específicos'] || 0) * 4 + 
@@ -183,7 +187,7 @@ export default function CalculadoraDinamica() {
         >
           {/* Seleção de Processo */}
           <div className="mb-6">
-            <label className="block text-base font-semibold text-gray-800 mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
               Processo Seletivo
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
