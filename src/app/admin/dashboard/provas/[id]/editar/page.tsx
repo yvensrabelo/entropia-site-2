@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase-client';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Prova } from '@/lib/types/prova';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 export default function EditarProvaPage() {
   const router = useRouter();
@@ -83,15 +84,18 @@ export default function EditarProvaPage() {
 
   if (loadingProva) {
     return (
-      <div className="p-6 flex justify-center items-center min-h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
+      <AuthGuard>
+        <div className="p-6 flex justify-center items-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        </div>
+      </AuthGuard>
     );
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <Link
+    <AuthGuard>
+      <div className="p-6 max-w-4xl mx-auto">
+        <Link
         href="/admin/dashboard/provas"
         className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-6"
       >
@@ -222,6 +226,7 @@ export default function EditarProvaPage() {
           </button>
         </div>
       </form>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Lock } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function NavbarDiagonal() {
@@ -70,8 +70,7 @@ export default function NavbarDiagonal() {
     { href: '#inicio', label: 'Início' },
     { href: '#turmas', label: 'Turmas' },
     { href: '#materiais', label: 'Materiais' },
-    { href: '/sobre', label: 'Sobre' },
-    { href: '/contato', label: 'Contato' },
+    { href: '/admin/login', label: 'Admin', icon: Lock },
   ]
 
   // Loading state - prevent layout shift
@@ -129,10 +128,17 @@ export default function NavbarDiagonal() {
                   key={item.href}
                   href={item.href}
                   onClick={item.href.startsWith('#') ? (e) => handleSmoothScroll(e, item.href) : undefined}
-                  className="relative text-white/70 hover:text-white transition-all duration-300 font-medium group"
+                  className={`relative transition-all duration-300 font-medium group ${
+                    item.label === 'Admin' 
+                      ? 'flex items-center gap-2 px-4 py-2 border border-white/30 rounded-lg hover:bg-white/10 hover:border-white/50 text-white/70 hover:text-white'
+                      : 'text-white/70 hover:text-white'
+                  }`}
                 >
+                  {item.icon && <item.icon size={16} className="relative z-10" />}
                   <span className="relative z-10">{item.label}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -m-2" />
+                  {item.label !== 'Admin' && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 -m-2" />
+                  )}
                 </Link>
               ))}
               <Link
@@ -184,9 +190,12 @@ export default function NavbarDiagonal() {
                     <Link
                       href={item.href}
                       onClick={item.href.startsWith('#') ? (e) => handleSmoothScroll(e, item.href) : () => setIsMobileMenuOpen(false)}
-                      className="block text-white/70 hover:text-white transition-colors font-medium py-3 px-4 rounded-lg hover:bg-white/5 focus:outline-none focus:bg-white/10"
+                      className={`flex items-center gap-3 text-white/70 hover:text-white transition-colors font-medium py-3 px-4 rounded-lg hover:bg-white/5 focus:outline-none focus:bg-white/10 ${
+                        item.label === 'Admin' ? 'border border-white/20 hover:border-white/40' : ''
+                      }`}
                     >
-                      {item.label}
+                      {item.icon && <item.icon size={18} />}
+                      <span>{item.label}</span>
                     </Link>
                   </motion.div>
                 ))}

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase-client';
 import { ArrowLeft, Upload, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 export default function NovaProvaPage() {
   const router = useRouter();
@@ -179,8 +180,9 @@ export default function NovaProvaPage() {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <Link
+    <AuthGuard>
+      <div className="p-6 max-w-4xl mx-auto">
+        <Link
         href="/admin/dashboard/provas"
         className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-6"
       >
@@ -330,6 +332,7 @@ export default function NovaProvaPage() {
           </button>
         </div>
       </form>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

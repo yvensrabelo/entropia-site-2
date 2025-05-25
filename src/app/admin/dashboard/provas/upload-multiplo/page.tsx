@@ -14,6 +14,7 @@ import {
   CloudUpload
 } from 'lucide-react';
 import Link from 'next/link';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 interface FileInfo {
   file: File;
@@ -230,8 +231,9 @@ export default function UploadMultiploPage() {
   const errorCount = files.filter(f => f.status === 'error').length;
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <Link
+    <AuthGuard>
+      <div className="p-6 max-w-7xl mx-auto">
+        <Link
         href="/admin/dashboard/provas"
         className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-6"
       >
@@ -439,6 +441,7 @@ export default function UploadMultiploPage() {
           <p className="text-gray-500">Nenhum arquivo selecionado</p>
         </div>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

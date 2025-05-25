@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Plus, FileText, CloudUpload, Trash2, Edit, Eye } from 'lucide-react';
 import { supabase } from '@/lib/supabase-client';
 import { Prova } from '@/lib/types/prova';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 export default function AdminProvasPage() {
   const [provas, setProvas] = useState<Prova[]>([]);
@@ -51,31 +52,32 @@ export default function AdminProvasPage() {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Gerenciar Provas</h1>
-          <p className="text-gray-600">Adicione e gerencie provas do banco</p>
+    <AuthGuard>
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Gerenciar Provas</h1>
+            <p className="text-gray-600">Adicione e gerencie provas do banco</p>
+          </div>
+          <div className="flex gap-2">
+            <Link
+              href="/admin/dashboard/provas/upload-multiplo"
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 transition-colors"
+            >
+              <CloudUpload className="w-5 h-5" />
+              Upload Múltiplo
+            </Link>
+            <Link
+              href="/admin/dashboard/provas/nova"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
+            >
+              <Plus className="w-5 h-5" />
+              Nova Prova
+            </Link>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Link
-            href="/admin/dashboard/provas/upload-multiplo"
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 transition-colors"
-          >
-            <CloudUpload className="w-5 h-5" />
-            Upload Múltiplo
-          </Link>
-          <Link
-            href="/admin/dashboard/provas/nova"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-            Nova Prova
-          </Link>
-        </div>
-      </div>
-      
-      <div className="bg-white rounded-lg shadow-sm">
+        
+        <div className="bg-white rounded-lg shadow-sm">
         {loading ? (
           <div className="p-6 text-center">
             <p className="text-gray-500">Carregando...</p>
@@ -166,7 +168,8 @@ export default function AdminProvasPage() {
             </table>
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </AuthGuard>
   );
 }

@@ -11,7 +11,8 @@ import {
   BookOpen,
   Info,
   Calendar,
-  Mail
+  Mail,
+  Lock
 } from 'lucide-react';
 
 const Navbar = () => {
@@ -61,11 +62,10 @@ const Navbar = () => {
   }, [isOpen]);
 
   const menuItems = [
-    { href: '/sobre', label: 'Sobre', icon: Info },
     { href: '/materiais', label: 'Materiais', icon: BookOpen },
     { href: '/banco-de-provas', label: 'Banco de Provas', icon: BookOpen },
     { href: '/calculadora', label: 'Calculadora', icon: Calculator },
-    { href: '/contato', label: 'Contato', icon: Mail }
+    { href: '/admin/login', label: 'Admin', icon: Lock }
   ];
 
   // Partículas flutuantes simplificadas
@@ -215,7 +215,11 @@ const Navbar = () => {
                   tabIndex={0}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-emerald-200/20 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-                  <div className="relative flex items-center gap-2 px-4 py-2.5 bg-white/15 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg group-hover:bg-white/25 group-hover:border-white/40 group-hover:shadow-xl transition-all duration-300">
+                  <div className={`relative flex items-center gap-2 px-4 py-2.5 rounded-2xl border shadow-lg transition-all duration-300 ${
+                    item.label === 'Admin' 
+                      ? 'bg-transparent backdrop-blur-sm border-white/40 group-hover:bg-white/10 group-hover:border-white/60' 
+                      : 'bg-white/15 backdrop-blur-sm border-white/20 group-hover:bg-white/25 group-hover:border-white/40'
+                  } group-hover:shadow-xl`}>
                     <item.icon className="text-white group-hover:text-green-50" size={18} />
                     <span className="text-white font-medium text-sm group-hover:text-green-50 transition-colors">
                       {item.label}
@@ -348,11 +352,10 @@ const Navbar = () => {
                       <div className="flex-1">
                         <span className="font-medium text-base">{item.label}</span>
                         <p className="text-xs text-green-200/60 mt-0.5">
-                          {item.label === 'Sobre' && 'Conheça nossa história'}
                           {item.label === 'Materiais' && 'Recursos de estudo'}
                           {item.label === 'Banco de Provas' && 'Provas anteriores'}
                           {item.label === 'Calculadora' && 'Calcule suas notas'}
-                          {item.label === 'Contato' && 'Fale conosco'}
+                          {item.label === 'Admin' && 'Área administrativa'}
                         </p>
                       </div>
                       <motion.div
