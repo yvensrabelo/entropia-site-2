@@ -9,7 +9,7 @@ import AuthGuard from '@/components/admin/AuthGuard';
 import { Toast } from '@/components/Toast';
 import { formatCPF } from '@/lib/utils/cpf';
 
-interface Aluno {
+interface AlunoComTurma {
   id: string;
   nome: string;
   cpf: string;
@@ -25,9 +25,9 @@ export default function RegistrarPresencaPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState<Aluno[]>([]);
+  const [searchResults, setSearchResults] = useState<AlunoComTurma[]>([]);
   const [searching, setSearching] = useState(false);
-  const [selectedAlunos, setSelectedAlunos] = useState<Aluno[]>([]);
+  const [selectedAlunos, setSelectedAlunos] = useState<AlunoComTurma[]>([]);
   const [data, setData] = useState(new Date().toISOString().split('T')[0]);
   const [horaEntrada, setHoraEntrada] = useState(new Date().toTimeString().slice(0, 5));
   const [observacoes, setObservacoes] = useState('');
@@ -44,22 +44,43 @@ export default function RegistrarPresencaPage() {
   const searchAlunos = async () => {
     setSearching(true);
     try {
-      const { data, error } = await supabase
+      const { data: rawData, error } = await supabase
         .from('alunos')
         .select(`
           id,
           nome,
           cpf,
-          matricula:matriculas!inner(
-            turma:turmas_config!inner(nome, turno)
+          matriculas!inner(
+            id,
+            status,
+            turmas_config!inner(nome, turno)
           )
         `)
         .or(`nome.ilike.%${searchTerm}%,cpf.ilike.%${searchTerm}%`)
-        .eq('matricula.status', 'ativa')
+        .eq('matriculas.status', 'ativa')
         .limit(10);
 
       if (error) throw error;
-      setSearchResults(data || []);
+
+      // Transform the data to match our interface
+      const transformedData: AlunoComTurma[] = (rawData || []).map((item: any) => {
+        const matricula = item.matriculas?.[0];
+        const turma = matricula?.turmas_config?.[0] || matricula?.turmas_config;
+        
+        return {
+          id: item.id,
+          nome: item.nome,
+          cpf: item.cpf,
+          matricula: matricula ? {
+            turma: {
+              nome: turma?.nome || '',
+              turno: turma?.turno || ''
+            }
+          } : undefined
+        };
+      });
+
+      setSearchResults(transformedData);
     } catch (error) {
       console.error('Erro ao buscar alunos:', error);
     } finally {
@@ -67,7 +88,7 @@ export default function RegistrarPresencaPage() {
     }
   };
 
-  const addAluno = (aluno: Aluno) => {
+  const addAluno = (aluno: AlunoComTurma) => {
     if (!selectedAlunos.find(a => a.id === aluno.id)) {
       setSelectedAlunos([...selectedAlunos, aluno]);
       setSearchTerm('');
