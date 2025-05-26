@@ -15,9 +15,12 @@ export default function WhatsAppStatus() {
 
   const checkStatus = async () => {
     try {
-      const response = await fetch('/api/whatsapp/status');
+      // Usar o endpoint de teste para verificar se está funcionando
+      const response = await fetch('/api/whatsapp/test', {
+        method: 'POST'
+      });
       const data = await response.json();
-      setStatus(data.connected ? 'connected' : 'disconnected');
+      setStatus(data.success && data.connected ? 'connected' : 'disconnected');
     } catch (error) {
       setStatus('disconnected');
     }

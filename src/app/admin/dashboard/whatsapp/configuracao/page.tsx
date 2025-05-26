@@ -235,37 +235,51 @@ export default function ConfiguracaoWhatsAppPage() {
 
   const checkConnectionOnce = async () => {
     try {
-      console.log('Verificando conexão com:', {
-        server_url: config.server_url,
-        instance_name: config.instance_name
-      });
-
-      const response = await fetch('/api/whatsapp/status', {
+      console.log('=== TESTANDO CONEXÃO COM MENSAGEM REAL ===');
+      
+      // Usar o novo endpoint de teste que envia mensagem real
+      const response = await fetch('/api/whatsapp/test', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          server_url: config.server_url,
-          api_key: config.api_key,
-          instance_name: config.instance_name
-        })
+        }
       });
 
       const data = await response.json();
-      console.log('Status da conexão:', data);
+      console.log('Resultado do teste:', data);
 
-      if (data.connected) {
+      if (data.success && data.connected) {
+        // Mensagem enviada = sistema funcionando!
         setConfig({ ...config, status: 'connected' });
-        setToast({ message: 'WhatsApp está conectado!', type: 'success' });
+        
+        // Salvar status de conectado no banco
+        if (config.id) {
+          await supabase
+            .from('whatsapp_config')
+            .update({ status: 'connected' })
+            .eq('id', config.id);
+        }
+        
+        setToast({ 
+          message: '✅ WhatsApp conectado! Mensagem de teste enviada para 92981662806', 
+          type: 'success' 
+        });
         return true;
       } else {
         setConfig({ ...config, status: 'disconnected' });
+        setToast({ 
+          message: data.error || 'Erro ao enviar mensagem de teste', 
+          type: 'error' 
+        });
         return false;
       }
     } catch (error) {
-      console.error('Erro ao verificar status:', error);
+      console.error('Erro ao testar conexão:', error);
       setConfig({ ...config, status: 'error' });
+      setToast({ 
+        message: 'Erro ao testar conexão', 
+        type: 'error' 
+      });
       return false;
     }
   };
