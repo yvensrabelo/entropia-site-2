@@ -1,0 +1,11 @@
+Nome,CPF,Data de Nascimento,Telefone,Email,Endereço,Bairro,Cidade,CEP,Responsável,Telefone Responsável,Observações
+João da Silva Santos,123.456.789-01,2006-03-15,(92) 98765-4321,joao.silva@email.com,Rua das Flores 123,Centro,Manaus,69005-040,Maria da Silva Santos,(92) 98765-4320,Bolsista integral
+Maria Oliveira Costa,987.654.321-02,2005-08-20,(92) 91234-5678,maria.oliveira@email.com,Av. Eduardo Ribeiro 456,Adrianópolis,Manaus,69057-000,José Oliveira Costa,(92) 91234-5679,
+Pedro Santos Lima,456.789.123-03,2006-12-10,(92) 99876-5432,pedro.lima@email.com,Rua Recife 789,Aleixo,Manaus,69060-001,Ana Santos Lima,(92) 99876-5433,Necessita acompanhamento
+Ana Carolina Ferreira,789.123.456-04,2004-07-25,(92) 98888-9999,ana.ferreira@email.com,Av. Constantino Nery 321,Chapada,Manaus,69050-000,,,Aluna veterana
+Carlos Eduardo Souza,321.654.987-05,2005-11-30,(92) 97777-8888,carlos.souza@email.com,Rua Rio Branco 654,Centro,Manaus,69005-011,Roberto Souza,(92) 97777-8889,
+Beatriz Lima Oliveira,654.987.321-06,2006-02-14,(92) 96666-7777,beatriz.lima@email.com,Av. Djalma Batista 987,Parque 10,Manaus,69050-010,Lucia Lima Oliveira,(92) 96666-7778,Transferida de escola particular
+Rafael Costa Santos,147.258.369-07,2005-09-18,(92) 95555-6666,rafael.costa@email.com,Rua Lobo D'Almada 147,Centro,Manaus,69010-030,,,
+Gabriela Silva Pereira,258.369.147-08,2006-06-22,(92) 94444-5555,gabriela.silva@email.com,Av. Torquato Tapajós 258,Tarumã,Manaus,69048-660,Paulo Silva Pereira,(92) 94444-5556,Interesse em medicina
+Lucas Ferreira Costa,369.147.258-09,2005-04-12,(92) 93333-4444,lucas.ferreira@email.com,Rua Bernardo Ramos 369,Cidade Nova,Manaus,69095-000,Monica Ferreira Costa,(92) 93333-4445,
+Isabella Santos Lima,741.852.963-10,2006-01-08,(92) 92222-3333,isabella.santos@email.com,Av. Max Teixeira 741,Cidade Nova,Manaus,69095-058,Carlos Santos Lima,(92) 92222-3334,Bolsista parcial
