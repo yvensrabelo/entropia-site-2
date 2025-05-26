@@ -45,6 +45,7 @@ export default function ConfiguracaoWhatsAppPage() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
+    console.log('Carregando configuração do WhatsApp...');
     loadConfig();
   }, []);
 
@@ -55,10 +56,19 @@ export default function ConfiguracaoWhatsAppPage() {
         .select('*')
         .single();
       
+      console.log('Configuração carregada:', data);
+      console.log('Erro ao carregar:', error);
+      
       if (data) {
         setConfig(data);
         if (data.qr_code && data.status === 'connecting') {
           setShowQRCode(true);
+        }
+        
+        // Se já tem configuração salva, verificar status atual
+        if (data.api_key && data.server_url) {
+          console.log('Verificando status da conexão existente...');
+          setTimeout(() => checkConnectionOnce(), 1000);
         }
       }
     } catch (error) {
@@ -69,17 +79,40 @@ export default function ConfiguracaoWhatsAppPage() {
   };
 
   const saveConfig = async () => {
+    // Validação de campos obrigatórios
+    if (!config.server_url || !config.api_key || !config.instance_name) {
+      setToast({ 
+        message: 'Por favor, preencha todos os campos obrigatórios', 
+        type: 'error' 
+      });
+      return;
+    }
+
     setSaving(true);
+    console.log('Salvando configuração:', {
+      server_url: config.server_url,
+      api_key: config.api_key.substring(0, 10) + '...', // Log parcial da API key
+      instance_name: config.instance_name
+    });
+
     try {
+      // Limpar e formatar os dados
+      const cleanApiKey = config.api_key.trim().toUpperCase(); // API keys geralmente são uppercase
       const configData = {
-        server_url: config.server_url,
-        api_key: config.api_key,
-        instance_name: config.instance_name,
+        server_url: config.server_url.trim().replace(/\/$/, ''), // Remove trailing slash
+        api_key: cleanApiKey,
+        instance_name: config.instance_name.trim(),
         status: config.status
       };
+      
+      console.log('Dados formatados para salvar:', {
+        ...configData,
+        api_key: cleanApiKey.substring(0, 10) + '...'
+      });
 
       if (config.id) {
         // Atualizar configuração existente
+        console.log('Atualizando configuração existente:', config.id);
         const { error } = await supabase
           .from('whatsapp_config')
           .update(configData)
@@ -88,6 +121,7 @@ export default function ConfiguracaoWhatsAppPage() {
         if (error) throw error;
       } else {
         // Criar nova configuração
+        console.log('Criando nova configuração');
         const { data, error } = await supabase
           .from('whatsapp_config')
           .insert(configData)
@@ -95,10 +129,18 @@ export default function ConfiguracaoWhatsAppPage() {
           .single();
         
         if (error) throw error;
-        if (data) setConfig({ ...config, id: data.id });
+        if (data) {
+          console.log('Configuração criada com ID:', data.id);
+          setConfig({ ...config, id: data.id });
+        }
       }
 
       setToast({ message: 'Configuração salva com sucesso!', type: 'success' });
+      
+      // Após salvar, verificar conexão automaticamente
+      console.log('Verificando status da conexão...');
+      await checkConnectionOnce();
+      
     } catch (error: any) {
       console.error('Erro ao salvar configuração:', error);
       setToast({ 
@@ -182,6 +224,43 @@ export default function ConfiguracaoWhatsAppPage() {
       });
     } finally {
       setConnecting(false);
+    }
+  };
+
+  const checkConnectionOnce = async () => {
+    try {
+      console.log('Verificando conexão com:', {
+        server_url: config.server_url,
+        instance_name: config.instance_name
+      });
+
+      const response = await fetch('/api/whatsapp/status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          server_url: config.server_url,
+          api_key: config.api_key,
+          instance_name: config.instance_name
+        })
+      });
+
+      const data = await response.json();
+      console.log('Status da conexão:', data);
+
+      if (data.connected) {
+        setConfig({ ...config, status: 'connected' });
+        setToast({ message: 'WhatsApp está conectado!', type: 'success' });
+        return true;
+      } else {
+        setConfig({ ...config, status: 'disconnected' });
+        return false;
+      }
+    } catch (error) {
+      console.error('Erro ao verificar status:', error);
+      setConfig({ ...config, status: 'error' });
+      return false;
     }
   };
 
@@ -392,6 +471,15 @@ export default function ConfiguracaoWhatsAppPage() {
                       Salvar Configuração
                     </>
                   )}
+                </button>
+                
+                <button
+                  onClick={checkConnectionOnce}
+                  disabled={!config.server_url || !config.api_key || saving}
+                  className="flex items-center gap-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Testar Conexão
                 </button>
                 
                 {config.status === 'disconnected' && (

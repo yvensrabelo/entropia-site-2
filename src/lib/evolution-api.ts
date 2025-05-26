@@ -116,21 +116,37 @@ export class EvolutionAPIClient {
   async checkStatus() {
     const url = this.getUrl(`/instance/connectionState/${this.config.instance_name}`);
     
+    console.log('Checking status at:', url);
+    console.log('Headers:', this.getHeaders());
+    
     const response = await fetch(url, {
       method: 'GET',
       headers: this.getHeaders()
     });
 
+    const responseText = await response.text();
+    console.log('Status response:', {
+      ok: response.ok,
+      status: response.status,
+      text: responseText
+    });
+
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Erro ao verificar status: ${error}`);
+      throw new Error(`Erro ao verificar status: ${responseText}`);
     }
 
-    const data = await response.json();
-    return {
-      connected: data.state === 'open',
-      state: data.state
-    };
+    try {
+      const data = JSON.parse(responseText);
+      console.log('Status data:', data);
+      
+      return {
+        connected: data.state === 'open',
+        state: data.state
+      };
+    } catch (e) {
+      console.error('Error parsing status response:', e);
+      throw new Error(`Resposta inválida da API: ${responseText}`);
+    }
   }
 
   // Enviar mensagem de texto
