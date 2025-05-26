@@ -11,19 +11,21 @@ import {
   X, 
   CheckCircle,
   AlertCircle,
-  CloudUpload
+  CloudUpload,
+  FileCheck,
+  Link as LinkIcon
 } from 'lucide-react';
 import Link from 'next/link';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { SUBCATEGORIAS, AREAS_MACRO } from '@/lib/types/prova';
+import { 
+  isGabarito, 
+  groupProvasAndGabaritos,
+  ProvaGroup 
+} from '@/lib/utils/prova-utils';
 
-interface FileInfo {
-  file: File;
+interface FileGroupInfo extends ProvaGroup {
   id: string;
-  instituicao: string;
-  tipo_prova: string;
-  ano: number;
-  etapa: string;
-  titulo: string;
   status: 'pending' | 'uploading' | 'success' | 'error';
   progress: number;
   error?: string;
@@ -31,96 +33,26 @@ interface FileInfo {
 
 export default function UploadMultiploPage() {
   const router = useRouter();
-  const [files, setFiles] = useState<FileInfo[]>([]);
+  const [fileGroups, setFileGroups] = useState<FileGroupInfo[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
-  // Função para extrair informações do nome do arquivo
-  const extractInfoFromFilename = (filename: string): Partial<FileInfo> => {
-    const nameWithoutExt = filename.replace(/\.pdf$/i, '');
-    
-    // Padrões de regex para extrair informações
-    const patterns = {
-      instituicao: /\b(UEA|UFAM|UFRR|UERR|ENEM)\b/i,
-      tipo_prova: /\b(PSC|PSI|PSMV|VESTIBULAR|MACRO|SIS|ENEM)\b/i,
-      ano: /\b(20\d{2})\b/,
-      etapa: /\b(\d+)[ªº]?\s*etapa\b|\betapa\s*(\d+)\b/i
-    };
-
-    const extracted: any = {
-      instituicao: '',
-      tipo_prova: '',
-      ano: new Date().getFullYear(),
-      etapa: ''
-    };
-
-    // Extrai tipo de prova primeiro
-    const tipoMatch = nameWithoutExt.match(patterns.tipo_prova);
-    if (tipoMatch) {
-      extracted.tipo_prova = tipoMatch[1].toUpperCase();
-    }
-
-    // Extrai ou determina instituição baseada no tipo de prova
-    const instMatch = nameWithoutExt.match(patterns.instituicao);
-    if (instMatch) {
-      extracted.instituicao = instMatch[1].toUpperCase();
-    } else {
-      // Auto-associa instituição baseada no tipo de prova
-      const tipoProva = extracted.tipo_prova;
-      if (tipoProva === 'PSC' || tipoProva === 'PSI') {
-        extracted.instituicao = 'UFAM';
-      } else if (tipoProva === 'MACRO' || tipoProva === 'SIS' || tipoProva === 'PSMV') {
-        extracted.instituicao = 'UEA';
-      }
-      // Para outros tipos (ENEM, VESTIBULAR, etc.), deixa vazio para escolha manual
-    }
-
-    // Extrai ano
-    const anoMatch = nameWithoutExt.match(patterns.ano);
-    if (anoMatch) {
-      extracted.ano = parseInt(anoMatch[1]);
-    }
-
-    // Extrai etapa
-    const etapaMatch = nameWithoutExt.match(patterns.etapa);
-    if (etapaMatch) {
-      const etapaNum = etapaMatch[1] || etapaMatch[2];
-      extracted.etapa = `${etapaNum}ª Etapa`;
-    }
-
-    // Gera título baseado nas informações extraídas
-    if (extracted.tipo_prova && extracted.ano) {
-      extracted.titulo = `${extracted.tipo_prova} ${extracted.ano}`;
-      if (extracted.etapa) {
-        extracted.titulo += ` - ${extracted.etapa}`;
-      }
-    } else {
-      extracted.titulo = nameWithoutExt;
-    }
-
-    return extracted;
-  };
-
   // Função para adicionar arquivos
   const addFiles = (newFiles: FileList) => {
-    const fileInfos: FileInfo[] = Array.from(newFiles)
-      .filter(file => file.type === 'application/pdf')
-      .map(file => {
-        const extracted = extractInfoFromFilename(file.name);
-        return {
-          file,
-          id: Math.random().toString(36).substr(2, 9),
-          instituicao: extracted.instituicao || '',
-          tipo_prova: extracted.tipo_prova || '',
-          ano: extracted.ano || new Date().getFullYear(),
-          etapa: extracted.etapa || '',
-          titulo: extracted.titulo || file.name,
-          status: 'pending' as const,
-          progress: 0
-        };
-      });
+    const pdfFiles = Array.from(newFiles).filter(file => file.type === 'application/pdf');
+    
+    // Agrupa provas e gabaritos
+    const groups = groupProvasAndGabaritos(pdfFiles);
+    
+    // Converte para FileGroupInfo
+    const fileGroupInfos: FileGroupInfo[] = groups.map(group => ({
+      ...group,
+      id: Math.random().toString(36).substr(2, 9),
+      status: 'pending' as const,
+      progress: 0
+    }));
 
-    setFiles(prev => [...prev, ...fileInfos]);
+    setFileGroups(prev => [...prev, ...fileGroupInfos]);
   };
 
   // Handlers de drag & drop
@@ -151,60 +83,86 @@ export default function UploadMultiploPage() {
     }
   };
 
-  // Atualizar informações de um arquivo
-  const updateFileInfo = (id: string, updates: Partial<FileInfo>) => {
-    setFiles(prev => prev.map(file => 
-      file.id === id ? { ...file, ...updates } : file
+  // Atualizar informações de um grupo
+  const updateGroupInfo = (id: string, updates: Partial<FileGroupInfo>) => {
+    setFileGroups(prev => prev.map(group => 
+      group.id === id ? { ...group, ...updates } : group
     ));
   };
 
-  // Remover arquivo
-  const removeFile = (id: string) => {
-    setFiles(prev => prev.filter(file => file.id !== id));
+  // Remover grupo
+  const removeGroup = (id: string) => {
+    setFileGroups(prev => prev.filter(group => group.id !== id));
   };
 
-  // Upload de um arquivo
-  const uploadFile = async (fileInfo: FileInfo) => {
+  // Upload de um grupo
+  const uploadGroup = async (group: FileGroupInfo) => {
     try {
-      updateFileInfo(fileInfo.id, { status: 'uploading', progress: 20 });
+      updateGroupInfo(group.id, { status: 'uploading', progress: 20 });
 
-      // Upload do PDF
-      const fileName = `${fileInfo.instituicao}-${fileInfo.tipo_prova}-${fileInfo.ano}-${Date.now()}.pdf`;
+      // Upload da prova
+      const provaFileName = `${group.metadata.instituicao}-${group.metadata.tipo_prova}-${group.metadata.ano}-${Date.now()}-prova.pdf`;
       
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { data: provaUpload, error: provaError } = await supabase.storage
         .from('provas')
-        .upload(fileName, fileInfo.file);
+        .upload(provaFileName, group.prova);
 
-      if (uploadError) throw uploadError;
+      if (provaError) throw provaError;
 
-      updateFileInfo(fileInfo.id, { progress: 50 });
+      updateGroupInfo(group.id, { progress: 40 });
 
-      const { data: { publicUrl } } = supabase.storage
+      const { data: { publicUrl: provaUrl } } = supabase.storage
         .from('provas')
-        .getPublicUrl(fileName);
+        .getPublicUrl(provaFileName);
 
-      updateFileInfo(fileInfo.id, { progress: 70 });
+      let gabaritoUrl = null;
+
+      // Upload do gabarito se houver
+      if (group.gabarito) {
+        const gabaritoFileName = `${group.metadata.instituicao}-${group.metadata.tipo_prova}-${group.metadata.ano}-${Date.now()}-gabarito.pdf`;
+        
+        const { data: gabUpload, error: gabError } = await supabase.storage
+          .from('provas')
+          .upload(gabaritoFileName, group.gabarito);
+
+        if (gabError) throw gabError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('provas')
+          .getPublicUrl(gabaritoFileName);
+
+        gabaritoUrl = publicUrl;
+      }
+
+      updateGroupInfo(group.id, { progress: 70 });
 
       // Inserir no banco
       const { error: dbError } = await supabase
         .from('provas')
         .insert({
-          instituicao: fileInfo.instituicao,
-          tipo_prova: fileInfo.tipo_prova,
-          ano: fileInfo.ano,
-          etapa: fileInfo.etapa,
-          titulo: fileInfo.titulo,
-          url_pdf: publicUrl,
+          instituicao: group.metadata.instituicao,
+          tipo_prova: group.metadata.tipo_prova,
+          subcategoria: group.metadata.subcategoria || null,
+          area: group.metadata.area || null,
+          ano: group.metadata.ano,
+          etapa: group.metadata.etapa,
+          titulo: group.metadata.titulo,
+          url_pdf: provaUrl,
+          url_gabarito: gabaritoUrl,
           visualizacoes: 0,
-          tags: [fileInfo.instituicao.toLowerCase(), fileInfo.tipo_prova.toLowerCase(), fileInfo.ano.toString()]
+          tags: [
+            group.metadata.instituicao.toLowerCase(), 
+            group.metadata.tipo_prova.toLowerCase(), 
+            group.metadata.ano.toString()
+          ]
         });
 
       if (dbError) throw dbError;
 
-      updateFileInfo(fileInfo.id, { status: 'success', progress: 100 });
+      updateGroupInfo(group.id, { status: 'success', progress: 100 });
     } catch (error: any) {
       console.error('Erro no upload:', error);
-      updateFileInfo(fileInfo.id, { 
+      updateGroupInfo(group.id, { 
         status: 'error', 
         error: error.message || 'Erro desconhecido',
         progress: 0 
@@ -216,231 +174,320 @@ export default function UploadMultiploPage() {
   const uploadAll = async () => {
     setIsUploading(true);
     
-    const pendingFiles = files.filter(f => f.status === 'pending');
+    const pendingGroups = fileGroups.filter(g => g.status === 'pending');
     
     // Upload sequencial para não sobrecarregar
-    for (const file of pendingFiles) {
-      await uploadFile(file);
+    for (const group of pendingGroups) {
+      await uploadGroup(group);
     }
     
     setIsUploading(false);
   };
 
-  const pendingCount = files.filter(f => f.status === 'pending').length;
-  const successCount = files.filter(f => f.status === 'success').length;
-  const errorCount = files.filter(f => f.status === 'error').length;
+  const pendingCount = fileGroups.filter(g => g.status === 'pending').length;
+  const successCount = fileGroups.filter(g => g.status === 'success').length;
+  const errorCount = fileGroups.filter(g => g.status === 'error').length;
 
   return (
     <AuthGuard>
       <div className="p-6 max-w-7xl mx-auto">
         <Link
-        href="/admin/dashboard/provas"
-        className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-6"
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Voltar
-      </Link>
+          href="/admin/dashboard/provas"
+          className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-6"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Voltar
+        </Link>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Upload Múltiplo de Provas</h1>
-
-      {/* Área de drag & drop */}
-      <div
-        onDragEnter={handleDrag}
-        onDragLeave={handleDrag}
-        onDragOver={handleDrag}
-        onDrop={handleDrop}
-        className={`mb-8 border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
-          dragActive 
-            ? 'border-blue-500 bg-blue-50' 
-            : 'border-gray-300 hover:border-gray-400'
-        }`}
-      >
-        <CloudUpload className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <p className="text-lg text-gray-600 mb-2">
-          Arraste e solte arquivos PDF aqui
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">Upload Múltiplo de Provas</h1>
+        <p className="text-gray-600 mb-6">
+          Sistema inteligente que detecta automaticamente gabaritos e agrupa com suas respectivas provas
         </p>
-        <p className="text-sm text-gray-500 mb-4">
-          ou
-        </p>
-        <label className="inline-block">
-          <input
-            type="file"
-            multiple
-            accept=".pdf"
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-          <span className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition-colors">
-            Selecionar Arquivos
-          </span>
-        </label>
-      </div>
 
-      {/* Resumo */}
-      {files.length > 0 && (
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex gap-6 text-sm">
-            <span>Total: {files.length}</span>
-            <span className="text-yellow-600">Pendentes: {pendingCount}</span>
-            <span className="text-green-600">Sucesso: {successCount}</span>
-            {errorCount > 0 && (
-              <span className="text-red-600">Erros: {errorCount}</span>
+        {/* Área de drag & drop */}
+        <div
+          onDragEnter={handleDrag}
+          onDragLeave={handleDrag}
+          onDragOver={handleDrag}
+          onDrop={handleDrop}
+          className={`mb-8 border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
+            dragActive 
+              ? 'border-blue-500 bg-blue-50' 
+              : 'border-gray-300 hover:border-gray-400'
+          }`}
+        >
+          <CloudUpload className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <p className="text-lg text-gray-600 mb-2">
+            Arraste e solte arquivos PDF aqui
+          </p>
+          <p className="text-sm text-gray-500 mb-4">
+            O sistema detectará automaticamente provas e gabaritos
+          </p>
+          <label className="inline-block">
+            <input
+              type="file"
+              multiple
+              accept=".pdf"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <span className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition-colors">
+              Selecionar Arquivos
+            </span>
+          </label>
+        </div>
+
+        {/* Resumo */}
+        {fileGroups.length > 0 && (
+          <div className="mb-6 flex items-center justify-between">
+            <div className="flex gap-6 text-sm">
+              <span>Total: {fileGroups.length}</span>
+              <span className="text-yellow-600">Pendentes: {pendingCount}</span>
+              <span className="text-green-600">Sucesso: {successCount}</span>
+              {errorCount > 0 && (
+                <span className="text-red-600">Erros: {errorCount}</span>
+              )}
+            </div>
+            {pendingCount > 0 && (
+              <button
+                onClick={uploadAll}
+                disabled={isUploading}
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4" />
+                    Enviar Todos
+                  </>
+                )}
+              </button>
             )}
           </div>
-          {pendingCount > 0 && (
-            <button
-              onClick={uploadAll}
-              disabled={isUploading}
-              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              {isUploading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Enviando...
-                </>
-              ) : (
-                <>
-                  <Upload className="w-4 h-4" />
-                  Enviar Todos
-                </>
-              )}
-            </button>
-          )}
-        </div>
-      )}
+        )}
 
-      {/* Lista de arquivos */}
-      <div className="space-y-4">
-        {files.map(file => (
-          <div
-            key={file.id}
-            className={`bg-white rounded-lg shadow-sm p-4 border ${
-              file.status === 'error' ? 'border-red-200' : 'border-gray-200'
-            }`}
-          >
-            <div className="flex items-start gap-4">
-              <FileText className="w-8 h-8 text-gray-400 flex-shrink-0 mt-1" />
-              
-              <div className="flex-1 space-y-3">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="font-medium text-gray-900">{file.file.name}</p>
-                    <p className="text-sm text-gray-500">
-                      {(file.file.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                  </div>
-                  
-                  {file.status === 'pending' && (
-                    <button
-                      onClick={() => removeFile(file.id)}
-                      className="text-gray-400 hover:text-red-600 transition-colors"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  )}
-                  
-                  {file.status === 'success' && (
-                    <CheckCircle className="w-5 h-5 text-green-600" />
-                  )}
-                  
-                  {file.status === 'error' && (
-                    <AlertCircle className="w-5 h-5 text-red-600" />
+        {/* Lista de grupos */}
+        <div className="space-y-4">
+          {fileGroups.map(group => (
+            <div
+              key={group.id}
+              className={`bg-white rounded-lg shadow-sm p-4 border ${
+                group.status === 'error' ? 'border-red-200' : 'border-gray-200'
+              }`}
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0">
+                  {group.gabarito ? (
+                    <div className="relative">
+                      <FileText className="w-8 h-8 text-blue-500" />
+                      <FileCheck className="w-5 h-5 text-green-500 absolute -bottom-1 -right-1 bg-white rounded-full" />
+                    </div>
+                  ) : (
+                    <FileText className="w-8 h-8 text-gray-400" />
                   )}
                 </div>
+                
+                <div className="flex-1 space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        {group.prova.name}
+                        {group.gabarito && (
+                          <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                            <LinkIcon className="w-3 h-3 inline mr-1" />
+                            Com gabarito
+                          </span>
+                        )}
+                      </p>
+                      {group.gabarito && (
+                        <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                          <FileCheck className="w-4 h-4" />
+                          {group.gabarito.name}
+                        </p>
+                      )}
+                      <p className="text-sm text-gray-500 mt-1">
+                        {(group.prova.size / 1024 / 1024).toFixed(2)} MB
+                        {group.gabarito && ` + ${(group.gabarito.size / 1024 / 1024).toFixed(2)} MB`}
+                      </p>
+                    </div>
+                    
+                    {group.status === 'pending' && (
+                      <button
+                        onClick={() => removeGroup(group.id)}
+                        className="text-gray-400 hover:text-red-600 transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    )}
+                    
+                    {group.status === 'success' && (
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                    )}
+                    
+                    {group.status === 'error' && (
+                      <AlertCircle className="w-5 h-5 text-red-600" />
+                    )}
+                  </div>
 
-                {file.status === 'pending' && (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">
-                        Instituição
-                      </label>
-                      <select
-                        value={file.instituicao}
-                        onChange={(e) => updateFileInfo(file.id, { instituicao: e.target.value })}
-                        className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                      >
-                        <option value="">Selecione</option>
-                        <option value="UEA">UEA</option>
-                        <option value="UFAM">UFAM</option>
-                        <option value="UFRR">UFRR</option>
-                        <option value="UERR">UERR</option>
-                        <option value="ENEM">ENEM</option>
-                      </select>
+                  {group.status === 'pending' && (
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">
+                          Instituição
+                        </label>
+                        <select
+                          value={group.metadata.instituicao}
+                          onChange={(e) => updateGroupInfo(group.id, { 
+                            metadata: { ...group.metadata, instituicao: e.target.value }
+                          })}
+                          className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        >
+                          <option value="">Selecione</option>
+                          <option value="UEA">UEA</option>
+                          <option value="UFAM">UFAM</option>
+                          <option value="UFRR">UFRR</option>
+                          <option value="UERR">UERR</option>
+                          <option value="ENEM">ENEM</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">
+                          Tipo
+                        </label>
+                        <select
+                          value={group.metadata.tipo_prova}
+                          onChange={(e) => {
+                            const tipo = e.target.value;
+                            updateGroupInfo(group.id, { 
+                              metadata: { 
+                                ...group.metadata, 
+                                tipo_prova: tipo,
+                                subcategoria: '',
+                                area: ''
+                              }
+                            });
+                          }}
+                          className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        >
+                          <option value="">Selecione</option>
+                          <option value="PSC">PSC</option>
+                          <option value="PSI">PSI</option>
+                          <option value="PSMV">PSMV</option>
+                          <option value="VESTIBULAR">Vestibular</option>
+                          <option value="MACRO">MACRO</option>
+                          <option value="SIS">SIS</option>
+                          <option value="ENEM">ENEM</option>
+                        </select>
+                      </div>
+
+                      {/* Subcategoria condicional */}
+                      {group.metadata.tipo_prova && SUBCATEGORIAS[group.metadata.tipo_prova] && (
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 mb-1">
+                            Subcategoria
+                          </label>
+                          <select
+                            value={group.metadata.subcategoria || ''}
+                            onChange={(e) => updateGroupInfo(group.id, { 
+                              metadata: { 
+                                ...group.metadata, 
+                                subcategoria: e.target.value,
+                                area: e.target.value === 'DIA 2' ? '' : group.metadata.area
+                              }
+                            })}
+                            className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          >
+                            <option value="">Selecione</option>
+                            {SUBCATEGORIAS[group.metadata.tipo_prova].map(sub => (
+                              <option key={sub} value={sub}>{sub}</option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+
+                      {/* Área condicional para MACRO DIA 2 */}
+                      {group.metadata.tipo_prova === 'MACRO' && group.metadata.subcategoria === 'DIA 2' && (
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 mb-1">
+                            Área
+                          </label>
+                          <select
+                            value={group.metadata.area || ''}
+                            onChange={(e) => updateGroupInfo(group.id, { 
+                              metadata: { ...group.metadata, area: e.target.value }
+                            })}
+                            className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          >
+                            <option value="">Selecione</option>
+                            {AREAS_MACRO.map(area => (
+                              <option key={area} value={area}>{area}</option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                      
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">
+                          Ano
+                        </label>
+                        <input
+                          type="number"
+                          value={group.metadata.ano}
+                          onChange={(e) => updateGroupInfo(group.id, { 
+                            metadata: { ...group.metadata, ano: parseInt(e.target.value) }
+                          })}
+                          min="2000"
+                          max="2099"
+                          className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">
+                          Etapa
+                        </label>
+                        <input
+                          type="text"
+                          value={group.metadata.etapa}
+                          onChange={(e) => updateGroupInfo(group.id, { 
+                            metadata: { ...group.metadata, etapa: e.target.value }
+                          })}
+                          placeholder="Ex: 1ª Etapa"
+                          className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                      </div>
                     </div>
-                    
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">
-                        Tipo
-                      </label>
-                      <select
-                        value={file.tipo_prova}
-                        onChange={(e) => updateFileInfo(file.id, { tipo_prova: e.target.value })}
-                        className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                      >
-                        <option value="">Selecione</option>
-                        <option value="PSC">PSC</option>
-                        <option value="PSI">PSI</option>
-                        <option value="PSMV">PSMV</option>
-                        <option value="VESTIBULAR">Vestibular</option>
-                        <option value="MACRO">MACRO</option>
-                        <option value="SIS">SIS</option>
-                        <option value="ENEM">ENEM</option>
-                      </select>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">
-                        Ano
-                      </label>
-                      <input
-                        type="number"
-                        value={file.ano}
-                        onChange={(e) => updateFileInfo(file.id, { ano: parseInt(e.target.value) })}
-                        min="2000"
-                        max="2099"
-                        className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  )}
+
+                  {group.status === 'uploading' && (
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${group.progress}%` }}
                       />
                     </div>
-                    
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">
-                        Etapa
-                      </label>
-                      <input
-                        type="text"
-                        value={file.etapa}
-                        onChange={(e) => updateFileInfo(file.id, { etapa: e.target.value })}
-                        placeholder="Ex: 1ª Etapa"
-                        className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                      />
-                    </div>
-                  </div>
-                )}
+                  )}
 
-                {file.status === 'uploading' && (
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${file.progress}%` }}
-                    />
-                  </div>
-                )}
-
-                {file.status === 'error' && (
-                  <p className="text-sm text-red-600">{file.error}</p>
-                )}
+                  {group.status === 'error' && (
+                    <p className="text-sm text-red-600">{group.error}</p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {files.length === 0 && (
-        <div className="bg-gray-50 rounded-lg p-12 text-center">
-          <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">Nenhum arquivo selecionado</p>
+          ))}
         </div>
-      )}
+
+        {fileGroups.length === 0 && (
+          <div className="bg-gray-50 rounded-lg p-12 text-center">
+            <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500">Nenhum arquivo selecionado</p>
+          </div>
+        )}
       </div>
     </AuthGuard>
   );

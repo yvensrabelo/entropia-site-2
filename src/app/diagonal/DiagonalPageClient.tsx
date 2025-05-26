@@ -13,7 +13,7 @@ export default function DiagonalPageClient() {
       <NavbarDiagonal />
       <HeroSection />
       <TurmasSection />
-      <MateriaisSection />
+      {/* <MateriaisSection /> */}
       
       {/* Footer */}
       <footer className="bg-zinc-900 py-8 mt-20">

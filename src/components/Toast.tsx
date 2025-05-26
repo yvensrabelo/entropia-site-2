@@ -96,3 +96,47 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     </ToastContext.Provider>
   )
 }
+
+// Componente Toast simples para uso direto
+interface SimpleToastProps {
+  message: string;
+  type: 'success' | 'error';
+  onClose: () => void;
+}
+
+export function Toast({ message, type, onClose }: SimpleToastProps) {
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+    
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
+      className={`fixed bottom-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-xl ${
+        type === 'success' 
+          ? 'bg-green-600 text-white' 
+          : 'bg-red-600 text-white'
+      }`}
+      role="alert"
+    >
+      {type === 'success' ? (
+        <CheckCircle className="w-5 h-5" />
+      ) : (
+        <AlertCircle className="w-5 h-5" />
+      )}
+      <p className="flex-1">{message}</p>
+      <button
+        onClick={onClose}
+        className="text-white/80 hover:text-white transition-colors"
+      >
+        <X className="w-4 h-4" />
+      </button>
+    </motion.div>
+  );
+}

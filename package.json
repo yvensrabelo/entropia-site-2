@@ -25,6 +25,10 @@
     "typescript": "5.8.3"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@hookform/resolvers": "^5.0.1",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.49.8",
     "bcryptjs": "^3.0.2",
@@ -34,6 +38,9 @@
     "next": "^14.2.29",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwind-merge": "^3.3.0"
+    "react-hook-form": "^7.56.4",
+    "react-hot-toast": "^2.5.2",
+    "tailwind-merge": "^3.3.0",
+    "zod": "^3.25.28"
   }
 }

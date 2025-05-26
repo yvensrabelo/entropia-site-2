@@ -44,7 +44,8 @@
       "Bash(npm install:*)",
       "Bash(npm run analyze:*)",
       "Bash(ANALYZE=true npm run build)",
-      "Bash(npx @railway/cli login:*)"
+      "Bash(npx @railway/cli login:*)",
+      "mcp__ide__executeCode"
     ],
     "deny": []
   }

@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase-client';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { Prova } from '@/lib/types/prova';
+import { Prova, SUBCATEGORIAS, AREAS_MACRO, ProvaFormData } from '@/lib/types/prova';
 import AuthGuard from '@/components/admin/AuthGuard';
 
 export default function EditarProvaPage() {
@@ -13,9 +13,11 @@ export default function EditarProvaPage() {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [loadingProva, setLoadingProva] = useState(true);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProvaFormData>({
     instituicao: '',
     tipo_prova: '',
+    subcategoria: '',
+    area: '',
     ano: new Date().getFullYear(),
     etapa: '',
     titulo: '',
@@ -41,6 +43,8 @@ export default function EditarProvaPage() {
         setFormData({
           instituicao: data.instituicao,
           tipo_prova: data.tipo_prova,
+          subcategoria: data.subcategoria || '',
+          area: data.area || '',
           ano: data.ano,
           etapa: data.etapa || '',
           titulo: data.titulo,
@@ -66,6 +70,8 @@ export default function EditarProvaPage() {
         .from('provas')
         .update({
           ...formData,
+          subcategoria: formData.subcategoria || null,
+          area: formData.area || null,
           tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()) : []
         })
         .eq('id', params.id);
@@ -134,7 +140,15 @@ export default function EditarProvaPage() {
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.tipo_prova}
-              onChange={(e) => setFormData({ ...formData, tipo_prova: e.target.value })}
+              onChange={(e) => {
+                const tipo = e.target.value;
+                setFormData({ 
+                  ...formData, 
+                  tipo_prova: tipo,
+                  subcategoria: '',
+                  area: ''
+                });
+              }}
             >
               <option value="">Selecione</option>
               <option value="PSC">PSC</option>
@@ -146,6 +160,53 @@ export default function EditarProvaPage() {
               <option value="ENEM">ENEM</option>
             </select>
           </div>
+
+          {/* Campo de subcategoria condicional */}
+          {formData.tipo_prova && SUBCATEGORIAS[formData.tipo_prova] && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Subcategoria
+              </label>
+              <select
+                required
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.subcategoria}
+                onChange={(e) => {
+                  const subcategoria = e.target.value;
+                  setFormData({ 
+                    ...formData, 
+                    subcategoria,
+                    area: subcategoria === 'DIA 2' ? '' : formData.area
+                  });
+                }}
+              >
+                <option value="">Selecione</option>
+                {SUBCATEGORIAS[formData.tipo_prova].map(sub => (
+                  <option key={sub} value={sub}>{sub}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Campo de área condicional para MACRO DIA 2 */}
+          {formData.tipo_prova === 'MACRO' && formData.subcategoria === 'DIA 2' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Área
+              </label>
+              <select
+                required
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.area}
+                onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+              >
+                <option value="">Selecione</option>
+                {AREAS_MACRO.map(area => (
+                  <option key={area} value={area}>{area}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">

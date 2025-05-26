@@ -69,7 +69,7 @@ export default function NavbarDiagonal() {
   const navItems = [
     { href: '#inicio', label: 'Início' },
     { href: '#turmas', label: 'Turmas' },
-    { href: '#materiais', label: 'Materiais' },
+    // { href: '#materiais', label: 'Materiais' },
     { href: '/admin/login', label: 'Admin', icon: Lock },
   ]
 

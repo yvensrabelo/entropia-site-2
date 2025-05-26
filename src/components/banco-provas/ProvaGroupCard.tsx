@@ -4,11 +4,25 @@ import { motion } from 'framer-motion';
 import { FileText } from 'lucide-react';
 import { Prova } from '@/lib/types/prova';
 
-interface ProvaCardProps {
-  prova: Prova;
+interface ProvaGroup {
+  key: string;
+  instituicao: string;
+  tipo_prova: string;
+  subcategoria?: string | null;
+  area?: string | null;
+  ano: number;
+  etapa?: string | null;
+  titulo: string;
+  prova?: Prova;
+  gabarito?: Prova;
+  totalVisualizacoes: number;
 }
 
-export default function ProvaCard({ prova }: ProvaCardProps) {
+interface ProvaGroupCardProps {
+  group: ProvaGroup;
+}
+
+export default function ProvaGroupCard({ group }: ProvaGroupCardProps) {
   const getTipoGradient = (tipo: string) => {
     const gradients: Record<string, string> = {
       PSC: 'from-blue-500/10 to-cyan-500/10',
@@ -37,7 +51,7 @@ export default function ProvaCard({ prova }: ProvaCardProps) {
       className="group relative bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
     >
       {/* Background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${getTipoGradient(prova.tipo_prova)} opacity-50`} />
+      <div className={`absolute inset-0 bg-gradient-to-br ${getTipoGradient(group.tipo_prova)} opacity-50`} />
       
       {/* Content */}
       <div className="relative p-4">
@@ -46,41 +60,41 @@ export default function ProvaCard({ prova }: ProvaCardProps) {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <FileText className="w-4 h-4 text-gray-400" />
-              <span className={`text-xs font-bold uppercase tracking-wider ${getTipoAccent(prova.tipo_prova)}`}>
-                {prova.subcategoria || prova.tipo_prova}
+              <span className={`text-xs font-bold uppercase tracking-wider ${getTipoAccent(group.tipo_prova)}`}>
+                {group.subcategoria || group.tipo_prova}
               </span>
-              {prova.area && (
+              {group.area && (
                 <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">
-                  {prova.area}
+                  {group.area}
                 </span>
               )}
             </div>
-            <h3 className="font-semibold text-gray-900 text-sm leading-tight line-clamp-2" title={prova.titulo}>
-              {prova.titulo}
+            <h3 className="font-semibold text-gray-900 text-sm leading-tight line-clamp-2" title={group.titulo}>
+              {group.titulo}
             </h3>
           </div>
           <span className="text-xs font-medium text-gray-500 ml-2">
-            {prova.ano}
+            {group.ano}
           </span>
         </div>
 
         {/* Metadata */}
         <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
-          <span className="font-medium">{prova.instituicao}</span>
-          {prova.etapa && (
+          <span className="font-medium">{group.instituicao}</span>
+          {group.etapa && (
             <>
               <span>•</span>
-              <span>{prova.etapa}</span>
+              <span>{group.etapa}</span>
             </>
           )}
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* Se não é gabarito e tem url_pdf, mostra botão PROVA */}
-          {!prova.is_gabarito && prova.url_pdf && (
+          {/* Botão PROVA */}
+          {group.prova && (
             <a
-              href={prova.url_pdf}
+              href={group.prova.url_pdf || '#'}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 hover:text-gray-900 transition-all duration-200 text-center group-hover:scale-105"
@@ -89,22 +103,10 @@ export default function ProvaCard({ prova }: ProvaCardProps) {
             </a>
           )}
           
-          {/* Se é gabarito, mostra botão GAB com a URL apropriada */}
-          {prova.is_gabarito && (prova.url_gabarito || prova.url_pdf) && (
+          {/* Botão GAB */}
+          {group.gabarito && (
             <a
-              href={prova.url_gabarito || prova.url_pdf || '#'}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100 hover:text-emerald-800 transition-all duration-200 text-center group-hover:scale-105"
-            >
-              GAB
-            </a>
-          )}
-          
-          {/* Se não é gabarito mas tem url_gabarito, mostra botão GAB adicional */}
-          {!prova.is_gabarito && prova.url_gabarito && (
-            <a
-              href={prova.url_gabarito}
+              href={group.gabarito.url_gabarito || group.gabarito.url_pdf || '#'}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100 hover:text-emerald-800 transition-all duration-200 text-center group-hover:scale-105"
@@ -116,7 +118,7 @@ export default function ProvaCard({ prova }: ProvaCardProps) {
 
         {/* Views counter - very subtle */}
         <div className="absolute bottom-1 right-2 text-[10px] text-gray-400">
-          {prova.visualizacoes} views
+          {group.totalVisualizacoes} views
         </div>
       </div>
     </motion.div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Loader2, LogOut } from 'lucide-react';
+import { Loader2, LogOut, FileText, GraduationCap } from 'lucide-react';
 
 interface AdminUser {
   id: string;
@@ -76,20 +76,32 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
               )}
             </div>
             
-            <nav className="flex items-center space-x-4">
+            <nav className="flex items-center space-x-6">
               <a
                 href="/admin/dashboard/provas"
-                className={`text-sm font-medium ${
+                className={`flex items-center gap-2 text-sm font-medium transition-colors ${
                   pathname?.includes('/provas') 
                     ? 'text-blue-600' 
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
+                <FileText className="w-4 h-4" />
                 Provas
+              </a>
+              <a
+                href="/admin/dashboard/turmas"
+                className={`flex items-center gap-2 text-sm font-medium transition-colors ${
+                  pathname?.includes('/turmas') 
+                    ? 'text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <GraduationCap className="w-4 h-4" />
+                Turmas
               </a>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 text-sm text-gray-600 hover:text-red-600 transition-colors"
+                className="flex items-center gap-2 text-sm text-gray-600 hover:text-red-600 transition-colors ml-4 pl-4 border-l"
               >
                 <LogOut className="w-4 h-4" />
                 Sair
