@@ -180,7 +180,7 @@ export async function POST(request: NextRequest) {
       hora_entrada: horaEntrada,
       tipo: 'catraca',
       enrollid_catraca: data.enrollid,
-      observacoes: data.message
+      observacoes: `Catraca: ${data.message}` // Adiciona prefixo para identificar origem
     };
     
     console.log('9. Dados para inserir:', JSON.stringify(presencaData, null, 2));
@@ -208,7 +208,8 @@ export async function POST(request: NextRequest) {
     }
     
     console.log('11. ✅ SUCESSO! Presença inserida:', insertResult);
-    logWebhook(data, 'SUCESSO', `Presença registrada para ${aluno.nome}`);
+    console.log(`    Mensagem da catraca salva: "${data.message}"`);
+    logWebhook(data, 'SUCESSO', `Presença registrada para ${aluno.nome} - Mensagem: ${data.message}`);
     
     console.log('========== WEBHOOK CATRACA - FIM ==========\n');
     
