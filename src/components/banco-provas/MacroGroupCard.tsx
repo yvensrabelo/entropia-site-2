@@ -51,21 +51,21 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
     switch (area) {
       case 'biologicas':
         return {
-          text: 'text-[#43A047]',
-          bg: 'bg-[#E8F5E9]',
-          hover: 'hover:bg-[#C8E6C9]'
+          text: 'text-green-700',
+          bg: 'bg-green-50',
+          hover: 'hover:bg-green-100'
         };
       case 'humanas':
         return {
-          text: 'text-[#00897B]',
-          bg: 'bg-[#E0F2F1]',
-          hover: 'hover:bg-[#B2DFDB]'
+          text: 'text-teal-700',
+          bg: 'bg-teal-50',
+          hover: 'hover:bg-teal-100'
         };
       case 'exatas':
         return {
-          text: 'text-[#00695C]',
-          bg: 'bg-[#E0F2F1]',
-          hover: 'hover:bg-[#B2DFDB]'
+          text: 'text-cyan-700',
+          bg: 'bg-cyan-50',
+          hover: 'hover:bg-cyan-100'
         };
       default:
         return {
@@ -82,13 +82,10 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
       animate={{ opacity: 1, scale: 1 }}
       whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.2 }}
-      className="group relative bg-gradient-to-br from-[#E8F5E9] to-[#C8E6C9] rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-[#81C784]/20"
+      className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200"
     >
-      {/* Decorative pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute -top-4 -right-4 w-32 h-32 bg-gradient-to-br from-[#2E7D32] to-[#1B5E20] rounded-full blur-3xl" />
-        <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-gradient-to-tr from-[#43A047] to-[#2E7D32] rounded-full blur-2xl" />
-      </div>
+      {/* Decorative accent */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-green-600" />
       
       {/* Content */}
       <div className="relative p-6">
@@ -96,32 +93,32 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-white/50 backdrop-blur-sm rounded-lg">
-                <FileText className="w-5 h-5 text-[#1B5E20]" />
+              <div className="p-2 bg-green-50 rounded-lg">
+                <FileText className="w-5 h-5 text-green-700" />
               </div>
-              <span className="text-sm font-bold uppercase tracking-wider text-[#1B5E20]">
+              <span className="text-sm font-bold uppercase tracking-wider text-green-700">
                 MACRO
               </span>
             </div>
-            <h3 className="font-bold text-[#1B5E20] text-xl leading-tight">
+            <h3 className="font-bold text-gray-900 text-xl leading-tight">
               MACRO {group.ano}
             </h3>
           </div>
-          <span className="px-3 py-1 text-sm font-bold text-white bg-[#00C853] rounded-full shadow-sm">
+          <span className="px-3 py-1 text-sm font-bold text-green-700 bg-green-50 border border-green-200 rounded-full">
             {group.ano}
           </span>
         </div>
 
         {/* Institution */}
-        <div className="flex items-center gap-3 text-sm text-[#2E7D32] mb-4">
+        <div className="flex items-center gap-3 text-sm text-gray-600 mb-4">
           <span className="font-semibold">{group.instituicao}</span>
         </div>
 
         {/* DIA 1 Section */}
         {group.dia1 && (
           <div className="mb-5">
-            <div className="text-sm font-semibold text-[#2E7D32] mb-2 flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
+            <div className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-green-600" />
               DIA 1 - Conhecimentos Gerais
             </div>
             <div className="flex gap-2">
@@ -132,8 +129,8 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
                   href={group.dia1.prova.url_pdf || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 px-4 py-2 text-sm font-semibold text-white bg-[#4CAF50] rounded-lg hover:bg-[#45A049] transition-all duration-200 text-center shadow-sm hover:shadow-md"
-                  style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)' }}
+                  className="flex-1 px-4 py-2 text-sm font-semibold text-green-700 bg-white border border-green-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-all duration-200 text-center shadow-sm hover:shadow-md"
+                  
                 >
                   PROVA
                 </motion.a>
@@ -145,8 +142,8 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
                   href={group.dia1.gabarito.url_gabarito || group.dia1.gabarito.url_pdf || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 px-4 py-2 text-sm font-semibold text-white bg-[#66BB6A] rounded-lg hover:bg-[#5CB85C] transition-all duration-200 text-center shadow-sm hover:shadow-md"
-                  style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)' }}
+                  className="flex-1 px-4 py-2 text-sm font-semibold text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 hover:border-green-300 transition-all duration-200 text-center shadow-sm hover:shadow-md"
+                  
                 >
                   GABARITO
                 </motion.a>
@@ -157,20 +154,20 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
         
         {/* Divider */}
         {group.dia1 && group.dia2 && (
-          <div className="border-t border-[#81C784]/30 my-4" />
+          <div className="border-t border-gray-200 my-4" />
         )}
 
         {/* DIA 2 Section */}
         {group.dia2 && (
           <div>
-            <div className="text-sm font-semibold text-[#2E7D32] mb-3 flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
+            <div className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-green-600" />
               DIA 2 - Conhecimentos Específicos
             </div>
             <div className="space-y-3">
               {/* Biológicas */}
               {group.dia2.biologicas && (
-                <div className="flex items-center gap-3 p-3 bg-white/40 backdrop-blur-sm rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-2 min-w-[110px]">
                     <div className={`p-1.5 rounded-md ${getAreaColor('biologicas').bg}`}>
                       {getAreaIcon('biologicas')}
@@ -187,7 +184,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
                         href={group.dia2.biologicas.prova.url_pdf || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#4CAF50] rounded-md hover:bg-[#45A049] transition-all duration-200 text-center shadow-sm"
+                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-green-700 bg-white border border-green-200 rounded-md hover:bg-green-50 hover:border-green-300 transition-all duration-200 text-center shadow-sm"
                       >
                         PROVA
                       </motion.a>
@@ -203,7 +200,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
                         href={group.dia2.biologicas.gabarito.url_gabarito || group.dia2.biologicas.gabarito.url_pdf || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#66BB6A] rounded-md hover:bg-[#5CB85C] transition-all duration-200 text-center shadow-sm"
+                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-md hover:bg-green-100 hover:border-green-300 transition-all duration-200 text-center shadow-sm"
                       >
                         GAB
                       </motion.a>
@@ -218,7 +215,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
 
               {/* Humanas */}
               {group.dia2.humanas && (
-                <div className="flex items-center gap-3 p-3 bg-white/40 backdrop-blur-sm rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-2 min-w-[110px]">
                     <div className={`p-1.5 rounded-md ${getAreaColor('humanas').bg}`}>
                       {getAreaIcon('humanas')}
@@ -235,7 +232,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
                         href={group.dia2.humanas.prova.url_pdf || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#4CAF50] rounded-md hover:bg-[#45A049] transition-all duration-200 text-center shadow-sm"
+                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-green-700 bg-white border border-green-200 rounded-md hover:bg-green-50 hover:border-green-300 transition-all duration-200 text-center shadow-sm"
                       >
                         PROVA
                       </motion.a>
@@ -251,7 +248,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
                         href={group.dia2.humanas.gabarito.url_gabarito || group.dia2.humanas.gabarito.url_pdf || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#66BB6A] rounded-md hover:bg-[#5CB85C] transition-all duration-200 text-center shadow-sm"
+                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-md hover:bg-green-100 hover:border-green-300 transition-all duration-200 text-center shadow-sm"
                       >
                         GAB
                       </motion.a>
@@ -266,7 +263,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
 
               {/* Exatas */}
               {group.dia2.exatas && (
-                <div className="flex items-center gap-3 p-3 bg-white/40 backdrop-blur-sm rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-2 min-w-[110px]">
                     <div className={`p-1.5 rounded-md ${getAreaColor('exatas').bg}`}>
                       {getAreaIcon('exatas')}
@@ -283,7 +280,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
                         href={group.dia2.exatas.prova.url_pdf || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#4CAF50] rounded-md hover:bg-[#45A049] transition-all duration-200 text-center shadow-sm"
+                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-green-700 bg-white border border-green-200 rounded-md hover:bg-green-50 hover:border-green-300 transition-all duration-200 text-center shadow-sm"
                       >
                         PROVA
                       </motion.a>
@@ -299,7 +296,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
                         href={group.dia2.exatas.gabarito.url_gabarito || group.dia2.exatas.gabarito.url_pdf || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#66BB6A] rounded-md hover:bg-[#5CB85C] transition-all duration-200 text-center shadow-sm"
+                        className="flex-1 px-3 py-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-md hover:bg-green-100 hover:border-green-300 transition-all duration-200 text-center shadow-sm"
                       >
                         GAB
                       </motion.a>
@@ -316,7 +313,7 @@ export default function MacroGroupCard({ group }: MacroGroupCardProps) {
         )}
 
         {/* Views counter */}
-        <div className="absolute bottom-2 right-3 text-xs text-[#1B5E20]/60 font-medium">
+        <div className="absolute bottom-2 right-3 text-xs text-gray-500 font-medium">
           {group.totalVisualizacoes} visualizações
         </div>
       </div>

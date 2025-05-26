@@ -349,9 +349,9 @@ export default function UploadMultiploPage() {
                           <option value="">Selecione</option>
                           <option value="UEA">UEA</option>
                           <option value="UFAM">UFAM</option>
-                          <option value="UFRR">UFRR</option>
-                          <option value="UERR">UERR</option>
                           <option value="ENEM">ENEM</option>
+                          <option value="UERR">UERR</option>
+                          <option value="UFRR">UFRR</option>
                         </select>
                       </div>
                       
@@ -382,6 +382,8 @@ export default function UploadMultiploPage() {
                           <option value="MACRO">MACRO</option>
                           <option value="SIS">SIS</option>
                           <option value="ENEM">ENEM</option>
+                          <option value="UERR">UERR</option>
+                          <option value="UFRR">UFRR</option>
                         </select>
                       </div>
 

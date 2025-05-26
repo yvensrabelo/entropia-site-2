@@ -1,0 +1,9 @@
+Arquivo de teste simulando UFRR PSS 3/Vestibular
+Padrão: UFRR-GABARITO-Vestibular-2024.pdf
+
+Esperado:
+- Tipo: UFRR
+- Subcategoria: PSS 3/Vestibular
+- Ano: 2024
+- Instituição: UFRR
+- É gabarito: true

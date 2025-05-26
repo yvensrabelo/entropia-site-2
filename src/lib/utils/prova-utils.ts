@@ -170,7 +170,7 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
   // Padrões de regex mais específicos para extrair informações
   const patterns = {
     instituicao: /\b(UEA|UFAM|UFRR|UERR|ENEM)\b/i,
-    tipo_prova: /\b(PSC|PSI|PSMV|VESTIBULAR|MACRO|SIS|ENEM)\b/i,
+    tipo_prova: /\b(PSC|PSI|PSMV|VESTIBULAR|MACRO|SIS|ENEM|UERR|UFRR)\b/i,
     ano: /\b(20\d{2})\b/,
     
     // Padrões específicos para etapas/subcategorias PSC
@@ -179,8 +179,18 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
     // Padrões para SIS
     sis_etapa: /SIS.*?Etapa[\s\-_]*([1-3])/i,
     
+    // Padrões para PSI
+    psi_ano: /PSI[\s\-_]*(\d{2})/i,
+    psi_cg: /CG[\s\-_]*(I{1,2}|[12])/i,
+    
     // Padrões para MACRO
     macro_dia: /MACRO.*?DIA[\s\-_]*([12])/i,
+    
+    // Padrões para UFRR
+    ufrr_e1: /\bE1\b/i,
+    ufrr_e2: /\bE2\b/i,
+    ufrr_e3: /\bE3\b/i,
+    ufrr_vestibular: /\bVESTIBULAR\b/i,
     
     // Detecção de áreas MACRO por nome do arquivo
     geral: /\bgeral\b/i,
@@ -242,6 +252,29 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
       metadata.subcategoria = `SIS ${etapaNum}`;
       metadata.etapa = `${etapaNum}ª Etapa`;
     }
+  } else if (metadata.tipo_prova === 'PSI') {
+    // Detecta o padrão PSI-[ANO]-[Prova/Gabarito]-CG-[I/II].pdf
+    const psiCgMatch = nameWithoutExt.match(patterns.psi_cg);
+    if (psiCgMatch) {
+      const cgNum = psiCgMatch[1];
+      // Converte romano ou número para DIA X
+      const cgMap: Record<string, string> = {
+        'I': 'DIA 1', '1': 'DIA 1',
+        'II': 'DIA 2', '2': 'DIA 2'
+      };
+      metadata.subcategoria = cgMap[cgNum.toUpperCase()] || `DIA ${cgNum}`;
+    }
+    
+    // Extrai ano específico do PSI se houver
+    const psiAnoMatch = nameWithoutExt.match(patterns.psi_ano);
+    if (psiAnoMatch) {
+      const anoShort = psiAnoMatch[1];
+      // Converte ano de 2 dígitos para 4 dígitos
+      const fullYear = anoShort.length === 2 ? 
+        (parseInt(anoShort) > 50 ? `19${anoShort}` : `20${anoShort}`) : 
+        anoShort;
+      metadata.ano = parseInt(fullYear);
+    }
   } else if (metadata.tipo_prova === 'MACRO') {
     // Detecta se é GERAL (DIA 1) ou específico por área (DIA 2)
     if (patterns.geral.test(nameWithoutExt)) {
@@ -283,6 +316,15 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
         }
       }
     }
+  } else if (metadata.tipo_prova === 'UFRR') {
+    // Detecta padrões UFRR
+    if (patterns.ufrr_e1.test(nameWithoutExt)) {
+      metadata.subcategoria = 'PSS 1';
+    } else if (patterns.ufrr_e2.test(nameWithoutExt)) {
+      metadata.subcategoria = 'PSS 2';
+    } else if (patterns.ufrr_e3.test(nameWithoutExt) || patterns.ufrr_vestibular.test(nameWithoutExt)) {
+      metadata.subcategoria = 'PSS 3/Vestibular';
+    }
   }
 
   // Se não conseguiu extrair subcategoria mas há etapa geral, tenta usar
@@ -309,6 +351,10 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
         metadata.instituicao = 'UFAM';
       } else if (tipoProva === 'MACRO' || tipoProva === 'SIS' || tipoProva === 'PSMV') {
         metadata.instituicao = 'UEA';
+      } else if (tipoProva === 'UERR') {
+        metadata.instituicao = 'UERR';
+      } else if (tipoProva === 'UFRR') {
+        metadata.instituicao = 'UFRR';
       }
     }
   }

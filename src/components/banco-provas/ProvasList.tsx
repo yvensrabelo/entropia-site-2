@@ -5,7 +5,8 @@ import { supabase } from '@/lib/supabase-client';
 import ProvaCard from './ProvaCard';
 import ProvaGroupCard from './ProvaGroupCard';
 import MacroGroupCard from './MacroGroupCard';
-import FiltrosHierarquicos from './FiltrosHierarquicos';
+import PsiGroupCard from './PsiGroupCard';
+import FiltrosModernos from './FiltrosModernos';
 import { Prova } from '@/lib/types/prova';
 import { Loader2, FileText, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -86,10 +87,48 @@ export default function ProvasList() {
   const provasAgrupadas = useMemo(() => {
     const grupos = new Map();
     const macroGrupos = new Map();
+    const psiGrupos = new Map();
     
     provasFiltradas.forEach(prova => {
+      // Tratamento especial para PSI
+      if (prova.tipo_prova === 'PSI') {
+        const psiKey = `${prova.instituicao}-PSI-${prova.ano}`;
+        
+        if (!psiGrupos.has(psiKey)) {
+          psiGrupos.set(psiKey, {
+            key: psiKey,
+            instituicao: prova.instituicao,
+            tipo_prova: 'PSI',
+            ano: prova.ano,
+            dia1: null,
+            dia2: null,
+            totalVisualizacoes: 0,
+            isPsi: true
+          });
+        }
+        
+        const psiGrupo = psiGrupos.get(psiKey);
+        psiGrupo.totalVisualizacoes += prova.visualizacoes || 0;
+        
+        // Organizar por DIA
+        if (prova.subcategoria === 'DIA 1') {
+          if (!psiGrupo.dia1) psiGrupo.dia1 = {};
+          if (prova.is_gabarito) {
+            psiGrupo.dia1.gabarito = prova;
+          } else {
+            psiGrupo.dia1.prova = prova;
+          }
+        } else if (prova.subcategoria === 'DIA 2') {
+          if (!psiGrupo.dia2) psiGrupo.dia2 = {};
+          if (prova.is_gabarito) {
+            psiGrupo.dia2.gabarito = prova;
+          } else {
+            psiGrupo.dia2.prova = prova;
+          }
+        }
+      }
       // Tratamento especial para MACRO
-      if (prova.tipo_prova === 'MACRO') {
+      else if (prova.tipo_prova === 'MACRO') {
         const macroKey = `${prova.instituicao}-MACRO-${prova.ano}`;
         
         if (!macroGrupos.has(macroKey)) {
@@ -170,8 +209,8 @@ export default function ProvasList() {
       }
     });
     
-    // Combinar grupos normais e MACRO
-    const todosGrupos = [...grupos.values(), ...macroGrupos.values()];
+    // Combinar grupos normais, PSI e MACRO
+    const todosGrupos = [...grupos.values(), ...psiGrupos.values(), ...macroGrupos.values()];
     
     // Ordenar por ano (descendente) e tipo
     return todosGrupos.sort((a, b) => {
@@ -206,7 +245,9 @@ export default function ProvasList() {
       MACRO: 0,
       SIS: 0,
       ENEM: 0,
-      PSI: 0
+      PSI: 0,
+      UERR: 0,
+      UFRR: 0
     };
 
     // Se há busca, contar apenas as provas filtradas por busca
@@ -286,7 +327,7 @@ export default function ProvasList() {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="mb-8"
       >
-        <FiltrosHierarquicos
+        <FiltrosModernos
           contadorProvas={contadorProvas}
           onFiltroChange={handleFiltroChange}
           filtroAtivo={filtroAtivo}
@@ -332,10 +373,12 @@ export default function ProvasList() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.02 }}
-                className={group.isMacro ? "col-span-2 sm:col-span-3 md:col-span-2 lg:col-span-2" : ""}
+                className={(group.isMacro || group.isPsi) ? "col-span-2 sm:col-span-3 md:col-span-2 lg:col-span-2" : ""}
               >
                 {group.isMacro ? (
                   <MacroGroupCard group={group} />
+                ) : group.isPsi ? (
+                  <PsiGroupCard group={group} />
                 ) : (
                   <ProvaGroupCard group={group} />
                 )}

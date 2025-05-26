@@ -227,6 +227,8 @@ export default function NovaProvaPage() {
                 <option value="MACRO">MACRO</option>
                 <option value="SIS">SIS</option>
                 <option value="ENEM">ENEM</option>
+                <option value="UERR">UERR</option>
+                <option value="UFRR">UFRR</option>
               </select>
             </div>
 

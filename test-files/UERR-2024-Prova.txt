@@ -1,0 +1,8 @@
+Este é um arquivo de teste para simular uma prova UERR.
+Nome do arquivo esperado: UERR-2024-Prova.pdf
+
+Detecção esperada:
+- Instituição: UERR
+- Tipo: UERR
+- Ano: 2024
+- Título: UERR 2024

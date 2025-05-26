@@ -23,64 +23,47 @@ interface ProvaGroupCardProps {
 }
 
 export default function ProvaGroupCard({ group }: ProvaGroupCardProps) {
-  const getTipoGradient = (tipo: string) => {
-    const gradients: Record<string, string> = {
-      PSC: 'from-blue-500/10 to-cyan-500/10',
-      MACRO: 'from-purple-500/10 to-pink-500/10',
-      SIS: 'from-indigo-500/10 to-blue-500/10',
-      ENEM: 'from-emerald-500/10 to-green-500/10',
-      PSI: 'from-orange-500/10 to-amber-500/10'
-    };
-    return gradients[tipo] || 'from-gray-500/10 to-gray-400/10';
-  };
-
-  const getTipoAccent = (tipo: string) => {
-    const colors: Record<string, string> = {
-      PSC: 'text-blue-600',
-      MACRO: 'text-purple-600',
-      SIS: 'text-indigo-600',
-      ENEM: 'text-emerald-600',
-      PSI: 'text-orange-600'
-    };
-    return colors[tipo] || 'text-gray-600';
-  };
-
   return (
     <motion.div
-      whileHover={{ y: -2 }}
-      className="group relative bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ y: -4, scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+      className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200"
     >
-      {/* Background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${getTipoGradient(group.tipo_prova)} opacity-50`} />
+      {/* Decorative accent */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-green-600" />
       
       {/* Content */}
-      <div className="relative p-4">
+      <div className="relative p-6">
         {/* Header */}
-        <div className="flex items-start justify-between mb-3">
+        <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-1">
-              <FileText className="w-4 h-4 text-gray-400" />
-              <span className={`text-xs font-bold uppercase tracking-wider ${getTipoAccent(group.tipo_prova)}`}>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-green-50 rounded-lg">
+                <FileText className="w-5 h-5 text-green-700" />
+              </div>
+              <span className="text-sm font-bold uppercase tracking-wider text-green-700">
                 {group.subcategoria || group.tipo_prova}
               </span>
               {group.area && (
-                <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">
+                <span className="text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded">
                   {group.area}
                 </span>
               )}
             </div>
-            <h3 className="font-semibold text-gray-900 text-sm leading-tight line-clamp-2" title={group.titulo}>
+            <h3 className="font-bold text-gray-900 text-xl leading-tight">
               {group.titulo}
             </h3>
           </div>
-          <span className="text-xs font-medium text-gray-500 ml-2">
+          <span className="px-3 py-1 text-sm font-bold text-green-700 bg-green-50 border border-green-200 rounded-full">
             {group.ano}
           </span>
         </div>
 
         {/* Metadata */}
-        <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
-          <span className="font-medium">{group.instituicao}</span>
+        <div className="flex items-center gap-3 text-sm text-gray-600 mb-4">
+          <span className="font-semibold">{group.instituicao}</span>
           {group.etapa && (
             <>
               <span>•</span>
@@ -93,32 +76,36 @@ export default function ProvaGroupCard({ group }: ProvaGroupCardProps) {
         <div className="flex items-center gap-2">
           {/* Botão PROVA */}
           {group.prova && (
-            <a
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               href={group.prova.url_pdf || '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 hover:text-gray-900 transition-all duration-200 text-center group-hover:scale-105"
+              className="flex-1 px-4 py-2 text-sm font-semibold text-green-700 bg-white border border-green-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-all duration-200 text-center shadow-sm hover:shadow-md"
             >
               PROVA
-            </a>
+            </motion.a>
           )}
           
           {/* Botão GAB */}
           {group.gabarito && (
-            <a
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               href={group.gabarito.url_gabarito || group.gabarito.url_pdf || '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100 hover:text-emerald-800 transition-all duration-200 text-center group-hover:scale-105"
+              className="flex-1 px-4 py-2 text-sm font-semibold text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 hover:border-green-300 transition-all duration-200 text-center shadow-sm hover:shadow-md"
             >
-              GAB
-            </a>
+              GABARITO
+            </motion.a>
           )}
         </div>
 
-        {/* Views counter - very subtle */}
-        <div className="absolute bottom-1 right-2 text-[10px] text-gray-400">
-          {group.totalVisualizacoes} views
+        {/* Views counter */}
+        <div className="absolute bottom-2 right-3 text-xs text-gray-500 font-medium">
+          {group.totalVisualizacoes} visualizações
         </div>
       </div>
     </motion.div>

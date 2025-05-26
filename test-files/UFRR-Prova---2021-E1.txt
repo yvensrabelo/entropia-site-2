@@ -1,0 +1,8 @@
+Arquivo de teste simulando UFRR PSS 1 (E1)
+Padrão: UFRR-Prova---2021-E1.pdf
+
+Esperado:
+- Tipo: UFRR
+- Subcategoria: PSS 1
+- Ano: 2021
+- Instituição: UFRR

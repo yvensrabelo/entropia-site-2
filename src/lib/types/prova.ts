@@ -18,13 +18,14 @@ export interface Prova {
 }
 
 export type Instituicao = 'UEA' | 'UFAM' | 'UFRR' | 'UERR' | 'ENEM' | 'OUTROS';
-export type TipoProva = 'PSC' | 'PSI' | 'PSMV' | 'VESTIBULAR' | 'MACRO' | 'SIS' | 'ENEM';
+export type TipoProva = 'PSC' | 'PSI' | 'PSMV' | 'VESTIBULAR' | 'MACRO' | 'SIS' | 'ENEM' | 'UERR' | 'UFRR';
 
 // Subcategorias por tipo de prova
 export const SUBCATEGORIAS: Record<string, string[]> = {
   PSC: ['PSC 1', 'PSC 2', 'PSC 3'],
   SIS: ['SIS 1', 'SIS 2', 'SIS 3'],
-  MACRO: ['DIA 1', 'DIA 2']
+  MACRO: ['DIA 1', 'DIA 2'],
+  UFRR: ['PSS 1', 'PSS 2', 'PSS 3/Vestibular']
 };
 
 // Áreas para MACRO DIA 2
