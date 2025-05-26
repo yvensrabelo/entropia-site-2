@@ -182,6 +182,12 @@ export default function ConfiguracaoWhatsAppPage() {
         setToast({ message: 'WhatsApp já está conectado!', type: 'success' });
         return;
       }
+      
+      // Se existe mas não está conectada (state = 'open'), precisa mostrar QR
+      if (checkData.exists && !checkData.connected) {
+        console.log('Instância existe mas precisa conectar (state: open)');
+        setToast({ message: 'Instância encontrada! Escaneie o QR Code para conectar', type: 'success' });
+      }
 
       if (!checkData.exists) {
         // Instância não existe, criar nova

@@ -47,6 +47,13 @@ export function QRCodeDisplay({ instanceName, serverUrl, apiKey, onConnected }: 
         return;
       }
 
+      // Log para debug
+      console.log('QRCodeDisplay received:', {
+        hasQrcode: !!data.qrcode,
+        qrcodeLength: data.qrcode?.length,
+        pairingCode: data.pairingCode
+      });
+      
       setQrCode(data.qrcode || '');
       setPairingCode(data.pairingCode || '');
     } catch (err) {
@@ -58,8 +65,8 @@ export function QRCodeDisplay({ instanceName, serverUrl, apiKey, onConnected }: 
 
   useEffect(() => {
     fetchQRCode();
-    // Atualizar QR Code a cada 30 segundos
-    const interval = setInterval(fetchQRCode, 30000);
+    // Atualizar QR Code a cada 5 segundos para verificar se conectou
+    const interval = setInterval(fetchQRCode, 5000);
     return () => clearInterval(interval);
   }, [instanceName, serverUrl, apiKey]);
 

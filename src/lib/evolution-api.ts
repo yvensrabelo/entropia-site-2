@@ -99,17 +99,39 @@ export class EvolutionAPIClient {
   async getQRCode() {
     const url = this.getUrl(`/instance/connect/${this.config.instance_name}`);
     
+    console.log('Getting QR Code from:', url);
+    
     const response = await fetch(url, {
       method: 'GET',
       headers: this.getHeaders()
     });
 
+    const responseText = await response.text();
+    console.log('QR Code response:', {
+      ok: response.ok,
+      status: response.status,
+      text: responseText.substring(0, 200) + '...' // Log parcial
+    });
+
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Erro ao obter QR Code: ${error}`);
+      throw new Error(`Erro ao obter QR Code: ${responseText}`);
     }
 
-    return response.json();
+    try {
+      const data = JSON.parse(responseText);
+      console.log('QR Code data structure:', {
+        hasQrcode: !!data.qrcode,
+        hasBase64: !!data.base64,
+        hasCode: !!data.code,
+        hasPairingCode: !!data.pairingCode,
+        keys: Object.keys(data)
+      });
+      return data;
+    } catch (e) {
+      // Se não for JSON, pode ser o QR code direto
+      console.log('Response is not JSON, might be direct QR code');
+      return { qrcode: responseText };
+    }
   }
 
   // Verificar status da conexão
@@ -139,8 +161,10 @@ export class EvolutionAPIClient {
       const data = JSON.parse(responseText);
       console.log('Status data:', data);
       
+      // 'open' significa que a instância existe mas NÃO está conectada ao WhatsApp
+      // 'connected' significa que está conectada
       return {
-        connected: data.state === 'open',
+        connected: data.state === 'connected',
         state: data.state
       };
     } catch (e) {
