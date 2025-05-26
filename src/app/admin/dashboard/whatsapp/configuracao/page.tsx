@@ -19,6 +19,7 @@ import AuthGuard from '@/components/admin/AuthGuard';
 import { supabase } from '@/lib/supabase-client';
 import { Toast } from '@/components/Toast';
 import { QRCodeDisplay } from '@/components/admin/QRCodeDisplay';
+import { EXISTING_INSTANCE, getCorrectInstanceName } from '@/lib/whatsapp-config';
 
 interface WhatsAppConfig {
   id?: string;
@@ -31,9 +32,9 @@ interface WhatsAppConfig {
 
 export default function ConfiguracaoWhatsAppPage() {
   const [config, setConfig] = useState<WhatsAppConfig>({
-    server_url: '',
+    server_url: EXISTING_INSTANCE.server_url,
     api_key: '',
-    instance_name: 'entropia-cursinho',
+    instance_name: EXISTING_INSTANCE.name,
     status: 'disconnected'
   });
   const [loading, setLoading] = useState(true);
@@ -109,7 +110,7 @@ export default function ConfiguracaoWhatsAppPage() {
     }
   };
 
-  const createInstance = async () => {
+  const connectOrCreateInstance = async () => {
     if (!config.server_url || !config.api_key) {
       setToast({ message: 'Preencha todos os campos obrigatórios', type: 'error' });
       return;
@@ -117,8 +118,8 @@ export default function ConfiguracaoWhatsAppPage() {
 
     setConnecting(true);
     try {
-      // Criar instância na Evolution API
-      const response = await fetch('/api/whatsapp/instance/create', {
+      // Primeiro verificar se a instância já existe
+      const checkResponse = await fetch('/api/whatsapp/instance/check', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,42 +131,53 @@ export default function ConfiguracaoWhatsAppPage() {
         })
       });
 
-      const data = await response.json();
+      const checkData = await checkResponse.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Erro ao criar instância');
-      }
-
-      // Obter QR Code
-      const qrResponse = await fetch('/api/whatsapp/qrcode', {
-        method: 'GET',
-        headers: {
-          'instance': config.instance_name
-        }
-      });
-
-      const qrData = await qrResponse.json();
-
-      if (qrData.qrcode) {
-        setConfig({ 
-          ...config, 
-          status: 'connecting',
-          qr_code: qrData.qrcode 
-        });
-        setShowQRCode(true);
-        
-        // Salvar status
+      if (checkData.exists && checkData.connected) {
+        // Instância já existe e está conectada
+        setConfig({ ...config, status: 'connected' });
         await saveConfig();
-        
-        // Iniciar verificação de status
-        checkConnectionStatus();
+        setToast({ message: 'WhatsApp já está conectado!', type: 'success' });
+        return;
       }
 
-      setToast({ message: 'Instância criada! Escaneie o QR Code', type: 'success' });
-    } catch (error: any) {
-      console.error('Erro ao criar instância:', error);
+      if (!checkData.exists) {
+        // Instância não existe, criar nova
+        const createResponse = await fetch('/api/whatsapp/instance/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            server_url: config.server_url,
+            api_key: config.api_key,
+            instance_name: config.instance_name
+          })
+        });
+
+        const createData = await createResponse.json();
+
+        if (!createResponse.ok) {
+          throw new Error(createData.error || 'Erro ao criar instância');
+        }
+      }
+
+      // Obter QR Code (seja para instância nova ou existente desconectada)
+      setShowQRCode(true);
+      setConfig({ ...config, status: 'connecting' });
+      await saveConfig();
+      
+      // Iniciar verificação de status
+      checkConnectionStatus();
+
       setToast({ 
-        message: error.message || 'Erro ao criar instância', 
+        message: checkData.exists ? 'Conecte-se escaneando o QR Code' : 'Instância criada! Escaneie o QR Code', 
+        type: 'success' 
+      });
+    } catch (error: any) {
+      console.error('Erro ao conectar/criar instância:', error);
+      setToast({ 
+        message: error.message || 'Erro ao conectar', 
         type: 'error' 
       });
     } finally {
@@ -176,10 +188,15 @@ export default function ConfiguracaoWhatsAppPage() {
   const checkConnectionStatus = async () => {
     try {
       const response = await fetch('/api/whatsapp/status', {
-        method: 'GET',
+        method: 'POST',
         headers: {
-          'instance': config.instance_name
-        }
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          server_url: config.server_url,
+          api_key: config.api_key,
+          instance_name: config.instance_name
+        })
       });
 
       const data = await response.json();
@@ -350,6 +367,11 @@ export default function ConfiguracaoWhatsAppPage() {
                   <p className="text-xs text-gray-500 mt-1">
                     Identificador único para esta instância do WhatsApp
                   </p>
+                  {config.instance_name === EXISTING_INSTANCE.name && (
+                    <p className="text-xs text-green-600 mt-1 font-medium">
+                      ✓ Usando instância existente "{EXISTING_INSTANCE.displayName}"
+                    </p>
+                  )}
                 </div>
               </div>
               
@@ -374,7 +396,7 @@ export default function ConfiguracaoWhatsAppPage() {
                 
                 {config.status === 'disconnected' && (
                   <button
-                    onClick={createInstance}
+                    onClick={connectOrCreateInstance}
                     disabled={connecting || !config.server_url || !config.api_key}
                     className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >

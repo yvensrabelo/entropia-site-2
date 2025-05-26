@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { getCorrectInstanceName } from './whatsapp-config';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -29,7 +30,10 @@ export class EvolutionAPIClient {
   private config: EvolutionConfig;
 
   constructor(config: EvolutionConfig) {
-    this.config = config;
+    this.config = {
+      ...config,
+      instance_name: getCorrectInstanceName(config.instance_name)
+    };
   }
 
   static async fromDatabase(): Promise<EvolutionAPIClient | null> {
