@@ -39,6 +39,8 @@
     "csv-parse": "^5.6.0",
     "dotenv": "^16.5.0",
     "framer-motion": "^12.12.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "lucide-react": "^0.511.0",
     "next": "^14.2.29",
     "react": "^18.3.1",
@@ -46,6 +48,7 @@
     "react-hook-form": "^7.56.4",
     "react-hot-toast": "^2.5.2",
     "react-input-mask": "^2.0.4",
+    "recharts": "^2.15.3",
     "tailwind-merge": "^3.3.0",
     "xlsx": "^0.18.5",
     "zod": "^3.25.28"

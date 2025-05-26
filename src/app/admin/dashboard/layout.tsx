@@ -14,7 +14,9 @@ import {
   LogOut,
   Home,
   FileCheck,
-  UserCheck
+  UserCheck,
+  BarChart3,
+  MessageSquare
 } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';
 
@@ -30,6 +32,8 @@ const menuItems: MenuItem[] = [
   { name: 'Cursos', href: '/admin/dashboard/turmas', icon: Book },
   { name: 'Alunos', href: '/admin/dashboard/alunos', icon: Users },
   { name: 'Presenças', href: '/admin/dashboard/presencas', icon: UserCheck },
+  { name: 'Relatórios', href: '/admin/dashboard/relatorios', icon: BarChart3 },
+  { name: 'WhatsApp', href: '/admin/dashboard/whatsapp', icon: MessageSquare },
   { name: 'Pré-Matrículas', href: '/admin/dashboard/pre-matriculas', icon: FileCheck },
   { name: 'Matrículas', href: '/admin/dashboard/matriculas', icon: ClipboardList },
   { name: 'Turmas', href: '/admin/dashboard/turmas-config', icon: UsersIcon },

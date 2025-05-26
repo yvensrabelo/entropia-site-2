@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { EvolutionAPIClient, saveMessage } from '@/lib/evolution-api';
 
 // Em API routes, as variáveis de ambiente devem ser acessadas diretamente
 function getSupabaseClient() {
@@ -30,6 +31,98 @@ function logWebhook(data: CatracaWebhook, status: string, details?: string) {
     console.log(`  Detalhes: ${details}`);
   }
   console.log('---');
+}
+
+// Função para verificar e enviar notificação de chegada
+async function verificarNotificacaoChegada(alunoId: string, horaChegada: string) {
+  try {
+    const supabase = getSupabaseClient();
+    
+    // Verificar se o aluno tem notificação de chegada ativa
+    const { data: preferencias } = await supabase
+      .from('whatsapp_preferences')
+      .select('notify_arrival, whatsapp_number')
+      .eq('aluno_id', alunoId)
+      .single();
+    
+    if (!preferencias?.notify_arrival) {
+      console.log('   Notificação de chegada desativada para este aluno');
+      return;
+    }
+    
+    // Verificar se há automação ativa para chegada
+    const { data: automacao } = await supabase
+      .from('whatsapp_automations')
+      .select(`
+        *,
+        template:template_id(
+          template,
+          variables
+        )
+      `)
+      .eq('type', 'arrival_notification')
+      .eq('is_active', true)
+      .single();
+    
+    if (!automacao) {
+      console.log('   Nenhuma automação de chegada ativa');
+      return;
+    }
+    
+    // Buscar dados do aluno e responsável
+    const { data: aluno } = await supabase
+      .from('alunos')
+      .select('nome, telefone, nome_responsavel, telefone_responsavel')
+      .eq('id', alunoId)
+      .single();
+    
+    if (!aluno) {
+      console.log('   Dados do aluno não encontrados');
+      return;
+    }
+    
+    // Determinar número para envio
+    const numeroDestino = preferencias.whatsapp_number || 
+                          aluno.telefone_responsavel || 
+                          aluno.telefone;
+    
+    if (!numeroDestino) {
+      console.log('   Nenhum número de telefone disponível');
+      return;
+    }
+    
+    // Processar template
+    let mensagem = automacao.template.template;
+    mensagem = mensagem.replace(/{nome_aluno}/g, aluno.nome);
+    mensagem = mensagem.replace(/{hora}/g, horaChegada.substring(0, 5));
+    mensagem = mensagem.replace(/{nome_responsavel}/g, aluno.nome_responsavel || 'Responsável');
+    
+    console.log(`   Enviando notificação para: ${numeroDestino}`);
+    
+    // Enviar mensagem
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/whatsapp/send`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        to: numeroDestino,
+        message: mensagem,
+        type: 'arrival',
+        aluno_id: alunoId
+      })
+    });
+    
+    if (response.ok) {
+      console.log('   ✅ Notificação de chegada enviada com sucesso');
+    } else {
+      const error = await response.text();
+      console.log(`   ❌ Erro ao enviar notificação: ${error}`);
+    }
+    
+  } catch (error) {
+    console.error('   Erro ao processar notificação de chegada:', error);
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -210,6 +303,10 @@ export async function POST(request: NextRequest) {
     console.log('11. ✅ SUCESSO! Presença inserida:', insertResult);
     console.log(`    Mensagem da catraca salva: "${data.message}"`);
     logWebhook(data, 'SUCESSO', `Presença registrada para ${aluno.nome} - Mensagem: ${data.message}`);
+    
+    // Verificar se deve enviar notificação de chegada
+    console.log('12. Verificando notificação de chegada...');
+    await verificarNotificacaoChegada(aluno.id, horaEntrada);
     
     console.log('========== WEBHOOK CATRACA - FIM ==========\n');
     
