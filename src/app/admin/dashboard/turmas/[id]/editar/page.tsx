@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ArrowLeft, Plus, X, Loader2 } from 'lucide-react';
@@ -19,9 +19,12 @@ const turmaSchema = z.object({
   duracao: z.string().min(3, 'Duração é obrigatória'),
   vagas_disponiveis: z.number().min(0, 'Vagas não pode ser negativo'),
   tipo: z.enum(['intensivo_psc', 'enem_total', 'sis_macro']),
-  diferenciais: z.array(z.string().min(3, 'Diferencial deve ter pelo menos 3 caracteres')),
-  ativo: z.boolean()
+  diferenciais: z.array(z.string()),
+  ativo: z.boolean(),
+  ordem: z.number().optional()
 });
+
+type FormData = z.infer<typeof turmaSchema>;
 
 export default function EditarTurmaPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -35,12 +38,22 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
     formState: { errors },
     watch,
     reset
-  } = useForm<TurmaFormData>({
-    resolver: zodResolver(turmaSchema)
+  } = useForm<FormData>({
+    resolver: zodResolver(turmaSchema),
+    defaultValues: {
+      nome: '',
+      descricao: '',
+      periodo: '',
+      duracao: '',
+      vagas_disponiveis: 0,
+      tipo: 'intensivo_psc',
+      diferenciais: [],
+      ativo: true
+    }
   });
 
   const { fields, append, remove } = useFieldArray({
-    control,
+    control: control as any,
     name: 'diferenciais'
   });
 
@@ -79,7 +92,7 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
     }
   };
 
-  const onSubmit = async (data: TurmaFormData) => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
 
     try {

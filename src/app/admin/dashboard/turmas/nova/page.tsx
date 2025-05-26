@@ -19,9 +19,12 @@ const turmaSchema = z.object({
   duracao: z.string().min(3, 'Duração é obrigatória'),
   vagas_disponiveis: z.number().min(1, 'Deve ter pelo menos 1 vaga'),
   tipo: z.enum(['intensivo_psc', 'enem_total', 'sis_macro']),
-  diferenciais: z.array(z.string().min(3, 'Diferencial deve ter pelo menos 3 caracteres')),
-  ativo: z.boolean()
+  diferenciais: z.array(z.string()),
+  ativo: z.boolean(),
+  ordem: z.number().optional()
 });
+
+type FormData = z.infer<typeof turmaSchema>;
 
 export default function NovaTurmaPage() {
   const router = useRouter();
@@ -33,7 +36,7 @@ export default function NovaTurmaPage() {
     handleSubmit,
     formState: { errors },
     watch
-  } = useForm<TurmaFormData>({
+  } = useForm<FormData>({
     resolver: zodResolver(turmaSchema),
     defaultValues: {
       nome: '',
@@ -48,11 +51,11 @@ export default function NovaTurmaPage() {
   });
 
   const { fields, append, remove } = useFieldArray({
-    control,
+    control: control as any,
     name: 'diferenciais'
   });
 
-  const onSubmit = async (data: TurmaFormData) => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
 
     try {
