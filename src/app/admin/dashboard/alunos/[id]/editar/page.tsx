@@ -10,6 +10,7 @@ import InputMask from 'react-input-mask';
 import { supabase } from '@/lib/supabase-singleton';
 import { validateCPF, unformatCPF, formatCPF } from '@/lib/utils/cpf';
 import { buscarCEP, formatCEP } from '@/lib/utils/cep';
+import { validateAndFormatPhone, formatPhoneForDatabase, formatPhoneForDisplay } from '@/lib/utils/phone';
 import { ArrowLeft, Loader2, Save } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { Toast } from '@/components/Toast';
@@ -19,7 +20,11 @@ const alunoSchema = z.object({
   nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
   cpf: z.string().refine((cpf) => validateCPF(cpf), 'CPF inválido'),
   data_nascimento: z.string().optional(),
-  telefone: z.string().optional(),
+  telefone: z.string().optional().refine((phone) => {
+    if (!phone) return true;
+    const validation = validateAndFormatPhone(phone);
+    return validation.isValid;
+  }, 'Número de telefone inválido. Verifique o DDD e o número.'),
   email: z.string().email('Email inválido').optional().or(z.literal('')),
   cep: z.string().optional(),
   endereco: z.string().optional(),
@@ -30,7 +35,11 @@ const alunoSchema = z.object({
   estado: z.string().optional(),
   nome_responsavel: z.string().optional(),
   cpf_responsavel: z.string().optional(),
-  telefone_responsavel: z.string().optional(),
+  telefone_responsavel: z.string().optional().refine((phone) => {
+    if (!phone) return true;
+    const validation = validateAndFormatPhone(phone);
+    return validation.isValid;
+  }, 'Número de telefone inválido. Verifique o DDD e o número.'),
   observacoes: z.string().optional(),
   contrato_entregue: z.boolean().optional(),
   data_entrega_contrato: z.string().optional()
@@ -171,11 +180,11 @@ export default function EditarAlunoPage({ params }: { params: { id: string } }) 
           nome: data.nome,
           cpf: formatCPF(data.cpf),
           data_nascimento: data.data_nascimento || undefined,
-          telefone: formatPhone(data.telefone),
+          telefone: data.telefone ? formatPhoneForDisplay(data.telefone) : '',
           email: data.email || '',
           nome_responsavel: data.nome_responsavel || '',
           cpf_responsavel: data.cpf_responsavel ? formatCPF(data.cpf_responsavel) : '',
-          telefone_responsavel: formatPhone(data.telefone_responsavel),
+          telefone_responsavel: data.telefone_responsavel ? formatPhoneForDisplay(data.telefone_responsavel) : '',
           observacoes: data.observacoes || '',
           contrato_entregue: data.contrato_entregue || false,
           data_entrega_contrato: data.data_entrega_contrato || '',
@@ -251,7 +260,7 @@ export default function EditarAlunoPage({ params }: { params: { id: string } }) 
         nome: data.nome,
         cpf: unformatCPF(data.cpf),
         data_nascimento: data.data_nascimento || null,
-        telefone: data.telefone?.replace(/\D/g, '') || null,
+        telefone: data.telefone ? formatPhoneForDatabase(data.telefone) : null,
         email: data.email || null,
         // Campos de endereço separados
         cep: data.cep?.replace(/\D/g, '') || null,
@@ -264,7 +273,7 @@ export default function EditarAlunoPage({ params }: { params: { id: string } }) 
         // Dados do responsável
         nome_responsavel: data.nome_responsavel || null,
         cpf_responsavel: data.cpf_responsavel ? unformatCPF(data.cpf_responsavel) : null,
-        telefone_responsavel: data.telefone_responsavel?.replace(/\D/g, '') || null,
+        telefone_responsavel: data.telefone_responsavel ? formatPhoneForDatabase(data.telefone_responsavel) : null,
         observacoes: data.observacoes || null,
         contrato_entregue: data.contrato_entregue || false,
         data_entrega_contrato: data.data_entrega_contrato || null

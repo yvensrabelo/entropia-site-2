@@ -18,6 +18,7 @@ import AuthGuard from '@/components/admin/AuthGuard';
 import { supabase } from '@/lib/supabase-singleton';
 import { Toast } from '@/components/Toast';
 import { formatCPF } from '@/lib/utils/cpf';
+import { validateAndFormatPhone, formatPhoneForWhatsApp, formatPhoneForDisplay } from '@/lib/utils/phone';
 
 interface Aluno {
   id: string;
@@ -145,12 +146,12 @@ export default function EnviarMensagemPage() {
     setSearchTerm('');
     setSearchResults([]);
     
-    // Define o número de telefone padrão
+    // Define o número de telefone padrão (sempre limpo, sem formatação)
     if (aluno.telefone) {
-      setPhoneNumber(aluno.telefone);
+      setPhoneNumber(aluno.telefone.replace(/\D/g, ''));
       setUseResponsavel(false);
     } else if (aluno.telefone_responsavel) {
-      setPhoneNumber(aluno.telefone_responsavel);
+      setPhoneNumber(aluno.telefone_responsavel.replace(/\D/g, ''));
       setUseResponsavel(true);
     }
   };
@@ -173,8 +174,8 @@ export default function EnviarMensagemPage() {
   };
 
   const validatePhoneNumber = (number: string): boolean => {
-    const cleaned = number.replace(/\D/g, '');
-    return cleaned.length >= 10 && cleaned.length <= 11;
+    const validation = validateAndFormatPhone(number);
+    return validation.isValid;
   };
 
   const handleSend = async () => {
@@ -183,8 +184,9 @@ export default function EnviarMensagemPage() {
       return;
     }
 
-    if (!validatePhoneNumber(phoneNumber)) {
-      setToast({ message: 'Número de telefone inválido', type: 'error' });
+    const phoneValidation = validateAndFormatPhone(phoneNumber);
+    if (!phoneValidation.isValid) {
+      setToast({ message: phoneValidation.error || 'Número inválido. Verifique o DDD e o número.', type: 'error' });
       return;
     }
 
@@ -201,7 +203,7 @@ export default function EnviarMensagemPage() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          to: phoneNumber,
+          to: phoneNumber, // Enviar número como está, a API fará a formatação
           message: message,
           type: 'text',
           aluno_id: selectedAluno?.id
@@ -234,15 +236,7 @@ export default function EnviarMensagemPage() {
   };
 
   const formatPhone = (phone: string) => {
-    const cleaned = phone.replace(/\D/g, '');
-    
-    if (cleaned.length <= 10) {
-      // Formato: (XX) XXXX-XXXX
-      return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-    } else {
-      // Formato: (XX) XXXXX-XXXX
-      return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-    }
+    return formatPhoneForDisplay(phone);
   };
 
   return (
@@ -352,7 +346,7 @@ export default function EnviarMensagemPage() {
                       checked={!useResponsavel}
                       onChange={() => {
                         setUseResponsavel(false);
-                        setPhoneNumber(selectedAluno.telefone!);
+                        setPhoneNumber(selectedAluno.telefone!.replace(/\D/g, ''));
                       }}
                       className="text-green-500"
                     />
@@ -368,7 +362,7 @@ export default function EnviarMensagemPage() {
                       checked={useResponsavel}
                       onChange={() => {
                         setUseResponsavel(true);
-                        setPhoneNumber(selectedAluno.telefone_responsavel!);
+                        setPhoneNumber(selectedAluno.telefone_responsavel!.replace(/\D/g, ''));
                       }}
                       className="text-green-500"
                     />
@@ -391,12 +385,22 @@ export default function EnviarMensagemPage() {
                 <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="tel"
-                  placeholder="(11) 99999-9999"
+                  placeholder="92981662806"
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={(e) => {
+                    // Permitir apenas números
+                    const cleanValue = e.target.value.replace(/\D/g, '');
+                    // Limitar a 13 dígitos (55 + DDD + 9 dígitos)
+                    if (cleanValue.length <= 13) {
+                      setPhoneNumber(cleanValue);
+                    }
+                  }}
                   className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Digite o número sem traços ou parênteses. Ex.: 92981662806
+              </p>
             </div>
           )}
         </div>

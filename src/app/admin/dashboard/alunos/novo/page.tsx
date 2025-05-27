@@ -10,6 +10,7 @@ import InputMask from 'react-input-mask';
 import { supabase } from '@/lib/supabase-singleton';
 import { validateCPF, unformatCPF } from '@/lib/utils/cpf';
 import { buscarCEP } from '@/lib/utils/cep';
+import { validateAndFormatPhone, formatPhoneForDatabase, formatPhoneForDisplay } from '@/lib/utils/phone';
 import { ArrowLeft, Loader2, Save, Search } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { Toast } from '@/components/Toast';
@@ -19,7 +20,11 @@ const alunoSchema = z.object({
   nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
   cpf: z.string().refine((cpf) => validateCPF(cpf), 'CPF inválido'),
   data_nascimento: z.string().optional(),
-  telefone: z.string().optional(),
+  telefone: z.string().optional().refine((phone) => {
+    if (!phone) return true;
+    const validation = validateAndFormatPhone(phone);
+    return validation.isValid;
+  }, 'Número de telefone inválido. Verifique o DDD e o número.'),
   email: z.string().email('Email inválido').optional().or(z.literal('')),
   cep: z.string().optional(),
   endereco: z.string().optional(),
@@ -30,7 +35,11 @@ const alunoSchema = z.object({
   estado: z.string().optional(),
   nome_responsavel: z.string().optional(),
   cpf_responsavel: z.string().optional(),
-  telefone_responsavel: z.string().optional(),
+  telefone_responsavel: z.string().optional().refine((phone) => {
+    if (!phone) return true;
+    const validation = validateAndFormatPhone(phone);
+    return validation.isValid;
+  }, 'Número de telefone inválido. Verifique o DDD e o número.'),
   observacoes: z.string().optional()
 }).superRefine((data, ctx) => {
   // Validar se é menor de idade e precisa de responsável
@@ -150,14 +159,14 @@ export default function NovoAlunoPage() {
         nome: data.nome,
         cpf: unformatCPF(data.cpf),
         data_nascimento: data.data_nascimento || null,
-        telefone: data.telefone?.replace(/\D/g, '') || null,
+        telefone: data.telefone ? formatPhoneForDatabase(data.telefone) : null,
         email: data.email || null,
         endereco: data.endereco ? 
           `${data.endereco}${data.numero ? ', ' + data.numero : ''}${data.complemento ? ', ' + data.complemento : ''}, ${data.bairro}, ${data.cidade}-${data.estado}, CEP: ${data.cep}` 
           : null,
         nome_responsavel: data.nome_responsavel || null,
         cpf_responsavel: data.cpf_responsavel ? unformatCPF(data.cpf_responsavel) : null,
-        telefone_responsavel: data.telefone_responsavel?.replace(/\D/g, '') || null,
+        telefone_responsavel: data.telefone_responsavel ? formatPhoneForDatabase(data.telefone_responsavel) : null,
         observacoes: data.observacoes || null
       };
 

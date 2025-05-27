@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { X, Phone, MessageSquare, Loader2, CheckCircle } from 'lucide-react'
+import { validateAndFormatPhone, formatPhoneForWhatsApp, formatPhoneForDisplay } from '@/lib/utils/phone'
 
 interface WhatsAppModalProps {
   isOpen: boolean
@@ -21,20 +22,12 @@ export default function WhatsAppModal({ isOpen, onClose, turmaTitle, periodo, du
   if (!isOpen) return null
 
   const formatPhone = (value: string) => {
-    const cleaned = value.replace(/\D/g, '')
-    
-    if (cleaned.length <= 10) {
-      // Formato: (XX) XXXX-XXXX
-      return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
-    } else {
-      // Formato: (XX) XXXXX-XXXX
-      return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
-    }
+    return formatPhoneForDisplay(value)
   }
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '')
-    if (value.length <= 11) {
+    if (value.length <= 13) { // Permitir até 13 dígitos (55 + DDD + 9 dígitos)
       setTelefone(value)
     }
   }
@@ -48,8 +41,9 @@ export default function WhatsAppModal({ isOpen, onClose, turmaTitle, periodo, du
       return
     }
 
-    if (telefone.length < 10) {
-      setErro('Número de telefone inválido')
+    const phoneValidation = validateAndFormatPhone(telefone)
+    if (!phoneValidation.isValid) {
+      setErro(phoneValidation.error || 'Número inválido. Verifique o DDD e o número.')
       return
     }
 
@@ -146,7 +140,7 @@ export default function WhatsAppModal({ isOpen, onClose, turmaTitle, periodo, du
                     value={formatPhone(telefone)}
                     onChange={handlePhoneChange}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="(92) 99999-9999"
+                    placeholder="92981662806"
                     required
                   />
                 </div>

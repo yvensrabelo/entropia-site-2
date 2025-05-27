@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase-singleton'
+import { validateAndFormatPhone, formatPhoneForWhatsApp } from '@/lib/utils/phone'
 
 export async function POST(request: NextRequest) {
   try {
@@ -49,6 +50,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Validar telefone
+    const phoneValidation = validateAndFormatPhone(telefone)
+    console.log('=== VALIDAÇÃO DO TELEFONE ===')
+    console.log('Telefone original:', telefone)
+    console.log('Validação:', phoneValidation)
+    console.log('============================')
+
+    if (!phoneValidation.isValid) {
+      return NextResponse.json(
+        { error: phoneValidation.error || 'Número de telefone inválido. Verifique o DDD e o número.' },
+        { status: 400 }
+      )
+    }
+
     // Buscar dados completos da turma no banco incluindo mensagem e imagem
     let turmaData = null
     try {
@@ -66,28 +81,13 @@ export async function POST(request: NextRequest) {
       console.log('Erro ao buscar dados da turma:', err)
     }
 
-    // Função para limpar o número
-    const cleanNumber = (number: string) => number.replace(/\D/g, '')
-
-    // Formatar telefone para o padrão brasileiro
-    const telefoneFormatado = cleanNumber(telefone)
-    
-    // Verificar se o telefone tem pelo menos 10 dígitos
-    if (telefoneFormatado.length < 10) {
-      return NextResponse.json(
-        { error: 'Número de telefone inválido' },
-        { status: 400 }
-      )
-    }
-
-    // Adicionar código do Brasil se não tiver
-    const numeroWhatsApp = telefoneFormatado.startsWith('55') 
-      ? telefoneFormatado 
-      : `55${telefoneFormatado}`
+    // Formatar telefone para WhatsApp
+    const numeroWhatsApp = formatPhoneForWhatsApp(phoneValidation.formatted!)
 
     console.log('=== DEBUG NÚMERO FORMATADO ===')
-    console.log('Número limpo:', telefoneFormatado)
-    console.log('Número final:', numeroWhatsApp)
+    console.log('Número validado:', phoneValidation.formatted)
+    console.log('Número WhatsApp:', numeroWhatsApp)
+    console.log('DDD extraído:', phoneValidation.ddd)
     console.log('==============================')
 
     // Usar mensagem personalizada se existir, senão usar padrão

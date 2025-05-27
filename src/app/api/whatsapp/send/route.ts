@@ -1,119 +1,141 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { EvolutionAPIClient, saveMessage, isAllowedTime, checkRateLimit } from '@/lib/evolution-api';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { NextRequest, NextResponse } from 'next/server'
+import { validateAndFormatPhone, formatPhoneForWhatsApp } from '@/lib/utils/phone'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { to, message, type = 'text', aluno_id } = body;
+    // Capturar variáveis de ambiente
+    const API_URL = process.env.EVOLUTION_API_URL
+    const API_KEY = process.env.EVOLUTION_API_KEY
+    const INSTANCE = process.env.EVOLUTION_INSTANCE_NUMBER
 
-    // Validações
+    console.log('=== ENVIO MANUAL WHATSAPP ===')
+    console.log('API_URL:', API_URL)
+    console.log('API_KEY:', API_KEY ? 'Definida' : 'Não definida')
+    console.log('INSTANCE:', INSTANCE)
+
+    // Verificar se as variáveis estão configuradas
+    if (!API_URL || !API_KEY || !INSTANCE) {
+      console.error('Erro: Variáveis de ambiente não configuradas')
+      return NextResponse.json(
+        { 
+          error: 'Variáveis de ambiente não configuradas corretamente',
+          details: {
+            API_URL: !!API_URL,
+            API_KEY: !!API_KEY,
+            INSTANCE: !!INSTANCE
+          }
+        },
+        { status: 500 }
+      )
+    }
+
+    // Obter dados da requisição
+    const { to, message, type = 'text', aluno_id } = await request.json()
+
+    console.log('=== DADOS RECEBIDOS ===')
+    console.log('Destinatário:', to)
+    console.log('Mensagem:', message?.substring(0, 100) + '...')
+    console.log('Tipo:', type)
+    console.log('Aluno ID:', aluno_id)
+    console.log('======================')
+
     if (!to || !message) {
       return NextResponse.json(
-        { error: 'Número e mensagem são obrigatórios' },
+        { error: 'Dados incompletos - destinatário e mensagem são obrigatórios' },
         { status: 400 }
-      );
+      )
     }
 
-    // Verificar horário permitido
-    if (!isAllowedTime()) {
-      return NextResponse.json(
-        { error: 'Envio permitido apenas entre 8h e 20h' },
-        { status: 403 }
-      );
-    }
+    // Validar telefone
+    const phoneValidation = validateAndFormatPhone(to)
+    console.log('=== VALIDAÇÃO DO TELEFONE ===')
+    console.log('Telefone original:', to)
+    console.log('Validação:', phoneValidation)
+    console.log('============================')
 
-    // Verificar rate limit
-    const clientIp = request.headers.get('x-forwarded-for') || 'unknown';
-    if (!checkRateLimit(clientIp)) {
+    if (!phoneValidation.isValid) {
       return NextResponse.json(
-        { error: 'Limite de mensagens excedido. Tente novamente em 1 hora.' },
-        { status: 429 }
-      );
-    }
-
-    // Validar número
-    if (!EvolutionAPIClient.isValidPhoneNumber(to)) {
-      return NextResponse.json(
-        { error: 'Número de telefone inválido' },
+        { error: phoneValidation.error || 'Número de telefone inválido. Verifique o DDD e o número.' },
         { status: 400 }
-      );
+      )
     }
 
-    // Obter cliente da API
-    const client = await EvolutionAPIClient.fromDatabase();
-    if (!client) {
-      return NextResponse.json(
-        { error: 'WhatsApp não configurado' },
-        { status: 500 }
-      );
-    }
+    // Formatar telefone para WhatsApp
+    const numeroWhatsApp = formatPhoneForWhatsApp(phoneValidation.formatted!)
 
-    // Verificar se está conectado
-    const status = await client.checkStatus();
-    if (!status.connected) {
-      return NextResponse.json(
-        { error: 'WhatsApp não está conectado' },
-        { status: 503 }
-      );
-    }
+    console.log('=== NÚMERO FORMATADO ===')
+    console.log('Número validado:', phoneValidation.formatted)
+    console.log('Número WhatsApp:', numeroWhatsApp)
+    console.log('DDD extraído:', phoneValidation.ddd)
+    console.log('=======================')
 
-    // Salvar mensagem como pendente
-    await saveMessage({
-      aluno_id,
-      to_number: to,
-      message,
-      type,
-      status: 'pending'
-    });
+    // Construir URL da API
+    const url = `${API_URL}/message/sendText/${INSTANCE}`
 
-    // Enviar mensagem
-    try {
-      const result = await client.sendText({
-        number: to,
+    console.log('=== ENVIANDO MENSAGEM ===')
+    console.log('URL:', url)
+    console.log('Número:', numeroWhatsApp)
+    console.log('========================')
+
+    // Enviar mensagem via Evolution API
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': API_KEY,
+      },
+      body: JSON.stringify({
+        number: numeroWhatsApp,
         text: message
-      });
+      })
+    })
 
-      // Atualizar status para enviada
-      await saveMessage({
-        aluno_id,
-        to_number: to,
-        message,
-        type,
-        status: 'sent',
-        sent_at: new Date().toISOString()
-      });
+    const responseText = await response.text()
+    console.log('=== RESPOSTA DA API ===')
+    console.log('Status:', response.status)
+    console.log('Response:', responseText)
+    console.log('======================')
 
-      return NextResponse.json({
-        success: true,
-        messageId: result.key?.id || result.id,
-        message: 'Mensagem enviada com sucesso'
-      });
-
-    } catch (sendError: any) {
-      // Salvar erro
-      await saveMessage({
-        aluno_id,
-        to_number: to,
-        message,
-        type,
-        status: 'failed',
-        error_message: sendError.message
-      });
-
-      throw sendError;
+    if (!response.ok) {
+      console.error('Erro na Evolution API:', responseText)
+      return NextResponse.json(
+        { 
+          error: 'Falha ao enviar mensagem via WhatsApp',
+          details: responseText,
+          status: response.status
+        },
+        { status: 500 }
+      )
     }
 
-  } catch (error: any) {
-    console.error('Erro ao enviar mensagem:', error);
+    // Tentar fazer parse do JSON
+    let data
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      console.log('Resposta não é JSON válido, mas requisição foi bem-sucedida')
+      data = { success: true }
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Mensagem enviada com sucesso',
+      messageId: data.key?.id || data.id || 'sent'
+    })
+
+  } catch (error) {
+    console.error('=== ERRO GERAL ===')
+    console.error('Erro ao enviar mensagem:', error)
+    console.error('Tipo do erro:', typeof error)
+    console.error('Mensagem do erro:', error instanceof Error ? error.message : 'Erro desconhecido')
+    console.error('==================')
+    
     return NextResponse.json(
-      { error: error.message || 'Erro ao enviar mensagem' },
+      { 
+        error: 'Erro ao processar solicitação',
+        details: error instanceof Error ? error.message : 'Erro desconhecido'
+      },
       { status: 500 }
-    );
+    )
   }
 }
