@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { Clock, Users, Calendar, BookOpen, CheckCircle } from 'lucide-react'
 import DiagonalDivider from './DiagonalDivider'
-import { supabase } from '@/lib/supabase-client'
+import { supabase } from '@/lib/supabase-singleton'
 import { Turma } from '@/lib/types/turma'
 
 export default function TurmasSection() {

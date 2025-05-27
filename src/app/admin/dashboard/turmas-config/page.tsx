@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { TurmaConfig, TURNOS } from '@/types/turma';
 import { Users, Plus, Edit, Trash2, Loader2, AlertCircle } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';

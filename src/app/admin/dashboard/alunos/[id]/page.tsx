@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { Aluno } from '@/types/aluno';
 import { formatCPF } from '@/lib/utils/cpf';
 import { ArrowLeft, Edit, Loader2, User, Phone, Mail, MapPin, Users, FileText } from 'lucide-react';

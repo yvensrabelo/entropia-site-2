@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import AuthGuard from '@/components/admin/AuthGuard';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { formatCPF } from '@/lib/utils/cpf';
 import jsPDF from 'jspdf';
 

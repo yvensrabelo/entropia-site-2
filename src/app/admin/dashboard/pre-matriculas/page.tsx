@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase-singleton';
 import { formatCPF } from '@/lib/utils/cpf';
 import { Clock, CheckCircle, XCircle, Search, Eye, AlertCircle } from 'lucide-react';
 import { toast } from 'react-hot-toast';

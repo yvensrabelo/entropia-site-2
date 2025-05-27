@@ -15,7 +15,7 @@ import {
   Square,
   MinusSquare
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { Prova, SUBCATEGORIAS, AREAS_MACRO } from '@/lib/types/prova';
 import AuthGuard from '@/components/admin/AuthGuard';
 import DeleteModal from '@/components/admin/DeleteModal';

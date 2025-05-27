@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import InputMask from 'react-input-mask';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { validateCPF, unformatCPF } from '@/lib/utils/cpf';
 import { buscarCEP } from '@/lib/utils/cep';
 import { ArrowLeft, Loader2, Save, Search } from 'lucide-react';

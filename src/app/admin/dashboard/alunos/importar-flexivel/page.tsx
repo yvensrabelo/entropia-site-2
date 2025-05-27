@@ -6,7 +6,7 @@ import AuthGuard from '@/components/admin/AuthGuard';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Upload, FileSpreadsheet, Download, AlertCircle, CheckCircle, X, Users, Zap } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase-singleton';
 import { toast } from 'react-hot-toast';
 
 interface ImportResult {

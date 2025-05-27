@@ -15,7 +15,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { Toast } from '@/components/Toast';
 import { formatCPF } from '@/lib/utils/cpf';
 

@@ -7,7 +7,7 @@ import { useForm, useFieldArray, Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ArrowLeft, Plus, X, Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { TurmaFormData, Turma } from '@/lib/types/turma';
 import AuthGuard from '@/components/admin/AuthGuard';
 import toast, { Toaster } from 'react-hot-toast';

@@ -2,7 +2,7 @@
  * Script de validação do sistema de provas hierárquico
  */
 
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { SUBCATEGORIAS, AREAS_MACRO, isValidSubcategoria, isValidArea } from '@/lib/types/prova';
 
 export interface TestResult {

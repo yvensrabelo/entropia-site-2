@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase-singleton';
 import { Aluno } from '@/types/aluno';
 import { formatCPF } from '@/lib/utils/cpf';
 import { Users, Plus, Search, Edit, Trash2, Loader2, Eye, Upload, Zap, Rocket, FileCheck, FileX } from 'lucide-react';

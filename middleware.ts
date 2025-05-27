@@ -1,110 +1,27 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  })
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-        },
-      },
+export function middleware(request: NextRequest) {
+  // Apenas proteja rotas admin por enquanto
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    // Verificação básica por cookie
+    const hasAccessToken = request.cookies.has('sb-jvrrrcgqpjhhqshxuexf-auth-token')
+    const isLoginPage = request.nextUrl.pathname === '/admin/login'
+    
+    if (!hasAccessToken && !isLoginPage) {
+      const loginUrl = new URL('/admin/login', request.url)
+      loginUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
+      return NextResponse.redirect(loginUrl)
     }
-  )
-
-  // Refresh session if expired - required for Server Components
-  const { data: { session } } = await supabase.auth.getSession()
-
-  // URLs para verificação
-  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
-  const isLoginPage = request.nextUrl.pathname === '/admin/login'
-  const isAdminDashboard = request.nextUrl.pathname.startsWith('/admin/dashboard')
-
-  // Se está em uma rota admin (exceto login) e não está autenticado
-  if (isAdminRoute && !isLoginPage && !session) {
-    // Redireciona para login
-    const redirectUrl = new URL('/admin/login', request.url)
-    redirectUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
-    return NextResponse.redirect(redirectUrl)
-  }
-
-  // Se está na página de login e já está autenticado
-  if (isLoginPage && session) {
-    // Verifica se é admin
-    const { data: adminUser } = await supabase
-      .from('admin_users')
-      .select('*')
-      .eq('email', session.user.email)
-      .single()
-
-    if (adminUser) {
-      // Redireciona para dashboard
-      const redirectTo = request.nextUrl.searchParams.get('redirectTo') || '/admin/dashboard'
-      return NextResponse.redirect(new URL(redirectTo, request.url))
+    
+    if (hasAccessToken && isLoginPage) {
+      return NextResponse.redirect(new URL('/admin/dashboard', request.url))
     }
   }
-
-  // Se está tentando acessar o dashboard sem ser admin
-  if (isAdminDashboard && session) {
-    const { data: adminUser } = await supabase
-      .from('admin_users')
-      .select('*')
-      .eq('email', session.user.email)
-      .single()
-
-    if (!adminUser) {
-      // Não é admin, redireciona para login
-      return NextResponse.redirect(new URL('/admin/login', request.url))
-    }
-  }
-
-  return response
+  
+  return NextResponse.next()
 }
 
-// Configuração do matcher - aplica o middleware apenas nas rotas especificadas
 export const config = {
   matcher: [
     /*

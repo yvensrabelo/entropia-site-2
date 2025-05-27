@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { Matricula, STATUS_LABELS, STATUS_COLORS } from '@/types/matricula';
 import { ClipboardList, Plus, Search, Edit, Loader2, Filter } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';

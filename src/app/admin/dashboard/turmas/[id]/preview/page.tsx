@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { Turma } from '@/lib/types/turma';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { motion } from 'framer-motion';

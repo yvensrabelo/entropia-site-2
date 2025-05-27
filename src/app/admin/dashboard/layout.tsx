@@ -18,7 +18,7 @@ import {
   BarChart3,
   MessageSquare
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase-singleton';
 
 interface MenuItem {
   name: string;

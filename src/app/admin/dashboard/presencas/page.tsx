@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { formatCPF } from '@/lib/utils/cpf';
 import { Calendar, Clock, Users, Filter, Download, CheckCircle, XCircle, Loader2, Plus } from 'lucide-react';
 import Link from 'next/link';

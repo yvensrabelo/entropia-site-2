@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { ArrowLeft, Save, Loader2, Search, UserPlus, Calendar, Clock } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { Toast } from '@/components/Toast';

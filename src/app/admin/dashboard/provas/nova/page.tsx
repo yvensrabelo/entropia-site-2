@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { ArrowLeft, Upload, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import AuthGuard from '@/components/admin/AuthGuard';

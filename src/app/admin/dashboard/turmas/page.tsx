@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Plus, GraduationCap } from 'lucide-react';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { Turma } from '@/lib/types/turma';
 import AuthGuard from '@/components/admin/AuthGuard';
 import toast, { Toaster } from 'react-hot-toast';

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import ProvasList from '@/components/banco-provas/ProvasList';
 import { BookOpen, Download, Search, FileText } from 'lucide-react';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import { Prova } from '@/lib/types/prova';
 import { motion } from 'framer-motion';
 

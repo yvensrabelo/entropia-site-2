@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { supabase } from '@/lib/supabase-client';
+import { supabase } from '@/lib/supabase-singleton';
 import ProvaCard from './ProvaCard';
 import ProvaGroupCard from './ProvaGroupCard';
 import MacroGroupCard from './MacroGroupCard';

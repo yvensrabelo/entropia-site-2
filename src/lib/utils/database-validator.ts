@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase-singleton';
 
 interface ColumnInfo {
   column_name: string;

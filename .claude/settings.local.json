@@ -47,7 +47,8 @@
       "Bash(npx @railway/cli login:*)",
       "mcp__ide__executeCode",
       "Bash(/Users/yvensrabelo/TENTAR O QUE JA TEMOS/entropia-site-2/add-dynamic-export.sh:*)",
-      "Bash(./add-dynamic.sh:*)"
+      "Bash(./add-dynamic.sh:*)",
+      "Bash(./update-imports.sh)"
     ],
     "deny": []
   }
