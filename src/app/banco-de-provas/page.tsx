@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { FileText, Download, GraduationCap, BookOpen, Brain, Sparkles, FileX } from 'lucide-react';
+import { useEffect, useState, useMemo } from 'react';
+import { FileText, Download, GraduationCap, BookOpen, Brain, Sparkles, FileX, Calendar, Tag, Eye, CheckCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase-singleton';
 import { Prova } from '@/lib/types/prova';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -66,11 +66,84 @@ const FILTER_TYPES = [
   }
 ];
 
+// Função para gerar provas de exemplo
+const gerarProvasExemplo = (): Prova[] => {
+  console.log('📝 Gerando provas de exemplo...');
+  
+  const tipos = ['PSC', 'SIS', 'MACRO', 'ENEM', 'PSI', 'UERR', 'UFRR'];
+  const instituicoes = ['UFAM', 'UEA', 'UFRR', 'UERR'];
+  const anos = [2025, 2024, 2023, 2022, 2021];
+  
+  const provasExemplo: Prova[] = [];
+  let id = 1;
+  
+  // Gerar várias provas de exemplo
+  tipos.forEach(tipo => {
+    anos.forEach(ano => {
+      if (tipo === 'PSC' || tipo === 'SIS') {
+        [1, 2, 3].forEach(etapa => {
+          provasExemplo.push({
+            id: `prova-${id++}`,
+            instituicao: tipo === 'PSC' ? 'UFAM' : 'UEA',
+            tipo_prova: tipo,
+            subcategoria: `${tipo} ${etapa}`,
+            titulo: `${tipo} ${etapa} - ${ano}`,
+            ano: ano,
+            url_pdf: '#',
+            visualizacoes: Math.floor(Math.random() * 1000),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+        });
+      } else if (tipo === 'MACRO') {
+        ['DIA 1', 'DIA 2'].forEach(dia => {
+          provasExemplo.push({
+            id: `prova-${id++}`,
+            instituicao: 'UFAM',
+            tipo_prova: tipo,
+            subcategoria: dia,
+            area: dia === 'DIA 2' ? 'BIOLÓGICAS' : undefined,
+            titulo: `${tipo} ${dia} - ${ano}`,
+            ano: ano,
+            url_pdf: '#',
+            visualizacoes: Math.floor(Math.random() * 1000),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+        });
+      } else {
+        provasExemplo.push({
+          id: `prova-${id++}`,
+          instituicao: instituicoes[Math.floor(Math.random() * instituicoes.length)],
+          tipo_prova: tipo,
+          titulo: `${tipo} - ${ano}`,
+          ano: ano,
+          url_pdf: '#',
+          visualizacoes: Math.floor(Math.random() * 1000),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+      }
+    });
+  });
+  
+  console.log(`✅ ${provasExemplo.length} provas de exemplo geradas`);
+  return provasExemplo;
+};
+
 export default function BancoDeProvasPage() {
   const [provas, setProvas] = useState<Prova[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [filterCounts, setFilterCounts] = useState<Record<string, number>>({});
+  const [subfiltro, setSubfiltro] = useState<string | null>(null);
+
+  // Verificar configuração do Supabase
+  console.log('🔍 Verificando configuração Supabase:', {
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ URL configurada' : '❌ URL faltando',
+    key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Key configurada' : '❌ Key faltando',
+    supabaseClient: supabase ? '✅ Cliente criado' : '❌ Cliente não criado'
+  });
 
   useEffect(() => {
     fetchProvas();
@@ -78,10 +151,12 @@ export default function BancoDeProvasPage() {
 
   const fetchProvas = async () => {
     try {
-      console.log('🔍 Iniciando busca de provas...');
+      console.log('🔄 Iniciando busca no Supabase...');
       
       if (!supabase) {
         console.error('❌ Supabase não configurado');
+        const exemploProvas = gerarProvasExemplo();
+        setProvas(exemploProvas);
         setLoading(false);
         return;
       }
@@ -92,13 +167,52 @@ export default function BancoDeProvasPage() {
         .order('ano', { ascending: false })
         .order('created_at', { ascending: false });
 
+      console.log('📊 Resposta do Supabase:', {
+        data: data,
+        dataLength: data?.length,
+        error: error,
+        firstItem: data?.[0]
+      });
+
       if (error) {
-        console.error('❌ Erro do Supabase:', error);
-        throw error;
+        console.error('❌ Erro Supabase:', error.message);
+        console.error('Detalhes:', error);
+        
+        // Se falhar, use dados de exemplo mais completos
+        const exemploProvas = gerarProvasExemplo();
+        setProvas(exemploProvas);
+        
+        // Contar provas por tipo
+        const counts: Record<string, number> = {};
+        exemploProvas.forEach(prova => {
+          if (prova.tipo_prova) {
+            counts[prova.tipo_prova] = (counts[prova.tipo_prova] || 0) + 1;
+          }
+        });
+        setFilterCounts(counts);
+        setLoading(false);
+        return;
       }
       
-      console.log('✅ Provas encontradas:', data?.length || 0);
-      console.log('📋 Dados das provas:', data);
+      if (!data || data.length === 0) {
+        console.warn('⚠️ Nenhuma prova encontrada no banco');
+        // Use dados de exemplo
+        const exemploProvas = gerarProvasExemplo();
+        setProvas(exemploProvas);
+        
+        // Contar provas por tipo
+        const counts: Record<string, number> = {};
+        exemploProvas.forEach(prova => {
+          if (prova.tipo_prova) {
+            counts[prova.tipo_prova] = (counts[prova.tipo_prova] || 0) + 1;
+          }
+        });
+        setFilterCounts(counts);
+        setLoading(false);
+        return;
+      }
+      
+      console.log('✅ Provas carregadas com sucesso:', data.length);
       
       // Contar provas por tipo
       const counts: Record<string, number> = {};
@@ -110,103 +224,57 @@ export default function BancoDeProvasPage() {
       
       console.log('📊 Contagem por tipo:', counts);
       
-      // Se não houver dados, usar dados de exemplo
-      if (!data || data.length === 0) {
-        console.log('⚠️ Nenhuma prova encontrada, usando dados de exemplo');
-        const exemploProvas: Prova[] = [
-          { 
-            id: '1', 
-            titulo: 'PSC 2024 - 1ª Etapa', 
-            tipo_prova: 'PSC', 
-            ano: 2024, 
-            etapa: '1ª Etapa', 
-            instituicao: 'UFAM', 
-            url_pdf: '#',
-            visualizacoes: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          },
-          { 
-            id: '2', 
-            titulo: 'PSC 2024 - 2ª Etapa', 
-            tipo_prova: 'PSC', 
-            ano: 2024, 
-            etapa: '2ª Etapa', 
-            instituicao: 'UFAM', 
-            url_pdf: '#',
-            visualizacoes: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          },
-          { 
-            id: '3', 
-            titulo: 'SIS 2024 - Regular', 
-            tipo_prova: 'SIS', 
-            ano: 2024, 
-            etapa: 'Regular', 
-            instituicao: 'UEA', 
-            url_pdf: '#',
-            visualizacoes: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          },
-          { 
-            id: '4', 
-            titulo: 'MACRO 2024', 
-            tipo_prova: 'MACRO', 
-            ano: 2024, 
-            etapa: 'Única', 
-            instituicao: 'UEA', 
-            url_pdf: '#',
-            visualizacoes: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          },
-          { 
-            id: '5', 
-            titulo: 'ENEM 2023', 
-            tipo_prova: 'ENEM', 
-            ano: 2023, 
-            etapa: 'Regular', 
-            instituicao: 'ENEM', 
-            url_pdf: '#',
-            visualizacoes: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          },
-        ];
-        
-        const exemploCounts: Record<string, number> = {};
-        exemploProvas.forEach(prova => {
-          if (prova.tipo_prova) {
-            exemploCounts[prova.tipo_prova] = (exemploCounts[prova.tipo_prova] || 0) + 1;
-          }
-        });
-        
-        setFilterCounts(exemploCounts);
-        setProvas(exemploProvas);
-      } else {
-        setFilterCounts(counts);
-        setProvas(data);
-      }
+      setFilterCounts(counts);
+      setProvas(data);
     } catch (error) {
       console.error('❌ Erro ao buscar provas:', error);
-      // Mesmo com erro, vamos mostrar algo para o usuário
-      setProvas([]);
+      // Use dados de exemplo em caso de erro
+      const exemploProvas = gerarProvasExemplo();
+      setProvas(exemploProvas);
+      
+      // Contar provas por tipo
+      const counts: Record<string, number> = {};
+      exemploProvas.forEach(prova => {
+        if (prova.tipo_prova) {
+          counts[prova.tipo_prova] = (counts[prova.tipo_prova] || 0) + 1;
+        }
+      });
+      setFilterCounts(counts);
     } finally {
       setLoading(false);
     }
   };
 
-  // Filtrar provas baseado no filtro ativo
-  const filteredProvas = activeFilter 
-    ? provas.filter(prova => prova.tipo_prova === activeFilter)
-    : provas;
+  // Filtrar provas baseado no filtro ativo e subfiltro
+  const filteredProvas = useMemo(() => {
+    let filtered = provas;
+    
+    // Filtro principal
+    if (activeFilter) {
+      filtered = filtered.filter(prova => 
+        prova.tipo_prova?.toLowerCase() === activeFilter.toLowerCase()
+      );
+    }
+    
+    // Subfiltro
+    if (subfiltro) {
+      filtered = filtered.filter(prova => 
+        prova.subcategoria?.toLowerCase() === subfiltro.toLowerCase()
+      );
+    }
+    
+    return filtered;
+  }, [provas, activeFilter, subfiltro]);
   
   // Debug log
   console.log('🎯 Filtro ativo:', activeFilter);
   console.log('📚 Total de provas:', provas.length);
   console.log('🔍 Provas filtradas:', filteredProvas.length);
+  
+  // Mostrar estrutura da primeira prova
+  if (filteredProvas.length > 0 && !loading) {
+    console.log('📋 ESTRUTURA DA PRIMEIRA PROVA:', JSON.stringify(filteredProvas[0], null, 2));
+  }
 
   // Atualizar contadores nos filtros
   const filtersWithCounts = FILTER_TYPES.map(filter => ({
@@ -298,7 +366,10 @@ export default function BancoDeProvasPage() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveFilter(isActive ? null : filter.id)}
+                onClick={() => {
+                  setActiveFilter(isActive ? null : filter.id);
+                  setSubfiltro(null); // Reset subfiltro quando muda filtro principal
+                }}
                 className={`
                   min-w-[140px] backdrop-blur-xl rounded-2xl p-4 shadow-xl border group transition-all
                   ${isActive 
@@ -330,6 +401,57 @@ export default function BancoDeProvasPage() {
         </div>
       </section>
 
+      {/* Filtros Secundários (Subcategorias) */}
+      {activeFilter && ['PSC', 'SIS', 'MACRO'].includes(activeFilter) && (
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="px-6 pb-4"
+        >
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            {activeFilter === 'PSC' && ['Todos', 'PSC 1', 'PSC 2', 'PSC 3'].map((sub) => (
+              <button
+                key={sub}
+                onClick={() => setSubfiltro(sub === 'Todos' ? null : sub)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                  subfiltro === sub || (sub === 'Todos' && !subfiltro)
+                    ? 'bg-emerald-500 text-white shadow-lg'
+                    : 'bg-white/80 text-gray-700 hover:bg-emerald-50'
+                }`}
+              >
+                {sub}
+              </button>
+            ))}
+            {activeFilter === 'SIS' && ['Todos', 'SIS 1', 'SIS 2', 'SIS 3'].map((sub) => (
+              <button
+                key={sub}
+                onClick={() => setSubfiltro(sub === 'Todos' ? null : sub)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                  subfiltro === sub || (sub === 'Todos' && !subfiltro)
+                    ? 'bg-emerald-500 text-white shadow-lg'
+                    : 'bg-white/80 text-gray-700 hover:bg-emerald-50'
+                }`}
+              >
+                {sub}
+              </button>
+            ))}
+            {activeFilter === 'MACRO' && ['Todos', 'DIA 1', 'DIA 2'].map((sub) => (
+              <button
+                key={sub}
+                onClick={() => setSubfiltro(sub === 'Todos' ? null : sub)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                  subfiltro === sub || (sub === 'Todos' && !subfiltro)
+                    ? 'bg-emerald-500 text-white shadow-lg'
+                    : 'bg-white/80 text-gray-700 hover:bg-emerald-50'
+                }`}
+              >
+                {sub}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
       {/* Grid de Provas com Design Premium */}
       <section className="px-6 pb-20 max-w-7xl mx-auto">
         {/* Título da seção */}
@@ -337,194 +459,127 @@ export default function BancoDeProvasPage() {
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-2xl font-bold text-gray-800 dark:text-white mb-6"
+            className="text-2xl font-bold text-gray-800 mb-6"
           >
-            {activeFilter 
-              ? `Provas de ${activeFilter} (${filteredProvas.length})`
-              : `Todas as Provas (${filteredProvas.length})`
-            }
+            {activeFilter ? `Provas de ${activeFilter.toUpperCase()}` : 'Todas as Provas'}
+            {subfiltro && ` - ${subfiltro}`}
+            <span className="text-emerald-600 ml-2">({filteredProvas.length})</span>
           </motion.h2>
         )}
-        <AnimatePresence mode="wait">
-          {loading ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="grid gap-4"
-            >
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-2xl blur-xl" />
-                  <div className="relative bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                    <div className="animate-pulse">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
-                          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                        </div>
-                        <div className="w-14 h-14 bg-gray-200 rounded-2xl"></div>
+        
+        
+        {/* GRID DE PROVAS MODERNO */}
+        {!loading && filteredProvas.length > 0 && (
+          <div className="space-y-4">
+            {filteredProvas.map((prova, index) => (
+              <motion.div
+                key={prova.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.03 }}
+                className="group"
+              >
+                <div className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-emerald-200">
+                  {/* Decoração gradiente sutil */}
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 via-green-500 to-teal-400" />
+                  
+                  {/* Badge tipo no canto */}
+                  <div className="absolute top-4 right-4 z-10">
+                    <span className="px-3 py-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-bold rounded-full shadow-md">
+                      {prova.tipo_prova}
+                    </span>
+                  </div>
+                  
+                  <div className="p-6">
+                    {/* Header com instituição */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center">
+                        <GraduationCap className="w-5 h-5 text-emerald-600" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-emerald-600 uppercase tracking-wide">
+                          {prova.instituicao}
+                        </p>
+                        <h3 className="text-lg font-bold text-gray-800">
+                          {prova.titulo}
+                        </h3>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          ) : filteredProvas.length > 0 ? (
-            <motion.div 
-              className="grid gap-4"
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.05
-                  }
-                }
-              }}
-            >
-              {filteredProvas.map((prova, index) => {
-                // Debug para cada prova
-                console.log(`Renderizando prova ${index}:`, prova);
-                
-                return (
-                <motion.div
-                  key={prova.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0 }
-                  }}
-                  whileHover={{ y: -4 }}
-                  className="relative group"
-                >
-                  {/* Glow effect on hover */}
-                  <div className={`
-                    absolute inset-0 bg-gradient-to-r rounded-2xl blur-xl opacity-0 
-                    group-hover:opacity-100 transition-opacity duration-300
-                    ${prova.tipo_prova === 'PSC' ? 'from-emerald-500/20 to-green-500/20' : 
-                      prova.tipo_prova === 'SIS' ? 'from-green-500/20 to-teal-500/20' :
-                      prova.tipo_prova === 'MACRO' ? 'from-teal-500/20 to-cyan-500/20' :
-                      prova.tipo_prova === 'ENEM' ? 'from-cyan-500/20 to-blue-500/20' :
-                      prova.tipo_prova === 'PSI' ? 'from-purple-500/20 to-pink-500/20' :
-                      prova.tipo_prova === 'UERR' ? 'from-orange-500/20 to-red-500/20' :
-                      prova.tipo_prova === 'UFRR' ? 'from-indigo-500/20 to-purple-500/20' :
-                      'from-gray-500/20 to-gray-600/20'
-                    }
-                  `} />
-                  
-                  <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    {/* Decorative gradient line */}
-                    <div className={`
-                      absolute top-0 left-0 right-0 h-1 bg-gradient-to-r
-                      ${prova.tipo_prova === 'PSC' ? 'from-emerald-400 to-green-600' : 
-                        prova.tipo_prova === 'SIS' ? 'from-green-400 to-teal-600' :
-                        prova.tipo_prova === 'MACRO' ? 'from-teal-400 to-cyan-600' :
-                        prova.tipo_prova === 'ENEM' ? 'from-cyan-400 to-blue-600' :
-                        prova.tipo_prova === 'PSI' ? 'from-purple-400 to-pink-600' :
-                        prova.tipo_prova === 'UERR' ? 'from-orange-400 to-red-600' :
-                        prova.tipo_prova === 'UFRR' ? 'from-indigo-400 to-purple-600' :
-                        'from-gray-400 to-gray-600'
-                      }
-                    `} />
                     
-                    {/* Badge do tipo no canto */}
-                    <div className="absolute top-4 right-4">
-                      <span className={`
-                        px-3 py-1 text-white text-xs font-bold rounded-full bg-gradient-to-r
-                        ${prova.tipo_prova === 'PSC' ? 'from-emerald-500 to-green-600' : 
-                          prova.tipo_prova === 'SIS' ? 'from-green-500 to-teal-600' :
-                          prova.tipo_prova === 'MACRO' ? 'from-teal-500 to-cyan-600' :
-                          prova.tipo_prova === 'ENEM' ? 'from-cyan-500 to-blue-600' :
-                          prova.tipo_prova === 'PSI' ? 'from-purple-500 to-pink-600' :
-                          prova.tipo_prova === 'UERR' ? 'from-orange-500 to-red-600' :
-                          prova.tipo_prova === 'UFRR' ? 'from-indigo-500 to-purple-600' :
-                          'from-gray-500 to-gray-600'
-                        }
-                      `}>
-                        {prova.tipo_prova}
+                    {/* Metadados */}
+                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {prova.ano}
+                      </span>
+                      {prova.subcategoria && (
+                        <span className="flex items-center gap-1">
+                          <Tag className="w-4 h-4" />
+                          {prova.subcategoria}
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1">
+                        <Eye className="w-4 h-4" />
+                        {prova.visualizacoes || 0} views
                       </span>
                     </div>
                     
-                    {/* Conteúdo */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1 pr-4">
-                        <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-1">
-                          {prova.titulo}
-                        </h3>
-                        <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-                          <span>{prova.ano}</span>
-                          {prova.etapa && (
-                            <>
-                              <span>•</span>
-                              <span>{prova.etapa}</span>
-                            </>
-                          )}
-                          {prova.instituicao && (
-                            <>
-                              <span>•</span>
-                              <span>{prova.instituicao}</span>
-                            </>
-                          )}
-                        </div>
-                      </div>
+                    {/* Botões Prova e Gabarito */}
+                    <div className="flex gap-3">
+                      {/* Botão Prova */}
+                      <motion.a
+                        href={prova.url_pdf || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex-1 bg-gradient-to-r from-emerald-50 to-green-50 hover:from-emerald-100 hover:to-green-100 border border-emerald-200 rounded-xl p-4 flex items-center justify-center gap-2 transition-all group/btn"
+                      >
+                        <FileText className="w-5 h-5 text-emerald-600 group-hover/btn:scale-110 transition-transform" />
+                        <span className="font-semibold text-emerald-700">Prova</span>
+                        <Download className="w-4 h-4 text-emerald-500" />
+                      </motion.a>
                       
-                      {/* Botões de ação */}
-                      <div className="flex gap-2">
-                        {prova.url_pdf && !prova.is_gabarito && (
-                          <motion.a
-                            href={prova.url_pdf}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                            whileTap={{ scale: 0.9 }}
-                            className={`
-                              w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg
-                              bg-gradient-to-br
-                              ${prova.tipo_prova === 'PSC' ? 'from-emerald-400 to-green-600' : 
-                                prova.tipo_prova === 'SIS' ? 'from-green-400 to-teal-600' :
-                                prova.tipo_prova === 'MACRO' ? 'from-teal-400 to-cyan-600' :
-                                prova.tipo_prova === 'ENEM' ? 'from-cyan-400 to-blue-600' :
-                                prova.tipo_prova === 'PSI' ? 'from-purple-400 to-pink-600' :
-                                prova.tipo_prova === 'UERR' ? 'from-orange-400 to-red-600' :
-                                prova.tipo_prova === 'UFRR' ? 'from-indigo-400 to-purple-600' :
-                                'from-gray-400 to-gray-600'
-                              }
-                            `}
-                          >
-                            <Download className="w-6 h-6 text-white" />
-                          </motion.a>
-                        )}
-                        
-                        {(prova.url_gabarito || (prova.is_gabarito && prova.url_pdf)) && (
-                          <motion.a
-                            href={prova.url_gabarito || prova.url_pdf || '#'}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={{ scale: 1.1, rotate: -5 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg"
-                          >
-                            <Sparkles className="w-6 h-6 text-white" />
-                          </motion.a>
-                        )}
-                      </div>
+                      {/* Botão Gabarito (se existir) */}
+                      {prova.url_gabarito && (
+                        <motion.a
+                          href={prova.url_gabarito}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.02, y: -2 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="flex-1 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border border-blue-200 rounded-xl p-4 flex items-center justify-center gap-2 transition-all group/btn"
+                        >
+                          <CheckCircle className="w-5 h-5 text-blue-600 group-hover/btn:scale-110 transition-transform" />
+                          <span className="font-semibold text-blue-700">Gabarito</span>
+                          <Download className="w-4 h-4 text-blue-500" />
+                        </motion.a>
+                      )}
                     </div>
-                    
-                    {/* Visualizações - opcional */}
-                    {prova.visualizacoes && (
-                      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                        <span className="text-xs text-gray-400">
-                          {prova.visualizacoes} visualizações
-                        </span>
-                      </div>
-                    )}
                   </div>
+                  
+                  {/* Hover effect sutil */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-green-500/0 to-teal-500/0 group-hover:from-emerald-500/5 group-hover:via-green-500/5 group-hover:to-teal-500/5 transition-all duration-500 pointer-events-none" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+        <AnimatePresence mode="wait">
+          {loading ? (
+            <div className="space-y-4">
+              {[...Array(4)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="h-32 bg-gradient-to-r from-gray-800 to-gray-700 rounded-2xl relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 animate-shimmer" />
                 </motion.div>
-                );
-              })}
-            </motion.div>
+              ))}
+            </div>
           ) : (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -554,24 +609,18 @@ export default function BancoDeProvasPage() {
             </motion.div>
           )}
         </AnimatePresence>
-        
-        {/* Debug - Renderização simplificada para teste */}
-        {!loading && filteredProvas.length > 0 && (
-          <div className="mt-8 p-4 bg-yellow-100 dark:bg-yellow-900/20 rounded-xl">
-            <h3 className="font-bold mb-2">DEBUG - Provas carregadas:</h3>
-            <div className="text-sm">
-              {filteredProvas.slice(0, 5).map((prova, index) => (
-                <div key={prova.id || index} className="mb-1">
-                  {index + 1}. {prova.titulo || `Prova ID: ${prova.id}`} - {prova.tipo_prova || 'Sem tipo'}
-                </div>
-              ))}
-              {filteredProvas.length > 5 && (
-                <div>... e mais {filteredProvas.length - 5} provas</div>
-              )}
-            </div>
-          </div>
-        )}
       </section>
+      
+      {/* CSS para efeito shimmer */}
+      <style jsx>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%) skewX(-12deg); }
+          100% { transform: translateX(200%) skewX(-12deg); }
+        }
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
     </div>
   );
 }
