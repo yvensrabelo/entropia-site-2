@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   FileText, 
@@ -17,6 +18,7 @@ import {
   BarChart3,
   MessageSquare
 } from 'lucide-react';
+// import { supabase } from '@/lib/supabase-singleton';
 
 interface MenuItem {
   name: string;
@@ -45,12 +47,10 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // await supabase.auth.signOut();
+    // router.push('/admin/login');
     window.location.href = '/admin/login';
-  };
-
-  const handleNavigation = (href: string) => {
-    window.location.href = href;
   };
 
   return (
@@ -78,11 +78,11 @@ export default function DashboardLayout({
                   const Icon = item.icon;
                   
                   return (
-                    <button
+                    <Link
                       key={item.name}
-                      onClick={() => handleNavigation(item.href)}
+                      href={item.href}
                       className={`
-                        w-full group flex items-center px-2 py-2 text-sm font-medium rounded-md
+                        group flex items-center px-2 py-2 text-sm font-medium rounded-md
                         ${isActive
                           ? 'bg-gray-900 text-white'
                           : 'text-gray-300 hover:bg-gray-700 hover:text-white'
@@ -91,7 +91,7 @@ export default function DashboardLayout({
                     >
                       <Icon className="mr-3 h-5 w-5" />
                       {item.name}
-                    </button>
+                    </Link>
                   );
                 })}
               </nav>
@@ -122,11 +122,11 @@ export default function DashboardLayout({
                   const Icon = item.icon;
                   
                   return (
-                    <button
+                    <Link
                       key={item.name}
-                      onClick={() => handleNavigation(item.href)}
+                      href={item.href}
                       className={`
-                        w-full group flex items-center px-2 py-2 text-sm font-medium rounded-md
+                        group flex items-center px-2 py-2 text-sm font-medium rounded-md
                         ${isActive
                           ? 'bg-gray-900 text-white'
                           : 'text-gray-300 hover:bg-gray-700 hover:text-white'
@@ -135,7 +135,7 @@ export default function DashboardLayout({
                     >
                       <Icon className="mr-3 h-5 w-5" />
                       {item.name}
-                    </button>
+                    </Link>
                   );
                 })}
               </nav>
