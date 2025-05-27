@@ -88,7 +88,11 @@ export default function AdminLoginPage() {
 
         // Login bem-sucedido como admin
         showToast('Login realizado com sucesso!', 'success');
-        router.push(redirectTo);
+        
+        // Use window.location ao invés de router.push
+        setTimeout(() => {
+          window.location.href = redirectTo;
+        }, 1000);
       }
     } catch (error) {
       console.error('Erro no login:', error);

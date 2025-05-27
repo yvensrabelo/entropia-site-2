@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation';
-
-export const dynamic = 'force-dynamic'
+'use client'
 
 export default function AdminPage() {
-  console.log('🔍 Admin Page - Redirecionando para dashboard')
-  redirect('/admin/dashboard');
+  if (typeof window !== 'undefined') {
+    window.location.href = '/admin/dashboard'
+  }
+  return null
 }
