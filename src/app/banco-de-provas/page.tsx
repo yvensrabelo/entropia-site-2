@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FileText, Download, GraduationCap, BookOpen, Brain, Sparkles } from 'lucide-react';
+import { FileText, Download, GraduationCap, BookOpen, Brain, Sparkles, FileX } from 'lucide-react';
 import { supabase } from '@/lib/supabase-singleton';
 import { Prova } from '@/lib/types/prova';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -162,6 +162,18 @@ export default function BancoDeProvasPage() {
   const totalProvas = Object.values(filterCounts).reduce((a, b) => a + b, 0);
   const totalTypes = Object.keys(filterCounts).length;
 
+  // Debug - remova após funcionar
+  useEffect(() => {
+    console.log('🔍 Estado atual:');
+    console.log('- Loading:', loading);
+    console.log('- Provas:', provas);
+    console.log('- Provas Filtradas:', filteredProvas);
+    console.log('- Filtro Ativo:', activeFilter);
+    if (provas.length > 0) {
+      console.log('📋 Estrutura da primeira prova:', provas[0]);
+    }
+  }, [loading, provas, filteredProvas, activeFilter]);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section Ultra Compacta */}
@@ -318,7 +330,11 @@ export default function BancoDeProvasPage() {
                 }
               }}
             >
-              {filteredProvas.map((prova) => (
+              {filteredProvas.map((prova, index) => {
+                // Debug para cada prova
+                console.log(`Renderizando prova ${index}:`, prova);
+                
+                return (
                 <motion.div
                   key={prova.id}
                   variants={{
@@ -451,7 +467,8 @@ export default function BancoDeProvasPage() {
                     )}
                   </div>
                 </motion.div>
-              ))}
+                );
+              })}
             </motion.div>
           ) : (
             <motion.div
@@ -482,6 +499,23 @@ export default function BancoDeProvasPage() {
             </motion.div>
           )}
         </AnimatePresence>
+        
+        {/* Debug - Renderização simplificada para teste */}
+        {!loading && filteredProvas.length > 0 && (
+          <div className="mt-8 p-4 bg-yellow-100 dark:bg-yellow-900/20 rounded-xl">
+            <h3 className="font-bold mb-2">DEBUG - Provas carregadas:</h3>
+            <div className="text-sm">
+              {filteredProvas.slice(0, 5).map((prova, index) => (
+                <div key={prova.id || index} className="mb-1">
+                  {index + 1}. {prova.titulo || prova.nome || `Prova ID: ${prova.id}`} - {prova.tipo_prova || 'Sem tipo'}
+                </div>
+              ))}
+              {filteredProvas.length > 5 && (
+                <div>... e mais {filteredProvas.length - 5} provas</div>
+              )}
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );
