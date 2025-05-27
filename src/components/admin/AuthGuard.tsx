@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Loader2, LogOut, FileText, GraduationCap } from 'lucide-react';
 import { supabase } from '@/lib/supabase-singleton';
+import { useInactivityTimer } from '@/hooks/useInactivityTimer';
+import InactivityModal from './InactivityModal';
 
 interface AdminUser {
   id: string;
@@ -17,6 +19,24 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
+
+  const handleInactivityLogout = async () => {
+    console.log('🔒 Logout por inatividade');
+    await handleLogout();
+  };
+
+  const {
+    isWarningShown,
+    timeRemaining,
+    resetTimer,
+    pauseTimer,
+    resumeTimer
+  } = useInactivityTimer({
+    timeoutMinutes: 30, // 30 minutos total
+    warningMinutes: 5,  // Aviso 5 minutos antes
+    onTimeout: handleInactivityLogout,
+    enabled: isAuthenticated
+  });
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -74,6 +94,11 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   const handleLogout = async () => {
     try {
+      // Pausar timer antes do logout
+      pauseTimer();
+      
+      console.log('🚪 Fazendo logout...');
+      
       // Chamar API route para garantir limpeza completa
       await fetch('/api/auth/logout', { method: 'POST' });
       
@@ -91,6 +116,11 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         router.push('/admin/login');
       }, 100);
     }
+  };
+
+  const handleContinueSession = () => {
+    console.log('⏱️ Sessão continuada pelo usuário');
+    resetTimer();
   };
 
   if (loading) {
@@ -164,6 +194,14 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       <main className="flex-1">
         {children}
       </main>
+
+      {/* Modal de Inatividade */}
+      <InactivityModal
+        isOpen={isWarningShown}
+        timeRemaining={timeRemaining}
+        onContinue={handleContinueSession}
+        onLogout={handleLogout}
+      />
     </div>
   );
 }
