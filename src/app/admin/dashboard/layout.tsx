@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   FileText, 
   Book, 
@@ -18,7 +18,7 @@ import {
   BarChart3,
   MessageSquare
 } from 'lucide-react';
-import AuthGuard from '@/components/admin/AuthGuard';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface MenuItem {
   name: string;
@@ -45,16 +45,17 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const supabase = createClientComponentClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('entropia_admin');
-    window.location.href = '/admin/login';
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/admin/login');
   };
 
   return (
-    <AuthGuard>
-      <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
         {/* Sidebar móvel */}
         <div className={`${sidebarOpen ? 'block' : 'hidden'} fixed inset-0 z-40 md:hidden`}>
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
@@ -167,6 +168,6 @@ export default function DashboardLayout({
           </main>
         </div>
       </div>
-    </AuthGuard>
+    </div>
   );
 }
