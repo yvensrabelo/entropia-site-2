@@ -43,9 +43,11 @@ export default function ConfiguracaoWhatsAppPage() {
     try {
       console.log('=== CARREGANDO CONFIGURAÇÃO DO BANCO ===');
       
+      // Buscar pela instância específica para evitar duplicações
       const { data, error } = await supabase
         .from('whatsapp_config')
         .select('*')
+        .eq('instance_name', '5592991144473')
         .single();
       
       console.log('Dados carregados:', data);
@@ -71,7 +73,7 @@ export default function ConfiguracaoWhatsAppPage() {
           setHasApiKey(false);
         }
       } else {
-        console.log('Nenhuma configuração encontrada no banco');
+        console.log('Nenhuma configuração encontrada para a instância 5592991144473');
       }
     } catch (error) {
       console.error('Erro ao carregar configuração:', error);
@@ -108,29 +110,21 @@ export default function ConfiguracaoWhatsAppPage() {
         api_key: configData.api_key.substring(0, 10) + '...'
       });
 
-      if (configId) {
-        // Atualizar
-        console.log('Atualizando configuração existente, ID:', configId);
-        const { error } = await supabase
-          .from('whatsapp_config')
-          .update(configData)
-          .eq('id', configId);
-          
-        if (error) throw error;
-      } else {
-        // Criar novo
-        console.log('Criando nova configuração');
-        const { data, error } = await supabase
-          .from('whatsapp_config')
-          .insert(configData)
-          .select()
-          .single();
-        
-        if (error) throw error;
-        if (data) {
-          console.log('Nova configuração criada, ID:', data.id);
-          setConfigId(data.id);
-        }
+      // USAR UPSERT PARA EVITAR DUPLICAÇÕES
+      console.log('Usando UPSERT para salvar configuração');
+      const { data, error } = await supabase
+        .from('whatsapp_config')
+        .upsert(configData, {
+          onConflict: 'instance_name' // Usar instance_name como chave única
+        })
+        .select()
+        .single();
+      
+      if (error) throw error;
+      
+      if (data) {
+        console.log('Configuração salva/atualizada, ID:', data.id);
+        setConfigId(data.id);
       }
 
       // Após salvar com sucesso
@@ -166,13 +160,17 @@ export default function ConfiguracaoWhatsAppPage() {
       if (data.success) {
         setIsConnected(true);
         
-        // Salvar status no banco
-        if (configId) {
-          await supabase
-            .from('whatsapp_config')
-            .update({ status: 'connected' })
-            .eq('id', configId);
-        }
+        // Atualizar status no banco usando UPSERT
+        await supabase
+          .from('whatsapp_config')
+          .upsert({
+            instance_name: instanceName,
+            server_url: serverUrl,
+            api_key: hasApiKey ? realApiKey : apiKey,
+            status: 'connected'
+          }, {
+            onConflict: 'instance_name'
+          });
         
         setToast({ 
           message: '✅ WhatsApp conectado! Mensagem de teste enviada.', 
