@@ -113,12 +113,67 @@ export default function BancoDeProvasPage() {
       // Se não houver dados, usar dados de exemplo
       if (!data || data.length === 0) {
         console.log('⚠️ Nenhuma prova encontrada, usando dados de exemplo');
-        const exemploProvas = [
-          { id: 1, titulo: 'PSC 2024 - 1ª Etapa', tipo_prova: 'PSC', ano: 2024, etapa: '1ª Etapa', instituicao: 'UFAM', url_pdf: '#' },
-          { id: 2, titulo: 'PSC 2024 - 2ª Etapa', tipo_prova: 'PSC', ano: 2024, etapa: '2ª Etapa', instituicao: 'UFAM', url_pdf: '#' },
-          { id: 3, titulo: 'SIS 2024 - Regular', tipo_prova: 'SIS', ano: 2024, etapa: 'Regular', instituicao: 'UEA', url_pdf: '#' },
-          { id: 4, titulo: 'MACRO 2024', tipo_prova: 'MACRO', ano: 2024, etapa: 'Única', instituicao: 'UEA', url_pdf: '#' },
-          { id: 5, titulo: 'ENEM 2023', tipo_prova: 'ENEM', ano: 2023, etapa: 'Regular', instituicao: 'INEP', url_pdf: '#' },
+        const exemploProvas: Prova[] = [
+          { 
+            id: '1', 
+            titulo: 'PSC 2024 - 1ª Etapa', 
+            tipo_prova: 'PSC', 
+            ano: 2024, 
+            etapa: '1ª Etapa', 
+            instituicao: 'UFAM', 
+            url_pdf: '#',
+            visualizacoes: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
+          { 
+            id: '2', 
+            titulo: 'PSC 2024 - 2ª Etapa', 
+            tipo_prova: 'PSC', 
+            ano: 2024, 
+            etapa: '2ª Etapa', 
+            instituicao: 'UFAM', 
+            url_pdf: '#',
+            visualizacoes: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
+          { 
+            id: '3', 
+            titulo: 'SIS 2024 - Regular', 
+            tipo_prova: 'SIS', 
+            ano: 2024, 
+            etapa: 'Regular', 
+            instituicao: 'UEA', 
+            url_pdf: '#',
+            visualizacoes: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
+          { 
+            id: '4', 
+            titulo: 'MACRO 2024', 
+            tipo_prova: 'MACRO', 
+            ano: 2024, 
+            etapa: 'Única', 
+            instituicao: 'UEA', 
+            url_pdf: '#',
+            visualizacoes: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
+          { 
+            id: '5', 
+            titulo: 'ENEM 2023', 
+            tipo_prova: 'ENEM', 
+            ano: 2023, 
+            etapa: 'Regular', 
+            instituicao: 'ENEM', 
+            url_pdf: '#',
+            visualizacoes: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
         ];
         
         const exemploCounts: Record<string, number> = {};
@@ -129,7 +184,7 @@ export default function BancoDeProvasPage() {
         });
         
         setFilterCounts(exemploCounts);
-        setProvas(exemploProvas as any);
+        setProvas(exemploProvas);
       } else {
         setFilterCounts(counts);
         setProvas(data);
@@ -507,7 +562,7 @@ export default function BancoDeProvasPage() {
             <div className="text-sm">
               {filteredProvas.slice(0, 5).map((prova, index) => (
                 <div key={prova.id || index} className="mb-1">
-                  {index + 1}. {prova.titulo || prova.nome || `Prova ID: ${prova.id}`} - {prova.tipo_prova || 'Sem tipo'}
+                  {index + 1}. {prova.titulo || `Prova ID: ${prova.id}`} - {prova.tipo_prova || 'Sem tipo'}
                 </div>
               ))}
               {filteredProvas.length > 5 && (
