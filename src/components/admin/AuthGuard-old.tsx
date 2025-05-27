@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Loader2, LogOut, FileText, GraduationCap } from 'lucide-react';
-import { supabase } from '@/lib/supabase-singleton';
 
 interface AdminUser {
   id: string;
   nome: string;
-  email: string;
+  cpf: string;
+  email?: string;
 }
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -19,61 +19,28 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Verifica sessão do Supabase
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          router.push('/admin/login');
-          return;
-        }
-
-        // Verifica se é admin
-        const { data: admin } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('email', session.user.email)
-          .single();
-
-        if (!admin) {
-          await supabase.auth.signOut();
-          router.push('/admin/login');
-          return;
-        }
-
-        setAdminUser({
-          id: admin.id,
-          nome: admin.nome || admin.email,
-          email: admin.email
-        });
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Erro ao verificar autenticação:', error);
+    const checkAuth = () => {
+      const adminAuth = localStorage.getItem('adminAuth');
+      if (!adminAuth) {
         router.push('/admin/login');
-      } finally {
-        setLoading(false);
+      } else {
+        try {
+          const admin = JSON.parse(adminAuth);
+          setAdminUser(admin);
+          setIsAuthenticated(true);
+        } catch {
+          localStorage.removeItem('adminAuth');
+          router.push('/admin/login');
+        }
       }
+      setLoading(false);
     };
 
     checkAuth();
-
-    // Escuta mudanças de autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event === 'SIGNED_OUT' || !session) {
-          router.push('/admin/login');
-        }
-      }
-    );
-
-    return () => {
-      subscription.unsubscribe();
-    };
   }, [router]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
+    localStorage.removeItem('adminAuth');
     router.push('/admin/login');
   };
 
@@ -82,7 +49,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Verificando autenticação...</p>
+          <p className="text-gray-600">Carregando...</p>
         </div>
       </div>
     );

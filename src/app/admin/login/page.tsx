@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
           .single();
 
         if (adminUser) {
-          router.push(redirectTo);
+          window.location.href = redirectTo;
           return;
         }
       }
