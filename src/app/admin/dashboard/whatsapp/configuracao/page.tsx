@@ -57,19 +57,26 @@ export default function ConfiguracaoWhatsAppPage() {
         .single();
       
       console.log('Configuração carregada:', data);
-      console.log('Erro ao carregar:', error);
       
       if (data) {
         setConfig(data);
-        if (data.qr_code && data.status === 'connecting') {
-          setShowQRCode(true);
-        }
         
-        // Se já tem configuração salva, verificar status atual
+        // SIMPLIFICADO: Se tem API key salva, assume que está conectado
         if (data.api_key && data.server_url) {
-          console.log('Verificando status da conexão existente...');
-          setTimeout(() => checkConnectionOnce(), 1000);
+          console.log('Configuração encontrada com API key - marcando como conectado');
+          setConfig({ ...data, status: 'connected' });
+          
+          // Opcional: atualizar status no banco se não estiver marcado
+          if (data.status !== 'connected') {
+            await supabase
+              .from('whatsapp_config')
+              .update({ status: 'connected' })
+              .eq('id', data.id);
+          }
         }
+      } else {
+        // Se não tem configuração, usar valores padrão
+        console.log('Nenhuma configuração encontrada, usando valores padrão');
       }
     } catch (error) {
       console.error('Erro ao carregar configuração:', error);
@@ -250,14 +257,27 @@ export default function ConfiguracaoWhatsAppPage() {
 
       if (data.success && data.connected) {
         // Mensagem enviada = sistema funcionando!
-        setConfig({ ...config, status: 'connected' });
+        const updatedConfig: WhatsAppConfig = { ...config, status: 'connected' };
+        setConfig(updatedConfig);
         
-        // Salvar status de conectado no banco
-        if (config.id) {
-          await supabase
-            .from('whatsapp_config')
-            .update({ status: 'connected' })
-            .eq('id', config.id);
+        // Salvar ou atualizar configuração no banco
+        const configToSave = {
+          server_url: config.server_url,
+          api_key: config.api_key,
+          instance_name: config.instance_name,
+          status: 'connected'
+        };
+        
+        const { data: savedConfig, error } = await supabase
+          .from('whatsapp_config')
+          .upsert(configToSave, { 
+            onConflict: 'instance_name'
+          })
+          .select()
+          .single();
+          
+        if (!error && savedConfig) {
+          setConfig({ ...updatedConfig, id: savedConfig.id });
         }
         
         setToast({ 
@@ -391,9 +411,19 @@ export default function ConfiguracaoWhatsAppPage() {
               </div>
             </div>
             
-            <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-lg shadow-sm">
+            <div className={`flex items-center gap-3 px-4 py-2 rounded-lg shadow-sm ${
+              config.status === 'connected' 
+                ? 'bg-green-50 border border-green-200' 
+                : 'bg-white border border-gray-200'
+            }`}>
               {getStatusIcon()}
-              <span className="font-medium text-gray-700">{getStatusText()}</span>
+              <span className={`font-medium ${
+                config.status === 'connected' 
+                  ? 'text-green-700' 
+                  : 'text-gray-700'
+              }`}>
+                {getStatusText()}
+              </span>
             </div>
           </div>
         </div>
@@ -493,14 +523,25 @@ export default function ConfiguracaoWhatsAppPage() {
                   )}
                 </button>
                 
-                <button
-                  onClick={checkConnectionOnce}
-                  disabled={!config.server_url || !config.api_key || saving}
-                  className="flex items-center gap-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  Testar Conexão
-                </button>
+                {config.status === 'connected' ? (
+                  <button
+                    onClick={checkConnectionOnce}
+                    disabled={!config.server_url || !config.api_key || saving}
+                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Verificar Status
+                  </button>
+                ) : (
+                  <button
+                    onClick={checkConnectionOnce}
+                    disabled={!config.server_url || !config.api_key || saving}
+                    className="flex items-center gap-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Testar Conexão
+                  </button>
+                )}
                 
                 {config.status === 'disconnected' && (
                   <button
