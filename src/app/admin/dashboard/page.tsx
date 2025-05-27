@@ -6,6 +6,7 @@ import { FileText, Book, Users, ClipboardList, TrendingUp, Activity, FileCheck }
 import Link from 'next/link';
 
 export default function DashboardPage() {
+  console.log('🔍 Dashboard Page - Renderizando')
   const [stats, setStats] = useState({
     totalProvas: 0,
     totalCursos: 0,

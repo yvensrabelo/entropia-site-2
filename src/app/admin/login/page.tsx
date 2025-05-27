@@ -7,6 +7,10 @@ import { supabase } from '@/lib/supabase';
 import { useToast } from '@/contexts/ToastContext';
 
 export default function AdminLoginPage() {
+  useEffect(() => {
+    console.log('🔍 Login Page - URL atual:', window.location.href)
+    console.log('🔍 Login Page - Pathname:', window.location.pathname)
+  }, [])
   const router = useRouter();
   const searchParams = useSearchParams();
   const { showToast } = useToast();
