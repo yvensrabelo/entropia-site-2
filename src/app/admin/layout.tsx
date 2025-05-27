@@ -27,7 +27,7 @@ export default function AdminLayout({
         } else if (event === 'SIGNED_IN' && session) {
           // Verifica se é admin
           const { data: adminUser } = await supabase
-            .from('admins')
+            .from('admin_users')
             .select('*')
             .eq('email', session.user.email)
             .single();
@@ -59,7 +59,7 @@ export default function AdminLayout({
 
       // Verifica se o usuário é admin
       const { data: adminUser } = await supabase
-        .from('admins')
+        .from('admin_users')
         .select('*')
         .eq('email', session.user.email)
         .single();

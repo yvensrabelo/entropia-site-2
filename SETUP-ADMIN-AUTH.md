@@ -1,8 +1,8 @@
 # Configuração de Autenticação Admin
 
-## 1. Criar a tabela de admins no Supabase
+## 1. Criar a tabela de admin_users no Supabase
 
-Execute o SQL disponível em `src/lib/create-admins-table.sql` no editor SQL do Supabase.
+Execute o SQL disponível em `src/lib/create-admin-users-table.sql` no editor SQL do Supabase.
 
 ## 2. Criar um usuário admin no Supabase Auth
 
@@ -12,12 +12,12 @@ Execute o SQL disponível em `src/lib/create-admins-table.sql` no editor SQL do 
 4. Defina uma senha segura
 5. Confirme a criação
 
-## 3. Adicionar o usuário à tabela admins
+## 3. Adicionar o usuário à tabela admin_users
 
 Após criar o usuário no Auth, execute este SQL no Supabase:
 
 ```sql
-INSERT INTO admins (email, nome, cpf) VALUES 
+INSERT INTO admin_users (email, nome, cpf) VALUES 
 ('admin@entropia.com', 'Nome do Administrador', '98660608291');
 ```
 
@@ -34,10 +34,11 @@ Substitua os valores com os dados reais do administrador.
 - **Middleware** (`middleware.ts`): Protege todas as rotas `/admin/*` exceto `/admin/login`
 - **Layout Admin** (`src/app/admin/layout.tsx`): Verifica autenticação em cada renderização
 - **Dashboard Layout**: Gerencia logout e navegação
+- **Redirect automático**: `/admin` redireciona para `/admin/dashboard`
 
 ## Segurança
 
 - Todas as rotas admin são protegidas por middleware
 - Verificação dupla: middleware + componente layout
 - Sessões gerenciadas pelo Supabase Auth
-- RLS (Row Level Security) habilitado na tabela admins
+- RLS (Row Level Security) habilitado na tabela admin_users

@@ -21,7 +21,7 @@ export default function AdminHeader() {
       
       if (session) {
         const { data: adminUser } = await supabase
-          .from('admins')
+          .from('admin_users')
           .select('*')
           .eq('email', session.user.email)
           .single();

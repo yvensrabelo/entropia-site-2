@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock, Mail, Loader2, AlertCircle } from 'lucide-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useToast } from '@/contexts/ToastContext';
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClientComponentClient();
-  const [loading, setLoading] = useState(false);
+  const { showToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [formData, setFormData] = useState({
@@ -31,7 +33,7 @@ export default function AdminLoginPage() {
       if (session) {
         // Verifica se é admin
         const { data: adminUser } = await supabase
-          .from('admins')
+          .from('admin_users')
           .select('*')
           .eq('email', session.user.email)
           .single();
@@ -49,7 +51,7 @@ export default function AdminLoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     setError('');
 
     try {
@@ -61,13 +63,14 @@ export default function AdminLoginPage() {
 
       if (authError) {
         setError('Email ou senha inválidos');
+        setIsLoading(false);
         return;
       }
 
       if (data.session) {
         // Verifica se o usuário é admin
         const { data: adminUser, error: adminError } = await supabase
-          .from('admins')
+          .from('admin_users')
           .select('*')
           .eq('email', data.session.user.email)
           .single();
@@ -76,17 +79,19 @@ export default function AdminLoginPage() {
           // Não é admin, faz logout
           await supabase.auth.signOut();
           setError('Acesso negado. Você não tem permissões de administrador.');
+          setIsLoading(false);
           return;
         }
 
         // Login bem-sucedido como admin
+        showToast('Login realizado com sucesso!', 'success');
         router.push(redirectTo);
       }
     } catch (error) {
       console.error('Erro no login:', error);
       setError('Erro ao fazer login. Tente novamente.');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -133,6 +138,7 @@ export default function AdminLoginPage() {
                 className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -150,17 +156,18 @@ export default function AdminLoginPage() {
                 className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                 value={formData.senha}
                 onChange={(e) => setFormData({ ...formData, senha: e.target.value })}
+                disabled={isLoading}
               />
             </div>
           </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={isLoading}
             className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-medium transform hover:scale-[1.02] active:scale-[0.98]"
           >
-            {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {loading ? 'Entrando...' : 'Entrar'}
+            {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+            {isLoading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
 

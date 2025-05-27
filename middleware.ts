@@ -26,7 +26,7 @@ export async function middleware(req: NextRequest) {
   if (isLoginPage && session) {
     // Verifica se é admin
     const { data: adminUser } = await supabase
-      .from('admins')
+      .from('admin_users')
       .select('*')
       .eq('email', session.user.email)
       .single()
@@ -41,7 +41,7 @@ export async function middleware(req: NextRequest) {
   // Se está tentando acessar o dashboard sem ser admin
   if (isAdminDashboard && session) {
     const { data: adminUser } = await supabase
-      .from('admins')
+      .from('admin_users')
       .select('*')
       .eq('email', session.user.email)
       .single()
