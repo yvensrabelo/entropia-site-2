@@ -132,7 +132,7 @@ export default function BancoDeProvasPage() {
       </div>
       
       {/* Content */}
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
+      <div className="container mx-auto px-4 md:px-6 py-8 md:py-12 max-w-7xl">
         <ProvasList />
       </div>
     </div>

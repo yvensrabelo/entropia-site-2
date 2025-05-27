@@ -366,14 +366,14 @@ export default function ProvasList() {
         </motion.div>
       ) : (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
             {paginatedGroups.map((group, index) => (
               <motion.div
                 key={group.key}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.02 }}
-                className={(group.isMacro || group.isPsi) ? "col-span-2 sm:col-span-3 md:col-span-2 lg:col-span-2" : ""}
+                className={(group.isMacro || group.isPsi) ? "col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2" : ""}
               >
                 {group.isMacro ? (
                   <MacroGroupCard group={group} />
