@@ -45,7 +45,9 @@
       "Bash(npm run analyze:*)",
       "Bash(ANALYZE=true npm run build)",
       "Bash(npx @railway/cli login:*)",
-      "mcp__ide__executeCode"
+      "mcp__ide__executeCode",
+      "Bash(/Users/yvensrabelo/TENTAR O QUE JA TEMOS/entropia-site-2/add-dynamic-export.sh:*)",
+      "Bash(./add-dynamic.sh:*)"
     ],
     "deny": []
   }
