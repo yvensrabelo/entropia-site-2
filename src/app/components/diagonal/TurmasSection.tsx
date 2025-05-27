@@ -78,13 +78,21 @@ export default function TurmasSection() {
   }
 
   return (
-    <section id="turmas" className="relative py-20 bg-gray-50">
+    <section id="turmas" className="relative py-20 bg-gradient-to-b from-gray-50 via-white to-gray-50">
       <DiagonalDivider position="top" />
       
-      <div className="container mx-auto px-4">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.1) 0%, transparent 50%)`,
+          backgroundSize: '100px 100px'
+        }} />
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 sm:mb-4">
-            Nossas <span className="text-green-600">Turmas</span>
+            Nossas <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Turmas</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Escolha o curso ideal para sua jornada rumo à aprovação
@@ -93,9 +101,9 @@ export default function TurmasSection() {
         
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-pulse">
-              <div className="inline-block h-12 w-12 rounded-full bg-gray-300"></div>
-              <p className="mt-4 text-gray-500">Carregando turmas...</p>
+            <div className="animate-pulse flex flex-col items-center">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 animate-spin"></div>
+              <p className="mt-4 text-gray-500 font-medium">Carregando turmas...</p>
             </div>
           </div>
         ) : (

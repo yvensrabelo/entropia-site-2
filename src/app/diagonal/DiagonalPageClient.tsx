@@ -3,6 +3,7 @@
 import React from 'react'
 import NavbarDiagonal from '../components/diagonal/NavbarDiagonal'
 import HeroSection from '../components/diagonal/HeroSection'
+import ConhecaTurmasSection from '../components/diagonal/ConhecaTurmasSection'
 import TurmasSection from '../components/diagonal/TurmasSection'
 import MateriaisSection from '../components/diagonal/MateriaisSection'
 import Timestamp from '@/components/Timestamp'
@@ -12,6 +13,7 @@ export default function DiagonalPageClient() {
     <div className="min-h-screen bg-black">
       <NavbarDiagonal />
       <HeroSection />
+      <ConhecaTurmasSection />
       <TurmasSection />
       {/* <MateriaisSection /> */}
       
