@@ -4,6 +4,8 @@ import React from 'react'
 import VideoBackgroundSSR from './hero/VideoBackgroundSSR'
 import HeroContent from './hero/HeroContent'
 import ParticleSystem from './ParticleSystem'
+import { ChevronDown, GraduationCap } from 'lucide-react'
+import Link from 'next/link'
 
 export default function HeroSection() {
 
@@ -53,6 +55,27 @@ export default function HeroSection() {
 
       {/* Main Content */}
       <HeroContent showStats={false} />
+
+      {/* Conheça nossas turmas - Na área diagonal */}
+      <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
+        <div className="relative h-32">
+          {/* Posicionamento na linha diagonal */}
+          <Link 
+            href="#turmas" 
+            className="absolute left-1/2 -translate-x-1/2 bottom-24 pointer-events-auto group"
+          >
+            <div className="flex flex-col items-center text-white hover:text-green-400 transition-all duration-300">
+              <div className="flex items-center gap-2 mb-2">
+                <GraduationCap className="w-5 h-5" />
+                <span className="text-lg font-semibold">Conheça nossas turmas</span>
+              </div>
+              <div className="animate-bounce">
+                <ChevronDown className="w-8 h-8" />
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
     </section>
   )
 }
