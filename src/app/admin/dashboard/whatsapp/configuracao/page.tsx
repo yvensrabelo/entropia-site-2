@@ -21,6 +21,7 @@ export default function ConfiguracaoWhatsAppPage() {
   // Estados simples
   const [serverUrl, setServerUrl] = useState('https://evolutionapi.cursoentropia.com');
   const [apiKey, setApiKey] = useState('');
+  const [realApiKey, setRealApiKey] = useState(''); // API Key real para chamadas
   const [instanceName, setInstanceName] = useState('5592991144473');
   const [configId, setConfigId] = useState<string | null>(null);
   
@@ -30,6 +31,7 @@ export default function ConfiguracaoWhatsAppPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
   const [showApiKey, setShowApiKey] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   // Carregar configuração ao iniciar
@@ -39,31 +41,50 @@ export default function ConfiguracaoWhatsAppPage() {
 
   const loadConfig = async () => {
     try {
-      const { data } = await supabase
+      console.log('=== CARREGANDO CONFIGURAÇÃO DO BANCO ===');
+      
+      const { data, error } = await supabase
         .from('whatsapp_config')
         .select('*')
         .single();
       
+      console.log('Dados carregados:', data);
+      console.log('Erro:', error);
+      
       if (data) {
+        console.log('API Key no banco:', data.api_key ? `${data.api_key.substring(0, 10)}...` : 'VAZIA');
+        
         setConfigId(data.id);
         setServerUrl(data.server_url || 'https://evolutionapi.cursoentropia.com');
-        setApiKey(data.api_key || '');
         setInstanceName(data.instance_name || '5592991144473');
         
-        // SIMPLES: Se tem API key = conectado
-        if (data.api_key) {
+        // Se tem API key no banco
+        if (data.api_key && data.api_key.length > 0) {
+          console.log('API Key encontrada! Marcando como conectado.');
+          setRealApiKey(data.api_key); // Guarda a API key real
+          setApiKey('••••••••••••••••••••'); // Mostra asteriscos
+          setHasApiKey(true);
           setIsConnected(true);
+        } else {
+          console.log('Sem API Key no banco');
+          setApiKey('');
+          setHasApiKey(false);
         }
+      } else {
+        console.log('Nenhuma configuração encontrada no banco');
       }
     } catch (error) {
-      console.log('Nenhuma configuração encontrada');
+      console.error('Erro ao carregar configuração:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   const saveConfig = async () => {
-    if (!serverUrl || !apiKey || !instanceName) {
+    // Usar a API key real ou a nova digitada
+    const apiKeyToSave = hasApiKey && apiKey === '••••••••••••••••••••' ? realApiKey : apiKey;
+    
+    if (!serverUrl || !apiKeyToSave || !instanceName) {
       setToast({ 
         message: 'Por favor, preencha todos os campos', 
         type: 'error' 
@@ -72,35 +93,52 @@ export default function ConfiguracaoWhatsAppPage() {
     }
 
     setIsSaving(true);
+    console.log('=== SALVANDO CONFIGURAÇÃO ===');
+    
     try {
       const configData = {
         server_url: serverUrl.trim(),
-        api_key: apiKey.trim(),
+        api_key: apiKeyToSave.trim(),
         instance_name: instanceName.trim(),
         status: 'connected'
       };
+      
+      console.log('Dados a salvar:', {
+        ...configData,
+        api_key: configData.api_key.substring(0, 10) + '...'
+      });
 
       if (configId) {
         // Atualizar
-        await supabase
+        console.log('Atualizando configuração existente, ID:', configId);
+        const { error } = await supabase
           .from('whatsapp_config')
           .update(configData)
           .eq('id', configId);
+          
+        if (error) throw error;
       } else {
         // Criar novo
-        const { data } = await supabase
+        console.log('Criando nova configuração');
+        const { data, error } = await supabase
           .from('whatsapp_config')
           .insert(configData)
           .select()
           .single();
         
+        if (error) throw error;
         if (data) {
+          console.log('Nova configuração criada, ID:', data.id);
           setConfigId(data.id);
         }
       }
 
-      // Após salvar com sucesso, marcar como conectado
+      // Após salvar com sucesso
+      setRealApiKey(apiKeyToSave);
+      setApiKey('••••••••••••••••••••');
+      setHasApiKey(true);
       setIsConnected(true);
+      
       setToast({ 
         message: 'Configuração salva com sucesso!', 
         type: 'success' 
@@ -233,18 +271,38 @@ export default function ConfiguracaoWhatsAppPage() {
                     <input
                       type={showApiKey ? 'text' : 'password'}
                       value={apiKey}
-                      onChange={(e) => setApiKey(e.target.value)}
-                      placeholder="Sua chave de API"
+                      onChange={(e) => {
+                        setApiKey(e.target.value);
+                        // Se está editando, não é mais a API key salva
+                        if (e.target.value !== '••••••••••••••••••••') {
+                          setHasApiKey(false);
+                        }
+                      }}
+                      placeholder={hasApiKey ? "API Key salva (clique para editar)" : "Sua chave de API"}
                       className="w-full pr-12 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
                     <button
                       type="button"
-                      onClick={() => setShowApiKey(!showApiKey)}
+                      onClick={() => {
+                        if (hasApiKey && !showApiKey) {
+                          // Mostrar a API key real quando clicar no olho
+                          setApiKey(realApiKey);
+                        } else if (hasApiKey && showApiKey) {
+                          // Voltar aos asteriscos
+                          setApiKey('••••••••••••••••••••');
+                        }
+                        setShowApiKey(!showApiKey);
+                      }}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
                       {showApiKey ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
+                  {hasApiKey && (
+                    <p className="text-xs text-green-600 mt-1">
+                      ✓ API Key salva no banco de dados
+                    </p>
+                  )}
                 </div>
                 
                 <div>
