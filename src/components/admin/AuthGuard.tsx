@@ -73,8 +73,24 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   }, [router]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/admin/login');
+    try {
+      // Chamar API route para garantir limpeza completa
+      await fetch('/api/auth/logout', { method: 'POST' });
+      
+      // Também fazer logout local
+      await supabase.auth.signOut();
+      
+      // Pequeno delay para garantir que tudo foi limpo
+      setTimeout(() => {
+        router.push('/admin/login');
+      }, 100);
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+      // Forçar redirecionamento mesmo com erro
+      setTimeout(() => {
+        router.push('/admin/login');
+      }, 100);
+    }
   };
 
   if (loading) {

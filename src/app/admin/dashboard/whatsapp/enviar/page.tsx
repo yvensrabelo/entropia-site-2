@@ -53,6 +53,9 @@ export default function EnviarMensagemPage() {
   useEffect(() => {
     checkConnection();
     loadTemplates();
+    // Verificar status a cada 30 segundos
+    const interval = setInterval(checkConnection, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -67,10 +70,24 @@ export default function EnviarMensagemPage() {
     try {
       const response = await fetch('/api/whatsapp/status');
       const data = await response.json();
+      console.log('Status WhatsApp:', data);
       setIsConnected(data.connected);
+      
+      // Se houver erro de configuração, mostrar mensagem
+      if (data.error && !data.connected) {
+        console.error('Erro de status:', data.error);
+        setToast({ 
+          message: data.error || 'Falha ao obter status do WhatsApp', 
+          type: 'error' 
+        });
+      }
     } catch (error) {
       console.error('Erro ao verificar conexão:', error);
       setIsConnected(false);
+      setToast({ 
+        message: 'Erro ao verificar conexão com WhatsApp', 
+        type: 'error' 
+      });
     }
   };
 
@@ -461,18 +478,6 @@ export default function EnviarMensagemPage() {
           </button>
         </div>
 
-        {/* Aviso de horário */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start gap-3">
-            <MessageSquare className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-blue-800 font-medium">Horário de envio</p>
-              <p className="text-blue-700 text-sm mt-1">
-                Mensagens só podem ser enviadas entre 8h e 20h para respeitar a privacidade dos destinatários.
-              </p>
-            </div>
-          </div>
-        </div>
 
         {toast && (
           <Toast

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   FileText, 
   Book, 
@@ -17,6 +17,7 @@ import {
   BarChart3,
   MessageSquare
 } from 'lucide-react';
+import { supabase } from '@/lib/supabase-singleton';
 
 interface MenuItem {
   name: string;
@@ -43,10 +44,39 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleLogout = () => {
-    window.location.href = '/admin/login';
+  const handleLogout = async () => {
+    try {
+      console.log('Iniciando processo de logout...');
+      
+      // Chamar API route para garantir limpeza completa
+      const response = await fetch('/api/auth/logout', { 
+        method: 'POST',
+        credentials: 'same-origin'
+      });
+      
+      const data = await response.json();
+      console.log('Resposta do logout:', data);
+      
+      // Verificar se há header para limpar storage
+      if (response.headers.get('Clear-Storage') === 'true') {
+        // Limpar localStorage e sessionStorage
+        if (typeof window !== 'undefined') {
+          localStorage.clear();
+          sessionStorage.clear();
+          console.log('Storage limpo');
+        }
+      }
+      
+      // Forçar redirecionamento via window.location para garantir limpeza completa
+      window.location.href = '/admin/login';
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+      // Forçar redirecionamento mesmo com erro
+      window.location.href = '/admin/login';
+    }
   };
 
   const handleNavigation = (href: string) => {

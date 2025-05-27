@@ -25,7 +25,9 @@ const turmaSchema = z.object({
   destaque: z.string().optional(),
   exibir_periodo: z.boolean().optional(),
   exibir_duracao: z.boolean().optional(),
-  exibir_vagas: z.boolean().optional()
+  exibir_vagas: z.boolean().optional(),
+  mensagem_whatsapp: z.string().optional(),
+  imagem_url: z.string().url('URL inválida').optional().or(z.literal(''))
 });
 
 type FormData = z.infer<typeof turmaSchema>;
@@ -56,7 +58,9 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
       ativo: true,
       exibir_periodo: true,
       exibir_duracao: true,
-      exibir_vagas: true
+      exibir_vagas: true,
+      mensagem_whatsapp: '',
+      imagem_url: ''
     }
   });
 
@@ -92,7 +96,9 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
           destaque: data.destaque || '',
           exibir_periodo: data.exibir_periodo !== false,
           exibir_duracao: data.exibir_duracao !== false,
-          exibir_vagas: data.exibir_vagas !== false
+          exibir_vagas: data.exibir_vagas !== false,
+          mensagem_whatsapp: data.mensagem_whatsapp || '',
+          imagem_url: data.imagem_url || ''
         });
       }
     } catch (error) {
@@ -336,6 +342,39 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Deixe vazio para não exibir nenhum destaque
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Mensagem WhatsApp (opcional)
+                  </label>
+                  <textarea
+                    {...register('mensagem_whatsapp')}
+                    rows={4}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Mensagem personalizada para envio via WhatsApp. Se vazio, será usada a mensagem padrão."
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Use *texto* para negrito, _texto_ para itálico e \n para quebra de linha
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    URL da Imagem (opcional)
+                  </label>
+                  <input
+                    type="url"
+                    {...register('imagem_url')}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="https://exemplo.com/imagem.jpg"
+                  />
+                  {errors.imagem_url && (
+                    <p className="text-red-500 text-sm mt-1">{errors.imagem_url.message}</p>
+                  )}
+                  <p className="text-xs text-gray-500 mt-1">
+                    URL da imagem a ser enviada junto com a mensagem do WhatsApp
                   </p>
                 </div>
 

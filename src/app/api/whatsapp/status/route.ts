@@ -1,103 +1,141 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { EvolutionAPIClient } from '@/lib/evolution-api';
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
   try {
-    const client = await EvolutionAPIClient.fromDatabase();
-    
-    if (!client) {
-      return NextResponse.json({
-        connected: false,
-        status: 'not_configured',
-        message: 'WhatsApp não configurado'
-      });
-    }
+    // Capturar variáveis de ambiente
+    const API_URL = process.env.EVOLUTION_API_URL
+    const API_KEY = process.env.EVOLUTION_API_KEY
+    const INSTANCE = process.env.EVOLUTION_INSTANCE_NUMBER
 
-    const status = await client.checkStatus();
-    
-    return NextResponse.json({
-      connected: status.connected,
-      status: status.state,
-      message: status.connected ? 'WhatsApp conectado' : 'WhatsApp desconectado'
-    });
+    console.log('=== VERIFICANDO STATUS WHATSAPP ===')
+    console.log('API_URL:', API_URL)
+    console.log('API_KEY:', API_KEY ? 'Definida' : 'Não definida')
+    console.log('INSTANCE:', INSTANCE)
 
-  } catch (error: any) {
-    console.error('Erro ao verificar status:', error);
-    return NextResponse.json({
-      connected: false,
-      status: 'error',
-      message: error.message || 'Erro ao verificar status'
-    });
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { server_url, api_key, instance_name } = body;
-
-    console.log('Status check request:', {
-      server_url,
-      instance_name,
-      has_api_key: !!api_key
-    });
-
-    if (!server_url || !api_key || !instance_name) {
-      // Tentar buscar do banco se não foram fornecidos
-      const client = await EvolutionAPIClient.fromDatabase();
-      
-      if (!client) {
-        return NextResponse.json({
+    // Verificar se as variáveis estão configuradas
+    if (!API_URL || !API_KEY || !INSTANCE) {
+      console.error('Variáveis de ambiente não configuradas para verificar status')
+      return NextResponse.json(
+        { 
           connected: false,
-          status: 'not_configured',
-          message: 'WhatsApp não configurado'
-        });
-      }
-
-      const status = await client.checkStatus();
-      
-      return NextResponse.json({
-        connected: status.connected,
-        status: status.state,
-        message: status.connected ? 'WhatsApp conectado' : 'WhatsApp desconectado'
-      });
+          error: 'Variáveis de ambiente não configuradas. Verifique EVOLUTION_API_URL, EVOLUTION_API_KEY e EVOLUTION_INSTANCE_NUMBER',
+          details: {
+            hasApiUrl: !!API_URL,
+            hasApiKey: !!API_KEY,
+            hasInstance: !!INSTANCE
+          }
+        }
+      )
     }
 
-    // Criar cliente com as configurações fornecidas
-    const client = new EvolutionAPIClient({
-      server_url,
-      api_key,
-      instance_name
-    });
-
-    console.log('Checking status for instance:', instance_name);
-    const status = await client.checkStatus();
-    console.log('Status result:', status);
+    // Construir URL para verificar status
+    const url = `${API_URL}/session/status/${INSTANCE}`
     
-    return NextResponse.json({
-      connected: status.connected,
-      status: status.state,
-      message: status.connected ? 'WhatsApp conectado' : 'WhatsApp desconectado',
-      debug: {
-        instance_name,
-        state: status.state
-      }
-    });
+    console.log('URL de verificação:', url)
 
-  } catch (error: any) {
-    console.error('Erro ao verificar status:', error);
-    console.error('Error details:', {
-      message: error.message,
-      stack: error.stack
-    });
-    
-    return NextResponse.json({
-      connected: false,
-      status: 'error',
-      message: error.message || 'Erro ao verificar status',
-      debug: {
-        error: error.message
+    // Fazer requisição para verificar status
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': API_KEY,
       }
-    });
+    })
+
+    const responseText = await response.text()
+    console.log('Status HTTP:', response.status)
+    console.log('Resposta bruta:', responseText)
+
+    if (!response.ok) {
+      console.error('Erro ao verificar status - HTTP', response.status)
+      console.error('Resposta:', responseText)
+      
+      // Tentar endpoint alternativo
+      console.log('Tentando endpoint alternativo...')
+      const altUrl = `${API_URL}/instance/connectionState/${INSTANCE}`
+      
+      const altResponse = await fetch(altUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': API_KEY,
+        }
+      })
+      
+      const altResponseText = await altResponse.text()
+      console.log('Resposta alternativa:', altResponseText)
+      
+      if (altResponse.ok) {
+        try {
+          const altData = JSON.parse(altResponseText)
+          const isConnected = altData.state === 'open' || altData.instance?.state === 'open'
+          
+          console.log('Status retornado pela API Evolution (alternativo):', altData.state || altData.instance?.state)
+          
+          return NextResponse.json({ 
+            connected: isConnected,
+            status: altData.state || altData.instance?.state || 'UNKNOWN',
+            instance: INSTANCE,
+            method: 'alternative'
+          })
+        } catch (e) {
+          console.error('Erro ao processar resposta alternativa:', e)
+        }
+      }
+      
+      return NextResponse.json(
+        { 
+          connected: false,
+          error: 'Falha ao obter status. Verifique as variáveis de ambiente ou a conexão com a Evolution API.',
+          httpStatus: response.status,
+          apiResponse: responseText
+        }
+      )
+    }
+
+    // Tentar fazer parse do JSON
+    let data
+    try {
+      data = JSON.parse(responseText)
+      console.log('Dados parseados:', data)
+    } catch (e) {
+      console.error('Erro ao fazer parse da resposta:', e)
+      console.error('Resposta que causou erro:', responseText)
+      return NextResponse.json(
+        { 
+          connected: false,
+          error: 'Resposta inválida da API Evolution',
+          rawResponse: responseText
+        }
+      )
+    }
+
+    // Verificar o status - múltiplas possibilidades de estrutura
+    let status = data.status || data.state || data.instance?.status || data.instance?.state || 'UNKNOWN'
+    const isConnected = status === 'CONNECTED' || status === 'open' || status === 'QRCODE_READY'
+    
+    console.log('Status retornado pela API Evolution:', status)
+    console.log('Está conectado?', isConnected)
+    
+    return NextResponse.json({ 
+      connected: isConnected,
+      status: status,
+      instance: INSTANCE,
+      rawData: data
+    })
+
+  } catch (error) {
+    console.error('=== ERRO AO VERIFICAR STATUS ===')
+    console.error('Erro:', error)
+    console.error('Tipo:', error instanceof Error ? error.constructor.name : typeof error)
+    console.error('Mensagem:', error instanceof Error ? error.message : 'Erro desconhecido')
+    
+    return NextResponse.json(
+      { 
+        connected: false,
+        error: error instanceof Error ? error.message : 'Erro desconhecido ao verificar status',
+        errorType: error instanceof Error ? error.constructor.name : typeof error
+      }
+    )
   }
 }

@@ -1,7 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Clock, Users, Calendar, BookOpen, CheckCircle } from 'lucide-react'
+import WhatsAppModal from './WhatsAppModal'
 
 interface TurmaCardProps {
   title: string
@@ -17,6 +18,7 @@ interface TurmaCardProps {
   href?: string
   linkText?: string
   className?: string
+  enableWhatsApp?: boolean
 }
 
 export default function TurmaCard({
@@ -32,8 +34,10 @@ export default function TurmaCard({
   exibirVagas = true,
   href = "/matricula",
   linkText = "Saiba mais",
-  className = ""
+  className = "",
+  enableWhatsApp = true
 }: TurmaCardProps) {
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false)
   return (
     <div className={`relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${className}`}>
       {/* Tag de destaque opcional */}
@@ -106,13 +110,32 @@ export default function TurmaCard({
           </div>
         )}
         
-        <a 
-          href={href} 
-          className="block w-full mt-6 sm:mt-8 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 sm:py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 min-h-[44px] text-sm sm:text-base text-center"
-        >
-          {linkText}
-        </a>
+        {enableWhatsApp ? (
+          <button 
+            onClick={() => setShowWhatsAppModal(true)}
+            className="block w-full mt-6 sm:mt-8 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 sm:py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 min-h-[44px] text-sm sm:text-base text-center"
+          >
+            {linkText}
+          </button>
+        ) : (
+          <a 
+            href={href} 
+            className="block w-full mt-6 sm:mt-8 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 sm:py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 min-h-[44px] text-sm sm:text-base text-center"
+          >
+            {linkText}
+          </a>
+        )}
       </div>
+      
+      {/* Modal WhatsApp */}
+      <WhatsAppModal 
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        turmaTitle={title}
+        periodo={periodo}
+        duracao={duracao}
+        vagas={vagas}
+      />
     </div>
   )
 }

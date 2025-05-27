@@ -59,11 +59,8 @@ export default function HeroContent({
                   transition={{ duration: 0.8, delay: 0.6 }}
                   className="text-center lg:text-left"
                 >
-                  <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-2">
-                    Nós somos a
-                  </div>
-                  <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-green-400 mb-4">
-                    melhor equipe do Norte
+                  <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
+                    Nós somos <span className="text-green-400">a Entropia</span>
                   </div>
                 </motion.div>
               </div>
@@ -74,10 +71,11 @@ export default function HeroContent({
                 transition={{ duration: 0.8, delay: 0.8 }}
                 className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto lg:mx-0"
               >
-                Oferecemos consultoria e preparação para os vestibulares da{' '}
+                A melhor equipe do Norte oferecendo consultoria e preparação para{' '}
                 <span className="text-green-400 font-semibold">UFAM</span>,{' '}
                 <span className="text-green-400 font-semibold">UEA</span> e{' '}
-                <span className="text-green-400 font-semibold">ENEM</span>.
+                <span className="text-green-400 font-semibold">ENEM</span>.{' '}
+                Consulte nossas ferramentas e materiais gratuitos.
               </motion.p>
             </div>
 
