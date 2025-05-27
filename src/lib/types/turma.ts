@@ -4,11 +4,15 @@ export interface Turma {
   id: string;
   nome: string;
   descricao: string;
-  periodo: string;
-  duracao: string;
-  vagas_disponiveis: number;
+  periodo?: string;
+  duracao?: string;
+  vagas_disponiveis?: number;
   tipo: TipoTurma;
   diferenciais: string[];
+  destaque?: string;
+  exibir_periodo?: boolean;
+  exibir_duracao?: boolean;
+  exibir_vagas?: boolean;
   ativo: boolean;
   ordem: number;
   created_at: string;
@@ -18,11 +22,15 @@ export interface Turma {
 export interface TurmaFormData {
   nome: string;
   descricao: string;
-  periodo: string;
-  duracao: string;
-  vagas_disponiveis: number;
+  periodo?: string;
+  duracao?: string;
+  vagas_disponiveis?: number;
   tipo: TipoTurma;
   diferenciais: string[];
+  destaque?: string;
+  exibir_periodo?: boolean;
+  exibir_duracao?: boolean;
+  exibir_vagas?: boolean;
   ativo: boolean;
   ordem?: number;
 }

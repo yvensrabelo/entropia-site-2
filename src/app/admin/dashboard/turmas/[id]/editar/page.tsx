@@ -15,13 +15,17 @@ import toast, { Toaster } from 'react-hot-toast';
 const turmaSchema = z.object({
   nome: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
   descricao: z.string().min(10, 'Descrição deve ter pelo menos 10 caracteres'),
-  periodo: z.string().min(3, 'Período é obrigatório'),
-  duracao: z.string().min(3, 'Duração é obrigatória'),
-  vagas_disponiveis: z.number().min(0, 'Vagas não pode ser negativo'),
+  periodo: z.string().optional(),
+  duracao: z.string().optional(),
+  vagas_disponiveis: z.number().min(0, 'Vagas não pode ser negativo').optional(),
   tipo: z.enum(['intensivo_psc', 'enem_total', 'sis_macro']),
   diferenciais: z.array(z.string()),
   ativo: z.boolean(),
-  ordem: z.number().optional()
+  ordem: z.number().optional(),
+  destaque: z.string().optional(),
+  exibir_periodo: z.boolean().optional(),
+  exibir_duracao: z.boolean().optional(),
+  exibir_vagas: z.boolean().optional()
 });
 
 type FormData = z.infer<typeof turmaSchema>;
@@ -48,7 +52,11 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
       vagas_disponiveis: 0,
       tipo: 'intensivo_psc',
       diferenciais: [],
-      ativo: true
+      destaque: '',
+      ativo: true,
+      exibir_periodo: true,
+      exibir_duracao: true,
+      exibir_vagas: true
     }
   });
 
@@ -80,7 +88,11 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
           vagas_disponiveis: data.vagas_disponiveis,
           tipo: data.tipo,
           diferenciais: data.diferenciais || [''],
-          ativo: data.ativo
+          ativo: data.ativo,
+          destaque: data.destaque || '',
+          exibir_periodo: data.exibir_periodo !== false,
+          exibir_duracao: data.exibir_duracao !== false,
+          exibir_vagas: data.exibir_vagas !== false
         });
       }
     } catch (error) {
@@ -196,6 +208,17 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
                       className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Ex: Janeiro a Novembro"
                     />
+                    <div className="flex items-center gap-2 mt-2">
+                      <input
+                        type="checkbox"
+                        id="exibir_periodo"
+                        {...register('exibir_periodo')}
+                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                      />
+                      <label htmlFor="exibir_periodo" className="text-sm text-gray-600">
+                        Exibir no card
+                      </label>
+                    </div>
                     {errors.periodo && (
                       <p className="text-red-500 text-sm mt-1">{errors.periodo.message}</p>
                     )}
@@ -211,6 +234,17 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
                       className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Ex: 11 meses"
                     />
+                    <div className="flex items-center gap-2 mt-2">
+                      <input
+                        type="checkbox"
+                        id="exibir_duracao"
+                        {...register('exibir_duracao')}
+                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                      />
+                      <label htmlFor="exibir_duracao" className="text-sm text-gray-600">
+                        Exibir no card
+                      </label>
+                    </div>
                     {errors.duracao && (
                       <p className="text-red-500 text-sm mt-1">{errors.duracao.message}</p>
                     )}
@@ -242,6 +276,17 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
                       className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       min="0"
                     />
+                    <div className="flex items-center gap-2 mt-2">
+                      <input
+                        type="checkbox"
+                        id="exibir_vagas"
+                        {...register('exibir_vagas')}
+                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                      />
+                      <label htmlFor="exibir_vagas" className="text-sm text-gray-600">
+                        Exibir no card
+                      </label>
+                    </div>
                     {errors.vagas_disponiveis && (
                       <p className="text-red-500 text-sm mt-1">{errors.vagas_disponiveis.message}</p>
                     )}
@@ -278,6 +323,20 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
                       Adicionar diferencial
                     </button>
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Destaque (opcional)
+                  </label>
+                  <input
+                    {...register('destaque')}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Ex: Mais procurado, Vagas limitadas, Turma nova"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Deixe vazio para não exibir nenhum destaque
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -337,6 +396,12 @@ export default function EditarTurmaPage({ params }: { params: { id: string } }) 
                     {watchedValues.vagas_disponiveis || 0} disponíveis
                   </p>
                 </div>
+
+                {watchedValues.destaque && (
+                  <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-lg text-sm font-semibold">
+                    {watchedValues.destaque}
+                  </div>
+                )}
 
                 {watchedValues.diferenciais && watchedValues.diferenciais.filter(d => d).length > 0 && (
                   <div>

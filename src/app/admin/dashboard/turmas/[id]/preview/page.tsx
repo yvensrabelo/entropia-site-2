@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase-singleton';
 import { Turma } from '@/lib/types/turma';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { motion } from 'framer-motion';
+import TurmaCard from '@/app/components/diagonal/TurmaCard';
 
 export default function PreviewTurmaPage({ params }: { params: { id: string } }) {
   const [turma, setTurma] = useState<Turma | null>(null);
@@ -100,51 +101,22 @@ export default function PreviewTurmaPage({ params }: { params: { id: string } })
           <div className="bg-gray-100 rounded-lg p-6">
             <h2 className="text-lg font-semibold mb-4">Como aparece no site público:</h2>
             
-            {/* Preview do card como aparece no site */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="relative overflow-hidden bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-6 text-white transform hover:scale-105 transition-transform duration-300"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16" />
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full -ml-20 -mb-20" />
-              
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-2">{turma.nome}</h3>
-                <p className="text-green-100 mb-4">{turma.descricao}</p>
-                
-                <div className="space-y-2 mb-4">
-                  <p className="flex items-center gap-2">
-                    <span className="font-semibold">Período:</span>
-                    {turma.periodo}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="font-semibold">Duração:</span>
-                    {turma.duracao}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="font-semibold">Vagas:</span>
-                    {turma.vagas_disponiveis} disponíveis
-                  </p>
-                </div>
-
-                {turma.diferenciais && turma.diferenciais.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold mb-2">Diferenciais:</h4>
-                    <ul className="list-disc list-inside space-y-1 text-green-100">
-                      {turma.diferenciais.map((diferencial, index) => (
-                        <li key={index}>{diferencial}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                <button className="mt-6 w-full bg-white text-green-600 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors">
-                  Quero me matricular
-                </button>
-              </div>
-            </motion.div>
+            {/* Preview usando o componente TurmaCard */}
+            <div className="max-w-md mx-auto">
+              <TurmaCard
+                title={turma.nome}
+                descricao={turma.descricao}
+                periodo={turma.periodo}
+                duracao={turma.duracao}
+                vagas={turma.vagas_disponiveis}
+                diferenciais={turma.diferenciais}
+                destaque={turma.destaque}
+                exibirPeriodo={turma.exibir_periodo !== false}
+                exibirDuracao={turma.exibir_duracao !== false}
+                exibirVagas={turma.exibir_vagas !== false}
+                linkText="Quero me matricular"
+              />
+            </div>
           </div>
 
           <div className="mt-6 flex gap-3">

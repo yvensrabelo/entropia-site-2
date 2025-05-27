@@ -51,7 +51,7 @@ export default function HeroContent({
             {/* Main Heading */}
             <div className="space-y-4">
               <div 
-                className="relative hero-title-rotated"
+                className="relative"
               >
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -59,14 +59,11 @@ export default function HeroContent({
                   transition={{ duration: 0.8, delay: 0.6 }}
                   className="text-center lg:text-left"
                 >
-                  <div className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-2">
-                    SUA
+                  <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-2">
+                    Nós somos a
                   </div>
-                  <div className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-green-400 mb-2">
-                    APROVAÇÃO
-                  </div>
-                  <div className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white">
-                    COMEÇA AQUI
+                  <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-green-400 mb-4">
+                    melhor equipe do Norte
                   </div>
                 </motion.div>
               </div>
@@ -77,11 +74,10 @@ export default function HeroContent({
                 transition={{ duration: 0.8, delay: 0.8 }}
                 className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto lg:mx-0"
               >
-                O cursinho que mais aprova em Manaus. Prepare-se para{' '}
-                <span className="text-green-400 font-semibold">PSC UFAM</span>,{' '}
-                <span className="text-green-400 font-semibold">ENEM</span>,{' '}
-                <span className="text-green-400 font-semibold">SIS UEA</span> e{' '}
-                <span className="text-green-400 font-semibold">MACRO</span>.
+                Oferecemos consultoria e preparação para os vestibulares da{' '}
+                <span className="text-green-400 font-semibold">UFAM</span>,{' '}
+                <span className="text-green-400 font-semibold">UEA</span> e{' '}
+                <span className="text-green-400 font-semibold">ENEM</span>.
               </motion.p>
             </div>
 

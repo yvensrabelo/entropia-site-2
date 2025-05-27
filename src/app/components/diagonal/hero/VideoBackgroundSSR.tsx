@@ -11,7 +11,7 @@ interface VideoBackgroundProps {
 }
 
 export default function VideoBackgroundSSR({ 
-  videoSrc = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+  videoSrc = "/background.mp4",
   className = "",
   showMuteButton = true,
   autoPlay = true
