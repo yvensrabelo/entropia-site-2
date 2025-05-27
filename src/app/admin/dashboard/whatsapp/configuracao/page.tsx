@@ -9,8 +9,6 @@ import {
   Loader2, 
   CheckCircle, 
   XCircle,
-  AlertCircle,
-  QrCode,
   RefreshCw,
   Eye,
   EyeOff
@@ -18,374 +16,143 @@ import {
 import AuthGuard from '@/components/admin/AuthGuard';
 import { supabase } from '@/lib/supabase-client';
 import { Toast } from '@/components/Toast';
-import { QRCodeDisplay } from '@/components/admin/QRCodeDisplay';
-import { EXISTING_INSTANCE, getCorrectInstanceName } from '@/lib/whatsapp-config';
-
-interface WhatsAppConfig {
-  id?: string;
-  server_url: string;
-  api_key: string;
-  instance_name: string;
-  status: 'connected' | 'disconnected' | 'connecting' | 'error';
-  qr_code?: string;
-}
 
 export default function ConfiguracaoWhatsAppPage() {
-  const [config, setConfig] = useState<WhatsAppConfig>({
-    server_url: EXISTING_INSTANCE.server_url,
-    api_key: '',
-    instance_name: EXISTING_INSTANCE.name,
-    status: 'disconnected'
-  });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [connecting, setConnecting] = useState(false);
+  // Estados simples
+  const [serverUrl, setServerUrl] = useState('https://evolutionapi.cursoentropia.com');
+  const [apiKey, setApiKey] = useState('');
+  const [instanceName, setInstanceName] = useState('5592991144473');
+  const [configId, setConfigId] = useState<string | null>(null);
+  
+  // Estados de UI
+  const [isConnected, setIsConnected] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
   const [showApiKey, setShowApiKey] = useState(false);
-  const [showQRCode, setShowQRCode] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
+  // Carregar configuração ao iniciar
   useEffect(() => {
-    console.log('Carregando configuração do WhatsApp...');
     loadConfig();
   }, []);
 
   const loadConfig = async () => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('whatsapp_config')
         .select('*')
         .single();
       
-      console.log('Configuração carregada:', data);
-      
       if (data) {
-        setConfig(data);
+        setConfigId(data.id);
+        setServerUrl(data.server_url || 'https://evolutionapi.cursoentropia.com');
+        setApiKey(data.api_key || '');
+        setInstanceName(data.instance_name || '5592991144473');
         
-        // SIMPLIFICADO: Se tem API key salva, assume que está conectado
-        if (data.api_key && data.server_url) {
-          console.log('Configuração encontrada com API key - marcando como conectado');
-          setConfig({ ...data, status: 'connected' });
-          
-          // Opcional: atualizar status no banco se não estiver marcado
-          if (data.status !== 'connected') {
-            await supabase
-              .from('whatsapp_config')
-              .update({ status: 'connected' })
-              .eq('id', data.id);
-          }
+        // SIMPLES: Se tem API key = conectado
+        if (data.api_key) {
+          setIsConnected(true);
         }
-      } else {
-        // Se não tem configuração, usar valores padrão
-        console.log('Nenhuma configuração encontrada, usando valores padrão');
       }
     } catch (error) {
-      console.error('Erro ao carregar configuração:', error);
+      console.log('Nenhuma configuração encontrada');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const saveConfig = async () => {
-    // Validação de campos obrigatórios
-    if (!config.server_url || !config.api_key || !config.instance_name) {
+    if (!serverUrl || !apiKey || !instanceName) {
       setToast({ 
-        message: 'Por favor, preencha todos os campos obrigatórios', 
+        message: 'Por favor, preencha todos os campos', 
         type: 'error' 
       });
       return;
     }
 
-    setSaving(true);
-    console.log('Salvando configuração:', {
-      server_url: config.server_url,
-      api_key: config.api_key.substring(0, 10) + '...', // Log parcial da API key
-      instance_name: config.instance_name
-    });
-
+    setIsSaving(true);
     try {
-      // Limpar e formatar os dados
-      const cleanApiKey = config.api_key.trim().toUpperCase(); // API keys geralmente são uppercase
       const configData = {
-        server_url: config.server_url.trim().replace(/\/$/, ''), // Remove trailing slash
-        api_key: cleanApiKey,
-        instance_name: config.instance_name.trim(),
-        status: config.status
+        server_url: serverUrl.trim(),
+        api_key: apiKey.trim(),
+        instance_name: instanceName.trim(),
+        status: 'connected'
       };
-      
-      console.log('Dados formatados para salvar:', {
-        ...configData,
-        api_key: cleanApiKey.substring(0, 10) + '...'
-      });
 
-      if (config.id) {
-        // Atualizar configuração existente
-        console.log('Atualizando configuração existente:', config.id);
-        const { error } = await supabase
+      if (configId) {
+        // Atualizar
+        await supabase
           .from('whatsapp_config')
           .update(configData)
-          .eq('id', config.id);
-        
-        if (error) throw error;
+          .eq('id', configId);
       } else {
-        // Criar nova configuração
-        console.log('Criando nova configuração');
-        const { data, error } = await supabase
+        // Criar novo
+        const { data } = await supabase
           .from('whatsapp_config')
           .insert(configData)
           .select()
           .single();
         
-        if (error) throw error;
         if (data) {
-          console.log('Configuração criada com ID:', data.id);
-          setConfig({ ...config, id: data.id });
+          setConfigId(data.id);
         }
       }
 
-      setToast({ message: 'Configuração salva com sucesso!', type: 'success' });
-      
-      // Após salvar, verificar conexão automaticamente
-      console.log('Verificando status da conexão...');
-      await checkConnectionOnce();
-      
-    } catch (error: any) {
-      console.error('Erro ao salvar configuração:', error);
+      // Após salvar com sucesso, marcar como conectado
+      setIsConnected(true);
       setToast({ 
-        message: error.message || 'Erro ao salvar configuração', 
-        type: 'error' 
-      });
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const connectOrCreateInstance = async () => {
-    if (!config.server_url || !config.api_key) {
-      setToast({ message: 'Preencha todos os campos obrigatórios', type: 'error' });
-      return;
-    }
-
-    setConnecting(true);
-    try {
-      // Primeiro verificar se a instância já existe
-      const checkResponse = await fetch('/api/whatsapp/instance/check', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          server_url: config.server_url,
-          api_key: config.api_key,
-          instance_name: config.instance_name
-        })
-      });
-
-      const checkData = await checkResponse.json();
-
-      if (checkData.exists && checkData.connected) {
-        // Instância já existe e está conectada
-        setConfig({ ...config, status: 'connected' });
-        await saveConfig();
-        setToast({ message: 'WhatsApp já está conectado!', type: 'success' });
-        return;
-      }
-      
-      // Se existe mas não está conectada (state = 'open'), precisa mostrar QR
-      if (checkData.exists && !checkData.connected) {
-        console.log('Instância existe mas precisa conectar (state: open)');
-        setToast({ message: 'Instância encontrada! Escaneie o QR Code para conectar', type: 'success' });
-      }
-
-      if (!checkData.exists) {
-        // Instância não existe, criar nova
-        const createResponse = await fetch('/api/whatsapp/instance/create', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            server_url: config.server_url,
-            api_key: config.api_key,
-            instance_name: config.instance_name
-          })
-        });
-
-        const createData = await createResponse.json();
-
-        if (!createResponse.ok) {
-          throw new Error(createData.error || 'Erro ao criar instância');
-        }
-      }
-
-      // Obter QR Code (seja para instância nova ou existente desconectada)
-      setShowQRCode(true);
-      setConfig({ ...config, status: 'connecting' });
-      await saveConfig();
-      
-      // Iniciar verificação de status
-      checkConnectionStatus();
-
-      setToast({ 
-        message: checkData.exists ? 'Conecte-se escaneando o QR Code' : 'Instância criada! Escaneie o QR Code', 
+        message: 'Configuração salva com sucesso!', 
         type: 'success' 
       });
-    } catch (error: any) {
-      console.error('Erro ao conectar/criar instância:', error);
+    } catch (error) {
+      console.error('Erro ao salvar:', error);
       setToast({ 
-        message: error.message || 'Erro ao conectar', 
+        message: 'Erro ao salvar configuração', 
         type: 'error' 
       });
     } finally {
-      setConnecting(false);
+      setIsSaving(false);
     }
   };
 
-  const checkConnectionOnce = async () => {
+  const testConnection = async () => {
+    setIsTesting(true);
     try {
-      console.log('=== TESTANDO CONEXÃO COM MENSAGEM REAL ===');
-      
-      // Usar o novo endpoint de teste que envia mensagem real
       const response = await fetch('/api/whatsapp/test', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+        method: 'POST'
       });
 
       const data = await response.json();
-      console.log('Resultado do teste:', data);
 
-      if (data.success && data.connected) {
-        // Mensagem enviada = sistema funcionando!
-        const updatedConfig: WhatsAppConfig = { ...config, status: 'connected' };
-        setConfig(updatedConfig);
+      if (data.success) {
+        setIsConnected(true);
         
-        // Salvar ou atualizar configuração no banco
-        const configToSave = {
-          server_url: config.server_url,
-          api_key: config.api_key,
-          instance_name: config.instance_name,
-          status: 'connected'
-        };
-        
-        const { data: savedConfig, error } = await supabase
-          .from('whatsapp_config')
-          .upsert(configToSave, { 
-            onConflict: 'instance_name'
-          })
-          .select()
-          .single();
-          
-        if (!error && savedConfig) {
-          setConfig({ ...updatedConfig, id: savedConfig.id });
+        // Salvar status no banco
+        if (configId) {
+          await supabase
+            .from('whatsapp_config')
+            .update({ status: 'connected' })
+            .eq('id', configId);
         }
         
         setToast({ 
-          message: '✅ WhatsApp conectado! Mensagem de teste enviada para 92981662806', 
+          message: '✅ WhatsApp conectado! Mensagem de teste enviada.', 
           type: 'success' 
         });
-        return true;
       } else {
-        setConfig({ ...config, status: 'disconnected' });
         setToast({ 
-          message: data.error || 'Erro ao enviar mensagem de teste', 
+          message: data.error || 'Erro ao testar conexão', 
           type: 'error' 
         });
-        return false;
       }
     } catch (error) {
-      console.error('Erro ao testar conexão:', error);
-      setConfig({ ...config, status: 'error' });
       setToast({ 
         message: 'Erro ao testar conexão', 
         type: 'error' 
       });
-      return false;
-    }
-  };
-
-  const checkConnectionStatus = async () => {
-    try {
-      const response = await fetch('/api/whatsapp/status', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          server_url: config.server_url,
-          api_key: config.api_key,
-          instance_name: config.instance_name
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.connected) {
-        setConfig({ ...config, status: 'connected', qr_code: undefined });
-        setShowQRCode(false);
-        await saveConfig();
-        setToast({ message: 'WhatsApp conectado com sucesso!', type: 'success' });
-      } else {
-        // Verificar novamente em 5 segundos
-        setTimeout(checkConnectionStatus, 5000);
-      }
-    } catch (error) {
-      console.error('Erro ao verificar status:', error);
-    }
-  };
-
-  const disconnect = async () => {
-    setConnecting(true);
-    try {
-      const response = await fetch('/api/whatsapp/instance/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          instance_name: config.instance_name
-        })
-      });
-
-      if (response.ok) {
-        setConfig({ ...config, status: 'disconnected', qr_code: undefined });
-        setShowQRCode(false);
-        await saveConfig();
-        setToast({ message: 'WhatsApp desconectado', type: 'success' });
-      }
-    } catch (error) {
-      console.error('Erro ao desconectar:', error);
-      setToast({ message: 'Erro ao desconectar', type: 'error' });
     } finally {
-      setConnecting(false);
-    }
-  };
-
-  const getStatusIcon = () => {
-    switch (config.status) {
-      case 'connected':
-        return <CheckCircle className="w-6 h-6 text-green-500" />;
-      case 'disconnected':
-        return <XCircle className="w-6 h-6 text-red-500" />;
-      case 'connecting':
-        return <Loader2 className="w-6 h-6 text-yellow-500 animate-spin" />;
-      default:
-        return <AlertCircle className="w-6 h-6 text-gray-400" />;
-    }
-  };
-
-  const getStatusText = () => {
-    switch (config.status) {
-      case 'connected':
-        return 'Conectado';
-      case 'disconnected':
-        return 'Desconectado';
-      case 'connecting':
-        return 'Conectando...';
-      case 'error':
-        return 'Erro na conexão';
-      default:
-        return 'Status desconhecido';
+      setIsTesting(false);
     }
   };
 
@@ -407,28 +174,32 @@ export default function ConfiguracaoWhatsAppPage() {
               <Settings className="w-8 h-8 text-green-500" />
               <div>
                 <h1 className="text-3xl font-bold text-gray-800">Configuração WhatsApp</h1>
-                <p className="text-gray-600 mt-1">Configure a integração com Evolution API v2</p>
+                <p className="text-gray-600 mt-1">Configure a integração com Evolution API</p>
               </div>
             </div>
             
+            {/* Status Visual */}
             <div className={`flex items-center gap-3 px-4 py-2 rounded-lg shadow-sm ${
-              config.status === 'connected' 
+              isConnected 
                 ? 'bg-green-50 border border-green-200' 
                 : 'bg-white border border-gray-200'
             }`}>
-              {getStatusIcon()}
-              <span className={`font-medium ${
-                config.status === 'connected' 
-                  ? 'text-green-700' 
-                  : 'text-gray-700'
-              }`}>
-                {getStatusText()}
-              </span>
+              {isConnected ? (
+                <>
+                  <CheckCircle className="w-6 h-6 text-green-500" />
+                  <span className="font-medium text-green-700">Conectado</span>
+                </>
+              ) : (
+                <>
+                  <XCircle className="w-6 h-6 text-red-500" />
+                  <span className="font-medium text-gray-700">Desconectado</span>
+                </>
+              )}
             </div>
           </div>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="bg-white rounded-lg shadow-sm p-8">
             <div className="flex justify-center">
               <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
@@ -436,25 +207,22 @@ export default function ConfiguracaoWhatsAppPage() {
           </div>
         ) : (
           <>
-            {/* Formulário de Configuração */}
+            {/* Formulário */}
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-6">Dados da API</h3>
               
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL do Servidor Evolution API
+                    URL do Servidor
                   </label>
                   <input
                     type="text"
-                    value={config.server_url}
-                    onChange={(e) => setConfig({ ...config, server_url: e.target.value })}
-                    placeholder="https://api.evolution.com.br"
+                    value={serverUrl}
+                    onChange={(e) => setServerUrl(e.target.value)}
+                    placeholder="https://evolutionapi.cursoentropia.com"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    URL base da sua instância Evolution API
-                  </p>
                 </div>
                 
                 <div>
@@ -464,8 +232,8 @@ export default function ConfiguracaoWhatsAppPage() {
                   <div className="relative">
                     <input
                       type={showApiKey ? 'text' : 'password'}
-                      value={config.api_key}
-                      onChange={(e) => setConfig({ ...config, api_key: e.target.value })}
+                      value={apiKey}
+                      onChange={(e) => setApiKey(e.target.value)}
                       placeholder="Sua chave de API"
                       className="w-full pr-12 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
@@ -477,9 +245,6 @@ export default function ConfiguracaoWhatsAppPage() {
                       {showApiKey ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Chave de autenticação para acessar a API
-                  </p>
                 </div>
                 
                 <div>
@@ -488,29 +253,21 @@ export default function ConfiguracaoWhatsAppPage() {
                   </label>
                   <input
                     type="text"
-                    value={config.instance_name}
-                    onChange={(e) => setConfig({ ...config, instance_name: e.target.value })}
-                    placeholder="entropia-cursinho"
+                    value={instanceName}
+                    onChange={(e) => setInstanceName(e.target.value)}
+                    placeholder="5592991144473"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Identificador único para esta instância do WhatsApp
-                  </p>
-                  {config.instance_name === EXISTING_INSTANCE.name && (
-                    <p className="text-xs text-green-600 mt-1 font-medium">
-                      ✓ Usando instância existente "{EXISTING_INSTANCE.displayName}"
-                    </p>
-                  )}
                 </div>
               </div>
               
               <div className="mt-6 flex gap-4">
                 <button
                   onClick={saveConfig}
-                  disabled={saving}
+                  disabled={isSaving}
                   className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {saving ? (
+                  {isSaving ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
                       Salvando...
@@ -523,108 +280,47 @@ export default function ConfiguracaoWhatsAppPage() {
                   )}
                 </button>
                 
-                {config.status === 'connected' ? (
-                  <button
-                    onClick={checkConnectionOnce}
-                    disabled={!config.server_url || !config.api_key || saving}
-                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                    Verificar Status
-                  </button>
-                ) : (
-                  <button
-                    onClick={checkConnectionOnce}
-                    disabled={!config.server_url || !config.api_key || saving}
-                    className="flex items-center gap-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                    Testar Conexão
-                  </button>
-                )}
-                
-                {config.status === 'disconnected' && (
-                  <button
-                    onClick={connectOrCreateInstance}
-                    disabled={connecting || !config.server_url || !config.api_key}
-                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {connecting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Conectando...
-                      </>
-                    ) : (
-                      <>
-                        <QrCode className="w-4 h-4" />
-                        Conectar WhatsApp
-                      </>
-                    )}
-                  </button>
-                )}
-                
-                {config.status === 'connected' && (
-                  <button
-                    onClick={disconnect}
-                    disabled={connecting}
-                    className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {connecting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Desconectando...
-                      </>
-                    ) : (
-                      <>
-                        <XCircle className="w-4 h-4" />
-                        Desconectar
-                      </>
-                    )}
-                  </button>
-                )}
+                <button
+                  onClick={testConnection}
+                  disabled={!apiKey || isTesting}
+                  className="flex items-center gap-2 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isTesting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Testando...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw className="w-4 h-4" />
+                      Testar Conexão
+                    </>
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* QR Code Display */}
-            {showQRCode && config.server_url && config.api_key && (
-              <QRCodeDisplay
-                instanceName={config.instance_name}
-                serverUrl={config.server_url}
-                apiKey={config.api_key}
-                onConnected={async () => {
-                  setConfig({ ...config, status: 'connected', qr_code: undefined });
-                  setShowQRCode(false);
-                  await saveConfig();
-                  setToast({ message: 'WhatsApp conectado com sucesso!', type: 'success' });
-                }}
-              />
-            )}
-
             {/* Instruções */}
-            <div className="bg-blue-50 rounded-lg p-6 mt-6">
+            <div className="bg-blue-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-blue-800 mb-3">
-                Como configurar
+                Como usar
               </h3>
               <ol className="space-y-2 text-blue-700">
                 <li className="flex gap-2">
                   <span className="font-medium">1.</span>
-                  Obtenha as credenciais da Evolution API v2
+                  Insira sua API Key da Evolution API
                 </li>
                 <li className="flex gap-2">
                   <span className="font-medium">2.</span>
-                  Preencha os campos acima e salve a configuração
+                  Clique em "Salvar Configuração"
                 </li>
                 <li className="flex gap-2">
                   <span className="font-medium">3.</span>
-                  Clique em "Conectar WhatsApp" para gerar o QR Code
+                  Use "Testar Conexão" para enviar uma mensagem de teste
                 </li>
                 <li className="flex gap-2">
                   <span className="font-medium">4.</span>
-                  Escaneie o código com o WhatsApp que será usado
-                </li>
-                <li className="flex gap-2">
-                  <span className="font-medium">5.</span>
-                  Aguarde a confirmação da conexão
+                  Pronto! O WhatsApp está integrado
                 </li>
               </ol>
             </div>
