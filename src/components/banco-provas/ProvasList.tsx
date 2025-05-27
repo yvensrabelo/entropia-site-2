@@ -280,8 +280,31 @@ export default function ProvasList() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-green-600" />
+      <div className="space-y-4">
+        {/* Skeleton Loading */}
+        {[...Array(6)].map((_, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
+            className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-5 shadow-sm border border-gray-200 dark:border-gray-700"
+          >
+            <div className="animate-pulse">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-2"></div>
+                  <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                </div>
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-full w-16"></div>
+              </div>
+              <div className="flex gap-2 mt-4">
+                <div className="h-11 bg-gray-200 dark:bg-gray-700 rounded-lg flex-1"></div>
+                <div className="h-11 bg-gray-200 dark:bg-gray-700 rounded-lg flex-1"></div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     );
   }
@@ -366,13 +389,34 @@ export default function ProvasList() {
         </motion.div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.03
+                }
+              }
+            }}
+          >
             {paginatedGroups.map((group, index) => (
               <motion.div
                 key={group.key}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.02 }}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0,
+                    transition: {
+                      duration: 0.4,
+                      ease: "easeOut"
+                    }
+                  }
+                }}
                 className={(group.isMacro || group.isPsi) ? "col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2" : ""}
               >
                 {group.isMacro ? (
@@ -384,7 +428,7 @@ export default function ProvasList() {
                 )}
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Paginação */}
           {totalPages > 1 && (
@@ -392,9 +436,9 @@ export default function ProvasList() {
               <button
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-[44px] min-w-[44px]"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
               </button>
               
               <div className="flex gap-1">
@@ -411,10 +455,10 @@ export default function ProvasList() {
                         key={page}
                         onClick={() => setCurrentPage(page)}
                         className={`
-                          px-3 py-1 rounded-lg text-sm font-medium transition-colors
+                          px-3 py-1 rounded-lg text-sm font-medium transition-colors min-h-[44px] min-w-[44px]
                           ${currentPage === page 
-                            ? 'bg-green-500 text-white' 
-                            : 'bg-white border border-gray-300 hover:bg-gray-50'
+                            ? 'bg-blue-600 text-white' 
+                            : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                           }
                         `}
                       >
