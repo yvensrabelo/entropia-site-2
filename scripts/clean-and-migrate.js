@@ -53,12 +53,12 @@ async function detectTurmaId(turmaName) {
     turno = 'VESPERTINO';
   }
   
-  // Se for T1 ou T2, mapeia para TURMA PRIMEIRO/SEGUNDO ANO
+  // Se for T1 ou T2, mapeia para TURMA SIS/PSC 1 ou 2
   if (normalized.includes('T1') && !normalized.includes('PREVEST')) {
     const { data, error } = await supabase
       .from('turmas_config')
       .select('id, nome, turno')
-      .ilike('nome', '%PRIMEIRO ANO%')
+      .ilike('nome', '%SIS/PSC 1%')
       .single();
     return data?.id || null;
   }
@@ -67,7 +67,7 @@ async function detectTurmaId(turmaName) {
     const { data, error } = await supabase
       .from('turmas_config')
       .select('id, nome, turno')
-      .ilike('nome', '%SEGUNDO ANO%')
+      .ilike('nome', '%SIS/PSC 2%')
       .single();
     return data?.id || null;
   }

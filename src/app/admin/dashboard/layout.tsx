@@ -18,7 +18,7 @@ import {
   BarChart3,
   MessageSquare
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase-singleton';
+// import { supabase } from '@/lib/supabase-singleton';
 
 interface MenuItem {
   name: string;
@@ -49,8 +49,9 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/admin/login');
+    // await supabase.auth.signOut();
+    // router.push('/admin/login');
+    window.location.href = '/admin/login';
   };
 
   return (

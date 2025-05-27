@@ -66,7 +66,7 @@ async function detectTurmaId(turmaName) {
     const { data } = await supabase
       .from('turmas_config')
       .select('id')
-      .ilike('nome', '%PRIMEIRO ANO%')
+      .ilike('nome', '%SIS/PSC 1%')
       .single();
     return data?.id || null;
   }
@@ -75,7 +75,7 @@ async function detectTurmaId(turmaName) {
     const { data } = await supabase
       .from('turmas_config')
       .select('id')
-      .ilike('nome', '%SEGUNDO ANO%')
+      .ilike('nome', '%SIS/PSC 2%')
       .single();
     return data?.id || null;
   }
