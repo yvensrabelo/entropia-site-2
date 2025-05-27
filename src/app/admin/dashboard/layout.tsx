@@ -18,7 +18,7 @@ import {
   BarChart3,
   MessageSquare
 } from 'lucide-react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/supabase/client';
 
 interface MenuItem {
   name: string;
@@ -46,7 +46,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = async () => {
