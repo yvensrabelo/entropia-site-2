@@ -153,10 +153,12 @@ export default function EditarProvaPage() {
               <option value="">Selecione</option>
               <option value="PSC">PSC</option>
               <option value="PSI">PSI</option>
-              <option value="PSMV">PSMV</option>
-              <option value="VESTIBULAR">Vestibular</option>
-              <option value="MACRO">MACRO</option>
               <option value="SIS">SIS</option>
+              <option value="MACRO">MACRO</option>
+              <option value="PSS">PSS</option>
+              <option value="UERR">UERR</option>
+              <option value="ENEM">ENEM</option>
+              <option value="OUTROS">OUTROS</option>
               <option value="ENEM">ENEM</option>
               <option value="UERR">UERR</option>
               <option value="UFRR">UFRR</option>

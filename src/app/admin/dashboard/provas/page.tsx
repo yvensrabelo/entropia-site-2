@@ -1,491 +1,742 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
-import { 
-  Plus, 
-  FileText, 
-  CloudUpload, 
-  Trash2, 
-  Edit, 
-  Eye, 
-  Filter, 
-  Search,
-  CheckSquare,
-  Square,
-  MinusSquare
-} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase-singleton';
-import { Prova, SUBCATEGORIAS, AREAS_MACRO } from '@/lib/types/prova';
+import { Plus, Upload, Edit, Trash2, Eye, EyeOff, FileText, CheckCircle, CheckSquare, Square, X, Check, Save, XCircle } from 'lucide-react';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 import AuthGuard from '@/components/admin/AuthGuard';
-import DeleteModal from '@/components/admin/DeleteModal';
-import { Toast } from '@/components/Toast';
+import { useToast } from '@/components/ui/toast';
 
-export default function AdminProvasPage() {
-  const [provas, setProvas] = useState<Prova[]>([]);
+interface Prova {
+  id: string;
+  instituicao: string;
+  tipo_prova: string;
+  ano: number;
+  grupo_id: string;
+  ordem: number;
+  titulo: string;
+  subtitulo?: string;
+  subcategoria?: string;
+  area?: string;
+  url_prova?: string;
+  url_gabarito?: string;
+  visualizacoes: number;
+  ativo: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+interface GrupoProvas {
+  grupo_id: string;
+  tipo_prova: string;
+  instituicao: string;
+  ano: number;
+  titulo_principal: string;
+  provas: Prova[];
+}
+
+interface EditForm {
+  titulo: string;
+  subtitulo: string;
+  instituicao: string;
+  tipo_prova: string;
+  ano: number;
+  subcategoria: string;
+  area: string;
+}
+
+// Error Boundary Component
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Algo deu errado</h2>
+          <p className="text-gray-600 mb-4">Ocorreu um erro ao carregar a página.</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Recarregar Página
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+function ProvasContent() {
+  const [grupos, setGrupos] = useState<GrupoProvas[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filtroTipo, setFiltroTipo] = useState('');
-  const [filtroSubcategoria, setFiltroSubcategoria] = useState('');
-  const [filtroArea, setFiltroArea] = useState('');
-  const [selectedProvas, setSelectedProvas] = useState<Set<string>>(new Set());
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deletingProvas, setDeletingProvas] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [filtroAtivo, setFiltroAtivo] = useState('todos');
+  const [selecionadas, setSelecionadas] = useState<string[]>([]);
+  const [modoSelecao, setModoSelecao] = useState(false);
+  const [excluindo, setExcluindo] = useState(false);
+  const [editandoProva, setEditandoProva] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<EditForm | null>(null);
+  const [salvando, setSalvando] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     fetchProvas();
   }, []);
+
+  // Debug effect
+  useEffect(() => {
+    console.log('Estados:', {
+      editandoProva,
+      provas: grupos.flatMap(g => g.provas).length,
+      carregando: loading
+    });
+  }, [editandoProva, grupos, loading]);
 
   const fetchProvas = async () => {
     try {
       const { data, error } = await supabase
         .from('provas')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('ano', { ascending: false })
+        .order('grupo_id')
+        .order('ordem');
 
       if (error) throw error;
-      setProvas(data || []);
+
+      // Agrupar provas por grupo_id
+      const gruposMap = new Map<string, GrupoProvas>();
+      
+      data?.forEach(prova => {
+        if (!gruposMap.has(prova.grupo_id)) {
+          gruposMap.set(prova.grupo_id, {
+            grupo_id: prova.grupo_id,
+            tipo_prova: prova.tipo_prova,
+            instituicao: prova.instituicao,
+            ano: prova.ano,
+            titulo_principal: `${prova.tipo_prova} ${prova.ano} - ${prova.instituicao}`,
+            provas: []
+          });
+        }
+        gruposMap.get(prova.grupo_id)!.provas.push(prova);
+      });
+
+      setGrupos(Array.from(gruposMap.values()));
     } catch (error) {
-      console.error('Erro ao buscar provas:', error);
-      setToast({ message: 'Erro ao carregar provas', type: 'error' });
+      console.error('Erro ao carregar provas:', error);
+      toast.showToast('Erro ao carregar provas', 'error');
     } finally {
       setLoading(false);
     }
   };
 
-  // Filtrar provas
-  const provasFiltradas = useMemo(() => {
-    return provas.filter(prova => {
-      // Filtro de busca
-      if (searchTerm && !prova.titulo.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          !prova.instituicao.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return false;
-      }
-      
-      // Filtro de tipo
-      if (filtroTipo && prova.tipo_prova !== filtroTipo) {
-        return false;
-      }
-      
-      // Filtro de subcategoria
-      if (filtroSubcategoria && prova.subcategoria !== filtroSubcategoria) {
-        return false;
-      }
-      
-      // Filtro de área
-      if (filtroArea && prova.area !== filtroArea) {
-        return false;
-      }
-      
-      return true;
-    });
-  }, [provas, searchTerm, filtroTipo, filtroSubcategoria, filtroArea]);
-
-  // Seleção de provas
-  const toggleSelectProva = (id: string) => {
-    setSelectedProvas(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
+  const iniciarEdicao = (prova: Prova) => {
+    setEditandoProva(prova.id);
+    setEditForm({
+      titulo: prova.titulo,
+      subtitulo: prova.subtitulo || '',
+      instituicao: prova.instituicao,
+      tipo_prova: prova.tipo_prova,
+      ano: prova.ano,
+      subcategoria: prova.subcategoria || '',
+      area: prova.area || ''
     });
   };
 
-  const toggleSelectAll = () => {
-    if (selectedProvas.size === provasFiltradas.length) {
-      setSelectedProvas(new Set());
-    } else {
-      setSelectedProvas(new Set(provasFiltradas.map(p => p.id)));
+  const cancelarEdicao = () => {
+    setEditandoProva(null);
+    setEditForm(null);
+  };
+
+  const salvarEdicao = async (provaId: string) => {
+    if (!editForm) return;
+
+    setSalvando(true);
+    try {
+      console.log('🔧 Salvando prova ID:', provaId);
+      console.log('📝 Dados para salvamento:', editForm);
+      
+      // Usar API route para melhor controle de erros
+      const response = await fetch(`/api/provas/${provaId}`, {
+        method: 'PATCH',
+        headers: { 
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({
+          titulo: editForm.titulo,
+          subtitulo: editForm.subtitulo || null,
+          instituicao: editForm.instituicao,
+          tipo_prova: editForm.tipo_prova,
+          ano: editForm.ano,
+          subcategoria: editForm.subcategoria || null,
+          area: editForm.area || null
+        })
+      });
+      
+      const responseData = await response.json();
+      
+      if (!response.ok) {
+        // Tratamento especial para erro de múltiplas linhas
+        if (responseData.error?.includes('duplicado') || responseData.error?.includes('multiple')) {
+          throw new Error('ID duplicado encontrado no banco. Por favor, execute a verificação de duplicatas no Supabase.');
+        }
+        throw new Error(responseData.error || `Erro ${response.status}`);
+      }
+      
+      console.log('✅ Prova atualizada:', responseData);
+      
+      // Atualizar lista local com dados retornados da API
+      setGrupos(prevGrupos => 
+        prevGrupos.map(grupo => ({
+          ...grupo,
+          provas: grupo.provas.map(p => 
+            p.id === provaId ? responseData : p
+          )
+        }))
+      );
+      
+      cancelarEdicao();
+      toast.showToast('Prova atualizada com sucesso!', 'success');
+    } catch (error: any) {
+      console.error('❌ Erro ao salvar:', error);
+      toast.showToast(error.message || 'Erro ao atualizar prova', 'error');
+    } finally {
+      setSalvando(false);
     }
   };
 
-  const selectAllFiltered = () => {
-    setSelectedProvas(new Set(provasFiltradas.map(p => p.id)));
+  const toggleProvaAtiva = async (provaId: string, ativo: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('provas')
+        .update({ ativo: !ativo })
+        .eq('id', provaId);
+
+      if (error) throw error;
+      
+      await fetchProvas();
+      toast.showToast(ativo ? 'Prova desativada' : 'Prova ativada', 'success');
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
+      toast.showToast('Erro ao atualizar status', 'error');
+    }
   };
 
-  const handleDeleteSingle = async (id: string) => {
+  const deleteProva = async (provaId: string) => {
     if (!confirm('Tem certeza que deseja excluir esta prova?')) return;
 
     try {
       // Buscar URLs dos arquivos
-      const prova = provas.find(p => p.id === id);
-      if (!prova) return;
-
-      // Deletar arquivos do storage
-      if (prova.url_pdf) {
-        const pdfPath = prova.url_pdf.split('/').pop();
-        if (pdfPath) {
-          await supabase.storage.from('provas').remove([pdfPath]);
-        }
-      }
-
-      if (prova.url_gabarito) {
-        const gabaritoPath = prova.url_gabarito.split('/').pop();
-        if (gabaritoPath) {
-          await supabase.storage.from('provas').remove([gabaritoPath]);
-        }
-      }
-
-      // Deletar do banco
-      const { error } = await supabase
+      const { data: prova } = await supabase
         .from('provas')
-        .delete()
-        .eq('id', id);
+        .select('url_prova, url_gabarito')
+        .eq('id', provaId)
+        .single();
 
-      if (error) throw error;
-      
-      // Atualiza a lista
-      setProvas(provas.filter(p => p.id !== id));
-      setToast({ message: 'Prova excluída com sucesso!', type: 'success' });
-    } catch (error) {
-      console.error('Erro ao excluir:', error);
-      setToast({ message: 'Erro ao excluir prova', type: 'error' });
-    }
-  };
-
-  const handleDeleteMultiple = async () => {
-    setDeletingProvas(true);
-    
-    try {
-      const provasToDelete = provas.filter(p => selectedProvas.has(p.id));
-      
-      // Deletar arquivos do storage em lote
-      const filesToDelete: string[] = [];
-      
-      provasToDelete.forEach(prova => {
-        if (prova.url_pdf) {
-          const pdfPath = prova.url_pdf.split('/').pop();
-          if (pdfPath) filesToDelete.push(pdfPath);
+      if (prova) {
+        // Deletar arquivos do storage
+        const arquivosParaDeletar = [];
+        
+        if (prova.url_prova) {
+          const path = prova.url_prova.split('/').slice(-2).join('/');
+          arquivosParaDeletar.push(path);
         }
         
         if (prova.url_gabarito) {
-          const gabaritoPath = prova.url_gabarito.split('/').pop();
-          if (gabaritoPath) filesToDelete.push(gabaritoPath);
+          const path = prova.url_gabarito.split('/').slice(-2).join('/');
+          arquivosParaDeletar.push(path);
         }
-      });
+        
+        if (arquivosParaDeletar.length > 0) {
+          await supabase.storage.from('provas').remove(arquivosParaDeletar);
+        }
+      }
 
-      if (filesToDelete.length > 0) {
-        const { error: storageError } = await supabase.storage
-          .from('provas')
-          .remove(filesToDelete);
-          
-        if (storageError) {
-          console.error('Erro ao deletar arquivos:', storageError);
+      const { error } = await supabase
+        .from('provas')
+        .delete()
+        .eq('id', provaId);
+
+      if (error) throw error;
+      
+      await fetchProvas();
+      toast.showToast('Prova excluída com sucesso', 'success');
+    } catch (error) {
+      console.error('Erro ao excluir prova:', error);
+      toast.showToast('Erro ao excluir prova', 'error');
+    }
+  };
+
+  const toggleSelecao = (provaId: string) => {
+    setSelecionadas(prev => 
+      prev.includes(provaId) 
+        ? prev.filter(id => id !== provaId)
+        : [...prev, provaId]
+    );
+  };
+
+  const selecionarTodas = () => {
+    const todasIds = gruposFiltrados.flatMap(g => g.provas.map(p => p.id));
+    setSelecionadas(todasIds);
+  };
+
+  const limparSelecao = () => {
+    setSelecionadas([]);
+    setModoSelecao(false);
+  };
+
+  const excluirSelecionadas = async () => {
+    if (selecionadas.length === 0) return;
+    
+    const confirmar = confirm(`Deseja excluir ${selecionadas.length} prova(s)? Esta ação não pode ser desfeita.`);
+    if (!confirmar) return;
+
+    setExcluindo(true);
+
+    try {
+      // Buscar URLs dos arquivos para deletar do storage
+      const { data: provasParaDeletar } = await supabase
+        .from('provas')
+        .select('url_prova, url_gabarito')
+        .in('id', selecionadas);
+
+      // Coletar todos os arquivos para deletar
+      const arquivosParaDeletar: string[] = [];
+      
+      for (const prova of provasParaDeletar || []) {
+        if (prova.url_prova) {
+          const path = prova.url_prova.split('/').slice(-2).join('/');
+          arquivosParaDeletar.push(path);
         }
+        if (prova.url_gabarito) {
+          const path = prova.url_gabarito.split('/').slice(-2).join('/');
+          arquivosParaDeletar.push(path);
+        }
+      }
+
+      // Deletar arquivos do storage em lote
+      if (arquivosParaDeletar.length > 0) {
+        await supabase.storage.from('provas').remove(arquivosParaDeletar);
       }
 
       // Deletar registros do banco
       const { error } = await supabase
         .from('provas')
         .delete()
-        .in('id', Array.from(selectedProvas));
+        .in('id', selecionadas);
 
       if (error) throw error;
-      
-      // Atualiza a lista e limpa seleção
-      setProvas(provas.filter(p => !selectedProvas.has(p.id)));
-      setSelectedProvas(new Set());
-      setShowDeleteModal(false);
-      setToast({ 
-        message: `${selectedProvas.size} prova${selectedProvas.size > 1 ? 's' : ''} excluída${selectedProvas.size > 1 ? 's' : ''} com sucesso!`, 
-        type: 'success' 
-      });
+
+      // Recarregar lista
+      await fetchProvas();
+      limparSelecao();
+      toast.showToast(`${selecionadas.length} prova(s) excluída(s) com sucesso!`, 'success');
     } catch (error) {
-      console.error('Erro ao excluir múltiplas provas:', error);
-      setToast({ message: 'Erro ao excluir provas selecionadas', type: 'error' });
+      console.error('Erro ao excluir:', error);
+      toast.showToast('Erro ao excluir provas', 'error');
     } finally {
-      setDeletingProvas(false);
+      setExcluindo(false);
     }
   };
 
-  const selectedProvasDetails = useMemo(() => {
-    return provas
-      .filter(p => selectedProvas.has(p.id))
-      .map(p => p.titulo);
-  }, [provas, selectedProvas]);
+  const gruposFiltrados = filtroAtivo === 'todos' 
+    ? grupos 
+    : grupos.filter(g => g.tipo_prova === filtroAtivo);
 
-  const isAllSelected = provasFiltradas.length > 0 && selectedProvas.size === provasFiltradas.length;
-  const isPartiallySelected = selectedProvas.size > 0 && selectedProvas.size < provasFiltradas.length;
+  const totalProvasSelecionadas = selecionadas.length;
 
   return (
-    <AuthGuard>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Gerenciar Provas</h1>
-            <p className="text-gray-600">Adicione e gerencie provas do banco</p>
+            <h1 className="text-3xl font-bold text-gray-900">Gerenciar Provas</h1>
+            <p className="text-gray-600 mt-1">Administre o banco de provas do sistema</p>
           </div>
-          <div className="flex gap-2">
-            {selectedProvas.size > 0 && (
-              <button
-                onClick={() => setShowDeleteModal(true)}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center gap-2 transition-colors"
-              >
-                <Trash2 className="w-5 h-5" />
-                Excluir {selectedProvas.size} selecionada{selectedProvas.size > 1 ? 's' : ''}
-              </button>
+          <div className="flex gap-3">
+            {modoSelecao ? (
+              <>
+                <button
+                  onClick={selecionarTodas}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Selecionar Todas ({gruposFiltrados.flatMap(g => g.provas).length})
+                </button>
+                <button
+                  onClick={excluirSelecionadas}
+                  disabled={totalProvasSelecionadas === 0 || excluindo}
+                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  {excluindo ? 'Excluindo...' : `Excluir (${totalProvasSelecionadas})`}
+                </button>
+                <button
+                  onClick={limparSelecao}
+                  className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                  Cancelar
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setModoSelecao(true)}
+                  className="flex items-center gap-2 px-4 py-2 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <CheckSquare className="w-4 h-4" />
+                  Selecionar
+                </button>
+                <Link
+                  href="/admin/dashboard/provas/upload-massa"
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  <Upload className="w-4 h-4" />
+                  Upload em Massa
+                </Link>
+                <Link
+                  href="/admin/dashboard/provas/nova"
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  Nova Prova
+                </Link>
+              </>
             )}
-            <Link
-              href="/admin/dashboard/provas/upload-massa"
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 transition-colors"
-            >
-              <CloudUpload className="w-5 h-5" />
-              Upload em Massa
-            </Link>
-            <Link
-              href="/admin/dashboard/provas/nova"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
-            >
-              <Plus className="w-5 h-5" />
-              Nova Prova
-            </Link>
           </div>
         </div>
 
         {/* Filtros */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* Busca */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Buscar..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            {/* Filtro por tipo */}
-            <select
-              value={filtroTipo}
-              onChange={(e) => {
-                setFiltroTipo(e.target.value);
-                setFiltroSubcategoria('');
-                setFiltroArea('');
-              }}
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <div className="flex gap-2 mb-6 overflow-x-auto">
+          {['todos', 'PSC', 'PSI', 'SIS', 'MACRO', 'ENEM', 'UERR', 'UFRR'].map(tipo => (
+            <button
+              key={tipo}
+              onClick={() => setFiltroAtivo(tipo)}
+              className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${
+                filtroAtivo === tipo
+                  ? 'bg-green-600 text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+              }`}
             >
-              <option value="">Todos os tipos</option>
-              <option value="PSC">PSC</option>
-              <option value="MACRO">MACRO</option>
-              <option value="SIS">SIS</option>
-              <option value="ENEM">ENEM</option>
-              <option value="PSI">PSI</option>
-            </select>
-
-            {/* Filtro por subcategoria */}
-            {filtroTipo && SUBCATEGORIAS[filtroTipo] && (
-              <select
-                value={filtroSubcategoria}
-                onChange={(e) => {
-                  setFiltroSubcategoria(e.target.value);
-                  if (e.target.value !== 'DIA 2') {
-                    setFiltroArea('');
-                  }
-                }}
-                className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Todas subcategorias</option>
-                {SUBCATEGORIAS[filtroTipo].map(sub => (
-                  <option key={sub} value={sub}>{sub}</option>
-                ))}
-              </select>
-            )}
-
-            {/* Filtro por área */}
-            {filtroTipo === 'MACRO' && filtroSubcategoria === 'DIA 2' && (
-              <select
-                value={filtroArea}
-                onChange={(e) => setFiltroArea(e.target.value)}
-                className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Todas as áreas</option>
-                {AREAS_MACRO.map(area => (
-                  <option key={area} value={area}>{area}</option>
-                ))}
-              </select>
-            )}
-          </div>
-
-          {/* Contador e ações em lote */}
-          <div className="mt-4 flex items-center justify-between">
-            <div className="text-sm text-gray-600">
-              Mostrando {provasFiltradas.length} de {provas.length} provas
-            </div>
-            {provasFiltradas.length > 0 && (
-              <button
-                onClick={selectAllFiltered}
-                className="text-sm text-blue-600 hover:text-blue-700"
-              >
-                Selecionar todos os filtrados
-              </button>
-            )}
-          </div>
+              {tipo === 'todos' ? 'Todas' : tipo}
+            </button>
+          ))}
         </div>
-        
-        <div className="bg-white rounded-lg shadow-sm">
+
+        {/* Lista de Provas */}
         {loading ? (
-          <div className="p-6 text-center">
-            <p className="text-gray-500">Carregando...</p>
-          </div>
-        ) : provasFiltradas.length === 0 ? (
-          <div className="p-6 text-center">
-            <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">Nenhuma prova encontrada</p>
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-32 bg-white rounded-lg animate-pulse" />
+            ))}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="px-6 py-3 text-left">
-                    <button
-                      onClick={toggleSelectAll}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      {isAllSelected ? (
-                        <CheckSquare className="w-5 h-5" />
-                      ) : isPartiallySelected ? (
-                        <MinusSquare className="w-5 h-5" />
-                      ) : (
-                        <Square className="w-5 h-5" />
-                      )}
-                    </button>
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Título
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Instituição
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Tipo
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ano
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Visualizações
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ações
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {provasFiltradas.map((prova) => (
-                  <tr key={prova.id} className={selectedProvas.has(prova.id) ? 'bg-blue-50' : ''}>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => toggleSelectProva(prova.id)}
-                        className="text-gray-500 hover:text-gray-700"
-                      >
-                        {selectedProvas.has(prova.id) ? (
-                          <CheckSquare className="w-5 h-5 text-blue-600" />
-                        ) : (
-                          <Square className="w-5 h-5" />
+          <div className="space-y-6">
+            {gruposFiltrados.map((grupo) => (
+              <motion.div
+                key={grupo.grupo_id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-lg shadow-sm overflow-hidden"
+              >
+                {/* Header do Grupo */}
+                <div className="bg-gray-50 p-4 border-b">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">
+                        {grupo.titulo_principal}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {grupo.provas.length} {grupo.provas.length === 1 ? 'prova' : 'provas'} • 
+                        {grupo.provas.reduce((acc, p) => acc + p.visualizacoes, 0)} visualizações totais
+                      </p>
+                    </div>
+                    <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+                      {grupo.tipo_prova}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Lista de Provas do Grupo */}
+                <div className="divide-y">
+                  {grupo.provas.map((prova) => (
+                    <div key={prova.id} className="p-4 hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 flex-1">
+                          {modoSelecao && (
+                            <input
+                              type="checkbox"
+                              checked={selecionadas.includes(prova.id)}
+                              onChange={() => toggleSelecao(prova.id)}
+                              className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                            />
+                          )}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3">
+                              <h4 className="font-semibold text-gray-900">
+                                {prova.titulo}
+                              </h4>
+                              {prova.subtitulo && (
+                                <span className="text-sm text-gray-600">
+                                  ({prova.subtitulo})
+                                </span>
+                              )}
+                              <span className={`px-2 py-1 text-xs rounded-full ${
+                                prova.ativo 
+                                  ? 'bg-green-100 text-green-700' 
+                                  : 'bg-red-100 text-red-700'
+                              }`}>
+                                {prova.ativo ? 'Ativo' : 'Inativo'}
+                              </span>
+                            </div>
+                            {editandoProva === prova.id ? (
+                              /* Modo de Edição Inline */
+                              <div className="mt-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div>
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                                      Título
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={editForm?.titulo || ''}
+                                      onChange={(e) => setEditForm({ ...editForm!, titulo: e.target.value })}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                                      Subtítulo
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={editForm?.subtitulo || ''}
+                                      onChange={(e) => setEditForm({ ...editForm!, subtitulo: e.target.value })}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                      placeholder="Opcional"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                                      Instituição
+                                    </label>
+                                    <select
+                                      value={editForm?.instituicao || ''}
+                                      onChange={(e) => setEditForm({ ...editForm!, instituicao: e.target.value })}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    >
+                                      <option value="UFAM">UFAM</option>
+                                      <option value="UEA">UEA</option>
+                                      <option value="UFRR">UFRR</option>
+                                      <option value="UERR">UERR</option>
+                                      <option value="ENEM">ENEM</option>
+                                      <option value="OUTRAS">OUTRAS</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                                      Tipo de Prova
+                                    </label>
+                                    <select
+                                      value={editForm?.tipo_prova || ''}
+                                      onChange={(e) => setEditForm({ ...editForm!, tipo_prova: e.target.value })}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    >
+                                      <option value="PSC">PSC</option>
+                                      <option value="PSI">PSI</option>
+                                      <option value="SIS">SIS</option>
+                                      <option value="MACRO">MACRO</option>
+                                      <option value="PSS">PSS</option>
+                                      <option value="UERR">UERR</option>
+                                      <option value="ENEM">ENEM</option>
+                                      <option value="OUTROS">OUTROS</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                                      Ano
+                                    </label>
+                                    <input
+                                      type="number"
+                                      value={editForm?.ano || ''}
+                                      onChange={(e) => setEditForm({ ...editForm!, ano: parseInt(e.target.value) })}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                      min="2000"
+                                      max="2030"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                                      Subcategoria
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={editForm?.subcategoria || ''}
+                                      onChange={(e) => setEditForm({ ...editForm!, subcategoria: e.target.value })}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                      placeholder="Ex: 1, 2, 3, DIA 1, CG"
+                                    />
+                                  </div>
+                                  <div className="col-span-2">
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                                      Área
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={editForm?.area || ''}
+                                      onChange={(e) => setEditForm({ ...editForm!, area: e.target.value })}
+                                      className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                                      placeholder="Ex: HUMANAS, EXATAS, BIOLÓGICAS"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="flex justify-end gap-2 mt-3">
+                                  <button
+                                    onClick={cancelarEdicao}
+                                    disabled={salvando}
+                                    className="px-3 py-1.5 text-sm text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50"
+                                  >
+                                    <XCircle className="w-4 h-4 inline mr-1" />
+                                    Cancelar
+                                  </button>
+                                  <button
+                                    onClick={() => salvarEdicao(prova.id)}
+                                    disabled={salvando}
+                                    className="px-3 py-1.5 text-sm text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center"
+                                  >
+                                    {salvando ? (
+                                      <>
+                                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
+                                        Salvando...
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Save className="w-4 h-4 mr-1" />
+                                        Salvar
+                                      </>
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              /* Modo de Visualização */
+                              <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
+                                <span className="flex items-center gap-1">
+                                  <Eye className="w-4 h-4" />
+                                  {prova.visualizacoes} visualizações
+                                </span>
+                                <span>
+                                  Criado em {new Date(prova.created_at).toLocaleDateString('pt-BR')}
+                                </span>
+                                {(prova.subcategoria || prova.area) && (
+                                  <span className="text-xs">
+                                    {prova.subcategoria && <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded mr-1">Sub: {prova.tipo_prova === 'MACRO' && prova.subcategoria === 'CG' ? 'DIA 1' : prova.subcategoria}</span>}
+                                    {prova.area && <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded">Área: {prova.area}</span>}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                            
+                            {/* URLs */}
+                            <div className="flex gap-4 mt-2">
+                              {prova.url_prova && (
+                                <a
+                                  href={prova.url_prova}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1 text-sm text-green-600 hover:text-green-700"
+                                >
+                                  <FileText className="w-4 h-4" />
+                                  Ver Prova
+                                </a>
+                              )}
+                              {prova.url_gabarito && (
+                                <a
+                                  href={prova.url_gabarito}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
+                                >
+                                  <CheckCircle className="w-4 h-4" />
+                                  Ver Gabarito
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Ações */}
+                        {!modoSelecao && (
+                          <div className="flex items-center gap-2">
+                            {editandoProva !== prova.id && (
+                              <>
+                                <button
+                                  onClick={() => toggleProvaAtiva(prova.id, prova.ativo)}
+                                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                                  title={prova.ativo ? 'Desativar' : 'Ativar'}
+                                >
+                                  {prova.ativo ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                </button>
+                                <button
+                                  onClick={() => iniciarEdicao(prova)}
+                                  className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                                  title="Editar inline"
+                                >
+                                  <Edit className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => deleteProva(prova.id)}
+                                  className="p-2 text-gray-600 hover:text-red-600 hover:bg-gray-100 rounded-lg transition-colors"
+                                  title="Excluir"
+                                >
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
+                              </>
+                            )}
+                          </div>
                         )}
-                      </button>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {prova.titulo}
                       </div>
-                      {prova.etapa && (
-                        <div className="text-sm text-gray-500">{prova.etapa}</div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {prova.instituicao}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {prova.subcategoria || prova.tipo_prova}
-                      </div>
-                      {prova.area && (
-                        <div className="text-xs text-purple-600">{prova.area}</div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {prova.ano}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {prova.visualizacoes}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex items-center gap-2">
-                        {prova.url_pdf && (
-                          <a
-                            href={prova.url_pdf}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
-                            title="Visualizar Prova"
-                          >
-                            PROVA
-                          </a>
-                        )}
-                        {prova.url_gabarito && (
-                          <a
-                            href={prova.url_gabarito}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded hover:bg-orange-200"
-                            title="Visualizar Gabarito"
-                          >
-                            GAB
-                          </a>
-                        )}
-                        <Link
-                          href={`/admin/dashboard/provas/${prova.id}/editar`}
-                          className="text-yellow-600 hover:text-yellow-900"
-                          title="Editar"
-                        >
-                          <Edit className="w-5 h-5" />
-                        </Link>
-                        <button
-                          onClick={() => handleDeleteSingle(prova.id)}
-                          className="text-red-600 hover:text-red-900"
-                          title="Excluir"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
         )}
-        </div>
 
-        {/* Modal de exclusão */}
-        <DeleteModal
-          isOpen={showDeleteModal}
-          onClose={() => setShowDeleteModal(false)}
-          onConfirm={handleDeleteMultiple}
-          title="Excluir provas selecionadas"
-          message={`Tem certeza que deseja excluir ${selectedProvas.size} prova${selectedProvas.size > 1 ? 's' : ''}?`}
-          items={selectedProvasDetails}
-          isDeleting={deletingProvas}
-        />
-
-        {/* Toast */}
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={() => setToast(null)}
-          />
+        {!loading && gruposFiltrados.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Nenhuma prova encontrada.</p>
+          </div>
         )}
       </div>
+    </div>
+  );
+}
+
+export default function ProvasPage() {
+  return (
+    <AuthGuard>
+      <ErrorBoundary>
+        <ProvasContent />
+      </ErrorBoundary>
     </AuthGuard>
   );
 }

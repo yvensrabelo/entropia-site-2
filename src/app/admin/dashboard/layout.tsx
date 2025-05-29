@@ -15,7 +15,8 @@ import {
   FileCheck,
   UserCheck,
   BarChart3,
-  MessageSquare
+  MessageSquare,
+  Shield
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase-singleton';
 
@@ -36,6 +37,7 @@ const menuItems: MenuItem[] = [
   { name: 'Pré-Matrículas', href: '/admin/dashboard/pre-matriculas', icon: FileCheck },
   { name: 'Matrículas', href: '/admin/dashboard/matriculas', icon: ClipboardList },
   { name: 'Turmas', href: '/admin/dashboard/turmas-config', icon: UsersIcon },
+  { name: 'Admins', href: '/admin/dashboard/admins', icon: Shield },
 ];
 
 export default function DashboardLayout({

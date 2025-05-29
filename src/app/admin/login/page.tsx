@@ -36,9 +36,9 @@ export default function AdminLoginPage() {
       if (session) {
         // Verifica se é admin
         const { data: adminUser } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('email', session.user.email)
+          .from('admins')
+          .select('user_id')
+          .eq('user_id', session.user.id)
           .single();
 
         if (adminUser) {
@@ -74,9 +74,9 @@ export default function AdminLoginPage() {
       if (data.session) {
         // Verifica se o usuário é admin
         const { data: adminUser, error: adminError } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('email', data.session.user.email)
+          .from('admins')
+          .select('user_id')
+          .eq('user_id', data.session.user.id)
           .single();
 
         if (adminError || !adminUser) {

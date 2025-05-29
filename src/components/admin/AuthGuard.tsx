@@ -51,9 +51,9 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
         // Verifica se é admin
         const { data: admin } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('email', session.user.email)
+          .from('admins')
+          .select('user_id')
+          .eq('user_id', session.user.id)
           .single();
 
         if (!admin) {
@@ -63,9 +63,9 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         }
 
         setAdminUser({
-          id: admin.id,
-          nome: admin.nome || admin.email,
-          email: admin.email
+          id: session.user.id,
+          nome: session.user.email?.split('@')[0] || 'Admin',
+          email: session.user.email || ''
         });
         setIsAuthenticated(true);
       } catch (error) {

@@ -20,14 +20,14 @@ export default function AdminHeader() {
       
       if (session) {
         const { data: adminUser } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('email', session.user.email)
+          .from('admins')
+          .select('user_id')
+          .eq('user_id', session.user.id)
           .single();
 
         if (adminUser) {
-          setAdminName(adminUser.nome);
-          setAdminEmail(adminUser.email);
+          setAdminName(session.user.email?.split('@')[0] || 'Admin');
+          setAdminEmail(session.user.email || '');
         }
       }
     } catch (error) {
