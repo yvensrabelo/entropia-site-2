@@ -68,9 +68,7 @@ const ProvaCard = ({ grupo }: { grupo: GrupoCard }) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+    <div
       className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
     >
       {/* Header do Card */}
@@ -138,7 +136,7 @@ const ProvaCard = ({ grupo }: { grupo: GrupoCard }) => {
         })
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -167,7 +165,7 @@ const SkeletonCard = () => (
 export default function BancoDeProvas() {
   const [grupos, setGrupos] = useState<GrupoCard[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filtro, setFiltro] = useState('TUDO');
+  const [filtro, setFiltro] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProvas();
@@ -188,6 +186,17 @@ export default function BancoDeProvas() {
       // Agrupar e processar provas
       const gruposProcessados = processarProvas(data || []);
       setGrupos(gruposProcessados);
+      
+      // Definir primeiro filtro com provas como padrão
+      if (!filtro && gruposProcessados.length > 0) {
+        const tiposComProvas = ['SIS', 'PSC', 'MACRO', 'PSS', 'UERR'];
+        for (const tipo of tiposComProvas) {
+          if (gruposProcessados.some(g => g.tipo_prova === tipo)) {
+            setFiltro(tipo);
+            break;
+          }
+        }
+      }
     } catch (error) {
       console.error('Erro ao buscar provas:', error);
     } finally {
@@ -585,7 +594,7 @@ export default function BancoDeProvas() {
 
   // Filtrar grupos
   const gruposFiltrados = useMemo(() => {
-    if (filtro === 'TUDO') return grupos;
+    if (!filtro) return grupos;
     return grupos.filter(g => g.tipo_prova === filtro);
   }, [grupos, filtro]);
 
@@ -607,38 +616,279 @@ export default function BancoDeProvas() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-emerald-500 to-green-600 text-white py-16">
+      {/* Hero Section Desktop */}
+      <section className="banco-header desktop-header">
         <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Banco de Provas Entropia
+          <h1 className="banco-title">
+            Banco de <span className="gradient-text">Provas</span>
           </h1>
-          <p className="text-xl md:text-2xl">
-            Acesse gratuitamente milhares de questões dos principais vestibulares do Amazonas
-          </p>
+          <p className="banco-subtitle">UEA | UFAM | RORAIMA | ENEM</p>
         </div>
       </section>
 
-      {/* Filtros */}
-      <section className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex flex-wrap gap-2">
-            {[
-              'TUDO', 'SIS', 'MACRO', 'PSC', 'PSI', 'PSS', 'UERR', 'ENEM', 'OUTROS'
-            ].map(tipo => (
-              <button
-                key={tipo}
-                onClick={() => setFiltro(tipo)}
-                className={`px-4 py-2 rounded-full transition-colors font-medium ${
-                  filtro === tipo
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                {tipo} ({contadores[tipo] || 0})
-              </button>
-            ))}
-          </div>
+      {/* Layout Mobile sem imagem */}
+      <div className="mobile-header-section">
+        <div className="banco-header-mobile">
+          <h1 className="banco-title">
+            Banco de <span className="gradient-text">Provas</span>
+          </h1>
+          <p className="banco-subtitle">UEA | UFAM | RORAIMA | ENEM</p>
+        </div>
+        
+        {/* Filtros direto abaixo */}
+        <div className="mobile-filters">
+          <button 
+            className={`filter-btn ${filtro === 'SIS' ? 'active' : ''} ${contadores['SIS'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['SIS'] === 0) {
+                e.preventDefault();
+                alert('SIS em breve!');
+              } else {
+                setFiltro('SIS');
+              }
+            }}
+          >
+            SIS
+            {contadores['SIS'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'PSC' ? 'active' : ''} ${contadores['PSC'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['PSC'] === 0) {
+                e.preventDefault();
+                alert('PSC em breve!');
+              } else {
+                setFiltro('PSC');
+              }
+            }}
+          >
+            PSC
+            {contadores['PSC'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className="filter-btn locked"
+            onClick={(e) => {
+              e.preventDefault();
+              alert('PSI em breve!');
+            }}
+          >
+            PSI
+            <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+            </svg>
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'PSS' ? 'active' : ''} ${contadores['PSS'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['PSS'] === 0) {
+                e.preventDefault();
+                alert('UFRR em breve!');
+              } else {
+                setFiltro('PSS');
+              }
+            }}
+          >
+            UFRR
+            {contadores['PSS'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'UERR' ? 'active' : ''} ${contadores['UERR'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['UERR'] === 0) {
+                e.preventDefault();
+                alert('UERR em breve!');
+              } else {
+                setFiltro('UERR');
+              }
+            }}
+          >
+            UERR
+            {contadores['UERR'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'MACRO' ? 'active' : ''} ${contadores['MACRO'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['MACRO'] === 0) {
+                e.preventDefault();
+                alert('MACRO em breve!');
+              } else {
+                setFiltro('MACRO');
+              }
+            }}
+          >
+            MACRO
+            {contadores['MACRO'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className="filter-btn locked"
+            onClick={(e) => {
+              e.preventDefault();
+              alert('ENEM em breve!');
+            }}
+          >
+            ENEM
+            <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Filtros Desktop */}
+      <section className="bg-white desktop-filters">
+        <div className="filters-container">
+          <button 
+            className={`filter-btn ${filtro === 'SIS' ? 'active' : ''} ${contadores['SIS'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['SIS'] === 0) {
+                e.preventDefault();
+                alert('SIS em breve!');
+              } else {
+                setFiltro('SIS');
+              }
+            }}
+          >
+            SIS
+            {contadores['SIS'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'PSC' ? 'active' : ''} ${contadores['PSC'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['PSC'] === 0) {
+                e.preventDefault();
+                alert('PSC em breve!');
+              } else {
+                setFiltro('PSC');
+              }
+            }}
+          >
+            PSC
+            {contadores['PSC'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'PSI' ? 'active' : ''} ${contadores['PSI'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['PSI'] === 0) {
+                e.preventDefault();
+                alert('PSI em breve!');
+              } else {
+                setFiltro('PSI');
+              }
+            }}
+          >
+            PSI
+            {contadores['PSI'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'PSS' ? 'active' : ''} ${contadores['PSS'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['PSS'] === 0) {
+                e.preventDefault();
+                alert('UFRR em breve!');
+              } else {
+                setFiltro('PSS');
+              }
+            }}
+          >
+            UFRR
+            {contadores['PSS'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'UERR' ? 'active' : ''} ${contadores['UERR'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['UERR'] === 0) {
+                e.preventDefault();
+                alert('UERR em breve!');
+              } else {
+                setFiltro('UERR');
+              }
+            }}
+          >
+            UERR
+            {contadores['UERR'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className={`filter-btn ${filtro === 'MACRO' ? 'active' : ''} ${contadores['MACRO'] === 0 ? 'locked' : ''}`}
+            onClick={(e) => {
+              if (contadores['MACRO'] === 0) {
+                e.preventDefault();
+                alert('MACRO em breve!');
+              } else {
+                setFiltro('MACRO');
+              }
+            }}
+          >
+            MACRO
+            {contadores['MACRO'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
+          </button>
+          
+          <button 
+            className="filter-btn locked"
+            onClick={(e) => {
+              e.preventDefault();
+              alert('ENEM em breve!');
+            }}
+          >
+            ENEM
+            <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+            </svg>
+          </button>
         </div>
       </section>
 
@@ -652,30 +902,11 @@ export default function BancoDeProvas() {
               ))}
             </div>
           ) : gruposFiltrados.length > 0 ? (
-            <>
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  {filtro === 'TUDO' 
-                    ? `${gruposFiltrados.length} grupos de provas disponíveis`
-                    : `${gruposFiltrados.length} grupos de provas - ${filtro}`
-                  }
-                </h2>
-                <p className="text-gray-600">
-                  Clique em PROVA para ver a prova ou GAB para o gabarito
-                </p>
-              </div>
-              
-              <motion.div 
-                layout
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-              >
-                <AnimatePresence>
-                  {gruposFiltrados.map((grupo) => (
-                    <ProvaCard key={grupo.key} grupo={grupo} />
-                  ))}
-                </AnimatePresence>
-              </motion.div>
-            </>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {gruposFiltrados.map((grupo) => (
+                <ProvaCard key={grupo.key} grupo={grupo} />
+              ))}
+            </div>
           ) : (
             <div className="text-center py-16">
               <h3 className="text-xl font-semibold text-gray-700 mb-2">

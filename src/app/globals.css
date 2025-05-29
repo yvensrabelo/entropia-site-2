@@ -2,6 +2,303 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safari Safe Areas */
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top);
+}
+
+body {
+  padding-top: env(safe-area-inset-top);
+  background-color: #ffffff;
+}
+
+/* Safari specific styles */
+@supports (-webkit-touch-callout: none) {
+  body {
+    background-color: #ffffff;
+  }
+  
+  .navbar {
+    padding-top: env(safe-area-inset-top);
+    background-color: #ffffff;
+  }
+}
+
+/* Banco de Provas - Hero Header Styles */
+.banco-header {
+  background: #ffffff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.banco-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, #4CAF50, #9C27B0);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.banco-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .banco-title {
+    font-size: 2.5rem;
+  }
+  
+  .banco-subtitle {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+}
+
+/* Filtros do Banco de Provas - Simplificados */
+.filters-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.filter-btn:hover:not(.locked) {
+  background: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.filter-btn.active {
+  background: #388E3C;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.filter-btn.locked {
+  background: #9E9E9E;
+  cursor: not-allowed;
+  opacity: 0.8;
+  padding-right: 40px;
+}
+
+.lock-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+
+/* Desktop - Uma linha */
+@media (min-width: 1024px) {
+  .filters-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .filters-container::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .filters-container::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 2px;
+  }
+}
+
+/* Mobile - Máximo 2 linhas */
+@media (max-width: 1023px) {
+  .filters-container {
+    justify-content: center;
+  }
+  
+  .filter-btn {
+    flex: 0 0 calc(25% - 9px);
+    min-width: 80px;
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .filter-btn {
+    flex: 0 0 calc(33.333% - 8px);
+  }
+}
+
+@media (max-width: 400px) {
+  .filter-btn {
+    flex: 0 0 calc(50% - 6px);
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}
+
+/* Layout Mobile do Banco de Provas */
+.mobile-header-section {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Esconder elementos desktop */
+  .desktop-header {
+    display: none !important;
+  }
+  
+  .desktop-filters {
+    display: none !important;
+  }
+  
+  /* Mostrar header mobile */
+  .mobile-header-section {
+    display: block;
+  }
+  
+  .banco-header-mobile {
+    text-align: center;
+    padding: 40px 20px 30px;
+    background: white;
+  }
+  
+  .banco-header-mobile .banco-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .banco-header-mobile .gradient-text {
+    background: linear-gradient(45deg, #4CAF50, #9C27B0);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease infinite;
+  }
+  
+  .banco-header-mobile .banco-subtitle {
+    font-size: 1rem;
+    color: #666;
+    letter-spacing: 2px;
+  }
+  
+  /* Filtros mobile simplificados */
+  .mobile-filters {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas = 2 linhas com 7 filtros */
+    gap: 10px;
+    background: #f5f5f5;
+  }
+  
+  .mobile-filters .filter-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 14px 8px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    position: relative;
+  }
+  
+  .mobile-filters .filter-btn.active {
+    background: #388E3C;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  .mobile-filters .filter-btn.locked {
+    background: #9E9E9E;
+    cursor: not-allowed;
+  }
+  
+  .mobile-filters .filter-btn:active:not(.locked) {
+    transform: scale(0.98);
+  }
+  
+  .mobile-filters .lock-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.8;
+  }
+}
+
+/* Telas menores - 3 colunas */
+@media (max-width: 480px) {
+  .mobile-filters {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .mobile-filters .filter-btn {
+    font-size: 13px;
+    padding: 12px 6px;
+  }
+  
+  .mobile-filters .lock-icon {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* Telas muito pequenas - 2 colunas */
+@media (max-width: 360px) {
+  .mobile-filters {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .mobile-filters .filter-btn {
+    font-size: 12px;
+    padding: 12px 4px;
+  }
+}
+
 /* Grid pattern for backgrounds */
 .bg-grid-white\/10 {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),

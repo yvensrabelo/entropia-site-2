@@ -48,8 +48,11 @@
       "mcp__ide__executeCode",
       "Bash(/Users/yvensrabelo/TENTAR O QUE JA TEMOS/entropia-site-2/add-dynamic-export.sh:*)",
       "Bash(./add-dynamic.sh:*)",
-      "Bash(./update-imports.sh)"
+      "Bash(./update-imports.sh)",
+      "Bash(timeout 30s npm run build)",
+      "Bash(gtimeout:*)"
     ],
     "deny": []
-  }
+  },
+  "enableAllProjectMcpServers": false
 }
