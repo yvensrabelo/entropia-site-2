@@ -4,21 +4,19 @@ import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { 
   FileText, 
-  Book, 
-  Users, 
+  Calendar, 
   ClipboardList, 
-  UsersIcon,
+  Users,
   Menu,
   X,
   LogOut,
   Home,
-  FileCheck,
-  UserCheck,
-  BarChart3,
-  MessageSquare,
-  Shield
+  Clock,
+  Bookmark,
+  GraduationCap,
+  Link,
+  Upload
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase-singleton';
 
 interface MenuItem {
   name: string;
@@ -29,15 +27,13 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: Home },
   { name: 'Provas', href: '/admin/dashboard/provas', icon: FileText },
-  { name: 'Cursos', href: '/admin/dashboard/turmas', icon: Book },
-  { name: 'Alunos', href: '/admin/dashboard/alunos', icon: Users },
-  { name: 'Presenças', href: '/admin/dashboard/presencas', icon: UserCheck },
-  { name: 'Relatórios', href: '/admin/dashboard/relatorios', icon: BarChart3 },
-  { name: 'WhatsApp', href: '/admin/dashboard/whatsapp', icon: MessageSquare },
-  { name: 'Pré-Matrículas', href: '/admin/dashboard/pre-matriculas', icon: FileCheck },
-  { name: 'Matrículas', href: '/admin/dashboard/matriculas', icon: ClipboardList },
-  { name: 'Turmas', href: '/admin/dashboard/turmas-config', icon: UsersIcon },
-  { name: 'Admins', href: '/admin/dashboard/admins', icon: Shield },
+  { name: 'Professores', href: '/admin/dashboard/professores', icon: Users },
+  { name: 'Horários', href: '/admin/dashboard/horarios', icon: Clock },
+  { name: 'Importar Horários', href: '/admin/dashboard/importar-horarios', icon: Upload },
+  { name: 'Descritores', href: '/admin/dashboard/descritores', icon: Bookmark },
+  { name: 'Turmas', href: '/admin/dashboard/turmas-simples', icon: GraduationCap },
+  { name: 'Turmas Ativas', href: '/admin/dashboard/turmas-ativas', icon: Calendar },
+  { name: 'Mapeamento Turmas', href: '/admin/dashboard/mapeamento-turmas', icon: Link },
 ];
 
 export default function DashboardLayout({
@@ -106,7 +102,7 @@ export default function DashboardLayout({
               <nav className="mt-5 px-2 space-y-1">
                 {menuItems.map((item) => {
                   const isActive = pathname === item.href || 
-                    (item.href !== '/admin/dashboard' && pathname.startsWith(item.href));
+                    (item.href !== '/admin/dashboard' && pathname?.startsWith(item.href));
                   const Icon = item.icon;
                   
                   return (
@@ -150,7 +146,7 @@ export default function DashboardLayout({
               <nav className="mt-5 flex-1 px-2 space-y-1">
                 {menuItems.map((item) => {
                   const isActive = pathname === item.href || 
-                    (item.href !== '/admin/dashboard' && pathname.startsWith(item.href));
+                    (item.href !== '/admin/dashboard' && pathname?.startsWith(item.href));
                   const Icon = item.icon;
                   
                   return (

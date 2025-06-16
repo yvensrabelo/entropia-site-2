@@ -76,7 +76,7 @@ export class ProvaSystemValidator {
         }
       ];
 
-      const results = [];
+      const results: any[] = [];
 
       for (const testData of testCases) {
         const { data, error } = await supabase
@@ -125,7 +125,7 @@ export class ProvaSystemValidator {
         { tipo_prova: 'MACRO', subcategoria: 'DIA 2', area: 'HUMANAS' }
       ];
 
-      const results = [];
+      const results: any[] = [];
 
       for (const filter of filterTests) {
         let query = supabase.from('provas').select('*');
@@ -255,7 +255,7 @@ export class ProvaSystemValidator {
   async runFullValidation(): Promise<TestResult[]> {
     console.log('🚀 Iniciando validação completa do sistema...');
 
-    const results = [];
+    const results: any[] = [];
 
     // 1. Validar constantes
     console.log('📋 Validando constantes...');

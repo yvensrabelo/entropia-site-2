@@ -1,8 +1,108 @@
+// DDDs válidos no Brasil
+const DDDS_VALIDOS = [
+  '11', '12', '13', '14', '15', '16', '17', '18', '19', // SP
+  '21', '22', '24', // RJ
+  '27', '28', // ES
+  '31', '32', '33', '34', '35', '37', '38', // MG
+  '41', '42', '43', '44', '45', '46', // PR
+  '47', '48', '49', // SC
+  '51', '53', '54', '55', // RS
+  '61', // DF
+  '62', '64', // GO
+  '63', // TO
+  '65', '66', // MT
+  '67', // MS
+  '68', // AC
+  '69', // RO
+  '71', '73', '74', '75', '77', // BA
+  '79', // SE
+  '81', '87', // PE
+  '82', // AL
+  '83', // PB
+  '84', // RN
+  '85', '88', // CE
+  '86', '89', // PI
+  '91', '93', '94', // PA
+  '92', '97', // AM
+  '95', // RR
+  '96', // AP
+  '98', '99', // MA
+];
+
 /**
  * Remove todos os caracteres não numéricos do telefone
  */
 export function cleanPhoneNumber(phone: string): string {
   return phone.replace(/\D/g, '');
+}
+
+/**
+ * Aplica máscara de WhatsApp brasileiro (XX) 9XXXX-XXXX
+ */
+export function formatWhatsAppMask(value: string): string {
+  // Remove tudo que não é número
+  const numbers = value.replace(/\D/g, '');
+  
+  // Aplica a máscara progressivamente
+  if (numbers.length <= 2) {
+    return numbers;
+  } else if (numbers.length <= 3) {
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+  } else if (numbers.length <= 7) {
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 3)}${numbers.slice(3)}`;
+  } else if (numbers.length <= 11) {
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 3)}${numbers.slice(3, 7)}-${numbers.slice(7)}`;
+  } else {
+    // Limita a 11 dígitos
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 3)}${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+  }
+}
+
+/**
+ * Valida WhatsApp brasileiro com validação rigorosa
+ */
+export function validateWhatsApp(phone: string): { isValid: boolean; error?: string } {
+  const numbers = cleanPhoneNumber(phone);
+  
+  // Deve ter exatamente 11 dígitos (DDD + 9 + 8 dígitos)
+  if (numbers.length !== 11) {
+    return {
+      isValid: false,
+      error: 'WhatsApp deve ter 11 dígitos: (DDD) 9XXXX-XXXX'
+    };
+  }
+  
+  // Extrair DDD
+  const ddd = numbers.slice(0, 2);
+  
+  // Validar DDD
+  if (!DDDS_VALIDOS.includes(ddd)) {
+    return {
+      isValid: false,
+      error: 'DDD inválido'
+    };
+  }
+  
+  // Terceiro dígito deve ser 9 (celular)
+  const ninthDigit = numbers[2];
+  if (ninthDigit !== '9') {
+    return {
+      isValid: false,
+      error: 'WhatsApp deve ser celular: (DDD) 9XXXX-XXXX'
+    };
+  }
+  
+  // Verificar se não é sequência repetida (ex: 11999999999)
+  const restOfNumber = numbers.slice(3);
+  const isRepeated = restOfNumber.split('').every(digit => digit === restOfNumber[0]);
+  if (isRepeated) {
+    return {
+      isValid: false,
+      error: 'Número inválido'
+    };
+  }
+  
+  return { isValid: true };
 }
 
 /**

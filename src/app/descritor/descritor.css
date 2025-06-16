@@ -1,0 +1,271 @@
+.descritor-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Login */
+.login-box {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 40px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-box h1 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.login-box p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.cpf-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.cpf-form label {
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+}
+
+.cpf-form input {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.cpf-form input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.btn-login {
+  padding: 14px 28px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-login:hover {
+  background: #45a049;
+}
+
+.test-hint {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #999;
+}
+
+/* Header */
+.descritor-header {
+  background: white;
+  padding: 20px 40px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.descritor-header h1 {
+  color: #333;
+  font-size: 24px;
+}
+
+.btn-logout {
+  padding: 8px 20px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Content */
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Aulas Section */
+.aulas-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.aulas-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.aula-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.aula-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.aula-card.selected {
+  border-color: #4CAF50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.aula-card.completed {
+  background: #e8f5e9;
+}
+
+.aula-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.dia {
+  font-weight: 700;
+  color: #4CAF50;
+}
+
+.horario {
+  color: #666;
+  font-size: 14px;
+}
+
+.aula-info h3 {
+  margin: 0 0 5px;
+  color: #333;
+}
+
+.aula-info p {
+  margin: 0;
+  color: #666;
+}
+
+.status-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #4CAF50;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* Descrição Section */
+.descricao-section {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  height: fit-content;
+}
+
+.descricao-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.aula-details {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.aula-details p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.descricao-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.descricao-form textarea {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.descricao-form textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-save {
+  flex: 1;
+  padding: 12px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 12px;
+  background: #e0e0e0;
+  color: #666;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  
+  .descritor-header {
+    padding: 15px 20px;
+  }
+  
+  .login-box {
+    margin: 50px 20px;
+  }
+}

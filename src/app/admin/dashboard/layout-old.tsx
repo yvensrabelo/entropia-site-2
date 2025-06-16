@@ -74,7 +74,7 @@ export default function DashboardLayout({
               <nav className="mt-5 px-2 space-y-1">
                 {menuItems.map((item) => {
                   const isActive = pathname === item.href || 
-                    (item.href !== '/admin/dashboard' && pathname.startsWith(item.href));
+                    (item.href !== '/admin/dashboard' && pathname?.startsWith(item.href));
                   const Icon = item.icon;
                   
                   return (
@@ -118,7 +118,7 @@ export default function DashboardLayout({
               <nav className="mt-5 flex-1 px-2 space-y-1">
                 {menuItems.map((item) => {
                   const isActive = pathname === item.href || 
-                    (item.href !== '/admin/dashboard' && pathname.startsWith(item.href));
+                    (item.href !== '/admin/dashboard' && pathname?.startsWith(item.href));
                   const Icon = item.icon;
                   
                   return (

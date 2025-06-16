@@ -19,7 +19,7 @@ export default function AdminLoginPage() {
     senha: ''
   });
 
-  const redirectTo = searchParams.get('redirectTo') || '/admin/dashboard';
+  const redirectTo = searchParams?.get('redirectTo') || '/admin/dashboard';
 
   useEffect(() => {
     console.log('🔍 Login Page - URL atual:', typeof window !== 'undefined' ? window.location.href : 'SSR');

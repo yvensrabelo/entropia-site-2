@@ -92,8 +92,8 @@ export async function POST(request: NextRequest) {
 
     // Usar mensagem personalizada se existir, senão usar padrão
     let mensagem = ''
-    if (turmaData?.mensagem_whatsapp && turmaData.mensagem_whatsapp.trim()) {
-      mensagem = turmaData.mensagem_whatsapp
+    if ((turmaData as any)?.mensagem_whatsapp && (turmaData as any).mensagem_whatsapp.trim()) {
+      mensagem = (turmaData as any).mensagem_whatsapp
     } else {
       // Mensagem padrão
       mensagem = `👋 Olá! Aqui é da Entropia. Aqui estão as informações sobre a turma *${turma}*.`
@@ -113,15 +113,15 @@ export async function POST(request: NextRequest) {
       mensagem += `\n\nPara saber mais, é só responder por aqui. 🚀`
     }
 
-    const results = []
+    const results: any[] = []
 
     // Se houver imagem, enviar primeiro
-    if (turmaData?.imagem_url && turmaData.imagem_url.trim()) {
+    if ((turmaData as any)?.imagem_url && (turmaData as any).imagem_url.trim()) {
       const urlImagem = `${API_URL}/message/sendImage/${INSTANCE}`
       
       console.log('=== ENVIANDO IMAGEM ===')
       console.log('URL:', urlImagem)
-      console.log('Imagem:', turmaData.imagem_url)
+      console.log('Imagem:', (turmaData as any).imagem_url)
       console.log('======================')
 
       const responseImagem = await fetch(urlImagem, {
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           number: numeroWhatsApp,
-          url: turmaData.imagem_url,
+          url: (turmaData as any).imagem_url,
           caption: mensagem
         })
       })

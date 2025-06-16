@@ -70,7 +70,7 @@ export async function validateTableColumns(
         validation.columns[columnName] = {
           exists: true,
           type: columnInfo.data_type,
-          maxLength: columnInfo.character_maximum_length,
+          maxLength: columnInfo.character_maximum_length || undefined,
           nullable: columnInfo.is_nullable === 'YES'
         };
       } else {

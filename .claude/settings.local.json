@@ -50,7 +50,10 @@
       "Bash(./add-dynamic.sh:*)",
       "Bash(./update-imports.sh)",
       "Bash(timeout 30s npm run build)",
-      "Bash(gtimeout:*)"
+      "Bash(gtimeout:*)",
+      "Bash(timeout 10s npm run dev)",
+      "mcp__ide__getDiagnostics",
+      "Bash(rg:*)"
     ],
     "deny": []
   },

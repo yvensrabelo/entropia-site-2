@@ -26,10 +26,14 @@ export default function EditarProvaPage() {
   });
 
   useEffect(() => {
-    fetchProva();
-  }, [params.id]);
+    if (params?.id) {
+      fetchProva();
+    }
+  }, [params?.id]);
 
   const fetchProva = async () => {
+    if (!params?.id) return;
+    
     try {
       const { data, error } = await supabase
         .from('provas')
@@ -63,6 +67,8 @@ export default function EditarProvaPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!params?.id) return;
+    
     setLoading(true);
 
     try {
@@ -74,7 +80,7 @@ export default function EditarProvaPage() {
           area: formData.area || null,
           tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()) : []
         })
-        .eq('id', params.id);
+        .eq('id', params?.id);
 
       if (error) throw error;
 

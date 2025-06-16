@@ -13,7 +13,7 @@ interface UseVideoOptions {
 }
 
 interface UseVideoReturn {
-  videoRef: React.RefObject<HTMLVideoElement>
+  videoRef: React.RefObject<HTMLVideoElement | null>
   isPlaying: boolean
   isMuted: boolean
   isLoaded: boolean

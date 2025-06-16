@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase-singleton';
+import Layout from '@/components/Layout';
 
 interface Prova {
   id: string;
@@ -615,7 +615,8 @@ export default function BancoDeProvas() {
   }, [grupos]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Layout>
+      <div className="min-h-screen bg-gray-50 pt-16">
       {/* Hero Section Desktop */}
       <section className="banco-header desktop-header">
         <div className="max-w-7xl mx-auto px-6">
@@ -919,6 +920,7 @@ export default function BancoDeProvas() {
           )}
         </div>
       </section>
-    </div>
+      </div>
+    </Layout>
   );
 }

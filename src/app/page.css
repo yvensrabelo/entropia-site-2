@@ -1,0 +1,37 @@
+/* Mobile Layout */
+@media (max-width: 1023px) {
+  .mobile-hero .hero-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: #4CAF50;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  
+  .mobile-hero .hero-description {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .mobile-hero .badge {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .mobile-hero .badge-icon {
+    width: 14px;
+    height: 14px;
+  }
+}

@@ -24,6 +24,7 @@ yarn-error.log*
 
 # Local env files
 .env*.local
+.env
 
 # Vercel
 .vercel
@@ -39,4 +40,3 @@ next-env.d.ts
 # Logs
 logs
 *.log
-node_modules

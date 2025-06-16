@@ -5,8 +5,8 @@
 .turma-card,
 .card-gradient-bg {
   opacity: 1 !important;
-  display: block !important;
   visibility: visible !important;
+  /* Removido display: block !important para permitir lg:hidden funcionar */
 }
 
 /* GARANTIR GRADIENTE EXATO - COM TRANSIÇÕES SUAVES */
@@ -24,13 +24,97 @@
 
 /* Container principal - UM CARD ÚNICO */
 .turmas-container {
-  max-width: 600px; /* ✅ LARGURA MENOR PARA UM CARD */
-  margin: 50px auto;
-  padding: 40px 20px;
-  display: flex !important; /* ✅ FLEX PARA CENTRALIZAR */
-  justify-content: center;
+  max-width: 100%; /* ✅ LARGURA TOTAL PARA A SEÇÃO */
+  margin: 0;
+  padding: 60px 20px;
   position: relative;
   opacity: 1 !important; /* ✅ FORÇAR VISIBILIDADE */
+  background-color: #4A7C59; /* ✅ FUNDO VERDE ESCURO */
+  /* Removido display: block !important para permitir lg:hidden funcionar */
+}
+
+/* Desktop: Ocupar altura total na nova estrutura de 2 colunas */
+@media (min-width: 1024px) {
+  .turmas-container {
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Card deve ocupar toda altura disponível */
+  .turma-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-gradient-bg {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+  }
+  
+  /* Price card deve ocupar altura restante */
+  .price-card {
+    padding: 32px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Ajustar espaçamentos para melhor distribuição vertical */
+  .plan-name {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .price-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+  }
+  
+  .price-value {
+    font-size: 40px;
+  }
+  
+  /* Toggle de séries centralizado */
+  .toggle-container {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .toggle-option {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+  
+  /* Botão CTA na parte inferior */
+  .cta-button {
+    padding: 18px 32px;
+    font-size: 16px;
+    margin-top: auto;
+  }
+  
+  /* Centralizar benefícios se existirem */
+  .benefits-list {
+    margin: 30px 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .benefits-list li {
+    margin-bottom: 12px;
+    font-size: 16px;
+    text-align: center;
+  }
 }
 
 /* Card individual - ÚNICO CARD */
@@ -38,7 +122,8 @@
   perspective: 1000px;
   height: 100%;
   width: 100%;
-  max-width: 500px; /* ✅ LARGURA MÁXIMA PARA CARD ÚNICO */
+  max-width: 600px; /* ✅ LARGURA MÁXIMA PARA CARD ÚNICO */
+  margin: 0 auto; /* ✅ CENTRALIZAR O CARD */
 }
 
 /* Background gradiente do card - GRADIENTE EXATO DESCOMPLICA */
@@ -102,20 +187,23 @@
   100% { transform: rotate(45deg) translate(30px, 30px); }
 }
 
-/* Badge - VERMELHO ECONOMIA */
-.card-badge {
+/* Remover badges vermelhos e ajustar textos */
+.package-title {
   display: inline-block;
-  background: #DC2626; /* ✅ VERMELHO ECONOMIA */
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #ffffff;
   margin-bottom: 20px;
-  animation: pulse 2s ease-in-out infinite;
+  opacity: 0.8;
+}
+
+/* Remover qualquer badge de desconto */
+.card-badge,
+.discount-badge,
+.badge-economia {
+  display: none !important;
 }
 
 @keyframes pulse {
@@ -132,15 +220,27 @@
   letter-spacing: 0.5px;
 }
 
-/* Title */
-.card-title {
-  font-size: 36px;
-  font-weight: 900;
-  line-height: 1.2;
+/* Título Principal */
+.card-main-title {
   margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  line-height: 1.2;
+}
+
+.title-line-1 {
+  display: block;
+  font-size: 32px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 5px;
+}
+
+.title-line-2 {
+  display: block;
+  font-size: 40px;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
 }
 
 .title-accent {
@@ -265,26 +365,16 @@
   border-bottom: 2px dashed #e5e7eb;
 }
 
+/* Simplificar preços - sem preço riscado */
 .price-from {
-  font-size: 14px;
-  color: #6b7280;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.price-from s {
-  color: #9ca3af;
-  font-weight: 500;
+  display: none;
 }
 
 .price-current {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  color: #1a1a1a;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 4px;
+  color: #1F2937;
+  text-align: center;
 }
 
 .price-value {
@@ -366,6 +456,218 @@
 
 .cta-button:hover::before {
   transform: translate(-50%, -50%) scale(1);
+}
+
+/* Seletor de Série */
+.selector-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.serie-selector {
+  margin: 30px 0;
+}
+
+.serie-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Grid para as 3 primeiras séries */
+.serie-toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+/* Estilo base dos botões */
+.serie-option {
+  padding: 16px 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  font-size: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Botão Formado - largura total */
+.formado-option {
+  width: 100%;
+  background: rgba(255, 215, 0, 0.15);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 700;
+  font-size: 16px;
+  padding: 18px 24px;
+}
+
+/* Hover states */
+.serie-option:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.formado-option:hover {
+  background: rgba(255, 215, 0, 0.2);
+}
+
+/* Estado ativo */
+.serie-option.active {
+  background: white;
+  color: #2E7D32;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+  border-color: white;
+}
+
+.formado-option.active {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #1a1a1a;
+  font-weight: 800;
+}
+
+/* Info Card ajustado */
+.info-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.turma-name {
+  color: #1F2937;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.price-subtitle {
+  font-size: 13px;
+  color: #6B7280;
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* Mobile responsivo */
+@media (max-width: 480px) {
+  .serie-toggle-grid {
+    gap: 8px;
+  }
+  
+  .serie-option {
+    font-size: 14px;
+    padding: 14px 12px;
+  }
+  
+  .formado-option {
+    font-size: 15px;
+    padding: 16px 20px;
+  }
+}
+
+/* Micro animação ao clicar */
+.serie-option:active {
+  transform: scale(0.98);
+}
+
+/* Container dos botões integrados */
+.serie-container-integrated {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* Grupo de botões integrados */
+.serie-buttons-group {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 4px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Botão individual integrado */
+.serie-button-integrated {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Hover no botão não ativo */
+.serie-button-integrated:not(.active):hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Botão ativo */
+.serie-button-integrated.active {
+  background: white;
+  color: #4A7C59;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Bordas arredondadas nas extremidades */
+.serie-button-integrated.first {
+  border-top-left-radius: 26px;
+  border-bottom-left-radius: 26px;
+}
+
+.serie-button-integrated.last {
+  border-top-right-radius: 26px;
+  border-bottom-right-radius: 26px;
+}
+
+/* Botão ativo com bordas */
+.serie-button-integrated.active {
+  border-radius: 26px;
+}
+
+/* Botão Formados separado */
+.serie-button-formados {
+  width: 100%;
+  max-width: 350px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover no botão Formados */
+.serie-button-formados:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Botão Formados ativo */
+.serie-button-formados.active {
+  background: white;
+  color: #4A7C59;
+  border-color: white;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Duração do plano */
@@ -595,4 +897,13 @@
 
 @keyframes fadeIn {
   to { opacity: 1; }
+}
+/* Descrição da turma */
+.turma-description {
+  color: #6B7280;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 400;
 }

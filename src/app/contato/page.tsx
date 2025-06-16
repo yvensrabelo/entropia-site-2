@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import Layout from '@/components/Layout'
 import { 
   Phone, 
   Mail, 
@@ -106,7 +107,8 @@ export default function ContatoPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Layout>
+      <div className="min-h-screen bg-gray-50 pt-16">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-green-50 to-white py-20">
         <div className="max-w-7xl mx-auto px-6">
@@ -457,6 +459,7 @@ export default function ContatoPage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </Layout>
   )
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import TurmasCards from '@/components/TurmasCards';
+import TurmasCardUnified from '@/components/sections/TurmasCardUnified';
 
 export default function TurmasDescomplica() {
   return (
@@ -31,7 +31,7 @@ export default function TurmasDescomplica() {
       </section>
 
       {/* TurmasCards Component */}
-      <TurmasCards />
+      <TurmasCardUnified />
       
       {/* Footer Section */}
       <section className="py-16 px-6 text-center bg-white">

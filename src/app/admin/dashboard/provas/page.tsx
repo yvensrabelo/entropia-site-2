@@ -251,7 +251,7 @@ function ProvasContent() {
 
       if (prova) {
         // Deletar arquivos do storage
-        const arquivosParaDeletar = [];
+        const arquivosParaDeletar: string[] = [];
         
         if (prova.url_prova) {
           const path = prova.url_prova.split('/').slice(-2).join('/');

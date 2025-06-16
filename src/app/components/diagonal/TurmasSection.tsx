@@ -2,7 +2,7 @@
 
 import React from 'react'
 import DiagonalDivider from './DiagonalDivider'
-import TurmasCards from '@/components/TurmasCards'
+import TurmasCardUnified from '@/components/sections/TurmasCardUnified'
 
 export default function TurmasSection() {
 
@@ -29,7 +29,7 @@ export default function TurmasSection() {
         </div>
         
         {/* Novos TurmasCards Estilo Descomplica */}
-        <TurmasCards />
+        <TurmasCardUnified />
       </div>
       
       <DiagonalDivider position="bottom" />

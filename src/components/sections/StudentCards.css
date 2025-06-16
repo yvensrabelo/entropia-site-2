@@ -1,0 +1,60 @@
+/* Desktop - imagens em coluna centralizada */
+@media (min-width: 1024px) {
+  .student-images-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    align-items: center;
+  }
+  
+  .student-image {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .student-image:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Mobile - um embaixo do outro */
+@media (max-width: 1023px) {
+  .student-images-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    margin-bottom: 40px;
+    align-items: center;
+  }
+  
+  .student-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Tablet - ajustar grid */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .student-images-column {
+    gap: 15px;
+    padding: 20px 40px;
+  }
+  
+  .student-image {
+    border-radius: 12px;
+  }
+}

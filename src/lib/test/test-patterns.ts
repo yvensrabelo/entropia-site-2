@@ -99,7 +99,7 @@ export function testPatternDetection(): void {
     
     const result = extractMetadataFromFilename(testCase.filename);
     let testPassed = true;
-    const issues = [];
+    const issues: string[] = [];
     
     // Verificar cada campo esperado
     for (const [key, expectedValue] of Object.entries(testCase.expected)) {
