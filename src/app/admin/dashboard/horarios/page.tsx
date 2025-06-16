@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Plus, Edit2, Trash2, User, MapPin, Calendar, Grid3x3, List, Monitor, CheckCircle, AlertCircle } from 'lucide-react';
 import { detectarTurno, calcularTempo, getDiaAtual, formatDiaName, isAulaAtual } from '@/lib/utils/horario-utils';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 interface Professor {
   id: string;
@@ -361,7 +362,8 @@ export default function HorariosPage() {
   });
 
   return (
-    <div className="p-6">
+    <AuthGuard>
+      <div className="p-6">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Horários</h1>
@@ -1155,6 +1157,7 @@ export default function HorariosPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

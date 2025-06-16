@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { verifyAdminAuth } from '@/lib/auth-api';
+import { NextRequest } from 'next/server';
 
 // In-memory storage (em produção, usar banco de dados)
 let turmasData = {
@@ -60,12 +62,24 @@ let turmasData = {
   gradient: 'linear-gradient(135deg, rgb(25, 44, 38) 0%, rgb(92, 200, 133) 100%)'
 };
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Check authentication
+  const authResult = await verifyAdminAuth(request);
+  if (!authResult.isValid) {
+    return NextResponse.json({ error: authResult.error }, { status: 401 });
+  }
+  
   return NextResponse.json(turmasData);
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Check authentication
+    const authResult = await verifyAdminAuth(request);
+    if (!authResult.isValid) {
+      return NextResponse.json({ error: authResult.error }, { status: 401 });
+    }
+    
     const data = await request.json();
     turmasData = { ...turmasData, ...data };
     return NextResponse.json({ success: true, data: turmasData });

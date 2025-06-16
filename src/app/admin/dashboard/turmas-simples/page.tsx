@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, X, ToggleLeft, ToggleRight } from 'lucide-react';
 import { TurmaSimples } from '@/lib/types/turma';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 export default function TurmasSimples() {
   const [turmas, setTurmas] = useState<TurmaSimples[]>([]);
@@ -144,7 +145,8 @@ export default function TurmasSimples() {
   };
 
   return (
-    <div className="p-6">
+    <AuthGuard>
+      <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Turmas</h1>
@@ -492,6 +494,7 @@ export default function TurmasSimples() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

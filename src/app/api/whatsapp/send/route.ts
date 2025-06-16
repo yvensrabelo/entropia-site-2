@@ -1,7 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { validateAndFormatPhone, formatPhoneForWhatsApp } from '@/lib/utils/phone'
+import { verifyAdminAuth, checkRateLimit, getClientIP } from '@/lib/auth-api'
 
 export async function POST(request: NextRequest) {
+  // Verificar autenticação
+  const authResult = await verifyAdminAuth(request)
+  if (!authResult.isValid) {
+    return NextResponse.json({ error: authResult.error }, { status: 401 })
+  }
+
+  // Rate limiting
+  const clientIP = getClientIP(request)
+  if (!checkRateLimit(clientIP, 20, 60000)) { // 20 requests per minute
+    return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
+  }
   try {
     // Capturar variáveis de ambiente
     const API_URL = process.env.EVOLUTION_API_URL

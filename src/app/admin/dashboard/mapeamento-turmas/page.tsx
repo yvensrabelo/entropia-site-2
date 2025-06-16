@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Link, Save, AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
 import { TURMAS_CONFIG } from '@/config/turmas';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 interface TurmaAtiva {
   id: string;
@@ -136,7 +137,8 @@ export default function MapeamentoTurmasPage() {
   };
 
   return (
-    <div className="p-6">
+    <AuthGuard>
+      <div className="p-6">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Mapeamento de Turmas</h1>
@@ -300,6 +302,7 @@ export default function MapeamentoTurmasPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

@@ -53,7 +53,8 @@
       "Bash(gtimeout:*)",
       "Bash(timeout 10s npm run dev)",
       "mcp__ide__getDiagnostics",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(/dev/null)"
     ],
     "deny": []
   },

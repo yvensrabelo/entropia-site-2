@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Upload, FileSpreadsheet, CheckCircle, AlertCircle } from 'lucide-react';
 import * as XLSX from 'xlsx';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 export default function ImportarHorarios() {
   const [arquivo, setArquivo] = useState<File | null>(null);
@@ -193,7 +194,8 @@ export default function ImportarHorarios() {
   };
 
   return (
-    <div className="space-y-6">
+    <AuthGuard>
+      <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-800">Importar Horários</h1>
         <p className="text-gray-600">Importe horários a partir de planilhas Excel</p>
@@ -310,6 +312,7 @@ export default function ImportarHorarios() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

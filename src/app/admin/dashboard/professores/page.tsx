@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { User, Edit, Trash, Plus, Search, Phone, BookOpen } from 'lucide-react';
 import { formatWhatsAppMask, validateWhatsApp, cleanPhoneNumber, formatPhoneForDisplay } from '@/lib/utils/phone';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 interface Professor {
   id: string;
@@ -273,7 +274,8 @@ export default function ProfessoresPage() {
   }
 
   return (
-    <div className="p-6">
+    <AuthGuard>
+      <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Professores</h1>
@@ -589,6 +591,7 @@ export default function ProfessoresPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

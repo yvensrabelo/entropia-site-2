@@ -349,7 +349,10 @@ const HomePage = () => {
       {/* BANNER VERDE COMO FUNDO FIXO */}
       <div className="fixed inset-0 bg-gradient-to-br from-green-800 via-green-700 to-green-600">
         {/* Textura adicional opcional */}
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: `linear-gradient(0deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%), linear-gradient(90deg, transparent 24%, rgba(255,255,255,.05) 25%, rgba(255,255,255,.05) 26%, transparent 27%, transparent 74%, rgba(255,255,255,.05) 75%, rgba(255,255,255,.05) 76%, transparent 77%)`,
+          backgroundSize: '50px 50px'
+        }}></div>
         
         {/* Efeito de gradiente radial */}
         <div className="absolute inset-0">

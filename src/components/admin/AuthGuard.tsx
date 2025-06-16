@@ -50,18 +50,17 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         }
 
         // Verifica se é admin
-        const { data: admin } = await supabase
-          .from('admins')
-          .select('user_id')
-          .eq('user_id', session.user.id)
+        const { data: admin, error: adminError } = await supabase
+          .from('admin_users')
+          .select('id, email, role')
+          .eq('id', session.user.id)
           .single();
 
-        if (!admin) {
+        if (!admin || adminError) {
           await supabase.auth.signOut();
           router.push('/admin/login');
           return;
         }
-
         setAdminUser({
           id: session.user.id,
           nome: session.user.email?.split('@')[0] || 'Admin',

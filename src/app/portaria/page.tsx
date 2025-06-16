@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, Lock, Sun, Cloud, Moon } from 'lucide-react';
 import { getDiaAtual, isAulaAtual } from '@/lib/utils/horario-utils';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 // Estilos CSS customizados para animações
 const customStyles = `
@@ -672,8 +673,16 @@ export default function PortariaPage() {
   }, []);
 
   if (!autorizado) {
-    return <PortariaLogin onSuccess={() => setAutorizado(true)} />;
+    return (
+      <AuthGuard>
+        <PortariaLogin onSuccess={() => setAutorizado(true)} />
+      </AuthGuard>
+    );
   }
 
-  return <PortariaView />;
+  return (
+    <AuthGuard>
+      <PortariaView />
+    </AuthGuard>
+  );
 }

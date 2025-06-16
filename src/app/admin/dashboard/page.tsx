@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { FileText, Users, Clock, Calendar, Lock, Check, Copy, Link } from 'lucide-react';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -86,11 +87,12 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard Admin</h1>
-        <p className="text-gray-600 mt-2">Visão geral do sistema Entropia</p>
-      </div>
+    <AuthGuard>
+      <div className="p-6">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-900">Dashboard Admin</h1>
+          <p className="text-gray-600 mt-2">Visão geral do sistema Entropia</p>
+        </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total de Provas */}
@@ -291,6 +293,7 @@ export default function DashboardPage() {
           </a>
         </div>
       </div>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

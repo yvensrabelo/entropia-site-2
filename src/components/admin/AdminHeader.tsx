@@ -20,9 +20,9 @@ export default function AdminHeader() {
       
       if (session) {
         const { data: adminUser } = await supabase
-          .from('admins')
-          .select('user_id')
-          .eq('user_id', session.user.id)
+          .from('admin_users')
+          .select('id, email, role')
+          .eq('id', session.user.id)
           .single();
 
         if (adminUser) {

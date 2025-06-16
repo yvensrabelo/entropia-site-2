@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, User, FileText, CheckCircle, AlertCircle, Send } from 'lucide-react';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 interface Aula {
   id: string;
@@ -137,7 +138,8 @@ export default function DescritoresPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <AuthGuard>
+      <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-800">Sistema de Descritores</h1>
         <p className="text-gray-600">Gerencie e envie descritores de aula</p>
@@ -330,6 +332,7 @@ export default function DescritoresPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

@@ -1,8 +1,12 @@
 'use client'
 
+import AuthGuard from '@/components/admin/AuthGuard'
+
 export default function AdminPage() {
-  if (typeof window !== 'undefined') {
-    window.location.href = '/admin/dashboard'
-  }
-  return null
+  return (
+    <AuthGuard>
+      {typeof window !== 'undefined' && (window.location.href = '/admin/dashboard')}
+      <div>Redirecionando...</div>
+    </AuthGuard>
+  )
 }

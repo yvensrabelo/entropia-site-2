@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, GripVertical, Calendar, Users, Sun, Cloud, Moon } from 'lucide-react';
+import AuthGuard from '@/components/admin/AuthGuard';
 
 interface TurmaAtiva {
   id: string;
@@ -162,7 +163,8 @@ export default function TurmasAtivasPage() {
   const turmasInativas = turmas.filter(t => !t.ativa).length;
 
   return (
-    <div className="p-6">
+    <AuthGuard>
+      <div className="p-6">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Turmas Ativas</h1>
@@ -443,6 +445,7 @@ export default function TurmasAtivasPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

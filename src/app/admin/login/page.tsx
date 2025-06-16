@@ -14,6 +14,8 @@ export default function AdminLoginPage() {
   const [error, setError] = useState('');
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [rateLimited, setRateLimited] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     senha: ''
@@ -36,9 +38,9 @@ export default function AdminLoginPage() {
       if (session) {
         // Verifica se é admin
         const { data: adminUser } = await supabase
-          .from('admins')
-          .select('user_id')
-          .eq('user_id', session.user.id)
+          .from('admin_users')
+          .select('id, email, role')
+          .eq('id', session.user.id)
           .single();
 
         if (adminUser) {
@@ -58,6 +60,21 @@ export default function AdminLoginPage() {
     setIsLoading(true);
     setError('');
 
+    // Rate limiting check
+    const currentAttempts = attempts + 1;
+    setAttempts(currentAttempts);
+
+    if (currentAttempts > 5) {
+      setRateLimited(true);
+      setError('Muitas tentativas de login. Aguarde alguns minutos antes de tentar novamente.');
+      setIsLoading(false);
+      setTimeout(() => {
+        setRateLimited(false);
+        setAttempts(0);
+      }, 300000); // 5 minutos
+      return;
+    }
+
     try {
       // Tenta fazer login com email e senha
       const { data, error: authError } = await supabase.auth.signInWithPassword({
@@ -74,9 +91,9 @@ export default function AdminLoginPage() {
       if (data.session) {
         // Verifica se o usuário é admin
         const { data: adminUser, error: adminError } = await supabase
-          .from('admins')
-          .select('user_id')
-          .eq('user_id', data.session.user.id)
+          .from('admin_users')
+          .select('id, email, role')
+          .eq('id', data.session.user.id)
           .single();
 
         if (adminError || !adminUser) {
@@ -87,7 +104,9 @@ export default function AdminLoginPage() {
           return;
         }
 
-        // Login bem-sucedido como admin
+        // Login bem-sucedido como admin - reset attempts
+        setAttempts(0);
+        setRateLimited(false);
         showToast('Login realizado com sucesso!', 'success');
         
         // Use window.location ao invés de router.push
@@ -183,7 +202,7 @@ export default function AdminLoginPage() {
 
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || rateLimited}
             className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-medium transform hover:scale-[1.02] active:scale-[0.98]"
           >
             {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}

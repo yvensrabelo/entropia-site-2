@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
+import { verifyAdminAuth } from '@/lib/auth-api';
+import { NextRequest } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -8,14 +9,12 @@ const supabase = createClient(
 );
 
 // GET - Fetch turma card data
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     // Check authentication
-    const cookieStore = cookies();
-    const adminData = cookieStore.get('entropia_admin')?.value;
-    
-    if (!adminData) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    const authResult = await verifyAdminAuth(request);
+    if (!authResult.isValid) {
+      return NextResponse.json({ error: authResult.error }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
@@ -57,14 +56,12 @@ export async function GET(request: Request) {
 }
 
 // POST - Save/update turma card data
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const cookieStore = cookies();
-    const adminData = cookieStore.get('entropia_admin')?.value;
-    
-    if (!adminData) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    const authResult = await verifyAdminAuth(request);
+    if (!authResult.isValid) {
+      return NextResponse.json({ error: authResult.error }, { status: 401 });
     }
 
     const body = await request.json();
@@ -125,14 +122,12 @@ export async function POST(request: Request) {
 }
 
 // DELETE - Remove turma card
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   try {
     // Check authentication
-    const cookieStore = cookies();
-    const adminData = cookieStore.get('entropia_admin')?.value;
-    
-    if (!adminData) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    const authResult = await verifyAdminAuth(request);
+    if (!authResult.isValid) {
+      return NextResponse.json({ error: authResult.error }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
