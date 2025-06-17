@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { TurmaSimples } from '@/lib/types/turma';
 import { cleanupObsoleteStorage } from '@/lib/utils/cleanup-storage';
 import { turmasService } from '@/services/turmasService';
+import { Sun, Cloud, Moon } from 'lucide-react';
 
 // Componente de conteúdo dinâmico
-const ConteudoDinamico = ({ serieAtiva }: { serieAtiva: string }) => {
+const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string; turnoSelecionado?: string | null }) => {
   const [turmas, setTurmas] = useState<TurmaSimples[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +25,7 @@ const ConteudoDinamico = ({ serieAtiva }: { serieAtiva: string }) => {
     carregarTurmas();
   }, []);
 
-  // Mapear série para encontrar turma correspondente
+  // Mapear série para encontrar turma correspondente (com filtro de turno)
   const getTurmaForSerie = (serie: string) => {
     const serieMapeamento: Record<string, string> = {
       '1serie': '1',
@@ -34,7 +35,16 @@ const ConteudoDinamico = ({ serieAtiva }: { serieAtiva: string }) => {
     };
 
     const serieCorrespondente = serieMapeamento[serie];
-    return turmas.find(turma => turma.serie === serieCorrespondente);
+    
+    // Filtrar turmas por série e turno
+    const turmasCandidatas = turmas.filter(turma => {
+      const contemSerie = turma.seriesAtendidas?.includes(serieCorrespondente as any) || turma.serie === serieCorrespondente;
+      const contemTurno = !turnoSelecionado || turma.turnos?.includes(turnoSelecionado as any);
+      return contemSerie && contemTurno;
+    });
+    
+    // Retornar a primeira turma que atende aos critérios
+    return turmasCandidatas[0] || null;
   };
 
   // Fallback para quando não há turmas cadastradas
@@ -184,14 +194,118 @@ const ConteudoDinamico = ({ serieAtiva }: { serieAtiva: string }) => {
   );
 };
 
+// Componente de filtros de turno
+const FiltroTurnos = ({ turnoSelecionado, onTurnoChange, serieAtiva, turmas }: {
+  turnoSelecionado: string | null;
+  onTurnoChange: (turno: string | null) => void;
+  serieAtiva: string;
+  turmas: TurmaSimples[];
+}) => {
+  // Mapear série para buscar turnos disponíveis
+  const serieMapeamento: Record<string, string> = {
+    '1serie': '1',
+    '2serie': '2', 
+    '3serie': '3',
+    'formado': 'formado'
+  };
+  
+  const serieCorrespondente = serieMapeamento[serieAtiva];
+  
+  // Encontrar turnos disponíveis para a série selecionada
+  const turnosDisponiveis = new Set<string>();
+  turmas.forEach(turma => {
+    const contemSerie = turma.seriesAtendidas?.includes(serieCorrespondente as any) || turma.serie === serieCorrespondente;
+    if (contemSerie && turma.turnos) {
+      turma.turnos.forEach(turno => turnosDisponiveis.add(turno));
+    }
+  });
+  
+  const turnosArray = Array.from(turnosDisponiveis).sort();
+  
+  if (turnosArray.length <= 1) {
+    return null; // Não mostrar filtro se há apenas um turno ou nenhum
+  }
+
+  const turnos = [
+    { value: 'matutino', label: 'Matutino', icon: Sun, color: 'from-yellow-400 to-orange-500' },
+    { value: 'vespertino', label: 'Vespertino', icon: Cloud, color: 'from-orange-500 to-pink-500' },
+    { value: 'noturno', label: 'Noturno', icon: Moon, color: 'from-blue-500 to-purple-600' }
+  ].filter(turno => turnosArray.includes(turno.value));
+
+  return (
+    <div className="space-y-3 mt-4">
+      <div className="text-center">
+        <p className="text-white/80 text-sm font-medium">Escolha seu turno:</p>
+      </div>
+      
+      <div className="bg-white/10 backdrop-blur-md rounded-3xl p-3 border border-white/20 shadow-xl">
+        <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${turnos.length + 1}, 1fr)` }}>
+          {/* Botão "Todos" */}
+          <button
+            onClick={() => onTurnoChange(null)}
+            className={`
+              py-3 px-2 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-1
+              ${!turnoSelecionado 
+                ? 'bg-white text-gray-800 shadow-lg' 
+                : 'text-white/80 hover:bg-white/10'
+              }
+            `}
+          >
+            Todos
+          </button>
+          
+          {/* Botões de turno */}
+          {turnos.map((turno) => {
+            const Icon = turno.icon;
+            return (
+              <button
+                key={turno.value}
+                onClick={() => onTurnoChange(turno.value)}
+                className={`
+                  py-3 px-2 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-1
+                  ${turnoSelecionado === turno.value 
+                    ? 'bg-gradient-to-r ' + turno.color + ' text-white shadow-lg' 
+                    : 'text-white/80 hover:bg-white/10'
+                  }
+                `}
+              >
+                <Icon className="w-4 h-4" />
+                <span className="hidden sm:inline">{turno.label}</span>
+                <span className="sm:hidden">{turno.label.slice(0, 3)}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const HomePage = () => {
   const [serieAtiva, setSerieAtiva] = useState('3serie');
+  const [turnoSelecionado, setTurnoSelecionado] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [turmas, setTurmas] = useState<TurmaSimples[]>([]);
 
-  // Limpeza de dados obsoletos
+  // Limpeza de dados obsoletos e carregamento de turmas
   useEffect(() => {
     cleanupObsoleteStorage();
+    
+    const carregarTurmas = async () => {
+      try {
+        const turmasAtivas = await turmasService.listarTurmas(true);
+        setTurmas(turmasAtivas);
+      } catch (error) {
+        console.error('Erro ao carregar turmas:', error);
+      }
+    };
+    carregarTurmas();
   }, []);
+  
+  // Reset turno quando mudar série
+  useEffect(() => {
+    setTurnoSelecionado(null);
+  }, [serieAtiva]);
 
   return (
     <>
@@ -522,12 +636,20 @@ const HomePage = () => {
                       </button>
                     </div>
                   </div>
+                  
+                  {/* FILTROS DE TURNO */}
+                  <FiltroTurnos 
+                    turnoSelecionado={turnoSelecionado}
+                    onTurnoChange={setTurnoSelecionado}
+                    serieAtiva={serieAtiva}
+                    turmas={turmas}
+                  />
 
                   {/* CARD DE CONTEÚDO */}
                   <div className="mt-8 bg-white/95 backdrop-blur-xl rounded-3xl 
                                 shadow-2xl p-8 border border-white/50 glass-effect">
-                    {/* Conteúdo dinâmico baseado na série */}
-                    <ConteudoDinamico serieAtiva={serieAtiva} />
+                    {/* Conteúdo dinâmico baseado na série e turno */}
+                    <ConteudoDinamico serieAtiva={serieAtiva} turnoSelecionado={turnoSelecionado} />
                   </div>
 
 
