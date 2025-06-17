@@ -35,6 +35,25 @@ interface OpcaoPagamento {
   cor: string
 }
 
+// Dados dos alunos para os cards
+const alunosDestaques = [
+  {
+    nome: 'Lucca Beulch',
+    imagem: '/images/lucca-beulch.png',
+    depoimento: 'O Entropia me deu toda base para conquistar minha vaga!'
+  },
+  {
+    nome: 'Eduarda Braga',
+    imagem: '/images/eduarda-braga.png',
+    depoimento: 'Professores incríveis e material completo. Recomendo!'
+  },
+  {
+    nome: 'Gabriela Parente',
+    imagem: '/images/gabriela-parente.png',
+    depoimento: 'Ambiente acolhedor e metodologia que funciona de verdade!'
+  }
+]
+
 // Componente de Card do Aluno para Mobile
 const CardAluno = ({ nome, imagem, depoimento }: { nome: string; imagem: string; depoimento: string }) => {
   return (
