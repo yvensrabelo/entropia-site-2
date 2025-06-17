@@ -6,6 +6,22 @@ export interface BeneficioTurma {
   destaquePlatinado: boolean
 }
 
+// Mapear tipo de turma baseado no nome
+const mapearTipoPorNome = (nome: string): string => {
+  const nomeUpper = nome.toUpperCase()
+  
+  if (nomeUpper.includes('PSC')) return 'intensivo_psc'
+  if (nomeUpper.includes('SIS')) return 'sis_macro'
+  if (nomeUpper.includes('MACRO')) return 'sis_macro'
+  if (nomeUpper.includes('ENEM')) return 'enem_total'
+  if (nomeUpper.includes('MILITAR')) return 'intensivo_psc'
+  if (nomeUpper.includes('INTENSIV')) return 'intensivo_psc'
+  if (nomeUpper.includes('EXTENSIV')) return 'enem_total'
+  
+  // Padrão - PSC Intensivo
+  return 'intensivo_psc'
+}
+
 class TurmasService {
   private supabase = createClientComponentClient()
 
@@ -62,8 +78,20 @@ class TurmasService {
         descricao: turma.foco,
         ordem: parseInt(turma.serie),
         beneficios: turma.beneficios,
-        ativo: turma.ativa
+        ativo: turma.ativa,
+        // CAMPOS OBRIGATÓRIOS ADICIONAIS
+        tipo: mapearTipoPorNome(turma.nome),
+        vagas_disponiveis: 100, // valor padrão
+        exibir_periodo: true,
+        exibir_duracao: true,
+        exibir_vagas: true,
+        // Campos adicionais que podem ser necessários
+        diferenciais: [],
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       }
+
+      console.log('Criando turma com dados:', dadosBanco)
 
       const { data, error } = await this.supabase
         .from('turmas')
@@ -71,7 +99,12 @@ class TurmasService {
         .select()
         .single()
 
-      if (error) throw error
+      if (error) {
+        console.error('Erro do Supabase ao criar turma:', error)
+        throw error
+      }
+
+      console.log('✅ Turma criada com sucesso no banco:', data)
 
       // Validar beneficios retornados
       let beneficiosValidos = []
@@ -104,18 +137,32 @@ class TurmasService {
     try {
       const dadosBanco: any = {}
       
-      if (turma.nome !== undefined) dadosBanco.nome = turma.nome
+      if (turma.nome !== undefined) {
+        dadosBanco.nome = turma.nome
+        // Se o nome mudou, atualizar o tipo também
+        dadosBanco.tipo = mapearTipoPorNome(turma.nome)
+      }
       if (turma.foco !== undefined) dadosBanco.descricao = turma.foco
       if (turma.serie !== undefined) dadosBanco.ordem = parseInt(turma.serie)
       if (turma.beneficios !== undefined) dadosBanco.beneficios = turma.beneficios
       if (turma.ativa !== undefined) dadosBanco.ativo = turma.ativa
+      
+      // Sempre atualizar timestamp
+      dadosBanco.updated_at = new Date().toISOString()
+
+      console.log('Atualizando turma ID:', id, 'com dados:', dadosBanco)
 
       const { error } = await this.supabase
         .from('turmas')
         .update(dadosBanco)
         .eq('id', id)
 
-      if (error) throw error
+      if (error) {
+        console.error('Erro do Supabase ao atualizar turma:', error)
+        throw error
+      }
+      
+      console.log('✅ Turma atualizada com sucesso:', id)
       return true
     } catch (error) {
       console.error('Erro ao atualizar turma:', error)
