@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, X, ToggleLeft, ToggleRight, GripVertical, Sun, Cloud, Moon } from 'lucide-react';
-import { TurmaSimples } from '@/lib/types/turma';
+import { Plus, Edit2, Trash2, X, ToggleLeft, ToggleRight, GripVertical, Sun, Cloud, Moon, Check } from 'lucide-react';
+import { TurmaSimples, Turno, Serie } from '@/lib/types/turma';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { turmasService } from '@/services/turmasService';
 
@@ -14,7 +14,8 @@ export default function TurmasSimples() {
     nome: '',
     foco: '',
     serie: '3',
-    turno: 'matutino', // NOVO CAMPO DE TURNO
+    turnos: ['matutino'], // NOVO - array de turnos
+    seriesAtendidas: ['3'], // NOVO - array de séries
     beneficios: [],
     ativa: true,
     // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -108,7 +109,8 @@ export default function TurmasSimples() {
               nome: turma.nome,
               foco: turma.foco,
               serie: turma.serie,
-              turno: turma.turno || 'matutino', // NOVO CAMPO DE TURNO
+              turnos: turma.turnos || ['matutino'], // NOVO - array de turnos
+              seriesAtendidas: turma.seriesAtendidas || [turma.serie], // NOVO - array de séries
               beneficios: turma.beneficios || [],
               ativa: turma.ativa !== false, // default true
               // NOVOS CAMPOS OBRIGATÓRIOS
@@ -129,7 +131,8 @@ export default function TurmasSimples() {
               nome: turma.nome,
               foco: turma.foco,
               serie: turma.serie,
-              turno: turma.turno || 'matutino', // NOVO CAMPO DE TURNO
+              turnos: turma.turnos || ['matutino'], // NOVO - array de turnos
+              seriesAtendidas: turma.seriesAtendidas || [turma.serie], // NOVO - array de séries
               beneficios: turma.beneficios || [],
               ativa: turma.ativa !== false,
               // NOVOS CAMPOS OBRIGATÓRIOS
@@ -180,6 +183,16 @@ export default function TurmasSimples() {
       return;
     }
 
+    if (!formData.turnos || formData.turnos.length === 0) {
+      alert('Selecione pelo menos um turno');
+      return;
+    }
+
+    if (!formData.seriesAtendidas || formData.seriesAtendidas.length === 0) {
+      alert('Selecione pelo menos uma série/público');
+      return;
+    }
+
     const novaTurma: TurmaSimples = {
       ...formData,
       id: editingTurma?.id || Date.now().toString()
@@ -195,7 +208,8 @@ export default function TurmasSimples() {
       nome: turma.nome,
       foco: turma.foco,
       serie: turma.serie,
-      turno: turma.turno || 'matutino', // NOVO CAMPO DE TURNO
+      turnos: turma.turnos || ['matutino'], // NOVO - array de turnos
+      seriesAtendidas: turma.seriesAtendidas || [turma.serie], // NOVO - array de séries
       beneficios: [...turma.beneficios],
       ativa: turma.ativa ?? true,
       // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -229,7 +243,8 @@ export default function TurmasSimples() {
       nome: '',
       foco: '',
       serie: '3',
-      turno: 'matutino', // NOVO CAMPO DE TURNO
+      turnos: ['matutino'], // NOVO - array de turnos
+      seriesAtendidas: ['3'], // NOVO - array de séries
       beneficios: [],
       ativa: true,
       // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -387,10 +402,10 @@ export default function TurmasSimples() {
                   Foco
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Série
+                  Séries Atendidas
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Turno
+                  Turnos
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Benefícios
@@ -420,19 +435,36 @@ export default function TurmasSimples() {
                     {turma.foco}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${getSerieColor(turma.serie)}`}>
-                    {getSerieLabel(turma.serie)}
-                  </span>
+                <td className="px-6 py-4">
+                  <div className="flex flex-wrap gap-1">
+                    {turma.seriesAtendidas?.map(serie => (
+                      <span key={serie} className={`px-2 py-1 text-xs font-medium rounded-full ${getSerieColor(serie)}`}>
+                        {getSerieLabel(serie)}
+                      </span>
+                    ))}
+                    {(!turma.seriesAtendidas || turma.seriesAtendidas.length === 0) && (
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getSerieColor(turma.serie)}`}>
+                        {getSerieLabel(turma.serie)}
+                      </span>
+                    )}
+                  </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-2">
-                    {turma.turno === 'matutino' && <Sun className="w-4 h-4 text-yellow-500" />}
-                    {turma.turno === 'vespertino' && <Cloud className="w-4 h-4 text-orange-500" />}
-                    {turma.turno === 'noturno' && <Moon className="w-4 h-4 text-blue-500" />}
-                    <span className="text-sm text-gray-700 capitalize">
-                      {turma.turno || 'matutino'}
-                    </span>
+                <td className="px-6 py-4">
+                  <div className="flex flex-wrap gap-1">
+                    {turma.turnos?.map(turno => (
+                      <span key={turno} className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-xs">
+                        {turno === 'matutino' && <Sun className="w-3 h-3 text-yellow-500" />}
+                        {turno === 'vespertino' && <Cloud className="w-3 h-3 text-orange-500" />}
+                        {turno === 'noturno' && <Moon className="w-3 h-3 text-blue-500" />}
+                        <span className="capitalize">{turno}</span>
+                      </span>
+                    ))}
+                    {(!turma.turnos || turma.turnos.length === 0) && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-xs">
+                        <Sun className="w-3 h-3 text-yellow-500" />
+                        <span className="capitalize">matutino</span>
+                      </span>
+                    )}
                   </div>
                 </td>
                 <td className="px-6 py-4">
@@ -572,21 +604,95 @@ export default function TurmasSimples() {
                 </select>
               </div>
 
-              {/* Turno */}
+              {/* Seleção Múltipla de Turnos */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Turno *
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Turnos Disponíveis *
                 </label>
-                <select
-                  value={formData.turno}
-                  onChange={(e) => setFormData({ ...formData, turno: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  required
-                >
-                  <option value="matutino">🌅 Matutino</option>
-                  <option value="vespertino">☁️ Vespertino</option>
-                  <option value="noturno">🌙 Noturno</option>
-                </select>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { value: 'matutino' as Turno, label: 'Matutino', icon: Sun, color: 'text-yellow-500' },
+                    { value: 'vespertino' as Turno, label: 'Vespertino', icon: Cloud, color: 'text-orange-500' },
+                    { value: 'noturno' as Turno, label: 'Noturno', icon: Moon, color: 'text-blue-500' }
+                  ].map((turno) => {
+                    const selecionado = formData.turnos?.includes(turno.value) || false
+                    const Icon = turno.icon
+                    
+                    return (
+                      <button
+                        key={turno.value}
+                        type="button"
+                        onClick={() => {
+                          const turnosAtuais = formData.turnos || []
+                          const novosTurnos = selecionado
+                            ? turnosAtuais.filter(t => t !== turno.value)
+                            : [...turnosAtuais, turno.value]
+                          
+                          setFormData({ ...formData, turnos: novosTurnos })
+                        }}
+                        className={`
+                          flex items-center justify-center gap-2 p-3 rounded-lg border-2 transition-all
+                          ${selecionado 
+                            ? 'bg-green-50 border-green-500 text-green-700' 
+                            : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                          }
+                        `}
+                      >
+                        <Icon className={`w-4 h-4 ${selecionado ? 'text-green-600' : turno.color}`} />
+                        <span className="text-sm font-medium">{turno.label}</span>
+                        {selecionado && <Check className="w-3 h-3 text-green-600" />}
+                      </button>
+                    )
+                  })}
+                </div>
+                {(!formData.turnos || formData.turnos.length === 0) && (
+                  <p className="text-sm text-red-500 mt-1">Selecione pelo menos um turno</p>
+                )}
+              </div>
+
+              {/* Seleção Múltipla de Séries/Públicos */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Séries/Públicos Atendidos *
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { value: '1' as Serie, label: '1ª Série' },
+                    { value: '2' as Serie, label: '2ª Série' },
+                    { value: '3' as Serie, label: '3ª Série' },
+                    { value: 'formado' as Serie, label: 'Já Formado' }
+                  ].map((serie) => {
+                    const selecionado = formData.seriesAtendidas?.includes(serie.value) || false
+                    
+                    return (
+                      <button
+                        key={serie.value}
+                        type="button"
+                        onClick={() => {
+                          const seriesAtuais = formData.seriesAtendidas || []
+                          const novasSeries = selecionado
+                            ? seriesAtuais.filter(s => s !== serie.value)
+                            : [...seriesAtuais, serie.value]
+                          
+                          setFormData({ ...formData, seriesAtendidas: novasSeries })
+                        }}
+                        className={`
+                          flex items-center justify-between p-3 rounded-lg border-2 transition-all
+                          ${selecionado 
+                            ? 'bg-blue-50 border-blue-500 text-blue-700' 
+                            : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                          }
+                        `}
+                      >
+                        <span className="text-sm font-medium">{serie.label}</span>
+                        {selecionado && <Check className="w-4 h-4 text-blue-600" />}
+                      </button>
+                    )
+                  })}
+                </div>
+                {(!formData.seriesAtendidas || formData.seriesAtendidas.length === 0) && (
+                  <p className="text-sm text-red-500 mt-1">Selecione pelo menos uma série/público</p>
+                )}
               </div>
 
               {/* Valor Mensal */}

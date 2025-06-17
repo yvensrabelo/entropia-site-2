@@ -4,26 +4,27 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, GripVertical, Calendar, Users, Sun, Cloud, Moon } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { turmasService } from '@/services/turmasService';
+import { Serie } from '@/lib/types/turma';
 
 interface TurmaAtiva {
   id: string;
   nome: string;
-  turno: 'matutino' | 'vespertino' | 'noturno';
+  turnos: ('matutino' | 'vespertino' | 'noturno')[];
   tipo: 'intensiva' | 'extensiva' | 'sis-psc';
-  serie?: '1ª série' | '2ª série' | '3ª série' | 'Extensivo';
+  seriesAtendidas?: ('1ª série' | '2ª série' | '3ª série' | 'Extensivo')[];
   ativa: boolean;
   ordem: number;
 }
 
 const TURMAS_PADRAO: Omit<TurmaAtiva, 'id' | 'ordem'>[] = [
-  { nome: 'INTENSIVA', turno: 'matutino', tipo: 'intensiva', ativa: true },
-  { nome: 'EXTENSIVA MATUTINA 1', turno: 'matutino', tipo: 'extensiva', serie: '1ª série', ativa: true },
-  { nome: 'EXTENSIVA MATUTINA 2', turno: 'matutino', tipo: 'extensiva', serie: '2ª série', ativa: true },
-  { nome: 'EXTENSIVA VESPERTINA 1', turno: 'vespertino', tipo: 'extensiva', serie: '1ª série', ativa: true },
-  { nome: 'EXTENSIVA VESPERTINA 2', turno: 'vespertino', tipo: 'extensiva', serie: '2ª série', ativa: true },
-  { nome: 'EXTENSIVA NOTURNA 1', turno: 'noturno', tipo: 'extensiva', serie: '3ª série', ativa: true },
-  { nome: 'TURMA SIS/PSC 1', turno: 'matutino', tipo: 'sis-psc', serie: 'Extensivo', ativa: true },
-  { nome: 'TURMA SIS/PSC 2', turno: 'vespertino', tipo: 'sis-psc', serie: 'Extensivo', ativa: true },
+  { nome: 'INTENSIVA', turnos: ['matutino'], tipo: 'intensiva', ativa: true },
+  { nome: 'EXTENSIVA MATUTINA 1', turnos: ['matutino'], tipo: 'extensiva', seriesAtendidas: ['1ª série'], ativa: true },
+  { nome: 'EXTENSIVA MATUTINA 2', turnos: ['matutino'], tipo: 'extensiva', seriesAtendidas: ['2ª série'], ativa: true },
+  { nome: 'EXTENSIVA VESPERTINA 1', turnos: ['vespertino'], tipo: 'extensiva', seriesAtendidas: ['1ª série'], ativa: true },
+  { nome: 'EXTENSIVA VESPERTINA 2', turnos: ['vespertino'], tipo: 'extensiva', seriesAtendidas: ['2ª série'], ativa: true },
+  { nome: 'EXTENSIVA NOTURNA 1', turnos: ['noturno'], tipo: 'extensiva', seriesAtendidas: ['3ª série'], ativa: true },
+  { nome: 'TURMA SIS/PSC 1', turnos: ['matutino'], tipo: 'sis-psc', seriesAtendidas: ['Extensivo'], ativa: true },
+  { nome: 'TURMA SIS/PSC 2', turnos: ['vespertino'], tipo: 'sis-psc', seriesAtendidas: ['Extensivo'], ativa: true },
 ];
 
 // Função para converter TurmaSimples em TurmaAtiva
@@ -31,11 +32,13 @@ const convertTurmasSimplesToAtivas = (turmasSimples: any[]): TurmaAtiva[] => {
   return turmasSimples.map((turma, index) => ({
     id: turma.id,
     nome: turma.nome,
-    turno: turma.turno || 'matutino' as 'matutino' | 'vespertino' | 'noturno',
+    turnos: turma.turnos || ['matutino'],
     tipo: turma.foco as 'intensiva' | 'extensiva' | 'sis-psc',
-    serie: turma.serie === '1' ? '1ª série' : 
-           turma.serie === '2' ? '2ª série' : 
-           turma.serie === '3' ? '3ª série' : 'Extensivo',
+    seriesAtendidas: turma.seriesAtendidas?.map((s: string) => 
+      s === '1' ? '1ª série' : 
+      s === '2' ? '2ª série' : 
+      s === '3' ? '3ª série' : 'Extensivo'
+    ) || ['1ª série'],
     ativa: turma.ativa || false,
     ordem: index
   }));
@@ -47,9 +50,9 @@ export default function TurmasAtivasPage() {
   const [editingTurma, setEditingTurma] = useState<TurmaAtiva | null>(null);
   const [formData, setFormData] = useState({
     nome: '',
-    turno: 'matutino' as 'matutino' | 'vespertino' | 'noturno',
+    turnos: ['matutino'] as ('matutino' | 'vespertino' | 'noturno')[],
     tipo: 'extensiva' as 'intensiva' | 'extensiva' | 'sis-psc',
-    serie: '' as '1ª série' | '2ª série' | '3ª série' | 'Extensivo' | '',
+    seriesAtendidas: [''] as ('1ª série' | '2ª série' | '3ª série' | 'Extensivo' | '')[],
     ativa: true
   });
 
@@ -67,8 +70,13 @@ export default function TurmasAtivasPage() {
           await turmasService.criarTurma({
             nome: turma.nome,
             foco: turma.tipo, // Mapear tipo para foco
-            serie: '1', // Default 
-            turno: turma.turno, // NOVO CAMPO DE TURNO
+            serie: '1' as Serie, // Default 
+            turnos: turma.turnos, // NOVO - array de turnos
+            seriesAtendidas: turma.seriesAtendidas?.map(s => 
+              s === '1ª série' ? '1' : 
+              s === '2ª série' ? '2' : 
+              s === '3ª série' ? '3' : 'formado'
+            ) as Serie[] || ['1'], // NOVO - array de séries
             beneficios: [], // Vazio por padrão
             // NOVOS CAMPOS OBRIGATÓRIOS
             precoMensal: 180.00, // Valor padrão
@@ -92,10 +100,13 @@ export default function TurmasAtivasPage() {
     const dadosTurma = {
       nome: formData.nome,
       foco: formData.tipo, // Mapear tipo para foco
-      serie: (formData.serie === '1ª série' ? '1' : 
-             formData.serie === '2ª série' ? '2' : 
-             formData.serie === '3ª série' ? '3' : 'formado') as '1' | '2' | '3' | 'formado',
-      turno: formData.turno, // NOVO CAMPO DE TURNO
+      serie: '1' as Serie, // Default
+      turnos: formData.turnos, // NOVO - array de turnos
+      seriesAtendidas: formData.seriesAtendidas.filter(s => s !== '').map(s => 
+        s === '1ª série' ? '1' : 
+        s === '2ª série' ? '2' : 
+        s === '3ª série' ? '3' : 'formado'
+      ) as Serie[], // NOVO - array de séries
       beneficios: [], // Vazio por padrão
       ativa: formData.ativa,
       // NOVOS CAMPOS OBRIGATÓRIOS
@@ -126,9 +137,9 @@ export default function TurmasAtivasPage() {
   const resetForm = () => {
     setFormData({
       nome: '',
-      turno: 'matutino',
+      turnos: ['matutino'],
       tipo: 'extensiva',
-      serie: '',
+      seriesAtendidas: [''],
       ativa: true
     });
   };
@@ -137,9 +148,9 @@ export default function TurmasAtivasPage() {
     setEditingTurma(turma);
     setFormData({
       nome: turma.nome,
-      turno: turma.turno,
+      turnos: turma.turnos,
       tipo: turma.tipo,
-      serie: turma.serie || '',
+      seriesAtendidas: turma.seriesAtendidas || [''],
       ativa: turma.ativa
     });
     setShowModal(true);
@@ -274,13 +285,13 @@ export default function TurmasAtivasPage() {
                 Nome da Turma
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Turno
+                Turnos
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Tipo
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Série
+                Séries Atendidas
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
@@ -315,10 +326,14 @@ export default function TurmasAtivasPage() {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">{turma.nome}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-2">
-                    {getTurnoIcon(turma.turno)}
-                    <span className="text-sm text-gray-700 capitalize">{turma.turno}</span>
+                <td className="px-6 py-4">
+                  <div className="flex flex-wrap gap-1">
+                    {turma.turnos?.map(turno => (
+                      <span key={turno} className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-xs">
+                        {getTurnoIcon(turno)}
+                        <span className="capitalize">{turno}</span>
+                      </span>
+                    ))}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -326,8 +341,14 @@ export default function TurmasAtivasPage() {
                     {turma.tipo.toUpperCase()}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  {turma.serie || '-'}
+                <td className="px-6 py-4">
+                  <div className="flex flex-wrap gap-1">
+                    {turma.seriesAtendidas?.map(serie => (
+                      <span key={serie} className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
+                        {serie}
+                      </span>
+                    ))}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
@@ -410,8 +431,8 @@ export default function TurmasAtivasPage() {
                     Turno *
                   </label>
                   <select
-                    value={formData.turno}
-                    onChange={(e) => setFormData({ ...formData, turno: e.target.value as any })}
+                    value={formData.turnos[0] || 'matutino'}
+                    onChange={(e) => setFormData({ ...formData, turnos: [e.target.value as any] })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
                   >
                     <option value="matutino">🌅 Matutino</option>
@@ -440,8 +461,8 @@ export default function TurmasAtivasPage() {
                     Série (opcional)
                   </label>
                   <select
-                    value={formData.serie}
-                    onChange={(e) => setFormData({ ...formData, serie: e.target.value as any })}
+                    value={formData.seriesAtendidas[0] || ''}
+                    onChange={(e) => setFormData({ ...formData, seriesAtendidas: [e.target.value as any] })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
                   >
                     <option value="">Não especificada</option>

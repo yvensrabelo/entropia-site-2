@@ -1,5 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { TurmaSimples, Turno } from '@/lib/types/turma'
+import { TurmaSimples, Turno, Serie } from '@/lib/types/turma'
 
 export interface BeneficioTurma {
   texto: string
@@ -60,8 +60,9 @@ class TurmasService {
           id: turma.id.toString(),
           nome: turma.nome || '',
           foco: turma.descricao || '',
-          serie: turma.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
-          turno: turma.turno || 'matutino' as Turno, // NOVO CAMPO DE TURNO
+          serie: turma.ordem?.toString() || '1' as Serie, // compatibilidade
+          turnos: turma.turnos || ['matutino'], // NOVO - array de turnos
+          seriesAtendidas: turma.series_atendidas || [turma.ordem?.toString() || '1'], // NOVO - array de séries
           beneficios: beneficiosValidos,
           ativa: turma.ativo ?? true,
           // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -81,6 +82,8 @@ class TurmasService {
         nome: turma.nome,
         descricao: turma.foco,
         ordem: parseInt(turma.serie),
+        turnos: turma.turnos || ['matutino'], // NOVO - array de turnos
+        series_atendidas: turma.seriesAtendidas || [turma.serie], // NOVO - array de séries
         beneficios: turma.beneficios,
         ativo: turma.ativa,
         // CAMPOS OBRIGATÓRIOS ADICIONAIS
@@ -92,8 +95,6 @@ class TurmasService {
         // NOVOS CAMPOS DE VALOR E DURAÇÃO
         preco_mensal: turma.precoMensal || 0,
         duracao_meses: turma.duracaoMeses || 12,
-        // CAMPO DE TURNO
-        turno: turma.turno || 'matutino',
         // Campos adicionais que podem ser necessários
         diferenciais: [],
         created_at: new Date().toISOString(),
@@ -132,14 +133,14 @@ class TurmasService {
         id: data.id.toString(),
         nome: data.nome || '',
         foco: data.descricao || '',
-        serie: data.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
+        serie: data.ordem?.toString() || '1' as Serie,
+        turnos: data.turnos || ['matutino'], // NOVO - array de turnos
+        seriesAtendidas: data.series_atendidas || [data.ordem?.toString() || '1'], // NOVO - array de séries
         beneficios: beneficiosValidos,
         ativa: data.ativo ?? true,
         // NOVOS CAMPOS DE VALOR E DURAÇÃO
         precoMensal: data.preco_mensal || 0,
-        duracaoMeses: data.duracao_meses || 12,
-        // CAMPO DE TURNO
-        turno: data.turno || 'matutino' as Turno
+        duracaoMeses: data.duracao_meses || 12
       }
     } catch (error) {
       console.error('Erro ao criar turma:', error)
@@ -163,8 +164,9 @@ class TurmasService {
       // NOVOS CAMPOS DE VALOR E DURAÇÃO
       if (turma.precoMensal !== undefined) dadosBanco.preco_mensal = turma.precoMensal
       if (turma.duracaoMeses !== undefined) dadosBanco.duracao_meses = turma.duracaoMeses
-      // CAMPO DE TURNO
-      if (turma.turno !== undefined) dadosBanco.turno = turma.turno
+      // NOVOS CAMPOS DE ARRAYS
+      if (turma.turnos !== undefined) dadosBanco.turnos = turma.turnos
+      if (turma.seriesAtendidas !== undefined) dadosBanco.series_atendidas = turma.seriesAtendidas
       
       // Sempre atualizar timestamp
       dadosBanco.updated_at = new Date().toISOString()
@@ -205,14 +207,14 @@ class TurmasService {
   }
 
   // NOVA FUNÇÃO: Listar turnos disponíveis por série
-  async listarTurnosPorSerie(serie: string): Promise<Turno[]> {
+  async listarTurnosDisponiveisPorSerie(serie: Serie): Promise<Turno[]> {
     try {
-      console.log('Buscando turnos para série:', serie)
+      console.log('Buscando turnos disponíveis para série:', serie)
       
       const { data, error } = await this.supabase
         .from('turmas')
-        .select('turno')
-        .eq('ordem', parseInt(serie))
+        .select('turnos')
+        .contains('series_atendidas', [serie])
         .eq('ativo', true)
 
       if (error) {
@@ -220,27 +222,28 @@ class TurmasService {
         throw error
       }
 
-      // Retornar turnos únicos disponíveis
-      const turnosDisponiveis = [...new Set(data?.map(t => t.turno) || [])] as Turno[]
-      console.log('Turnos disponíveis para série', serie, ':', turnosDisponiveis)
+      // Coletar todos os turnos únicos
+      const todosTurnos = data?.flatMap(t => t.turnos || []) || []
+      const turnosUnicos = [...new Set(todosTurnos)] as Turno[]
+      console.log('Turnos disponíveis para série', serie, ':', turnosUnicos)
       
-      return turnosDisponiveis
+      return turnosUnicos
     } catch (error) {
-      console.error('Erro ao listar turnos por série:', error)
+      console.error('Erro ao listar turnos disponíveis:', error)
       return []
     }
   }
 
   // NOVA FUNÇÃO: Obter turmas por série e turno
-  async listarTurmasPorSerieETurno(serie: string, turno: Turno): Promise<TurmaSimples[]> {
+  async listarTurmasPorSerieETurno(serie: Serie, turno: Turno): Promise<TurmaSimples[]> {
     try {
       console.log('Buscando turmas para série:', serie, 'e turno:', turno)
       
       const { data, error } = await this.supabase
         .from('turmas')
         .select('*')
-        .eq('ordem', parseInt(serie))
-        .eq('turno', turno)
+        .contains('series_atendidas', [serie])
+        .contains('turnos', [turno])
         .eq('ativo', true)
         .order('nome', { ascending: true })
 
@@ -268,8 +271,9 @@ class TurmasService {
           id: turma.id.toString(),
           nome: turma.nome || '',
           foco: turma.descricao || '',
-          serie: turma.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
-          turno: turma.turno || 'matutino' as Turno,
+          serie: turma.ordem?.toString() || '1' as Serie,
+          turnos: turma.turnos || ['matutino'],
+          seriesAtendidas: turma.series_atendidas || [turma.ordem?.toString() || '1'],
           beneficios: beneficiosValidos,
           ativa: turma.ativo ?? true,
           precoMensal: turma.preco_mensal || 0,

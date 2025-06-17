@@ -69,16 +69,18 @@ export interface TurmaVisibilidade {
   destaque?: boolean;
 }
 
-// Tipos para turno
+// Tipos para turno e série
 export type Turno = 'matutino' | 'vespertino' | 'noturno';
+export type Serie = '1' | '2' | '3' | 'formado';
 
 // Interface simplificada para o sistema de turmas
 export interface TurmaSimples {
   id: string;
   nome: string;
   foco: string;
-  serie: '1' | '2' | '3' | 'formado';
-  turno: Turno; // NOVO CAMPO DE TURNO
+  serie: Serie; // Manter para compatibilidade
+  turnos: Turno[]; // NOVO - array de turnos
+  seriesAtendidas: Serie[]; // NOVO - array de séries
   beneficios: Array<{
     texto: string;
     destaquePlatinado: boolean;
