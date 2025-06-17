@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Clock, Plus, Edit2, Trash2, User, MapPin, Calendar, Grid3x3, List, Monitor, CheckCircle, AlertCircle } from 'lucide-react';
 import { detectarTurno, calcularTempo, getDiaAtual, formatDiaName, isAulaAtual } from '@/lib/utils/horario-utils';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { horariosService } from '@/services/horariosService';
+import { professoresService } from '@/services/professoresService';
 
 interface Professor {
   id: string;
@@ -42,6 +44,8 @@ export default function HorariosPage() {
   const [professors, setProfessors] = useState<Professor[]>([]);
   const [selectedHorario, setSelectedHorario] = useState<HorarioAula | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [viewMode, setViewMode] = useState<'table' | 'grid' | 'today' | 'turma'>('turma');
   const [filterDia, setFilterDia] = useState('');
   const [filterTurma, setFilterTurma] = useState('');
@@ -87,7 +91,29 @@ export default function HorariosPage() {
   ];
 
   useEffect(() => {
-    loadData();
+    const carregarDados = async () => {
+      setIsLoading(true);
+      try {
+        // Carregar horários
+        const horariosDB = await horariosService.listarHorarios();
+        setHorarios(horariosDB);
+        
+        // Carregar professores
+        const professoresDB = await professoresService.listarProfessores(true); // apenas ativos
+        setProfessors(professoresDB);
+        
+        // Extrair turmas disponíveis dos horários
+        const turmasUnicas = Array.from(new Set(horariosDB.map(h => h.turma).filter(t => t)));
+        setTurmasDisponiveis(turmasUnicas);
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+        alert('Erro ao carregar dados. Tente novamente.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    carregarDados();
     
     // Atualizar relógio a cada segundo
     const timer = setInterval(() => {
@@ -97,39 +123,7 @@ export default function HorariosPage() {
     return () => clearInterval(timer);
   }, []);
 
-  // Sincronizar professores entre abas
-  useEffect(() => {
-    // Carregar professores do localStorage
-    const loadProfessores = () => {
-      const stored = localStorage.getItem('professores');
-      if (stored) {
-        setProfessors(JSON.parse(stored));
-      }
-    };
-
-    // Carregar inicialmente
-    loadProfessores();
-
-    // Escutar mudanças no localStorage
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'professores') {
-        loadProfessores();
-      }
-    };
-
-    // Recarregar quando a aba ganhar foco
-    const handleFocus = () => {
-      loadProfessores();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('focus', handleFocus);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, []);
+  // Função removida - agora carrega professores no useEffect principal
 
   // Sincronizar turmas ativas
   useEffect(() => {
@@ -169,28 +163,7 @@ export default function HorariosPage() {
     };
   }, []);
 
-  const loadData = () => {
-    // Carregar horários
-    const storedHorarios = localStorage.getItem('horarios_aulas');
-    if (storedHorarios) {
-      const horariosData = JSON.parse(storedHorarios);
-      setHorarios(horariosData);
-      console.log('📅 [HORARIOS] Carregados:', horariosData.length, 'horários');
-      if (horariosData.length > 0) {
-        console.log('📅 [HORARIOS] Primeiro horário:', horariosData[0]);
-        console.log('📅 [HORARIOS] Dias únicos:', [...new Set(horariosData.map((h: any) => h.dia_semana))]);
-        console.log('📅 [HORARIOS] Horários únicos:', [...new Set(horariosData.map((h: any) => h.hora_inicio))]);
-      }
-    } else {
-      console.log('📅 [HORARIOS] Nenhum horário encontrado no localStorage');
-    }
-
-    // Carregar presenças
-    const storedPresencas = localStorage.getItem('presencas_professores');
-    if (storedPresencas) {
-      setPresencas(JSON.parse(storedPresencas));
-    }
-  };
+  // Função removida - dados agora carregados via Supabase no useEffect
 
   // Funções auxiliares para a aba HOJE
   const getDiaAtualFormatado = () => {
@@ -266,52 +239,73 @@ export default function HorariosPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    setIsSaving(true);
     
-    const professorId = formData.get('professorId') as string;
-    const professor = professors.find(p => p.id === professorId);
-    const horaInicio = formData.get('horaInicio') as string;
-    const horaFim = formData.get('horaFim') as string;
-    
-    const diaFormulario = formData.get('dia') as string;
-    const diaCorreto = diaFormulario.toLowerCase();
-    
-    const horarioData: HorarioAula = {
-      id: selectedHorario?.id || Date.now().toString(),
-      dia_semana: diaCorreto,
-      hora_inicio: horaInicio,
-      hora_fim: horaFim,
-      professor_id: professorId || undefined,
-      professor_nome: professor?.nome || undefined,
-      materia: formData.get('materia') as string,
-      turma: formData.get('turma') as string,
-      sala: formData.get('sala') as string || 'Sala 1',
-      turno: detectarTurno(horaInicio),
-      tempo: calcularTempo(horaInicio)
-    };
+    try {
+      const formData = new FormData(e.currentTarget);
+      
+      const professorId = formData.get('professorId') as string;
+      const professor = professors.find(p => p.id === professorId);
+      const horaInicio = formData.get('horaInicio') as string;
+      const horaFim = formData.get('horaFim') as string;
+      
+      const diaFormulario = formData.get('dia') as string;
+      const diaCorreto = diaFormulario.toLowerCase();
+      
+      const horarioData: HorarioAula = {
+        id: selectedHorario?.id || Date.now().toString(),
+        dia_semana: diaCorreto,
+        hora_inicio: horaInicio,
+        hora_fim: horaFim,
+        professor_id: professorId || undefined,
+        professor_nome: professor?.nome || undefined,
+        materia: formData.get('materia') as string,
+        turma: formData.get('turma') as string,
+        sala: formData.get('sala') as string || 'Sala 1',
+        turno: detectarTurno(horaInicio),
+        tempo: calcularTempo(horaInicio)
+      };
 
-    console.log('📅 [HORARIOS] Salvando aula:', horarioData);
+      console.log('📅 [HORARIOS] Salvando aula:', horarioData);
 
-    const updatedHorarios = selectedHorario
-      ? horarios.map(h => h.id === selectedHorario.id ? horarioData : h)
-      : [...horarios, horarioData];
-
-    setHorarios(updatedHorarios);
-    localStorage.setItem('horarios_aulas', JSON.stringify(updatedHorarios));
-    console.log('📅 [HORARIOS] Total após salvar:', updatedHorarios.length, 'horários');
-    console.log('📅 [HORARIOS] Aula salva com sucesso!', horarioData.materia, '-', horarioData.turma);
-    
-    setShowModal(false);
-    setSelectedHorario(null);
+      if (selectedHorario?.id) {
+        // Atualizar horário existente
+        await horariosService.atualizarHorario(selectedHorario.id, horarioData);
+      } else {
+        // Criar novo horário
+        await horariosService.criarHorario(horarioData);
+      }
+      
+      // Recarregar lista atualizada
+      const horariosAtualizados = await horariosService.listarHorarios();
+      setHorarios(horariosAtualizados);
+      
+      console.log('📅 [HORARIOS] Aula salva com sucesso!', horarioData.materia, '-', horarioData.turma);
+      
+      setShowModal(false);
+      setSelectedHorario(null);
+      alert('Horário salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar horário:', error);
+      alert('Erro ao salvar horário');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const deleteHorario = (id: string) => {
+  const deleteHorario = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir este horário?')) {
-      const updatedHorarios = horarios.filter(h => h.id !== id);
-      setHorarios(updatedHorarios);
-      localStorage.setItem('horarios_aulas', JSON.stringify(updatedHorarios));
+      try {
+        await horariosService.excluirHorario(id);
+        const horariosAtualizados = await horariosService.listarHorarios();
+        setHorarios(horariosAtualizados);
+        alert('Horário excluído com sucesso!');
+      } catch (error) {
+        console.error('Erro ao excluir horário:', error);
+        alert('Erro ao excluir horário');
+      }
     }
   };
 

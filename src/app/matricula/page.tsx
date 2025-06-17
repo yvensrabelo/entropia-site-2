@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircle, User, Phone, CreditCard, Calendar, ArrowRight, Sparkles, Trophy, Zap, Scale, Sofa } from 'lucide-react';
+import { turmasService } from '@/services/turmasService';
 
 // SOLUÇÃO SIMPLES: Inputs HTML nativos sem complexidade
 
@@ -54,20 +55,46 @@ const FormularioMatricula = () => {
 
   // Buscar turma selecionada pelos parâmetros da URL
   useEffect(() => {
-    const turmaId = turmaInfo.turma;
-    if (turmaId) {
-      // Buscar turma do localStorage
-      const turmas = JSON.parse(localStorage.getItem('turmas_robustas') || '[]');
-      const turma = turmas.find((t: any) => t.id === turmaId || t.nome === turmaId);
-      if (turma) {
-        setTurmaSelecionada({
-          ...turma,
-          valorMensal: turma.valorMensal || 180.00,
-          terminoAulas: turma.terminoAulas || '2024-12'
-        });
+    const buscarTurma = async () => {
+      const turmaId = searchParams?.get('turmaId');
+      const serie = searchParams?.get('serie');
+      
+      if (turmaId) {
+        try {
+          const turmasDisponiveis = await turmasService.listarTurmas(true);
+          const turma = turmasDisponiveis.find((t: any) => t.id === turmaId);
+          
+          if (turma) {
+            setTurmaSelecionada({
+              ...turma,
+              valorMensal: 180.00, // Valor padrão
+              terminoAulas: '2024-12' // Fim do ano letivo
+            });
+          }
+        } catch (error) {
+          console.error('Erro ao buscar turma:', error);
+        }
+      } else if (serie) {
+        // Se não tem turmaId mas tem serie, buscar por série
+        try {
+          const turmasDisponiveis = await turmasService.listarTurmas(true);
+          const turma = turmasDisponiveis.find((t: any) => t.serie === serie);
+          
+          if (turma) {
+            setTurmaSelecionada({
+              ...turma,
+              valorMensal: 180.00,
+              terminoAulas: '2024-12'
+            });
+          }
+        } catch (error) {
+          console.error('Erro ao buscar turma por série:', error);
+        }
       }
-    }
-  }, [turmaInfo]);
+    };
+    
+    buscarTurma();
+  }, [searchParams]);
 
 
   // Funções de cálculo para pagamento

@@ -60,11 +60,30 @@ export default function DashboardLayout({
       
       // Verificar se há header para limpar storage
       if (response.headers.get('Clear-Storage') === 'true') {
-        // Limpar localStorage e sessionStorage
+        // Limpar apenas dados específicos migrados, manter admin session e video state
         if (typeof window !== 'undefined') {
-          localStorage.clear();
+          // Não fazer localStorage.clear() - apenas limpar dados que foram migrados para Supabase
+          // Manter: 'entropia_admin' e 'video-muted-state'
+          
+          // Dados migrados para Supabase que podem ser removidos do localStorage:
+          localStorage.removeItem('turmas');
+          localStorage.removeItem('professores'); 
+          localStorage.removeItem('horarios_aulas');
+          localStorage.removeItem('turmas_ativas');
+          localStorage.removeItem('mapeamento_turmas');
+          localStorage.removeItem('mapeamento_turmas_lookup');
+          localStorage.removeItem('codigo_portaria');
+          
+          // Limpar descritores e chegadas por data (padrão com datas)
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && (key.startsWith('descritores_') || key.startsWith('chegadas_') || key.startsWith('atrasos_'))) {
+              localStorage.removeItem(key);
+            }
+          }
+          
           sessionStorage.clear();
-          console.log('Storage limpo');
+          console.log('Storage seletivamente limpo - dados migrados removidos');
         }
       }
       

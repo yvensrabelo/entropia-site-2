@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { TurmaSimples } from '@/lib/types/turma';
 import { cleanupObsoleteStorage } from '@/lib/utils/cleanup-storage';
+import { turmasService } from '@/services/turmasService';
 
 // Componente de conteúdo dinâmico
 const ConteudoDinamico = ({ serieAtiva }: { serieAtiva: string }) => {
@@ -10,24 +11,18 @@ const ConteudoDinamico = ({ serieAtiva }: { serieAtiva: string }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadTurmas();
-  }, []);
-
-  const loadTurmas = () => {
-    try {
-      const stored = localStorage.getItem('turmas_simples');
-      if (stored) {
-        const allTurmas: TurmaSimples[] = JSON.parse(stored);
-        // Filtrar apenas turmas ativas
-        const turmasAtivas = allTurmas.filter(turma => turma.ativa !== false);
+    const carregarTurmas = async () => {
+      try {
+        const turmasAtivas = await turmasService.listarTurmas(true); // true para apenas ativas
         setTurmas(turmasAtivas);
+      } catch (error) {
+        console.error('Erro ao carregar turmas:', error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Erro ao carregar turmas:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+    carregarTurmas();
+  }, []);
 
   // Mapear série para encontrar turma correspondente
   const getTurmaForSerie = (serie: string) => {
@@ -323,20 +318,6 @@ const HomePage = () => {
                   Admin
                 </a>
                 
-                {/* Divider */}
-                <div className="border-t border-white/10 my-3"></div>
-                
-                {/* User Info Mobile */}
-                <div className="flex items-center space-x-3 px-3 py-2">
-                  <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 
-                                rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold">JD</span>
-                  </div>
-                  <div>
-                    <p className="text-white text-sm font-medium">João Silva</p>
-                    <p className="text-green-300 text-xs">3ª Série</p>
-                  </div>
-                </div>
               </div>
             </div>
           )}

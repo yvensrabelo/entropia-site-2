@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, X, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, ToggleLeft, ToggleRight, GripVertical } from 'lucide-react';
 import { TurmaSimples } from '@/lib/types/turma';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { turmasService } from '@/services/turmasService';
 
 export default function TurmasSimples() {
   const [turmas, setTurmas] = useState<TurmaSimples[]>([]);
@@ -17,28 +18,56 @@ export default function TurmasSimples() {
     ativa: true
   });
   const [newBeneficio, setNewBeneficio] = useState('');
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    loadTurmas();
+    const carregarTurmas = async () => {
+      setIsLoading(true);
+      try {
+        const turmasDB = await turmasService.listarTurmas(false); // false para mostrar todas
+        setTurmas(turmasDB);
+      } catch (error) {
+        console.error('Erro ao carregar turmas:', error);
+        alert('Erro ao carregar turmas. Tente novamente.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    carregarTurmas();
   }, []);
 
-  const loadTurmas = () => {
+  const salvarTurma = async (turma: TurmaSimples) => {
+    setIsSaving(true);
     try {
-      const stored = localStorage.getItem('turmas_simples');
-      if (stored) {
-        setTurmas(JSON.parse(stored));
+      let sucesso = false;
+      
+      if (turma.id && turmas.find(t => t.id === turma.id)) {
+        // Atualizar turma existente
+        sucesso = await turmasService.atualizarTurma(turma.id, turma);
+      } else {
+        // Criar nova turma
+        const turmaCriada = await turmasService.criarTurma(turma);
+        sucesso = !!turmaCriada;
+      }
+      
+      if (sucesso) {
+        // Recarregar lista atualizada
+        const turmasAtualizadas = await turmasService.listarTurmas(false);
+        setTurmas(turmasAtualizadas);
+      } else {
+        throw new Error('Falha ao salvar turma');
       }
     } catch (error) {
-      console.error('Erro ao carregar turmas:', error);
+      console.error('Erro ao salvar turma:', error);
+      alert('Erro ao salvar turma. Tente novamente.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  const saveTurmas = (novasTurmas: TurmaSimples[]) => {
-    localStorage.setItem('turmas_simples', JSON.stringify(novasTurmas));
-    setTurmas(novasTurmas);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.nome.trim() || !formData.foco.trim()) {
@@ -51,14 +80,7 @@ export default function TurmasSimples() {
       id: editingTurma?.id || Date.now().toString()
     };
 
-    let novasTurmas: TurmaSimples[];
-    if (editingTurma) {
-      novasTurmas = turmas.map(t => t.id === editingTurma.id ? novaTurma : t);
-    } else {
-      novasTurmas = [...turmas, novaTurma];
-    }
-
-    saveTurmas(novasTurmas);
+    await salvarTurma(novaTurma);
     handleCloseModal();
   };
 
@@ -74,10 +96,20 @@ export default function TurmasSimples() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm('Tem certeza que deseja excluir esta turma?')) {
-      const novasTurmas = turmas.filter(t => t.id !== id);
-      saveTurmas(novasTurmas);
+  const handleDelete = async (id: string) => {
+    if (!confirm('Tem certeza que deseja excluir esta turma?')) return;
+    
+    try {
+      const sucesso = await turmasService.excluirTurma(id);
+      if (sucesso) {
+        const turmasAtualizadas = await turmasService.listarTurmas(false);
+        setTurmas(turmasAtualizadas);
+      } else {
+        throw new Error('Falha ao excluir turma');
+      }
+    } catch (error) {
+      console.error('Erro ao excluir turma:', error);
+      alert('Erro ao excluir turma. Tente novamente.');
     }
   };
 
@@ -94,11 +126,12 @@ export default function TurmasSimples() {
     setNewBeneficio('');
   };
 
-  const toggleAtiva = (id: string) => {
-    const novasTurmas = turmas.map(t => 
-      t.id === id ? { ...t, ativa: !t.ativa } : t
-    );
-    saveTurmas(novasTurmas);
+  const toggleAtiva = async (id: string) => {
+    const turma = turmas.find(t => t.id === id);
+    if (!turma) return;
+    
+    const turmaAtualizada = { ...turma, ativa: !turma.ativa };
+    await salvarTurma(turmaAtualizada);
   };
 
   const addBeneficio = () => {
@@ -122,6 +155,46 @@ export default function TurmasSimples() {
     const newBeneficios = [...formData.beneficios];
     newBeneficios[index].destaquePlatinado = !newBeneficios[index].destaquePlatinado;
     setFormData({ ...formData, beneficios: newBeneficios });
+  };
+
+  // Drag and Drop functions
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null);
+      return;
+    }
+
+    const newBeneficios = [...formData.beneficios];
+    const draggedItem = newBeneficios[draggedIndex];
+    
+    // Remove item from original position
+    newBeneficios.splice(draggedIndex, 1);
+    
+    // Insert item at new position
+    newBeneficios.splice(dropIndex, 0, draggedItem);
+    
+    setFormData({ ...formData, beneficios: newBeneficios });
+    setDraggedIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
   };
 
   const getSerieLabel = (serie: string) => {
@@ -163,31 +236,37 @@ export default function TurmasSimples() {
 
       {/* Lista de Turmas */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nome da Turma
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Foco
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Série
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Benefícios
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Ações
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {turmas.map((turma) => (
+        {isLoading ? (
+          <div className="flex items-center justify-center p-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+            <span className="ml-2 text-gray-600">Carregando turmas...</span>
+          </div>
+        ) : (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Nome da Turma
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Foco
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Série
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Benefícios
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Ações
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {turmas.map((turma) => (
               <tr key={turma.id} className={turma.ativa === false ? 'opacity-50' : ''}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="font-medium text-gray-900">{turma.nome}</div>
@@ -250,10 +329,11 @@ export default function TurmasSimples() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        )}
 
-        {turmas.length === 0 && (
+        {!isLoading && turmas.length === 0 && (
           <div className="text-center py-12">
             <h3 className="mt-2 text-sm font-medium text-gray-900">Nenhuma turma cadastrada</h3>
             <p className="mt-1 text-sm text-gray-500">
@@ -330,6 +410,9 @@ export default function TurmasSimples() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Benefícios da Turma
                 </label>
+                <p className="text-xs text-gray-500 mb-3">
+                  ℹ️ Arraste os benefícios com o ícone ⋮⋮ para reordenar
+                </p>
                 
                 {/* Adicionar novo benefício */}
                 <div className="flex gap-2 mb-3">
@@ -353,16 +436,30 @@ export default function TurmasSimples() {
                 {/* Lista de benefícios */}
                 <div className="space-y-3">
                   {formData.beneficios.map((beneficio, index) => (
-                    <div key={index} className={`p-4 border rounded-lg transition-all ${
-                      beneficio.destaquePlatinado 
-                        ? 'beneficio-platinado-form border-purple-200 shadow-sm' 
-                        : 'bg-gray-50 border-gray-200 hover:border-gray-300'
-                    }`}>
+                    <div 
+                      key={index} 
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, index)}
+                      onDragOver={handleDragOver}
+                      onDragEnter={handleDragEnter}
+                      onDrop={(e) => handleDrop(e, index)}
+                      onDragEnd={handleDragEnd}
+                      className={`p-4 border rounded-lg transition-all cursor-move ${
+                        beneficio.destaquePlatinado 
+                          ? 'beneficio-platinado-form border-purple-200 shadow-sm' 
+                          : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                      } ${
+                        draggedIndex === index ? 'opacity-50 scale-95' : ''
+                      } hover:shadow-md`}
+                    >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3 flex-1">
-                          <span className={beneficio.destaquePlatinado ? 'text-purple-600 text-lg' : 'text-green-600 text-lg'}>
-                            {beneficio.destaquePlatinado ? '✦' : '✓'}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <GripVertical className="w-4 h-4 text-gray-400 cursor-grab active:cursor-grabbing" />
+                            <span className={beneficio.destaquePlatinado ? 'text-purple-600 text-lg' : 'text-green-600 text-lg'}>
+                              {beneficio.destaquePlatinado ? '✦' : '✓'}
+                            </span>
+                          </div>
                           <span className={`text-sm ${beneficio.destaquePlatinado ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
                             {beneficio.texto}
                           </span>
@@ -391,6 +488,13 @@ export default function TurmasSimples() {
                       </div>
                     </div>
                   ))}
+                  
+                  {formData.beneficios.length === 0 && (
+                    <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+                      <p className="text-sm">Nenhum benefício adicionado ainda</p>
+                      <p className="text-xs mt-1">Use o campo acima para adicionar benefícios</p>
+                    </div>
+                  )}
                 </div>
                 
                 {/* CSS para efeito platinado no formulário */}
@@ -485,9 +589,10 @@ export default function TurmasSimples() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors"
+                  disabled={isSaving}
+                  className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {editingTurma ? 'Atualizar' : 'Criar'}
+                  {isSaving ? 'Salvando...' : (editingTurma ? 'Atualizar' : 'Criar')}
                 </button>
               </div>
             </form>

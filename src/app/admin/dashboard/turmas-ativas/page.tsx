@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, GripVertical, Calendar, Users, Sun, Cloud, Moon } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { turmasService } from '@/services/turmasService';
 
 interface TurmaAtiva {
   id: string;
@@ -25,6 +26,21 @@ const TURMAS_PADRAO: Omit<TurmaAtiva, 'id' | 'ordem'>[] = [
   { nome: 'TURMA SIS/PSC 2', turno: 'tarde', tipo: 'sis-psc', serie: 'Extensivo', ativa: true },
 ];
 
+// Função para converter TurmaSimples em TurmaAtiva
+const convertTurmasSimplesToAtivas = (turmasSimples: any[]): TurmaAtiva[] => {
+  return turmasSimples.map((turma, index) => ({
+    id: turma.id,
+    nome: turma.nome,
+    turno: 'manhã' as 'manhã' | 'tarde' | 'noite',
+    tipo: turma.foco as 'intensiva' | 'extensiva' | 'sis-psc',
+    serie: turma.serie === '1' ? '1ª série' : 
+           turma.serie === '2' ? '2ª série' : 
+           turma.serie === '3' ? '3ª série' : 'Extensivo',
+    ativa: turma.ativa || false,
+    ordem: index
+  }));
+};
+
 export default function TurmasAtivasPage() {
   const [turmas, setTurmas] = useState<TurmaAtiva[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -41,48 +57,62 @@ export default function TurmasAtivasPage() {
     loadTurmas();
   }, []);
 
-  const loadTurmas = () => {
-    const stored = localStorage.getItem('turmas_ativas');
-    if (stored) {
-      setTurmas(JSON.parse(stored));
-    } else {
-      // Inicializar com turmas padrão
-      const turmasIniciais = TURMAS_PADRAO.map((turma, index) => ({
-        ...turma,
-        id: Date.now().toString() + index,
-        ordem: index
-      }));
-      setTurmas(turmasIniciais);
-      localStorage.setItem('turmas_ativas', JSON.stringify(turmasIniciais));
+  const loadTurmas = async () => {
+    try {
+      const turmasDB = await turmasService.listarTurmas();
+      
+      if (turmasDB.length === 0) {
+        // Inicializar com turmas padrão - não incluir campos que não existem em TurmaSimples
+        for (const turma of TURMAS_PADRAO) {
+          await turmasService.criarTurma({
+            nome: turma.nome,
+            foco: turma.tipo, // Mapear tipo para foco
+            serie: '1', // Default 
+            beneficios: [] // Vazio por padrão
+          });
+        }
+        // Recarregar após inserir
+        const novasTurmas = await turmasService.listarTurmas();
+        setTurmas(convertTurmasSimplesToAtivas(novasTurmas));
+      } else {
+        setTurmas(convertTurmasSimplesToAtivas(turmasDB));
+      }
+    } catch (error) {
+      console.error('Erro ao carregar turmas:', error);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const novaTurma: TurmaAtiva = {
-      id: editingTurma?.id || Date.now().toString(),
+    const dadosTurma = {
       nome: formData.nome,
-      turno: formData.turno,
-      tipo: formData.tipo,
-      serie: formData.serie || undefined,
-      ativa: formData.ativa,
-      ordem: editingTurma?.ordem || turmas.length
+      foco: formData.tipo, // Mapear tipo para foco
+      serie: (formData.serie === '1ª série' ? '1' : 
+             formData.serie === '2ª série' ? '2' : 
+             formData.serie === '3ª série' ? '3' : 'formado') as '1' | '2' | '3' | 'formado',
+      beneficios: [], // Vazio por padrão
+      ativa: formData.ativa
     };
 
-    let novasTurmas: TurmaAtiva[];
-    if (editingTurma) {
-      novasTurmas = turmas.map(t => t.id === editingTurma.id ? novaTurma : t);
-    } else {
-      novasTurmas = [...turmas, novaTurma];
+    try {
+      if (editingTurma) {
+        await turmasService.atualizarTurma(editingTurma.id, dadosTurma);
+      } else {
+        await turmasService.criarTurma(dadosTurma);
+      }
+      
+      // Recarregar lista
+      const turmasAtualizadas = await turmasService.listarTurmas();
+      setTurmas(convertTurmasSimplesToAtivas(turmasAtualizadas));
+      
+      setShowModal(false);
+      setEditingTurma(null);
+      resetForm();
+    } catch (error) {
+      console.error('Erro ao salvar turma:', error);
+      alert('Erro ao salvar turma');
     }
-
-    setTurmas(novasTurmas);
-    localStorage.setItem('turmas_ativas', JSON.stringify(novasTurmas));
-    
-    setShowModal(false);
-    setEditingTurma(null);
-    resetForm();
   };
 
   const resetForm = () => {
@@ -107,38 +137,43 @@ export default function TurmasAtivasPage() {
     setShowModal(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir esta turma?')) {
-      const novasTurmas = turmas.filter(t => t.id !== id);
-      setTurmas(novasTurmas);
-      localStorage.setItem('turmas_ativas', JSON.stringify(novasTurmas));
+      try {
+        await turmasService.excluirTurma(id);
+        const turmasAtualizadas = await turmasService.listarTurmas();
+        setTurmas(convertTurmasSimplesToAtivas(turmasAtualizadas));
+      } catch (error) {
+        console.error('Erro ao excluir turma:', error);
+        alert('Erro ao excluir turma');
+      }
     }
   };
 
-  const toggleAtiva = (id: string) => {
-    const novasTurmas = turmas.map(t => 
-      t.id === id ? { ...t, ativa: !t.ativa } : t
-    );
-    setTurmas(novasTurmas);
-    localStorage.setItem('turmas_ativas', JSON.stringify(novasTurmas));
+  const toggleAtiva = async (id: string) => {
+    try {
+      const turma = turmas.find(t => t.id === id);
+      if (turma) {
+        await turmasService.atualizarTurma(id, { ativa: !turma.ativa });
+        const turmasAtualizadas = await turmasService.listarTurmas();
+        setTurmas(convertTurmasSimplesToAtivas(turmasAtualizadas));
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar status da turma:', error);
+      alert('Erro ao atualizar status da turma');
+    }
   };
 
-  const moveUp = (index: number) => {
+  const moveUp = async (index: number) => {
     if (index === 0) return;
-    const newTurmas = [...turmas];
-    [newTurmas[index], newTurmas[index - 1]] = [newTurmas[index - 1], newTurmas[index]];
-    newTurmas.forEach((t, i) => t.ordem = i);
-    setTurmas(newTurmas);
-    localStorage.setItem('turmas_ativas', JSON.stringify(newTurmas));
+    // Simplificado - apenas recarregar as turmas (ordem não é suportada em TurmaSimples)
+    console.log('Reordenação não implementada para TurmaSimples');
   };
 
-  const moveDown = (index: number) => {
+  const moveDown = async (index: number) => {
     if (index === turmas.length - 1) return;
-    const newTurmas = [...turmas];
-    [newTurmas[index], newTurmas[index + 1]] = [newTurmas[index + 1], newTurmas[index]];
-    newTurmas.forEach((t, i) => t.ordem = i);
-    setTurmas(newTurmas);
-    localStorage.setItem('turmas_ativas', JSON.stringify(newTurmas));
+    // Simplificado - apenas recarregar as turmas (ordem não é suportada em TurmaSimples)
+    console.log('Reordenação não implementada para TurmaSimples');
   };
 
   const getTurnoIcon = (turno: string) => {
@@ -248,7 +283,7 @@ export default function TurmasAtivasPage() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {turmas.sort((a, b) => a.ordem - b.ordem).map((turma, index) => (
+            {turmas.map((turma, index) => (
               <tr key={turma.id} className={turma.ativa ? 'hover:bg-gray-50' : 'bg-gray-50 opacity-60'}>
                 <td className="px-4 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-1">
@@ -266,7 +301,7 @@ export default function TurmasAtivasPage() {
                     >
                       ↓
                     </button>
-                    <span className="text-sm text-gray-500 ml-1">{turma.ordem + 1}</span>
+                    <span className="text-sm text-gray-500 ml-1">{index + 1}</span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -274,8 +309,8 @@ export default function TurmasAtivasPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-2">
-                    {getTurnoIcon(turma.turno)}
-                    <span className="text-sm text-gray-700 capitalize">{turma.turno}</span>
+                    {getTurnoIcon('manhã')}
+                    <span className="text-sm text-gray-700 capitalize">manhã</span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

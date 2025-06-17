@@ -4,6 +4,10 @@ import { useState, useEffect } from 'react';
 import { Calendar, Clock, Lock, Sun, Cloud, Moon } from 'lucide-react';
 import { getDiaAtual, isAulaAtual } from '@/lib/utils/horario-utils';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { configuracoesService } from '@/services/configuracoesService';
+import { horariosService } from '@/services/horariosService';
+import { professoresService } from '@/services/professoresService';
+import { descritoresService } from '@/services/descritoresService';
 
 // Estilos CSS customizados para animações
 const customStyles = `
@@ -65,18 +69,23 @@ const PortariaLogin = ({ onSuccess }: PortariaLoginProps) => {
   const [erro, setErro] = useState('');
   const [tentativas, setTentativas] = useState(0);
   
-  const verificarCodigo = () => {
-    const codigoSalvo = localStorage.getItem('codigo_portaria') || 'PORTARIA';
-    if (codigo.toUpperCase() === codigoSalvo) {
-      sessionStorage.setItem('portaria_autorizada', 'true');
-      onSuccess();
-    } else {
-      setErro('Código inválido');
-      setTentativas(tentativas + 1);
-      if (tentativas >= 2) {
-        setErro('Código inválido. Entre em contato com o administrador.');
+  const verificarCodigo = async () => {
+    try {
+      const codigoSalvo = await configuracoesService.obterConfiguracao('codigo_portaria') || 'PORTARIA';
+      if (codigo.toUpperCase() === codigoSalvo) {
+        sessionStorage.setItem('portaria_autorizada', 'true');
+        onSuccess();
+      } else {
+        setErro('Código inválido');
+        setTentativas(tentativas + 1);
+        if (tentativas >= 2) {
+          setErro('Código inválido. Entre em contato com o administrador.');
+        }
+        setTimeout(() => setErro(''), 3000);
       }
-      setTimeout(() => setErro(''), 3000);
+    } catch (error) {
+      console.error('Erro ao verificar código:', error);
+      setErro('Erro ao verificar código');
     }
   };
   
@@ -166,7 +175,7 @@ const PortariaView = () => {
 
 
   // Marcar chegada com verificação de atraso
-  const marcarChegada = (aulaId: string, horaInicio: string) => {
+  const marcarChegada = async (aulaId: string, horaInicio: string) => {
     const horaChegada = new Date().toLocaleTimeString('pt-BR', {
       hour: '2-digit',
       minute: '2-digit'
@@ -182,20 +191,25 @@ const PortariaView = () => {
       setAtrasos(novosAtrasos);
     }
     
-    localStorage.setItem(`chegadas_${new Date().toISOString().split('T')[0]}`, JSON.stringify(novasChegadas));
-    localStorage.setItem(`atrasos_${new Date().toISOString().split('T')[0]}`, JSON.stringify(novosAtrasos));
+    // Salvar no Supabase
+    const hoje = new Date().toISOString().split('T')[0];
+    await descritoresService.salvarChegadasPorData(hoje, Object.entries(novasChegadas).map(([id, hora]) => ({ id, hora })));
+    await descritoresService.salvarAtrasosPorData(hoje, novosAtrasos);
   };
 
   // Desconsiderar atraso
-  const desconsiderarAtraso = (aulaId: string) => {
+  const desconsiderarAtraso = async (aulaId: string) => {
     const novosAtrasos = { ...atrasos };
     delete novosAtrasos[aulaId];
     setAtrasos(novosAtrasos);
-    localStorage.setItem(`atrasos_${new Date().toISOString().split('T')[0]}`, JSON.stringify(novosAtrasos));
+    
+    // Salvar no Supabase
+    const hoje = new Date().toISOString().split('T')[0];
+    await descritoresService.salvarAtrasosPorData(hoje, novosAtrasos);
   };
 
   // Remover presença
-  const removerPresenca = (aulaId: string) => {
+  const removerPresenca = async (aulaId: string) => {
     const novasChegadas = { ...chegadas };
     delete novasChegadas[aulaId];
     setChegadas(novasChegadas);
@@ -204,30 +218,47 @@ const PortariaView = () => {
     delete novosAtrasos[aulaId];
     setAtrasos(novosAtrasos);
     
-    localStorage.setItem(`chegadas_${new Date().toISOString().split('T')[0]}`, JSON.stringify(novasChegadas));
-    localStorage.setItem(`atrasos_${new Date().toISOString().split('T')[0]}`, JSON.stringify(novosAtrasos));
+    // Salvar no Supabase
+    const hoje = new Date().toISOString().split('T')[0];
+    await descritoresService.salvarChegadasPorData(hoje, Object.entries(novasChegadas).map(([id, hora]) => ({ id, hora })));
+    await descritoresService.salvarAtrasosPorData(hoje, novosAtrasos);
   };
 
-  // Carregar chegadas, atrasos e descritores do dia
-  useEffect(() => {
+  // Carregar dados iniciais
+  const carregarDadosIniciais = async () => {
     const hoje = new Date().toISOString().split('T')[0];
     
-    const chegadasSalvas = localStorage.getItem(`chegadas_${hoje}`);
-    if (chegadasSalvas) {
-      setChegadas(JSON.parse(chegadasSalvas));
+    try {
+      // Carregar chegadas
+      const chegadasData = await descritoresService.obterChegadasPorData(hoje);
+      if (chegadasData && chegadasData.length > 0) {
+        const chegadasObj: Record<string, string> = {};
+        chegadasData.forEach((item: any) => {
+          chegadasObj[item.id] = item.hora;
+        });
+        setChegadas(chegadasObj);
+      }
+      
+      // Carregar atrasos  
+      const atrasosData = await descritoresService.obterAtrasosPorData(hoje);
+      if (atrasosData) {
+        setAtrasos(atrasosData);
+      }
+      
+      // Carregar descritores do dia
+      const descritoresDoDia = await descritoresService.obterDescritoresPorData(hoje);
+      if (descritoresDoDia) {
+        setDescritoresDia(descritoresDoDia);
+        console.log('🏢 [PORTARIA] Descritores carregados:', descritoresDoDia);
+      }
+      
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
     }
-    
-    const atrasosSalvos = localStorage.getItem(`atrasos_${hoje}`);
-    if (atrasosSalvos) {
-      setAtrasos(JSON.parse(atrasosSalvos));
-    }
-    
-    // Carregar descritores
-    const descritoresSalvos = localStorage.getItem(`descritores_${hoje}`);
-    if (descritoresSalvos) {
-      setDescritoresDia(JSON.parse(descritoresSalvos));
-      console.log('🏢 [PORTARIA] Descritores carregados:', JSON.parse(descritoresSalvos));
-    }
+  };
+
+  useEffect(() => {
+    carregarDadosIniciais();
   }, []);
 
   // Carregar dados
@@ -237,11 +268,10 @@ const PortariaView = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const loadData = () => {
-    // Carregar horários
-    const storedHorarios = localStorage.getItem('horarios_aulas');
-    if (storedHorarios) {
-      const horariosData = JSON.parse(storedHorarios);
+  const loadData = async () => {
+    try {
+      // Carregar horários do Supabase
+      const horariosData = await horariosService.listarHorarios();
       setHorarios(horariosData);
       console.log('🏢 [PORTARIA] Horários carregados:', horariosData.length, 'aulas');
       if (horariosData.length > 0) {
@@ -255,19 +285,16 @@ const PortariaView = () => {
           professor_nome: horariosData[0].professor_nome
         });
       }
-    }
 
-    // Carregar professores
-    const storedProfessores = localStorage.getItem('professores');
-    if (storedProfessores) {
-      setProfessores(JSON.parse(storedProfessores));
-    }
-    
-    // Carregar descritores do dia atual
-    const hoje = new Date().toISOString().split('T')[0];
-    const descritoresSalvos = localStorage.getItem(`descritores_${hoje}`);
-    if (descritoresSalvos) {
-      setDescritoresDia(JSON.parse(descritoresSalvos));
+      // Carregar professores do Supabase
+      const professoresData = await professoresService.listarProfessores();
+      setProfessores(professoresData);
+      
+      // Recarregar descritores
+      await carregarDadosIniciais();
+      
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
     }
   };
 

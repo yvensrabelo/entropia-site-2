@@ -3,6 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Users, Clock, Calendar, Lock, Check, Copy, Link } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { professoresService } from '@/services/professoresService';
+import { horariosService } from '@/services/horariosService';
+import { turmasService } from '@/services/turmasService';
+import { configuracoesService } from '@/services/configuracoesService';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -18,41 +22,34 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchStats();
-    
-    // Carregar código da portaria
-    const codigo = localStorage.getItem('codigo_portaria') || 'PORTARIA';
-    setCodigoPortaria(codigo);
+    carregarCodigoPortaria();
   }, []);
 
-  const fetchStats = () => {
+  const fetchStats = async () => {
     try {
-      // Buscar total de provas do localStorage
-      const storedProvas = localStorage.getItem('provas');
-      const provas = storedProvas ? JSON.parse(storedProvas) : [];
-      
-      // Buscar total de professores
-      const storedProfessores = localStorage.getItem('professores');
-      const professores = storedProfessores ? JSON.parse(storedProfessores) : [];
+      // Buscar total de professores do Supabase
+      const professores = await professoresService.listarProfessores(true); // apenas ativos
       
       // Buscar aulas de hoje
       const hoje = new Date();
-      const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      const diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
       const diaHoje = diasSemana[hoje.getDay()];
       
-      const storedHorarios = localStorage.getItem('horarios');
-      const horarios = storedHorarios ? JSON.parse(storedHorarios) : [];
-      const aulasHoje = horarios.filter((h: any) => h.dia === diaHoje);
+      const horarios = await horariosService.listarHorarios();
+      const aulasHoje = horarios.filter((h: any) => h.dia_semana === diaHoje);
       
-      // Buscar turmas ativas
-      const storedTurmasAtivas = localStorage.getItem('turmas_ativas');
-      const turmasAtivas = storedTurmasAtivas ? JSON.parse(storedTurmasAtivas) : [];
-      const turmasAtivasCount = turmasAtivas.filter((t: any) => t.ativa).length;
+      // Buscar turmas ativas do Supabase
+      const turmas = await turmasService.listarTurmas(true); // apenas ativas
+      
+      // Para provas, manter localStorage por enquanto (não migrado ainda)
+      const storedProvas = localStorage.getItem('provas');
+      const provas = storedProvas ? JSON.parse(storedProvas) : [];
 
       setStats({
         totalProvas: provas.length,
-        totalProfessores: professores.filter((p: any) => p.status === 'ativo').length,
+        totalProfessores: professores.length,
         aulasHoje: aulasHoje.length,
-        turmasAtivas: turmasAtivasCount
+        turmasAtivas: turmas.length
       });
     } catch (error) {
       console.error('Erro ao buscar estatísticas:', error);
@@ -61,11 +58,26 @@ export default function DashboardPage() {
     }
   };
 
-  const salvarCodigoPortaria = () => {
+  const carregarCodigoPortaria = async () => {
+    try {
+      const codigo = await configuracoesService.obterConfiguracao('codigo_portaria') || 'PORTARIA';
+      setCodigoPortaria(codigo);
+    } catch (error) {
+      console.error('Erro ao carregar código da portaria:', error);
+      setCodigoPortaria('PORTARIA');
+    }
+  };
+
+  const salvarCodigoPortaria = async () => {
     if (codigoPortaria.trim()) {
-      localStorage.setItem('codigo_portaria', codigoPortaria.toUpperCase());
-      setCodigoSalvo(true);
-      setTimeout(() => setCodigoSalvo(false), 3000);
+      try {
+        await configuracoesService.salvarConfiguracao('codigo_portaria', codigoPortaria.toUpperCase());
+        setCodigoSalvo(true);
+        setTimeout(() => setCodigoSalvo(false), 3000);
+      } catch (error) {
+        console.error('Erro ao salvar código da portaria:', error);
+        alert('Erro ao salvar código');
+      }
     }
   };
 

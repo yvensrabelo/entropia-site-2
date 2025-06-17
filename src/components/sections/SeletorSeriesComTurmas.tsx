@@ -1,11 +1,28 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { turmasService } from '@/services/turmasService';
 
 const SecaoMatriculasDescomplica = () => {
   const [planoAtivo, setPlanoAtivo] = useState('3serie'); // 3ª série como padrão
+  const [turmasAtivas, setTurmasAtivas] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const carregarTurmas = async () => {
+      try {
+        const turmas = await turmasService.listarTurmas(true);
+        setTurmasAtivas(turmas);
+      } catch (error) {
+        console.error('Erro ao carregar turmas:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    carregarTurmas();
+  }, []);
   
   const planos = {
     '1serie': {
@@ -80,34 +97,18 @@ const SecaoMatriculasDescomplica = () => {
       'formado': 'INTENSIVO'
     };
 
-    // Buscar turma correspondente no sistema robusto primeiro
-    const turmasRobustas = localStorage.getItem('turmas_robustas');
-    let turmaEncontrada: any = null;
-
-    if (turmasRobustas) {
-      const turmas = JSON.parse(turmasRobustas);
-      const serieMapeamento: Record<string, string> = {
-        '1serie': '1',
-        '2serie': '2',
-        '3serie': '3',
-        'formado': 'formado'
-      };
-      
-      const serie = serieMapeamento[plano];
-      turmaEncontrada = turmas.find((t: any) => 
-        t.serieCorrespondente === serie && t.ativa === true
-      );
-    }
-
-    // Fallback para sistema antigo
-    if (!turmaEncontrada) {
-      const turmas = JSON.parse(localStorage.getItem('turmas_cards') || '[]');
-      const tipoTurma = mapeamento[plano];
-      
-      turmaEncontrada = turmas.find((t: any) => 
-        t.tipo.toUpperCase().includes(tipoTurma) && t.ativa
-      );
-    }
+    // Buscar turma correspondente no sistema de turmas simples
+    const serieMapeamento: Record<string, string> = {
+      '1serie': '1',
+      '2serie': '2',
+      '3serie': '3',
+      'formado': 'formado'
+    };
+    
+    const serie = serieMapeamento[plano];
+    const turmaEncontrada = turmasAtivas.find((t: any) => 
+      t.serie === serie && t.ativa !== false
+    );
 
     if (turmaEncontrada && turmaEncontrada.id) {
       sessionStorage.setItem('plano_selecionado', plano);

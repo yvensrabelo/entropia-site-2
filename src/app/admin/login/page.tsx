@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Lock, Mail, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Lock, Mail, Loader2, AlertCircle, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { supabase } from '@/lib/supabase-singleton';
 import { useToast } from '@/contexts/ToastContext';
+import Link from 'next/link';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -135,6 +136,9 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+      <Link href="/" className="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-800/50 transition-colors">
+        <ArrowLeft className="w-6 h-6 text-gray-400 hover:text-gray-200" />
+      </Link>
       <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-md border border-gray-700">
         <div className="text-center mb-8">
           <div className="bg-green-900/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
@@ -212,7 +216,7 @@ export default function AdminLoginPage() {
 
         <div className="mt-8 pt-6 border-t border-gray-700 text-center">
           <p className="text-sm text-gray-500">
-            © 2024 Entropia Cursinho - Painel Administrativo
+            © 2025 Desenvolvido por Yvens Rabelo
           </p>
         </div>
       </div>

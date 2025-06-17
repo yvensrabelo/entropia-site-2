@@ -1,13 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { professoresService } from '@/services/professoresService';
 
 export default function LoginProfessor() {
   const [cpf, setCpf] = useState('');
   const [erro, setErro] = useState('');
+  const [professores, setProfessores] = useState<any[]>([]);
+  const [professoresCarregando, setProfessoresCarregando] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const carregarProfessores = async () => {
+      try {
+        const professoresAtivos = await professoresService.listarProfessores(true);
+        setProfessores(professoresAtivos);
+      } catch (error) {
+        console.error('Erro ao carregar professores:', error);
+      } finally {
+        setProfessoresCarregando(false);
+      }
+    };
+    carregarProfessores();
+  }, []);
 
   const formatarCPF = (valor: string) => {
     const apenas = valor.replace(/\D/g, '');
@@ -21,8 +38,7 @@ export default function LoginProfessor() {
   const handleLogin = () => {
     const cpfLimpo = cpf.replace(/\D/g, '');
     
-    // Buscar professor no localStorage
-    const professores = JSON.parse(localStorage.getItem('professores') || '[]');
+    // Buscar professor nos dados carregados
     const professor = professores.find((p: any) => 
       p.cpf.replace(/\D/g, '') === cpfLimpo && p.status === 'ativo'
     );

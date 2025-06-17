@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { User, Edit, Trash, Plus, Search, Phone, BookOpen } from 'lucide-react';
 import { formatWhatsAppMask, validateWhatsApp, cleanPhoneNumber, formatPhoneForDisplay } from '@/lib/utils/phone';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { professoresService } from '@/services/professoresService';
 
 interface Professor {
   id: string;
@@ -37,6 +38,8 @@ const MATERIAS_DISPONIVEIS = [
 export default function ProfessoresPage() {
   const [professores, setProfessores] = useState<Professor[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingProfessor, setEditingProfessor] = useState<Professor | null>(null);
@@ -51,11 +54,24 @@ export default function ProfessoresPage() {
   const [whatsappError, setWhatsappError] = useState('');
 
   useEffect(() => {
-    fetchProfessores();
+    const carregarProfessores = async () => {
+      setIsLoading(true);
+      try {
+        const professoresDB = await professoresService.listarProfessores();
+        setProfessores(professoresDB);
+      } catch (error) {
+        console.error('Erro ao carregar professores:', error);
+        alert('Erro ao carregar professores. Tente novamente.');
+      } finally {
+        setIsLoading(false);
+        setLoading(false);
+      }
+    };
+    carregarProfessores();
   }, []);
 
   // Função para adicionar professores iniciais
-  const adicionarProfessoresIniciais = () => {
+  const adicionarProfessoresIniciais = async () => {
     const professoresIniciais = [
       { nome: 'RAUL', materias: ['Linguagens'], numero: '001', reconhecimento: 'RAUL [LIN]' },
       { nome: 'FÁBIO', materias: ['Física'], numero: '002', reconhecimento: 'FÁBIO [FIS]' },
@@ -75,14 +91,13 @@ export default function ProfessoresPage() {
       { nome: 'FRAN', materias: ['Redação'], numero: '016', reconhecimento: 'FRAN [RED]' }
     ];
 
-    const professoresExistentes = JSON.parse(localStorage.getItem('professores') || '[]');
+    const professoresExistentes = await professoresService.listarProfessores();
     
-    professoresIniciais.forEach(prof => {
+    for (const prof of professoresIniciais) {
       // Verificar se professor já existe
       const existe = professoresExistentes.find((p: any) => p.nome === prof.nome);
       if (!existe) {
         const novoProfessor = {
-          id: Date.now().toString() + Math.random(),
           numero: prof.numero,
           nome: prof.nome,
           cpf: '000.000.000-00', // Placeholder
@@ -90,35 +105,21 @@ export default function ProfessoresPage() {
           materias: prof.materias,
           reconhecimento: prof.reconhecimento,
           email: '',
-          status: 'ativo'
+          status: 'ativo' as const
         };
-        professoresExistentes.push(novoProfessor);
+        await professoresService.criarProfessor(novoProfessor);
       }
-    });
+    }
 
-    localStorage.setItem('professores', JSON.stringify(professoresExistentes));
-    setProfessores(professoresExistentes);
+    // Recarregar lista
+    const professoresAtualizados = await professoresService.listarProfessores();
+    setProfessores(professoresAtualizados);
     alert('Professores iniciais adicionados com sucesso!');
   };
 
-  const fetchProfessores = () => {
-    try {
-      const stored = localStorage.getItem('professores');
-      if (stored) {
-        const data: Professor[] = JSON.parse(stored);
-        setProfessores(data.sort((a, b) => parseInt(a.numero) - parseInt(b.numero)));
-      } else {
-        setProfessores([]);
-      }
-    } catch (error) {
-      console.error('Erro ao buscar professores:', error);
-      setProfessores([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Função removida - agora usa o carregarProfessores no useEffect
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validar WhatsApp se preenchido
@@ -137,42 +138,35 @@ export default function ProfessoresPage() {
       }
     }
     
+    setIsSaving(true);
     try {
-      const professorData: Professor = {
-        id: editingProfessor?.id || Date.now().toString(),
+      const professorData = {
         numero: formData.numero,
         nome: formData.nome,
         cpf: formData.cpf,
         whatsapp: formData.whatsapp || undefined,
         materias: formData.materias.length > 0 ? formData.materias : undefined,
         reconhecimento: formData.reconhecimento,
-        status: 'ativo'
+        status: 'ativo' as const
       };
 
-      // Buscar professores existentes
-      const stored = localStorage.getItem('professores');
-      let professores: Professor[] = stored ? JSON.parse(stored) : [];
-      
       if (editingProfessor) {
         // Atualizar professor existente
-        professores = professores.map(p => 
-          p.id === editingProfessor.id ? professorData : p
-        );
+        await professoresService.atualizarProfessor(editingProfessor.id!, professorData);
       } else {
         // Verificar se número já existe
-        if (professores.some(p => p.numero === formData.numero)) {
+        const professoresExistentes = await professoresService.listarProfessores();
+        if (professoresExistentes.some(p => p.numero === formData.numero)) {
           alert('Já existe um professor com este número!');
           return;
         }
-        // Adicionar novo professor
-        professores.push(professorData);
+        // Criar novo professor
+        await professoresService.criarProfessor(professorData);
       }
       
-      // Salvar no localStorage
-      localStorage.setItem('professores', JSON.stringify(professores));
-      
-      // Atualizar estado
-      setProfessores(professores.sort((a, b) => parseInt(a.numero) - parseInt(b.numero)));
+      // Recarregar lista atualizada
+      const professoresAtualizados = await professoresService.listarProfessores();
+      setProfessores(professoresAtualizados);
       
       // Fechar modal
       setShowModal(false);
@@ -180,9 +174,13 @@ export default function ProfessoresPage() {
       setFormData({ numero: '', nome: '', cpf: '', whatsapp: '', reconhecimento: '', materias: [] });
       setWhatsappError('');
       
+      alert(editingProfessor ? 'Professor atualizado com sucesso!' : 'Professor adicionado com sucesso!');
+      
     } catch (error) {
       console.error('Erro ao salvar professor:', error);
       alert('Erro ao salvar professor');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -234,17 +232,14 @@ export default function ProfessoresPage() {
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Tem certeza que deseja excluir este professor?')) return;
 
     try {
-      const stored = localStorage.getItem('professores');
-      if (stored) {
-        const professores: Professor[] = JSON.parse(stored);
-        const updatedProfessores = professores.filter(p => p.id !== id);
-        localStorage.setItem('professores', JSON.stringify(updatedProfessores));
-        setProfessores(updatedProfessores);
-      }
+      await professoresService.excluirProfessor(id);
+      const professoresAtualizados = await professoresService.listarProfessores();
+      setProfessores(professoresAtualizados);
+      alert('Professor excluído com sucesso!');
     } catch (error) {
       console.error('Erro ao excluir professor:', error);
       alert('Erro ao excluir professor');

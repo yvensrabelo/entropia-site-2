@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { TurmaRobusta } from '@/lib/types/turma';
+import { turmasService } from '@/services/turmasService';
 
 const SerieSelector = () => {
   const router = useRouter();
+  const [turmasAtivas, setTurmasAtivas] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const carregarTurmas = async () => {
+      try {
+        const turmas = await turmasService.listarTurmas(true);
+        setTurmasAtivas(turmas);
+      } catch (error) {
+        console.error('Erro ao carregar turmas:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    carregarTurmas();
+  }, []);
   
   const opcoesSerie = [
     {
@@ -41,73 +58,23 @@ const SerieSelector = () => {
   ];
 
   const handleSerieSelection = (serie: '1' | '2' | '3' | 'formado') => {
-    // Buscar turma correspondente no localStorage
-    const turmasRobustas = localStorage.getItem('turmas_robustas');
-    let turmas: TurmaRobusta[] = [];
-    
-    if (turmasRobustas) {
-      turmas = JSON.parse(turmasRobustas);
-    } else {
-      // Fallback para sistema antigo
-      const turmasAntigas = localStorage.getItem('turmas_cards');
-      if (turmasAntigas) {
-        // Converter e usar mapeamento padrão
-        const turmasOld = JSON.parse(turmasAntigas);
-        const mapeamento = {
-          '1': 'psc',
-          '2': 'enem',
-          '3': 'intensivo',
-          'formado': 'intensivo'
-        };
-        
-        const tipoTurma = mapeamento[serie];
-        const turmaCorrespondente = turmasOld.find((t: any) => 
-          t.tipo === tipoTurma && t.ativa
-        );
-        
-        if (turmaCorrespondente) {
-          router.push(`/matricula?turmaId=${turmaCorrespondente.id}`);
-          return;
-        }
-      }
-    }
-    
-    // Buscar turma com série correspondente
-    const turmaCorrespondente = turmas.find(t => 
-      t.serieCorrespondente === serie && t.ativa
+    // Buscar turma correspondente nas turmas ativas do Supabase
+    const turmaEncontrada = turmasAtivas.find((t: any) => 
+      t.serie === serie && t.ativa !== false
     );
     
-    if (turmaCorrespondente) {
-      // Se for formado, adicionar flag especial
+    if (turmaEncontrada && turmaEncontrada.id) {
+      // Salvar série selecionada
+      sessionStorage.setItem('serie_selecionada', serie);
+      
+      // Criar query params
       const queryParams = serie === 'formado' ? 
-        `?turmaId=${turmaCorrespondente.id}&formado=true` : 
-        `?turmaId=${turmaCorrespondente.id}`;
+        `?turmaId=${turmaEncontrada.id}&formado=true&serie=${serie}` : 
+        `?turmaId=${turmaEncontrada.id}&serie=${serie}`;
       
       router.push(`/matricula${queryParams}`);
     } else {
-      // Se não encontrar por série, tentar mapeamento padrão
-      const mapeamentoPadrao: Record<string, string[]> = {
-        '1': ['psc'],
-        '2': ['enem'], 
-        '3': ['intensivo', 'militar'],
-        'formado': ['intensivo', 'militar']
-      };
-      
-      const tiposPossiveis = mapeamentoPadrao[serie];
-      const turmaAlternativa = turmas.find(t => 
-        tiposPossiveis.includes(t.tipo) && t.ativa
-      );
-      
-      if (turmaAlternativa) {
-        const queryParams = serie === 'formado' ? 
-          `?turmaId=${turmaAlternativa.id}&formado=true` : 
-          `?turmaId=${turmaAlternativa.id}`;
-        
-        router.push(`/matricula${queryParams}`);
-      } else {
-        // Mostrar mensagem de erro
-        alert('No momento não temos turmas disponíveis para sua série. Por favor, entre em contato conosco!');
-      }
+      alert('Turma não encontrada para esta série. Entre em contato conosco.');
     }
   };
 

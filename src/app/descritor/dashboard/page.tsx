@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { horariosService } from '@/services/horariosService';
+import { descritoresService } from '@/services/descritoresService';
 
 interface Aula {
   id: string;
@@ -17,6 +19,9 @@ interface Descritor {
   aula_id: string;
   descricao: string;
   preenchido_em: string;
+  assunto: string;
+  professor_id: string;
+  observacoes?: string;
 }
 
 export default function DashboardProfessor() {
@@ -27,41 +32,72 @@ export default function DashboardProfessor() {
   const router = useRouter();
 
   useEffect(() => {
-    // Verificar se professor está logado
-    const professorLogado = sessionStorage.getItem('professor_logado');
-    if (!professorLogado) {
-      router.push('/descritor');
-      return;
-    }
+    const inicializar = async () => {
+      // Verificar se professor está logado
+      const professorLogado = sessionStorage.getItem('professor_logado');
+      if (!professorLogado) {
+        router.push('/descritor');
+        return;
+      }
 
-    const prof = JSON.parse(professorLogado);
-    setProfessor(prof);
+      const prof = JSON.parse(professorLogado);
+      setProfessor(prof);
 
-    // Carregar aulas do professor hoje
-    carregarAulasHoje(prof.id);
+      // Carregar aulas do professor hoje
+      await carregarAulasHoje(prof.id);
 
-    // Carregar descritores já preenchidos
-    carregarDescritores();
+      // Carregar descritores já preenchidos
+      await carregarDescritores();
+    };
+    
+    inicializar();
   }, []);
 
-  const carregarAulasHoje = (professorId: string) => {
-    const horarios = JSON.parse(localStorage.getItem('horarios_aulas') || '[]');
-    const hoje = new Date();
-    const diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
-    const diaAtual = diasSemana[hoje.getDay()];
+  const carregarAulasHoje = async (professorId: string) => {
+    try {
+      const horarios = await horariosService.listarHorarios();
+      const hoje = new Date();
+      const diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+      const diaAtual = diasSemana[hoje.getDay()];
 
-    const aulasProf = horarios.filter((h: any) => 
-      h.professor_id === professorId && 
-      h.dia_semana === diaAtual
-    );
+      const aulasProf = horarios.filter((h: any) => 
+        h.professor_id === professorId && 
+        h.dia_semana === diaAtual
+      );
 
-    setAulasHoje(aulasProf.sort((a: any, b: any) => a.tempo - b.tempo));
+      setAulasHoje(aulasProf.sort((a: any, b: any) => a.tempo - b.tempo));
+    } catch (error) {
+      console.error('Erro ao carregar aulas:', error);
+    }
   };
 
-  const carregarDescritores = () => {
-    const hoje = new Date().toISOString().split('T')[0];
-    const descritoresSalvos = localStorage.getItem(`descritores_${hoje}`) || '{}';
-    setDescritores(JSON.parse(descritoresSalvos));
+  const carregarDescritores = async () => {
+    try {
+      const hoje = new Date().toISOString().split('T')[0];
+      const descritoresSalvos = await descritoresService.obterDescritoresPorData(hoje);
+      // Converter DescritoresDia para Record<string, Descritor>
+      const descritoresFormatados: Record<string, Descritor> = {};
+      if (descritoresSalvos) {
+        Object.entries(descritoresSalvos).forEach(([key, value]) => {
+          if (typeof value === 'object' && value !== null && 
+              'assunto' in value && 'professor_id' in value) {
+            // Convert DescritorAula to Descritor
+            const descAula = value as any;
+            descritoresFormatados[key] = {
+              aula_id: key,
+              descricao: descAula.assunto || '',
+              preenchido_em: new Date().toISOString(),
+              assunto: descAula.assunto || '',
+              professor_id: descAula.professor_id || '',
+              observacoes: descAula.observacoes
+            };
+          }
+        });
+      }
+      setDescritores(descritoresFormatados);
+    } catch (error) {
+      console.error('Erro ao carregar descritores:', error);
+    }
   };
 
   const podePreencherDescritor = (aula: Aula) => {
@@ -74,29 +110,38 @@ export default function DashboardProfessor() {
     return agora >= inicioAula;
   };
 
-  const salvarDescritor = (aulaId: string) => {
+  const salvarDescritor = async (aulaId: string) => {
     const descricao = descricaoTemp[aulaId];
     if (!descricao || descricao.trim() === '') {
       alert('Por favor, preencha a descrição da aula');
       return;
     }
 
-    const hoje = new Date().toISOString().split('T')[0];
-    const descritoresAtuais = JSON.parse(localStorage.getItem(`descritores_${hoje}`) || '{}');
-    
-    const novoDescritor: Descritor = {
-      aula_id: aulaId,
-      descricao: descricao.trim(),
-      preenchido_em: new Date().toISOString()
-    };
+    try {
+      const hoje = new Date().toISOString().split('T')[0];
+      const descritoresAtuaisSalvos = await descritoresService.obterDescritoresPorData(hoje) || {};
+      
+      const novoDescritor: Descritor = {
+        aula_id: aulaId,
+        descricao: descricao.trim(),
+        preenchido_em: new Date().toISOString(),
+        assunto: descricao.trim(), // Usar descrição como assunto
+        professor_id: professor.id
+      };
 
-    descritoresAtuais[aulaId] = novoDescritor;
-    localStorage.setItem(`descritores_${hoje}`, JSON.stringify(descritoresAtuais));
-    
-    setDescritores(descritoresAtuais);
-    setDescricaoTemp({ ...descricaoTemp, [aulaId]: '' });
-    
-    alert('Descritor salvo com sucesso!');
+      // Atualizar com o novo descritor
+      const descritoresAtualizados = { ...descritoresAtuaisSalvos, [aulaId]: novoDescritor };
+      await descritoresService.salvarDescritoresPorData(hoje, descritoresAtualizados);
+      
+      // Atualizar state local
+      setDescritores(prev => ({ ...prev, [aulaId]: novoDescritor }));
+      setDescricaoTemp({ ...descricaoTemp, [aulaId]: '' });
+      
+      alert('Descritor salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar descritor:', error);
+      alert('Erro ao salvar descritor');
+    }
   };
 
   const logout = () => {

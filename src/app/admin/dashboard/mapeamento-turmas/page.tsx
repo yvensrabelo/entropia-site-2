@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { Link, Save, AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
 import { TURMAS_CONFIG } from '@/config/turmas';
 import AuthGuard from '@/components/admin/AuthGuard';
+import { turmasService } from '@/services/turmasService';
+import { configuracoesService } from '@/services/configuracoesService';
 
 interface TurmaAtiva {
   id: string;
@@ -30,27 +32,53 @@ export default function MapeamentoTurmasPage() {
     carregarDados();
   }, []);
 
-  const carregarDados = () => {
-    // Carregar turmas ativas
-    const stored = localStorage.getItem('turmas_ativas');
-    if (stored) {
-      const turmas = JSON.parse(stored);
-      setTurmasAtivas(turmas.filter((t: TurmaAtiva) => t.ativa));
-    }
+  const carregarDados = async () => {
+    try {
+      // Carregar turmas ativas do Supabase
+      const turmasDB = await turmasService.listarTurmas(true); // apenas ativas
+      
+      // Converter para o formato esperado
+      const turmasFormatadas: TurmaAtiva[] = turmasDB.map((turma, index) => {
+        // Mapear serie corretamente
+        let serieFormatada: '1ª série' | '2ª série' | '3ª série' | 'Extensivo' | undefined;
+        
+        switch (turma.serie) {
+          case '1': serieFormatada = '1ª série'; break;
+          case '2': serieFormatada = '2ª série'; break;
+          case '3': serieFormatada = '3ª série'; break;
+          case 'formado': serieFormatada = 'Extensivo'; break;
+          default: serieFormatada = undefined;
+        }
+        
+        return {
+          id: turma.id,
+          nome: turma.nome,
+          turno: 'manhã' as 'manhã' | 'tarde' | 'noite', // Default para manhã
+          tipo: 'extensiva' as 'intensiva' | 'extensiva' | 'sis-psc', // Default para extensiva
+          serie: serieFormatada,
+          ativa: turma.ativa || false,
+          ordem: index
+        };
+      });
+      
+      setTurmasAtivas(turmasFormatadas);
 
-    // Carregar mapeamentos existentes
-    const storedMapeamentos = localStorage.getItem('mapeamento_turmas');
-    if (storedMapeamentos) {
-      setMapeamentos(JSON.parse(storedMapeamentos));
-    } else {
-      // Inicializar com mapeamentos vazios
-      const mapeamentosIniciais = TURMAS_CONFIG.turmas
-        .filter(t => t.ativa)
-        .map(t => ({
-          turmaAntigaNome: t.nome,
-          turmaAtivaId: ''
-        }));
-      setMapeamentos(mapeamentosIniciais);
+      // Carregar mapeamentos existentes do Supabase
+      const storedMapeamentos = await configuracoesService.obterConfiguracao('mapeamento_turmas');
+      if (storedMapeamentos) {
+        setMapeamentos(storedMapeamentos);
+      } else {
+        // Inicializar com mapeamentos vazios
+        const mapeamentosIniciais = TURMAS_CONFIG.turmas
+          .filter(t => t.ativa)
+          .map(t => ({
+            turmaAntigaNome: t.nome,
+            turmaAtivaId: ''
+          }));
+        setMapeamentos(mapeamentosIniciais);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
     }
   };
 
@@ -64,12 +92,12 @@ export default function MapeamentoTurmasPage() {
     );
   };
 
-  const salvarMapeamentos = () => {
+  const salvarMapeamentos = async () => {
     setSalvando(true);
     
     try {
-      // Salvar mapeamentos no localStorage
-      localStorage.setItem('mapeamento_turmas', JSON.stringify(mapeamentos));
+      // Salvar mapeamentos no Supabase
+      await configuracoesService.salvarConfiguracao('mapeamento_turmas', mapeamentos);
       
       // Criar objeto de lookup para fácil acesso
       const mapeamentoLookup: Record<string, string> = {};
@@ -79,16 +107,9 @@ export default function MapeamentoTurmasPage() {
         }
       });
       
-      localStorage.setItem('mapeamento_turmas_lookup', JSON.stringify(mapeamentoLookup));
+      await configuracoesService.salvarConfiguracao('mapeamento_turmas_lookup', mapeamentoLookup);
       
       setMensagem({ tipo: 'sucesso', texto: 'Mapeamentos salvos com sucesso!' });
-      
-      // Disparar evento para notificar outras abas
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'mapeamento_turmas',
-        newValue: JSON.stringify(mapeamentos),
-        url: window.location.href
-      }));
       
     } catch (error) {
       console.error('Erro ao salvar mapeamentos:', error);
