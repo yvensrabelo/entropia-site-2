@@ -104,7 +104,7 @@ export default function TurmaCard({
                   <div className="p-1.5 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 min-w-[32px] min-h-[32px] flex items-center justify-center flex-shrink-0 mt-0.5">
                     <CheckCircle className="w-4 h-4 text-green-600" />
                   </div>
-                  <span className="text-sm sm:text-base">{diferencial}</span>
+                  <span className="text-sm sm:text-base break-words hyphens-auto flex-1">{diferencial}</span>
                 </li>
               ))}
             </ul>

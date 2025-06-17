@@ -299,8 +299,17 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
     metadata.instituicao = metadata.instituicao || 'UFAM';
     console.log('║ ✓ Tipo: PSI (UFAM)');
     
-    // IMPORTANTE: Detectar CG-II ANTES de CG-I para evitar falso positivo!
-    if (name.includes('cg-ii') || name.includes('cgii') || name.includes('cg ii')) {
+    // IMPORTANTE: Detectar -II ANTES de -I para evitar falso positivo!
+    if (name.includes('-ii') || name.includes('_ii') || name.includes(' ii')) {
+      metadata.subcategoria = 'DIA 2';
+      console.log('║   → Detectado -II como DIA 2');
+    }
+    else if (name.includes('-i') || name.includes('_i') || name.includes(' i')) {
+      metadata.subcategoria = 'DIA 1';
+      console.log('║   → Detectado -I como DIA 1');
+    }
+    // Detectar CG-II ANTES de CG-I para evitar falso positivo!
+    else if (name.includes('cg-ii') || name.includes('cgii') || name.includes('cg ii')) {
       metadata.subcategoria = 'DIA 2';
       console.log('║   → Detectado CG-II como DIA 2');
     }
@@ -309,10 +318,10 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
       console.log('║   → Detectado CG-I como DIA 1');
     }
     // Alternativas com "dia"
-    else if (name.includes('dia-2') || name.includes('dia 2')) {
+    else if (name.includes('dia-2') || name.includes('dia 2') || name.includes('dia2')) {
       metadata.subcategoria = 'DIA 2';
     }
-    else if (name.includes('dia-1') || name.includes('dia 1')) {
+    else if (name.includes('dia-1') || name.includes('dia 1') || name.includes('dia1')) {
       metadata.subcategoria = 'DIA 1';
     }
     

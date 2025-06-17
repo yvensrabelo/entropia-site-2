@@ -324,9 +324,9 @@ export default function MatriculaPage() {
                   <h4 className="font-semibold text-gray-700 mb-3">Benefícios:</h4>
                   <div className="space-y-2">
                     {turma.beneficios?.map((beneficio, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
-                        <CheckCircle className={`w-5 h-5 ${beneficio?.destaquePlatinado ? 'text-purple-600' : 'text-green-500'}`} />
-                        <span className={`${beneficio?.destaquePlatinado ? 'font-bold text-purple-600' : 'text-gray-700'}`}>
+                      <div key={idx} className="flex items-start gap-3">
+                        <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${beneficio?.destaquePlatinado ? 'text-purple-600' : 'text-green-500'}`} />
+                        <span className={`break-words hyphens-auto ${beneficio?.destaquePlatinado ? 'font-bold text-purple-600' : 'text-gray-700'}`}>
                           {beneficio?.texto || ''}
                         </span>
                       </div>

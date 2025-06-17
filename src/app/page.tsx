@@ -146,14 +146,14 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
                 : "flex items-center gap-3 text-gray-800 font-medium"
             }>
               {item.destaquePlatinado ? (
-                <div className="flex items-center gap-3 text-gray-900 font-semibold">
-                  <span className="text-purple-600 text-lg">✦</span>
-                  {item.texto}
+                <div className="flex items-start gap-3 text-gray-900 font-semibold">
+                  <span className="text-purple-600 text-lg flex-shrink-0">✦</span>
+                  <span className="break-words hyphens-auto">{item.texto}</span>
                 </div>
               ) : (
                 <>
-                  <span className="text-green-600 text-lg">✓</span> 
-                  {item.texto}
+                  <span className="text-green-600 text-lg flex-shrink-0">✓</span> 
+                  <span className="break-words hyphens-auto">{item.texto}</span>
                 </>
               )}
             </li>
@@ -244,28 +244,14 @@ const FiltroTurnos = ({ turnoSelecionado, onTurnoChange, serieAtiva, turmas }: {
   return (
     <div className="space-y-3 mt-4">
       <div className="bg-white/10 backdrop-blur-md rounded-3xl p-3 border border-white/20 shadow-xl">
-        <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${turnos.length + 1}, 1fr)` }}>
-          {/* Botão "Todos" */}
-          <button
-            onClick={() => onTurnoChange(null)}
-            className={`
-              py-3 px-2 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-1
-              ${!turnoSelecionado 
-                ? 'bg-white text-gray-800 shadow-lg' 
-                : 'text-white/80 hover:bg-white/10'
-              }
-            `}
-          >
-            Todos
-          </button>
-          
+        <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${turnos.length}, 1fr)` }}>
           {/* Botões de turno */}
           {turnos.map((turno) => {
             const Icon = turno.icon;
             return (
               <button
                 key={turno.value}
-                onClick={() => onTurnoChange(turno.value)}
+                onClick={() => onTurnoChange(turnoSelecionado === turno.value ? null : turno.value)}
                 className={`
                   py-3 px-2 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-1
                   ${turnoSelecionado === turno.value 

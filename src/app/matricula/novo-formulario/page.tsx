@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, ChevronRight, User, UserCheck, CreditCard, Calendar, DollarSign, Gift } from 'lucide-react'
+import { Check, ChevronRight, User, UserCheck, CreditCard, Calendar, DollarSign, Gift, Star } from 'lucide-react'
 import { turmasService } from '@/services/turmasService'
 
 // Tipos
@@ -35,6 +35,34 @@ interface OpcaoPagamento {
   cor: string
 }
 
+// Componente de Card do Aluno para Mobile
+const CardAluno = ({ nome, imagem, depoimento }: { nome: string; imagem: string; depoimento: string }) => {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="md:hidden bg-white/10 backdrop-blur-md rounded-xl p-4 mb-6 border border-white/20"
+    >
+      <div className="flex items-center gap-4">
+        <img 
+          src={imagem} 
+          alt={nome}
+          className="w-20 h-20 rounded-full object-cover border-2 border-white/30"
+        />
+        <div className="flex-1">
+          <h4 className="font-bold text-white mb-1">{nome}</h4>
+          <p className="text-white/80 text-sm italic">"{depoimento}"</p>
+          <div className="flex gap-1 mt-1">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star key={star} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 // Componente da Etapa 1 - Dados do Aluno
 const EtapaDadosAluno = ({ 
   dadosAluno, 
@@ -55,6 +83,9 @@ const EtapaDadosAluno = ({
     exit={{ opacity: 0, x: -20 }}
     className="space-y-6"
   >
+    {/* Card do Lucca no mobile */}
+    <CardAluno {...alunosDestaques[0]} />
+    
     <div className="text-center mb-8">
       <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
         <User className="w-10 h-10 text-white" />
@@ -144,6 +175,9 @@ const EtapaResponsavel = ({
     exit={{ opacity: 0, x: -20 }}
     className="space-y-6"
   >
+    {/* Card da Eduarda no mobile */}
+    <CardAluno {...alunosDestaques[1]} />
+    
     <div className="text-center mb-8">
       <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
         <UserCheck className="w-10 h-10 text-white" />
@@ -247,6 +281,9 @@ const EtapaPagamento = ({
     exit={{ opacity: 0, x: -20 }}
     className="space-y-6"
   >
+    {/* Card da Gabriela no mobile */}
+    <CardAluno {...alunosDestaques[2]} />
+    
     <div className="text-center mb-8">
       <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
         <CreditCard className="w-10 h-10 text-white" />
@@ -520,6 +557,10 @@ function FormularioMatriculaContent() {
         timestamp: new Date().toISOString()
       }
 
+      // Logs detalhados para debug
+      console.log('=== DADOS ENVIADOS AO WEBHOOK ===');
+      console.log(JSON.stringify(dados, null, 2));
+
       // Enviar para o webhook
       const response = await fetch('https://webhook.cursoentropia.com/webhook/siteentropiaoficial', {
         method: 'POST',
@@ -527,15 +568,32 @@ function FormularioMatriculaContent() {
         body: JSON.stringify(dados)
       })
 
-      if (response.ok) {
-        // Redirecionar para página de sucesso
-        router.push('/matricula/sucesso')
-      } else {
-        throw new Error('Erro na resposta do servidor')
+      // Log da resposta completa
+      console.log('Status:', response.status);
+      console.log('Status Text:', response.statusText);
+      
+      // Tentar ler o corpo da resposta mesmo em caso de erro
+      const responseText = await response.text();
+      console.log('Resposta do servidor:', responseText);
+
+      if (!response.ok) {
+        throw new Error(`Erro ${response.status}: ${responseText || response.statusText}`);
       }
+
+      // Se chegou aqui, foi sucesso
+      console.log('✅ Formulário enviado com sucesso!');
+      router.push('/matricula/sucesso')
     } catch (error) {
-      console.error('Erro ao enviar:', error)
-      alert('Erro ao enviar formulário. Tente novamente.')
+      console.error('=== ERRO DETALHADO ===');
+      console.error('Tipo:', error instanceof Error ? error.constructor.name : typeof error);
+      console.error('Mensagem:', error instanceof Error ? error.message : String(error));
+      console.error('Stack:', error instanceof Error ? error.stack : 'N/A');
+      
+      const mensagemErro = error instanceof Error && error.message.includes('500') 
+        ? 'Erro no servidor. Por favor, tente novamente em alguns minutos.'
+        : 'Erro ao enviar formulário. Verifique os dados e tente novamente.';
+      
+      alert(mensagemErro);
     } finally {
       setEnviando(false)
     }
