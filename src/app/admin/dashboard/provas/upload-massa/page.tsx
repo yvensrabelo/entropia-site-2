@@ -141,9 +141,34 @@ export default function UploadMassa() {
     processarArquivos(files);
   };
 
+  // Função de teste temporária para verificar parser PSI
+  const testarParserPSI = () => {
+    const arquivosTeste = [
+      'PSI-24-Prova-CG-II.pdf',
+      'PSI-24-Prova-CG-I.pdf', 
+      'PSI-24-Gabarito-CG-II.pdf',
+      'PSI-24-Gabarito-CG-I.pdf'
+    ];
+    
+    console.log('🧪 === TESTE DO PARSER PSI ===');
+    arquivosTeste.forEach(arquivo => {
+      console.log(`\n📄 Testando: ${arquivo}`);
+      const metadata = extractMetadataFromFilename(arquivo);
+      console.log('Resultado:', {
+        tipo_prova: metadata.tipo_prova,
+        instituicao: metadata.instituicao,
+        subcategoria: metadata.subcategoria,
+        titulo: metadata.titulo
+      });
+    });
+  };
+
   const processarArquivos = (files: File[]) => {
     console.log('🚀 INICIANDO PROCESSAMENTO DE ARQUIVOS');
     console.log(`📁 Total de arquivos: ${files.length}`);
+    
+    // Executar teste do parser
+    testarParserPSI();
     
     const novosArquivos = files.map((file, index) => {
       console.log(`\n📄 Processando arquivo ${index + 1}/${files.length}: ${file.name}`);
@@ -156,13 +181,20 @@ export default function UploadMassa() {
       const tipo = isGabarito(file.name) ? 'gabarito' : 'prova';
       console.log('📝 Tipo de arquivo:', tipo);
       
-      // CORREÇÃO ADICIONAL PARA GARANTIR DETECÇÃO DE ÁREAS
+      // CORREÇÃO ADICIONAL PARA GARANTIR DETECÇÃO DE ÁREAS (mas não sobrescrever PSI)
       const nomeLower = file.name.toLowerCase();
-      if ((nomeLower.includes('biologica') || nomeLower.includes('biológica') ||
-           nomeLower.includes('humana') || 
-           nomeLower.includes('exata') || 
-           nomeLower.includes('geral')) && 
-          metadata.tipo_prova !== 'MACRO') {
+      
+      // VERIFICAÇÃO ESPECÍFICA: Se já foi detectado como PSI, NÃO sobrescrever
+      if (metadata.tipo_prova === 'PSI') {
+        console.log('🔵 PSI detectado - mantendo configuração e não forçando UEA/MACRO');
+        // Não fazer nada, manter PSI como está
+      }
+      // Apenas se for MACRO legítimo (não PSI mal interpretado)
+      else if ((nomeLower.includes('biologica') || nomeLower.includes('biológica') ||
+                nomeLower.includes('humana') || 
+                nomeLower.includes('exata')) && 
+               !nomeLower.includes('psi') && // IMPORTANTE: excluir PSI
+               metadata.tipo_prova !== 'MACRO') {
         
         console.log('🔴 CORREÇÃO: Arquivo com área detectada como', metadata.tipo_prova, '- corrigindo para MACRO');
         
@@ -179,11 +211,8 @@ export default function UploadMassa() {
         } else if (nomeLower.includes('exata')) {
           metadata.area = 'EXATAS';
           metadata.titulo = 'Exatas';
-        } else if (nomeLower.includes('geral')) {
-          metadata.subcategoria = 'CG';
-          metadata.titulo = 'DIA 1';
-          metadata.area = null;
         }
+        // Remover lógica do "geral" que estava conflitando com PSI
         
         if (isGabarito(file.name)) {
           metadata.titulo += ' - Gabarito';
@@ -205,15 +234,21 @@ export default function UploadMassa() {
       }
       
       if (!metadata.instituicao) {
-        console.error('⚠️ AVISO: Arquivo sem instituição:', file.name);
-        // Tentar inferir instituição do nome
-        const nome = file.name.toLowerCase();
-        if (nome.includes('uea')) metadata.instituicao = 'UEA';
-        else if (nome.includes('ufam')) metadata.instituicao = 'UFAM';
-        else if (nome.includes('uerr')) metadata.instituicao = 'UERR';
-        else if (nome.includes('ufrr')) metadata.instituicao = 'UFRR';
-        else if (nome.includes('enem')) metadata.instituicao = 'ENEM';
-        else metadata.instituicao = 'OUTRAS'; // fallback corrigido
+        console.log('ℹ️ AVISO: Arquivo sem instituição (será selecionada manualmente):', file.name);
+        // Para PSI, deixar em branco para seleção manual
+        if (metadata.tipo_prova === 'PSI') {
+          metadata.instituicao = ''; // Deixar vazio para PSI
+          console.log('🔵 PSI detectado - instituição em branco para seleção manual');
+        } else {
+          // Tentar inferir instituição do nome apenas para outros tipos
+          const nome = file.name.toLowerCase();
+          if (nome.includes('uea')) metadata.instituicao = 'UEA';
+          else if (nome.includes('ufam')) metadata.instituicao = 'UFAM';
+          else if (nome.includes('uerr')) metadata.instituicao = 'UERR';
+          else if (nome.includes('ufrr')) metadata.instituicao = 'UFRR';
+          else if (nome.includes('enem')) metadata.instituicao = 'ENEM';
+          else metadata.instituicao = ''; // Deixar vazio para seleção manual
+        }
       }
       
       console.log('✅ Metadata final:', {

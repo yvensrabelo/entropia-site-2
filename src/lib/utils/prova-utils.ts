@@ -300,23 +300,26 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
     console.log('║ ✓ Tipo: PSI (instituição a definir)');
     
     // IMPORTANTE: Detectar padrões mais específicos primeiro
-    // Padrões com CG (Conhecimentos Gerais)
+    console.log('║   → Analisando nome para detectar DIA:', name);
+    
+    // Padrões com CG (Conhecimentos Gerais) - DETECTAR -II ANTES de -I
     if (name.includes('cg-ii') || name.includes('cgii') || name.includes('cg ii') || name.includes('cg_ii')) {
       metadata.subcategoria = 'DIA 2';
-      console.log('║   → Detectado CG-II como DIA 2');
+      console.log('║   ✅ Detectado CG-II como DIA 2');
     }
-    else if (name.includes('cg-i') || name.includes('cgi') || name.includes('cg i') || name.includes('cg_i')) {
+    else if (name.includes('cg-i') && !name.includes('cg-ii')) { // Garantir que não é -II
       metadata.subcategoria = 'DIA 1';
-      console.log('║   → Detectado CG-I como DIA 1');
+      console.log('║   ✅ Detectado CG-I como DIA 1');
     }
     // Padrões gerais com -II/-I (DETECTAR -II ANTES de -I!)
     else if (name.includes('-ii') || name.includes('_ii') || name.includes(' ii') || name.includes('.ii')) {
       metadata.subcategoria = 'DIA 2';
-      console.log('║   → Detectado -II como DIA 2');
+      console.log('║   ✅ Detectado -II como DIA 2');
     }
-    else if (name.includes('-i') || name.includes('_i') || name.includes(' i') || name.includes('.i')) {
+    else if ((name.includes('-i') || name.includes('_i') || name.includes(' i') || name.includes('.i')) && 
+             !name.includes('-ii') && !name.includes('_ii')) { // Garantir que não é -II
       metadata.subcategoria = 'DIA 1';
-      console.log('║   → Detectado -I como DIA 1');
+      console.log('║   ✅ Detectado -I como DIA 1');
     }
     // Padrões com "dia"
     else if (name.includes('dia-2') || name.includes('dia 2') || name.includes('dia2') || name.includes('dia_2')) {
