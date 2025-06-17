@@ -83,6 +83,83 @@ export default function TurmasSimples() {
     }
   };
 
+  const salvarTodasTurmas = async () => {
+    console.log('Iniciando salvamento de todas as turmas...');
+    console.log('Total de turmas a salvar:', turmas.length);
+    console.log('Turmas:', turmas);
+    
+    setIsSaving(true);
+    let sucesso = true;
+    
+    try {
+      // Para CADA turma no array
+      for (const turma of turmas) {
+        try {
+          console.log('Processando turma:', turma.nome, 'ID:', turma.id);
+          
+          if (turma.id && turma.id !== '' && !turma.id.toString().startsWith('temp_')) {
+            // Turma existente - ATUALIZAR
+            console.log('Atualizando turma existente:', turma.nome);
+            const resultado = await turmasService.atualizarTurma(turma.id, {
+              nome: turma.nome,
+              foco: turma.foco,
+              serie: turma.serie,
+              beneficios: turma.beneficios || [],
+              ativa: turma.ativa !== false // default true
+            });
+            
+            if (!resultado) {
+              console.error('Falha ao atualizar turma:', turma.nome);
+              sucesso = false;
+            } else {
+              console.log('✅ Turma atualizada:', turma.nome);
+            }
+          } else {
+            // Turma nova - CRIAR
+            console.log('Criando nova turma:', turma.nome);
+            const novaTurma = await turmasService.criarTurma({
+              nome: turma.nome,
+              foco: turma.foco,
+              serie: turma.serie,
+              beneficios: turma.beneficios || [],
+              ativa: turma.ativa !== false
+            });
+            
+            if (!novaTurma) {
+              console.error('Falha ao criar turma:', turma.nome);
+              sucesso = false;
+            } else {
+              console.log('✅ Turma criada:', turma.nome, 'Novo ID:', novaTurma.id);
+              // Atualizar o ID local com o ID do banco
+              turma.id = novaTurma.id;
+            }
+          }
+        } catch (error) {
+          console.error('Erro ao processar turma:', turma.nome, error);
+          sucesso = false;
+        }
+      }
+      
+      // Recarregar todas as turmas do banco
+      console.log('Recarregando turmas do banco...');
+      const turmasAtualizadas = await turmasService.listarTurmas(false);
+      setTurmas(turmasAtualizadas);
+      
+      if (sucesso) {
+        alert(`✅ ${turmas.length} turmas salvas com sucesso!`);
+        console.log('✅ Todas as turmas foram salvas com sucesso!');
+      } else {
+        alert('⚠️ Algumas turmas não foram salvas corretamente. Verifique o console.');
+        console.warn('⚠️ Algumas turmas falharam ao salvar');
+      }
+    } catch (error) {
+      console.error('Erro geral ao salvar turmas:', error);
+      alert('❌ Erro ao salvar as turmas.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -241,13 +318,35 @@ export default function TurmasSimples() {
           <h1 className="text-2xl font-bold text-gray-900">Turmas</h1>
           <p className="text-gray-600">Sistema simplificado de gerenciamento de turmas</p>
         </div>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Nova Turma
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={salvarTodasTurmas}
+            disabled={isSaving || turmas.length === 0}
+            className={`px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors ${
+              isSaving || turmas.length === 0
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
+          >
+            {isSaving ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                Salvando...
+              </>
+            ) : (
+              <>
+                💾 Salvar Todas ({turmas.length})
+              </>
+            )}
+          </button>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Nova Turma
+          </button>
+        </div>
       </div>
 
       {/* Lista de Turmas */}
