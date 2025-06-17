@@ -4,8 +4,10 @@ import Layout from '@/components/Layout'
 export default function CalculadoraPage() {
   return (
     <Layout>
-      <main className="min-h-screen flex items-center justify-center bg-gray-50 p-3 sm:p-4 pt-24">
-        <CalculadoraDinamica />
+      <main className="min-h-screen bg-gray-50 pt-20 pb-8">
+        <div className="container mx-auto px-4 py-8">
+          <CalculadoraDinamica />
+        </div>
       </main>
     </Layout>
   )
