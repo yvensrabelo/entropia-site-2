@@ -335,7 +335,18 @@ export default function MatriculaPage() {
                 </div>
               )}
 
-              <button className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-2xl hover:from-green-600 hover:to-blue-600 transition-all">
+              <button 
+                onClick={() => {
+                  const params = new URLSearchParams();
+                  params.set('turma_id', turma.id?.toString() || '');
+                  params.set('turma', turma.nome || '');
+                  if (serieSelecionada) params.set('serie', serieSelecionada);
+                  if (turnoSelecionado) params.set('turno', turnoSelecionado);
+                  params.set('origem', 'matricula');
+                  window.location.href = `/matricula/formulario-completo?${params.toString()}`;
+                }}
+                className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-2xl hover:from-green-600 hover:to-blue-600 transition-all"
+              >
                 RESERVAR MINHA VAGA
               </button>
             </motion.div>

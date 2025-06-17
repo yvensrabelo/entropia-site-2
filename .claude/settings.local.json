@@ -54,7 +54,9 @@
       "Bash(timeout 10s npm run dev)",
       "mcp__ide__getDiagnostics",
       "Bash(rg:*)",
-      "Bash(/dev/null)"
+      "Bash(/dev/null)",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)"
     ],
     "deny": []
   },

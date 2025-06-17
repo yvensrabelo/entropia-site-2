@@ -168,16 +168,20 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
       {/* Botão Reservar Minha Vaga */}
       <button 
         onClick={() => {
-          // Se há turma real do banco com ID, vai para formulário específico
+          // Sempre redirecionar para o formulário completo
+          const params = new URLSearchParams();
           if (dados.turmaId) {
-            window.location.href = `/matricula/${dados.turmaId}`;
-          } else {
-            // Se é fallback (dados de exemplo), vai para página de seleção
-            const params = new URLSearchParams();
-            if (dados.serie) params.set('serie', dados.serie);
-            params.set('origem', 'home-fallback');
-            window.location.href = `/matricula?${params.toString()}`;
+            params.set('turma_id', dados.turmaId.toString());
+            params.set('turma', dados.titulo);
           }
+          if (dados.serie) {
+            params.set('serie', dados.serie);
+          }
+          if (turnoSelecionado) {
+            params.set('turno', turnoSelecionado);
+          }
+          params.set('origem', 'home');
+          window.location.href = `/matricula/formulario-completo?${params.toString()}`;
         }}
         className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer"
       >
