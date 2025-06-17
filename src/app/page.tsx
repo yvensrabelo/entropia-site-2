@@ -181,7 +181,7 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
             params.set('turno', turnoSelecionado);
           }
           params.set('origem', 'home');
-          window.location.href = `/matricula/formulario-completo?${params.toString()}`;
+          window.location.href = `/matricula/novo-formulario?${params.toString()}`;
         }}
         className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer"
       >

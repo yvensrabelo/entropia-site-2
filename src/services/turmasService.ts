@@ -298,6 +298,49 @@ class TurmasService {
       return []
     }
   }
+
+  // NOVA FUNÇÃO: Obter turma por ID
+  async obterTurma(id: string): Promise<TurmaSimples | null> {
+    try {
+      const { data, error } = await this.supabase
+        .from('turmas')
+        .select('*')
+        .eq('id', id)
+        .single()
+
+      if (error) throw error
+      if (!data) return null
+
+      // Validar e normalizar beneficios
+      let beneficiosValidos = []
+      try {
+        if (Array.isArray(data.beneficios)) {
+          beneficiosValidos = data.beneficios
+        } else if (typeof data.beneficios === 'string') {
+          beneficiosValidos = JSON.parse(data.beneficios)
+        }
+      } catch (error) {
+        console.warn('Benefícios inválidos para turma', data.id, error)
+        beneficiosValidos = []
+      }
+
+      return {
+        id: data.id.toString(),
+        nome: data.nome || '',
+        foco: data.descricao || '',
+        serie: data.ordem?.toString() || '1' as Serie,
+        turnos: data.turnos || ['matutino'],
+        seriesAtendidas: data.series_atendidas || [data.ordem?.toString() || '1'],
+        beneficios: beneficiosValidos,
+        ativa: data.ativo ?? true,
+        precoMensal: data.preco_mensal || 0,
+        duracaoMeses: data.duracao_meses || 12
+      }
+    } catch (error) {
+      console.error('Erro ao obter turma:', error)
+      return null
+    }
+  }
 }
 
 export const turmasService = new TurmasService()

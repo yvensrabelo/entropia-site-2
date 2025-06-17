@@ -343,7 +343,7 @@ export default function MatriculaPage() {
                   if (serieSelecionada) params.set('serie', serieSelecionada);
                   if (turnoSelecionado) params.set('turno', turnoSelecionado);
                   params.set('origem', 'matricula');
-                  window.location.href = `/matricula/formulario-completo?${params.toString()}`;
+                  window.location.href = `/matricula/novo-formulario?${params.toString()}`;
                 }}
                 className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-2xl hover:from-green-600 hover:to-blue-600 transition-all"
               >
