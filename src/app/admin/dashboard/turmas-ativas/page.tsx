@@ -17,10 +17,23 @@ interface TurmaAtiva {
 }
 
 const TURMAS_PADRAO: Omit<TurmaAtiva, 'id' | 'ordem'>[] = [
+  // Turmas para 1ª série
+  { nome: 'PSC UFAM - 1ª SÉRIE VESPERTINA', turnos: ['vespertino'], tipo: 'extensiva', seriesAtendidas: ['1ª série'], ativa: true },
+  { nome: 'PSC UFAM - 1ª SÉRIE MATUTINA', turnos: ['matutino'], tipo: 'extensiva', seriesAtendidas: ['1ª série'], ativa: true },
+  { nome: 'PSC UFAM - 1ª SÉRIE NOTURNA', turnos: ['noturno'], tipo: 'extensiva', seriesAtendidas: ['1ª série'], ativa: true },
+  
+  // Turmas para 2ª série  
+  { nome: 'ENEM PRO - 2ª SÉRIE MATUTINA', turnos: ['matutino'], tipo: 'extensiva', seriesAtendidas: ['2ª série'], ativa: true },
+  { nome: 'ENEM PRO - 2ª SÉRIE VESPERTINA', turnos: ['vespertino'], tipo: 'extensiva', seriesAtendidas: ['2ª série'], ativa: true },
+  { nome: 'ENEM PRO - 2ª SÉRIE NOTURNA', turnos: ['noturno'], tipo: 'extensiva', seriesAtendidas: ['2ª série'], ativa: true },
+  
+  // Turmas para 3ª série (mantendo as existentes)
   { nome: 'INTENSIVA', turnos: ['matutino'], tipo: 'intensiva', seriesAtendidas: ['3ª série'], ativa: true },
   { nome: 'EXTENSIVA MATUTINA', turnos: ['matutino'], tipo: 'extensiva', seriesAtendidas: ['3ª série'], ativa: true },
   { nome: 'EXTENSIVA VESPERTINA', turnos: ['vespertino'], tipo: 'extensiva', seriesAtendidas: ['3ª série'], ativa: true },
   { nome: 'EXTENSIVA NOTURNA', turnos: ['noturno'], tipo: 'extensiva', seriesAtendidas: ['3ª série'], ativa: true },
+  
+  // Turmas para formados/extensivo (mantendo as existentes)
   { nome: 'TURMA SIS/PSC MATUTINA', turnos: ['matutino'], tipo: 'sis-psc', seriesAtendidas: ['Extensivo'], ativa: true },
   { nome: 'TURMA SIS/PSC VESPERTINA', turnos: ['vespertino'], tipo: 'sis-psc', seriesAtendidas: ['Extensivo'], ativa: true },
 ];

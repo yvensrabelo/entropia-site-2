@@ -234,6 +234,18 @@ const FiltroTurnos = ({ turnoSelecionado, onTurnoChange, serieAtiva, turmas }: {
   // Encontrar turnos disponíveis para a série selecionada
   const turnosDisponiveis = new Set<string>();
   turmas.forEach(turma => {
+    // Verificação específica para EXTENSIVA - deve aparecer apenas no 3º ano e formados
+    if (turma.nome?.toUpperCase().includes('EXTENSIVA')) {
+      const atendeExtensiva = (serieCorrespondente === '3' || serieCorrespondente === 'formado') && 
+                             (turma.seriesAtendidas?.includes('3' as any) || 
+                              turma.seriesAtendidas?.includes('formado' as any));
+      if (atendeExtensiva && turma.turnos) {
+        turma.turnos.forEach(turno => turnosDisponiveis.add(turno));
+      }
+      return;
+    }
+    
+    // Lógica normal para outras turmas
     const contemSerie = turma.seriesAtendidas?.includes(serieCorrespondente as any) || turma.serie === serieCorrespondente;
     if (contemSerie && turma.turnos) {
       turma.turnos.forEach(turno => turnosDisponiveis.add(turno));
