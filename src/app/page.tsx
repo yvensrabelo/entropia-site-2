@@ -168,11 +168,13 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
       {/* Botão Reservar Minha Vaga */}
       <button 
         onClick={() => {
-          const params = new URLSearchParams();
-          if (dados.turmaId) params.set('turma', dados.titulo);
-          if (dados.serie) params.set('serie', dados.serie);
-          params.set('origem', 'home-turma');
-          window.location.href = `/matricula?${params.toString()}`;
+          // Ir diretamente para o formulário de matrícula com ID da turma
+          if (dados.turmaId) {
+            window.location.href = `/matricula/${dados.turmaId}`;
+          } else {
+            // Fallback para página geral de matrícula
+            window.location.href = '/matricula';
+          }
         }}
         className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer"
       >
@@ -234,10 +236,6 @@ const FiltroTurnos = ({ turnoSelecionado, onTurnoChange, serieAtiva, turmas }: {
 
   return (
     <div className="space-y-3 mt-4">
-      <div className="text-center">
-        <p className="text-white/80 text-sm font-medium">Escolha seu turno:</p>
-      </div>
-      
       <div className="bg-white/10 backdrop-blur-md rounded-3xl p-3 border border-white/20 shadow-xl">
         <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${turnos.length + 1}, 1fr)` }}>
           {/* Botão "Todos" */}
