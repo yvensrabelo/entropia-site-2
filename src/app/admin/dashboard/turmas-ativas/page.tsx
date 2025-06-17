@@ -17,14 +17,12 @@ interface TurmaAtiva {
 }
 
 const TURMAS_PADRAO: Omit<TurmaAtiva, 'id' | 'ordem'>[] = [
-  { nome: 'INTENSIVA', turnos: ['matutino'], tipo: 'intensiva', ativa: true },
-  { nome: 'EXTENSIVA MATUTINA 1', turnos: ['matutino'], tipo: 'extensiva', seriesAtendidas: ['1ª série'], ativa: true },
-  { nome: 'EXTENSIVA MATUTINA 2', turnos: ['matutino'], tipo: 'extensiva', seriesAtendidas: ['2ª série'], ativa: true },
-  { nome: 'EXTENSIVA VESPERTINA 1', turnos: ['vespertino'], tipo: 'extensiva', seriesAtendidas: ['1ª série'], ativa: true },
-  { nome: 'EXTENSIVA VESPERTINA 2', turnos: ['vespertino'], tipo: 'extensiva', seriesAtendidas: ['2ª série'], ativa: true },
-  { nome: 'EXTENSIVA NOTURNA 1', turnos: ['noturno'], tipo: 'extensiva', seriesAtendidas: ['3ª série'], ativa: true },
-  { nome: 'TURMA SIS/PSC 1', turnos: ['matutino'], tipo: 'sis-psc', seriesAtendidas: ['Extensivo'], ativa: true },
-  { nome: 'TURMA SIS/PSC 2', turnos: ['vespertino'], tipo: 'sis-psc', seriesAtendidas: ['Extensivo'], ativa: true },
+  { nome: 'INTENSIVA', turnos: ['matutino'], tipo: 'intensiva', seriesAtendidas: ['3ª série'], ativa: true },
+  { nome: 'EXTENSIVA MATUTINA', turnos: ['matutino'], tipo: 'extensiva', seriesAtendidas: ['3ª série'], ativa: true },
+  { nome: 'EXTENSIVA VESPERTINA', turnos: ['vespertino'], tipo: 'extensiva', seriesAtendidas: ['3ª série'], ativa: true },
+  { nome: 'EXTENSIVA NOTURNA', turnos: ['noturno'], tipo: 'extensiva', seriesAtendidas: ['3ª série'], ativa: true },
+  { nome: 'TURMA SIS/PSC MATUTINA', turnos: ['matutino'], tipo: 'sis-psc', seriesAtendidas: ['Extensivo'], ativa: true },
+  { nome: 'TURMA SIS/PSC VESPERTINA', turnos: ['vespertino'], tipo: 'sis-psc', seriesAtendidas: ['Extensivo'], ativa: true },
 ];
 
 // Função para converter TurmaSimples em TurmaAtiva

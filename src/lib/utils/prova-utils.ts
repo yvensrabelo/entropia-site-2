@@ -4,7 +4,7 @@
  * 
  * TIPOS DE PROVA VÁLIDOS:
  * - PSC (UFAM): etapas 1, 2, 3
- * - PSI (UFAM): DIA 1, DIA 2  
+ * - PSI: DIA 1, DIA 2 (instituição a definir)  
  * - SIS (UEA): etapas 1, 2, 3
  * - MACRO (UEA): CG (Conhecimentos Gerais) ou áreas (HUMANAS, EXATAS, BIOLÓGICAS)
  * - PSS (UFRR): etapas 1, 2, 3
@@ -293,11 +293,11 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
   if (metadata.tipo_prova === EXAM_TYPES.MACRO) {
     console.log('║ ✓ Tipo já detectado: MACRO (por área)');
   }
-  // === PSI (UFAM) - DETECTAR PRIMEIRO ===
+  // === PSI - DETECTAR PRIMEIRO (sem forçar instituição) ===
   else if (name.includes('psi')) {
     metadata.tipo_prova = EXAM_TYPES.PSI;
-    metadata.instituicao = metadata.instituicao || 'UFAM';
-    console.log('║ ✓ Tipo: PSI (UFAM)');
+    // Não forçar instituição - permitir seleção manual
+    console.log('║ ✓ Tipo: PSI (instituição a definir)');
     
     // IMPORTANTE: Detectar padrões mais específicos primeiro
     // Padrões com CG (Conhecimentos Gerais)

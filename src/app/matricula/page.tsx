@@ -63,7 +63,17 @@ export default function MatriculaPage() {
       const turmasDaSerie = todasTurmas.filter(turma => {
         console.log(`[FILTRO] ${turma.nome} - seriesAtendidas:`, turma.seriesAtendidas)
         
-        // Verificar ambos os formatos por segurança  
+        // Verificação específica para EXTENSIVA - deve aparecer apenas no 3º ano e formados
+        if (turma.nome?.toUpperCase().includes('EXTENSIVA')) {
+          console.log(`[EXTENSIVA CHECK] ${turma.nome} sendo verificada para série: ${serieSelecionada}`)
+          const atendeExtensiva = (serieSelecionada === '3' || serieSelecionada === 'formado') && 
+                                 (turma.seriesAtendidas?.includes('3' as Serie) || 
+                                  turma.seriesAtendidas?.includes('formado' as Serie))
+          console.log(`[EXTENSIVA RESULT] ${turma.nome} atende ${serieSelecionada}? ${atendeExtensiva}`)
+          return atendeExtensiva
+        }
+        
+        // Verificar ambos os formatos por segurança para outras turmas
         const atende = turma.seriesAtendidas?.includes(serieSelecionada) || 
                       (serieSelecionada === 'formado' && turma.seriesAtendidas?.includes('formado' as Serie)) ||
                       false

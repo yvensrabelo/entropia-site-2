@@ -38,6 +38,17 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
     
     // Filtrar turmas por série e turno
     const turmasCandidatas = turmas.filter(turma => {
+      // Verificação específica para EXTENSIVA - deve aparecer apenas no 3º ano e formados
+      if (turma.nome?.toUpperCase().includes('EXTENSIVA')) {
+        const atendeExtensiva = (serieCorrespondente === '3' || serieCorrespondente === 'formado') && 
+                               (turma.seriesAtendidas?.includes('3' as any) || 
+                                turma.seriesAtendidas?.includes('formado' as any));
+        const contemTurno = !turnoSelecionado || turma.turnos?.includes(turnoSelecionado as any);
+        console.log(`[HOMEPAGE EXTENSIVA] ${turma.nome} - série: ${serieCorrespondente}, atende: ${atendeExtensiva}, turno ok: ${contemTurno}`);
+        return atendeExtensiva && contemTurno;
+      }
+      
+      // Lógica normal para outras turmas
       const contemSerie = turma.seriesAtendidas?.includes(serieCorrespondente as any) || turma.serie === serieCorrespondente;
       const contemTurno = !turnoSelecionado || turma.turnos?.includes(turnoSelecionado as any);
       return contemSerie && contemTurno;
