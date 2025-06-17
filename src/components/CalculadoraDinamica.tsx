@@ -227,19 +227,7 @@ export default function CalculadoraDinamica() {
 
   return (
     <div className="w-full max-w-7xl mx-auto">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-6"
-      >
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
-          Calculadora <span className="text-green-600">Dinâmica</span> de Aprovação
-        </h1>
-        <p className="text-lg text-gray-600">
-          Veja suas chances em tempo real para todos os cursos
-        </p>
-      </motion.div>
+      {/* Header - removido conforme solicitado */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Coluna Esquerda - Inputs */}
@@ -248,11 +236,8 @@ export default function CalculadoraDinamica() {
           animate={{ opacity: 1, x: 0 }}
           className="bg-white rounded-2xl shadow-xl p-4 sm:p-6"
         >
-          {/* Seleção de Processo */}
+          {/* Seleção de Processo - título removido */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Processo Seletivo
-            </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {PROCESSOS.map(processo => {
                 const isDisabled = processo !== 'PSC';
@@ -287,9 +272,9 @@ export default function CalculadoraDinamica() {
 
           {/* Dados para Cotas */}
           <div className="mb-6 space-y-4">
-            <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+            <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <Users size={20} className="text-green-600" />
-              Informações para Determinação de Cota
+              DEFINA SUA COTA
             </h3>
 
             {/* Escola Pública */}
@@ -336,11 +321,9 @@ export default function CalculadoraDinamica() {
                 onChange={(e) => setDadosCotas(prev => ({ ...prev, etnia: e.target.value as any }))}
                 className="w-full px-4 py-3 min-h-[48px] border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-base"
               >
-                <option value="branco">Branco(a)</option>
+                <option value="branco">Não se aplica</option>
                 <option value="preto">Preto(a)</option>
-                <option value="pardo">Pardo(a)</option>
                 <option value="indigena">Indígena</option>
-                <option value="amarelo">Amarelo(a)</option>
               </select>
             </div>
 
@@ -402,35 +385,75 @@ export default function CalculadoraDinamica() {
               <Calculator size={20} className="text-green-600" />
               Insira suas Notas
             </h3>
-            {camposNota.map((campo, index) => (
+            
+            {/* Layout especial para PSC - Grid 2x2 no mobile */}
+            {processoSelecionado === 'PSC' ? (
               <motion.div
-                key={campo.label}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
+                className="grid grid-cols-2 md:grid-cols-4 gap-3"
               >
-                <label className="block text-base font-medium text-gray-800 mb-2">
-                  {campo.label}
-                </label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    inputMode="decimal"
-                    pattern="[0-9]*"
-                    value={notas[campo.label] || ''}
-                    onChange={(e) => handleNotaChange(campo.label, e.target.value)}
-                    min={0}
-                    max={campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}
-                    step={campo.label.includes('Redação') ? 0.1 : 1}
-                    className="w-full px-4 py-3 pr-20 min-h-[48px] border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-base"
-                    placeholder={`0 - ${campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}`}
-                  />
-                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base font-medium">
-                    /{campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}
-                  </span>
-                </div>
+                {camposNota.map((campo, index) => (
+                  <div key={campo.label} className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-800">
+                      {campo.label === 'PSC 1' ? 'Etapa 1' :
+                       campo.label === 'PSC 2' ? 'Etapa 2' :
+                       campo.label === 'PSC 3' ? 'Etapa 3' :
+                       campo.label === 'Redação' ? 'Habilidades' :
+                       campo.label}
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        pattern="[0-9]*"
+                        value={notas[campo.label] || ''}
+                        onChange={(e) => handleNotaChange(campo.label, e.target.value)}
+                        min={0}
+                        max={campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}
+                        step={campo.label.includes('Redação') ? 0.1 : 1}
+                        className="w-full px-3 py-2 pr-12 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-sm"
+                        placeholder={`0-${campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}`}
+                      />
+                      <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs font-medium">
+                        /{campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </motion.div>
-            ))}
+            ) : (
+              // Layout normal para outros processos
+              camposNota.map((campo, index) => (
+                <motion.div
+                  key={campo.label}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <label className="block text-base font-medium text-gray-800 mb-2">
+                    {campo.label}
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      pattern="[0-9]*"
+                      value={notas[campo.label] || ''}
+                      onChange={(e) => handleNotaChange(campo.label, e.target.value)}
+                      min={0}
+                      max={campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}
+                      step={campo.label.includes('Redação') ? 0.1 : 1}
+                      className="w-full px-4 py-3 pr-20 min-h-[48px] border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-base"
+                      placeholder={`0 - ${campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}`}
+                    />
+                    <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-base font-medium">
+                      /{campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? 9 : campo.max}
+                    </span>
+                  </div>
+                </motion.div>
+              ))
+            )}
             
             {/* Nota Total */}
             <motion.div
