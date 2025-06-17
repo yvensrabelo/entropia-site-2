@@ -141,26 +141,42 @@ export default function UploadMassa() {
     processarArquivos(files);
   };
 
-  // Função de teste temporária para verificar parser PSI
+  // Função de teste DEFINITIVA para verificar parser PSI
   const testarParserPSI = () => {
     const arquivosTeste = [
       'PSI-24-Prova-CG-II.pdf',
       'PSI-24-Prova-CG-I.pdf', 
       'PSI-24-Gabarito-CG-II.pdf',
-      'PSI-24-Gabarito-CG-I.pdf'
+      'PSI-24-Gabarito-CG-I.pdf',
+      'PSI-23-Prova-CG-II.pdf',
+      'PSI-23-Prova-CG-I.pdf'
     ];
     
-    console.log('🧪 === TESTE DO PARSER PSI ===');
+    console.log('🧪 === TESTE DEFINITIVO DO PARSER PSI ===');
     arquivosTeste.forEach(arquivo => {
       console.log(`\n📄 Testando: ${arquivo}`);
       const metadata = extractMetadataFromFilename(arquivo);
-      console.log('Resultado:', {
+      console.log('✅ Resultado:', {
         tipo_prova: metadata.tipo_prova,
-        instituicao: metadata.instituicao,
+        instituicao: metadata.instituicao || '(VAZIO - correto para PSI)',
         subcategoria: metadata.subcategoria,
         titulo: metadata.titulo
       });
+      
+      // Validação
+      const esperado = {
+        tipo_prova: 'PSI',
+        instituicao: '', // Deve estar vazio
+        subcategoria: arquivo.includes('-ii') || arquivo.includes('II') ? 'DIA 2' : 'DIA 1'
+      };
+      
+      const correto = metadata.tipo_prova === esperado.tipo_prova && 
+                     metadata.instituicao === esperado.instituicao &&
+                     metadata.subcategoria === esperado.subcategoria;
+      
+      console.log(correto ? '✅ PASSOU' : '❌ FALHOU');
     });
+    console.log('🧪 === FIM DO TESTE ===\n');
   };
 
   const processarArquivos = (files: File[]) => {
@@ -181,50 +197,11 @@ export default function UploadMassa() {
       const tipo = isGabarito(file.name) ? 'gabarito' : 'prova';
       console.log('📝 Tipo de arquivo:', tipo);
       
-      // CORREÇÃO ADICIONAL PARA GARANTIR DETECÇÃO DE ÁREAS (mas não sobrescrever PSI)
-      const nomeLower = file.name.toLowerCase();
-      
-      // VERIFICAÇÃO ESPECÍFICA: Se já foi detectado como PSI, NÃO sobrescrever
+      // VERIFICAÇÃO ESPECÍFICA: Se é PSI, não aplicar correções adicionais
       if (metadata.tipo_prova === 'PSI') {
-        console.log('🔵 PSI detectado - mantendo configuração e não forçando UEA/MACRO');
-        // Não fazer nada, manter PSI como está
-      }
-      // Apenas se for MACRO legítimo (não PSI mal interpretado)
-      else if ((nomeLower.includes('biologica') || nomeLower.includes('biológica') ||
-                nomeLower.includes('humana') || 
-                nomeLower.includes('exata')) && 
-               !nomeLower.includes('psi') && // IMPORTANTE: excluir PSI
-               metadata.tipo_prova !== 'MACRO') {
-        
-        console.log('🔴 CORREÇÃO: Arquivo com área detectada como', metadata.tipo_prova, '- corrigindo para MACRO');
-        
-        metadata.instituicao = 'UEA';
-        metadata.tipo_prova = 'MACRO';
-        
-        // Reprocessar título
-        if (nomeLower.includes('biologica') || nomeLower.includes('biológica')) {
-          metadata.area = 'BIOLÓGICAS';
-          metadata.titulo = 'Biológicas';
-        } else if (nomeLower.includes('humana')) {
-          metadata.area = 'HUMANAS';
-          metadata.titulo = 'Humanas';
-        } else if (nomeLower.includes('exata')) {
-          metadata.area = 'EXATAS';
-          metadata.titulo = 'Exatas';
-        }
-        // Remover lógica do "geral" que estava conflitando com PSI
-        
-        if (isGabarito(file.name)) {
-          metadata.titulo += ' - Gabarito';
-        }
-        
-        console.log('🔧 Metadata corrigida:', {
-          instituicao: metadata.instituicao,
-          tipo_prova: metadata.tipo_prova,
-          area: metadata.area,
-          subcategoria: metadata.subcategoria,
-          titulo: metadata.titulo
-        });
+        console.log('🔵 PSI detectado - mantendo configuração original');
+        // Para PSI, confiar completamente no parser do prova-utils
+        // Não aplicar nenhuma correção adicional
       }
       
       // Validação e fallbacks
