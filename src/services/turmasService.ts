@@ -209,23 +209,60 @@ class TurmasService {
   // NOVA FUNÇÃO: Listar turnos disponíveis por série
   async listarTurnosDisponiveisPorSerie(serie: Serie): Promise<Turno[]> {
     try {
-      console.log('Buscando turnos disponíveis para série:', serie)
+      console.log('[DEBUG] Buscando turnos disponíveis para série:', serie)
       
+      // PRIMEIRO: Buscar TODAS as turmas para debug
+      const { data: todasTurmas, error: erroTodas } = await this.supabase
+        .from('turmas')
+        .select('id, nome, turnos, series_atendidas, ativo')
+        .eq('ativo', true)
+
+      if (erroTodas) {
+        console.error('[DEBUG] Erro ao buscar todas as turmas:', erroTodas)
+        throw erroTodas
+      }
+
+      console.log('[DEBUG] TODAS as turmas ativas no banco:', todasTurmas)
+      
+      // Filtrar localmente para debug
+      const turmasQueDeveriaApaarecer = todasTurmas?.filter(turma => {
+        const contemSerie = turma.series_atendidas?.includes(serie)
+        console.log(`[DEBUG] Turma ${turma.nome}:`, {
+          series_atendidas: turma.series_atendidas,
+          turnos: turma.turnos,
+          contemSerie
+        })
+        return contemSerie
+      }) || []
+      
+      console.log('[DEBUG] Turmas que DEVERIAM aparecer para série', serie, ':', turmasQueDeveriaApaarecer)
+
+      // CORREÇÃO: Usar sintaxe correta para PostgreSQL arrays
+      // Usar cs (contains) ao invés de contains para array elements
       const { data, error } = await this.supabase
         .from('turmas')
         .select('turnos')
-        .contains('series_atendidas', [serie])
+        .filter('series_atendidas', 'cs', `{"${serie}"}`)
         .eq('ativo', true)
 
       if (error) {
-        console.error('Erro do Supabase ao buscar turnos:', error)
+        console.error('[DEBUG] Erro do Supabase ao buscar turnos:', error)
         throw error
       }
 
+      console.log('[DEBUG] Resultado da query .filter("cs"):', data)
+
+      // Se a query não funcionar, usar filtro local como fallback
+      let dadosParaUsar = data
+      if (!data || data.length === 0) {
+        console.log('[DEBUG] Query retornou vazia, usando filtro local como fallback')
+        dadosParaUsar = turmasQueDeveriaApaarecer
+      }
+
       // Coletar todos os turnos únicos
-      const todosTurnos = data?.flatMap(t => t.turnos || []) || []
+      const todosTurnos = dadosParaUsar?.flatMap(t => t.turnos || []) || []
       const turnosUnicos = [...new Set(todosTurnos)] as Turno[]
-      console.log('Turnos disponíveis para série', serie, ':', turnosUnicos)
+      console.log('[DEBUG] Turnos disponíveis para série', serie, ':', turnosUnicos)
       
       return turnosUnicos
     } catch (error) {
@@ -237,23 +274,60 @@ class TurmasService {
   // NOVA FUNÇÃO: Obter turmas por série e turno
   async listarTurmasPorSerieETurno(serie: Serie, turno: Turno): Promise<TurmaSimples[]> {
     try {
-      console.log('Buscando turmas para série:', serie, 'e turno:', turno)
+      console.log('[DEBUG] Buscando turmas para série:', serie, 'e turno:', turno)
       
+      // PRIMEIRO: Buscar TODAS as turmas para debug
+      const { data: todasTurmas, error: erroTodas } = await this.supabase
+        .from('turmas')
+        .select('*')
+        .eq('ativo', true)
+
+      if (erroTodas) {
+        console.error('[DEBUG] Erro ao buscar todas as turmas:', erroTodas)
+        throw erroTodas
+      }
+
+      // Filtrar localmente para debug
+      const turmasQueDeveriaApaarecer = todasTurmas?.filter(turma => {
+        const contemSerie = turma.series_atendidas?.includes(serie)
+        const contemTurno = turma.turnos?.includes(turno)
+        console.log(`[DEBUG] Turma ${turma.nome}:`, {
+          series_atendidas: turma.series_atendidas,
+          turnos: turma.turnos,
+          contemSerie,
+          contemTurno,
+          passaFiltro: contemSerie && contemTurno
+        })
+        return contemSerie && contemTurno
+      }) || []
+      
+      console.log('[DEBUG] Turmas que DEVERIAM aparecer para série', serie, 'e turno', turno, ':', turmasQueDeveriaApaarecer.map(t => t.nome))
+
+      // CORREÇÃO: Usar sintaxe correta para PostgreSQL arrays
       const { data, error } = await this.supabase
         .from('turmas')
         .select('*')
-        .contains('series_atendidas', [serie])
-        .contains('turnos', [turno])
+        .filter('series_atendidas', 'cs', `{"${serie}"}`)
+        .filter('turnos', 'cs', `{"${turno}"}`)
         .eq('ativo', true)
         .order('nome', { ascending: true })
 
       if (error) {
-        console.error('Erro do Supabase ao buscar turmas por série e turno:', error)
+        console.error('[DEBUG] Erro do Supabase ao buscar turmas por série e turno:', error)
         throw error
       }
 
+      console.log('[DEBUG] Resultado da query .filter("cs") para turmas:', data?.map(t => ({ nome: t.nome, series: t.series_atendidas, turnos: t.turnos })))
+
+      // Se a query não funcionar, usar filtro local como fallback
+      let dadosParaUsar = data
+      if (!data || data.length === 0) {
+        console.log('[DEBUG] Query retornou vazia, usando filtro local como fallback')
+        dadosParaUsar = turmasQueDeveriaApaarecer
+      }
+
       // Adaptar formato do banco para o formato esperado
-      return (data || []).map(turma => {
+      return (dadosParaUsar || []).map(turma => {
         // Validar e normalizar beneficios
         let beneficiosValidos = []
         try {
