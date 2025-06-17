@@ -432,7 +432,7 @@ const FormularioMatricula = () => {
         dataNascimentoResponsavel: formatarData(formData.dataNascimentoResponsavel)
       };
 
-      const webhookUrl = 'https://n8n.cursoentropia.com/webhook-test/siteentropiaoficial';
+      const webhookUrl = 'https://webhook.cursoentropia.com/webhook/siteentropiaoficial';
       const dadosWebhook = {
         ...dadosFormatados,
         ...turmaInfo,

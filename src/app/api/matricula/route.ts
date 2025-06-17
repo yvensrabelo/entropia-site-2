@@ -4,7 +4,7 @@ export async function POST(request: Request) {
     console.log('Recebendo matrícula:', body);
     
     // URL do webhook usando variável de ambiente
-    const webhookUrl = process.env.WEBHOOK_URL || 'https://n8n.cursoentropia.com/webhook-test/siteentropiaoficial';
+    const webhookUrl = process.env.WEBHOOK_URL || 'https://webhook.cursoentropia.com/webhook/siteentropiaoficial';
     console.log('Enviando para webhook:', webhookUrl);
     
     const response = await fetch(webhookUrl, {
