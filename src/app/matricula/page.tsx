@@ -432,31 +432,50 @@ const FormularioMatricula = () => {
         dataNascimentoResponsavel: formatarData(formData.dataNascimentoResponsavel)
       };
 
-      const response = await fetch('https://webhook.cursoentropia.com/webhook/siteentropiaoficial', {
+      const webhookUrl = 'https://n8n.cursoentropia.com/webhook-test/siteentropiaoficial';
+      const dadosWebhook = {
+        ...dadosFormatados,
+        ...turmaInfo,
+        turma: turmaSelecionada,
+        formaPagamento: formaPagamento,
+        valorPagamento: calcularValorTotal(),
+        mesesPagamento: calcularMesesAteTermino(),
+        dataEnvio: new Date().toISOString(),
+        origem: turmaInfo.origem || 'site-entropia'
+      };
+
+      console.log('Enviando webhook para:', webhookUrl);
+      console.log('Dados sendo enviados:', dadosWebhook);
+
+      const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...dadosFormatados,
-          ...turmaInfo,
-          turma: turmaSelecionada,
-          formaPagamento: formaPagamento,
-          valorPagamento: calcularValorTotal(),
-          mesesPagamento: calcularMesesAteTermino(),
-          dataEnvio: new Date().toISOString(),
-          origem: turmaInfo.origem || 'site-entropia'
-        }),
+        body: JSON.stringify(dadosWebhook),
       });
 
+      console.log('Status da resposta:', response.status);
+      console.log('Headers da resposta:', response.headers);
+
       if (response.ok) {
+        const responseData = await response.json();
+        console.log('Resposta do webhook:', responseData);
         setSucesso(true);
       } else {
-        alert('Erro ao enviar. Tente novamente.');
+        const errorText = await response.text();
+        console.error('Erro na resposta:', errorText);
+        alert(`Erro ao enviar (${response.status}): ${errorText || 'Tente novamente.'}`);
       }
     } catch (error) {
-      console.error('Erro:', error);
-      alert('Erro ao enviar. Tente novamente.');
+      console.error('Erro detalhado ao enviar webhook:', error);
+      
+      // Verificar se é erro de rede ou servidor
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        alert('Erro de conexão. Verifique sua internet e tente novamente.');
+      } else {
+        alert(`Erro ao enviar dados: ${error.message || 'Tente novamente.'}`);
+      }
     } finally {
       setEnviando(false);
     }
