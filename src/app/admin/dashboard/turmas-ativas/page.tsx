@@ -8,7 +8,7 @@ import { turmasService } from '@/services/turmasService';
 interface TurmaAtiva {
   id: string;
   nome: string;
-  turno: 'manhã' | 'tarde' | 'noite';
+  turno: 'matutino' | 'vespertino' | 'noturno';
   tipo: 'intensiva' | 'extensiva' | 'sis-psc';
   serie?: '1ª série' | '2ª série' | '3ª série' | 'Extensivo';
   ativa: boolean;
@@ -16,14 +16,14 @@ interface TurmaAtiva {
 }
 
 const TURMAS_PADRAO: Omit<TurmaAtiva, 'id' | 'ordem'>[] = [
-  { nome: 'INTENSIVA', turno: 'manhã', tipo: 'intensiva', ativa: true },
-  { nome: 'EXTENSIVA MATUTINA 1', turno: 'manhã', tipo: 'extensiva', serie: '1ª série', ativa: true },
-  { nome: 'EXTENSIVA MATUTINA 2', turno: 'manhã', tipo: 'extensiva', serie: '2ª série', ativa: true },
-  { nome: 'EXTENSIVA VESPERTINA 1', turno: 'tarde', tipo: 'extensiva', serie: '1ª série', ativa: true },
-  { nome: 'EXTENSIVA VESPERTINA 2', turno: 'tarde', tipo: 'extensiva', serie: '2ª série', ativa: true },
-  { nome: 'EXTENSIVA NOTURNA 1', turno: 'noite', tipo: 'extensiva', serie: '3ª série', ativa: true },
-  { nome: 'TURMA SIS/PSC 1', turno: 'manhã', tipo: 'sis-psc', serie: 'Extensivo', ativa: true },
-  { nome: 'TURMA SIS/PSC 2', turno: 'tarde', tipo: 'sis-psc', serie: 'Extensivo', ativa: true },
+  { nome: 'INTENSIVA', turno: 'matutino', tipo: 'intensiva', ativa: true },
+  { nome: 'EXTENSIVA MATUTINA 1', turno: 'matutino', tipo: 'extensiva', serie: '1ª série', ativa: true },
+  { nome: 'EXTENSIVA MATUTINA 2', turno: 'matutino', tipo: 'extensiva', serie: '2ª série', ativa: true },
+  { nome: 'EXTENSIVA VESPERTINA 1', turno: 'vespertino', tipo: 'extensiva', serie: '1ª série', ativa: true },
+  { nome: 'EXTENSIVA VESPERTINA 2', turno: 'vespertino', tipo: 'extensiva', serie: '2ª série', ativa: true },
+  { nome: 'EXTENSIVA NOTURNA 1', turno: 'noturno', tipo: 'extensiva', serie: '3ª série', ativa: true },
+  { nome: 'TURMA SIS/PSC 1', turno: 'matutino', tipo: 'sis-psc', serie: 'Extensivo', ativa: true },
+  { nome: 'TURMA SIS/PSC 2', turno: 'vespertino', tipo: 'sis-psc', serie: 'Extensivo', ativa: true },
 ];
 
 // Função para converter TurmaSimples em TurmaAtiva
@@ -31,7 +31,7 @@ const convertTurmasSimplesToAtivas = (turmasSimples: any[]): TurmaAtiva[] => {
   return turmasSimples.map((turma, index) => ({
     id: turma.id,
     nome: turma.nome,
-    turno: 'manhã' as 'manhã' | 'tarde' | 'noite',
+    turno: turma.turno || 'matutino' as 'matutino' | 'vespertino' | 'noturno',
     tipo: turma.foco as 'intensiva' | 'extensiva' | 'sis-psc',
     serie: turma.serie === '1' ? '1ª série' : 
            turma.serie === '2' ? '2ª série' : 
@@ -47,7 +47,7 @@ export default function TurmasAtivasPage() {
   const [editingTurma, setEditingTurma] = useState<TurmaAtiva | null>(null);
   const [formData, setFormData] = useState({
     nome: '',
-    turno: 'manhã' as 'manhã' | 'tarde' | 'noite',
+    turno: 'matutino' as 'matutino' | 'vespertino' | 'noturno',
     tipo: 'extensiva' as 'intensiva' | 'extensiva' | 'sis-psc',
     serie: '' as '1ª série' | '2ª série' | '3ª série' | 'Extensivo' | '',
     ativa: true
@@ -68,6 +68,7 @@ export default function TurmasAtivasPage() {
             nome: turma.nome,
             foco: turma.tipo, // Mapear tipo para foco
             serie: '1', // Default 
+            turno: turma.turno, // NOVO CAMPO DE TURNO
             beneficios: [], // Vazio por padrão
             // NOVOS CAMPOS OBRIGATÓRIOS
             precoMensal: 180.00, // Valor padrão
@@ -94,6 +95,7 @@ export default function TurmasAtivasPage() {
       serie: (formData.serie === '1ª série' ? '1' : 
              formData.serie === '2ª série' ? '2' : 
              formData.serie === '3ª série' ? '3' : 'formado') as '1' | '2' | '3' | 'formado',
+      turno: formData.turno, // NOVO CAMPO DE TURNO
       beneficios: [], // Vazio por padrão
       ativa: formData.ativa,
       // NOVOS CAMPOS OBRIGATÓRIOS
@@ -124,7 +126,7 @@ export default function TurmasAtivasPage() {
   const resetForm = () => {
     setFormData({
       nome: '',
-      turno: 'manhã',
+      turno: 'matutino',
       tipo: 'extensiva',
       serie: '',
       ativa: true
@@ -184,9 +186,9 @@ export default function TurmasAtivasPage() {
 
   const getTurnoIcon = (turno: string) => {
     switch (turno) {
-      case 'manhã': return <Sun className="w-4 h-4 text-yellow-500" />;
-      case 'tarde': return <Cloud className="w-4 h-4 text-orange-500" />;
-      case 'noite': return <Moon className="w-4 h-4 text-blue-500" />;
+      case 'matutino': return <Sun className="w-4 h-4 text-yellow-500" />;
+      case 'vespertino': return <Cloud className="w-4 h-4 text-orange-500" />;
+      case 'noturno': return <Moon className="w-4 h-4 text-blue-500" />;
       default: return null;
     }
   };
@@ -315,8 +317,8 @@ export default function TurmasAtivasPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-2">
-                    {getTurnoIcon('manhã')}
-                    <span className="text-sm text-gray-700 capitalize">manhã</span>
+                    {getTurnoIcon(turma.turno)}
+                    <span className="text-sm text-gray-700 capitalize">{turma.turno}</span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -412,9 +414,9 @@ export default function TurmasAtivasPage() {
                     onChange={(e) => setFormData({ ...formData, turno: e.target.value as any })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
                   >
-                    <option value="manhã">Manhã</option>
-                    <option value="tarde">Tarde</option>
-                    <option value="noite">Noite</option>
+                    <option value="matutino">🌅 Matutino</option>
+                    <option value="vespertino">☁️ Vespertino</option>
+                    <option value="noturno">🌙 Noturno</option>
                   </select>
                 </div>
 

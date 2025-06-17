@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, X, ToggleLeft, ToggleRight, GripVertical } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, ToggleLeft, ToggleRight, GripVertical, Sun, Cloud, Moon } from 'lucide-react';
 import { TurmaSimples } from '@/lib/types/turma';
 import AuthGuard from '@/components/admin/AuthGuard';
 import { turmasService } from '@/services/turmasService';
@@ -14,6 +14,7 @@ export default function TurmasSimples() {
     nome: '',
     foco: '',
     serie: '3',
+    turno: 'matutino', // NOVO CAMPO DE TURNO
     beneficios: [],
     ativa: true,
     // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -107,6 +108,7 @@ export default function TurmasSimples() {
               nome: turma.nome,
               foco: turma.foco,
               serie: turma.serie,
+              turno: turma.turno || 'matutino', // NOVO CAMPO DE TURNO
               beneficios: turma.beneficios || [],
               ativa: turma.ativa !== false, // default true
               // NOVOS CAMPOS OBRIGATÓRIOS
@@ -127,6 +129,7 @@ export default function TurmasSimples() {
               nome: turma.nome,
               foco: turma.foco,
               serie: turma.serie,
+              turno: turma.turno || 'matutino', // NOVO CAMPO DE TURNO
               beneficios: turma.beneficios || [],
               ativa: turma.ativa !== false,
               // NOVOS CAMPOS OBRIGATÓRIOS
@@ -192,6 +195,7 @@ export default function TurmasSimples() {
       nome: turma.nome,
       foco: turma.foco,
       serie: turma.serie,
+      turno: turma.turno || 'matutino', // NOVO CAMPO DE TURNO
       beneficios: [...turma.beneficios],
       ativa: turma.ativa ?? true,
       // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -225,6 +229,7 @@ export default function TurmasSimples() {
       nome: '',
       foco: '',
       serie: '3',
+      turno: 'matutino', // NOVO CAMPO DE TURNO
       beneficios: [],
       ativa: true,
       // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -385,6 +390,9 @@ export default function TurmasSimples() {
                   Série
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Turno
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Benefícios
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -416,6 +424,16 @@ export default function TurmasSimples() {
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${getSerieColor(turma.serie)}`}>
                     {getSerieLabel(turma.serie)}
                   </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center gap-2">
+                    {turma.turno === 'matutino' && <Sun className="w-4 h-4 text-yellow-500" />}
+                    {turma.turno === 'vespertino' && <Cloud className="w-4 h-4 text-orange-500" />}
+                    {turma.turno === 'noturno' && <Moon className="w-4 h-4 text-blue-500" />}
+                    <span className="text-sm text-gray-700 capitalize">
+                      {turma.turno || 'matutino'}
+                    </span>
+                  </div>
                 </td>
                 <td className="px-6 py-4">
                   <div className="text-sm text-gray-600">
@@ -551,6 +569,23 @@ export default function TurmasSimples() {
                   <option value="2">2ª Série</option>
                   <option value="3">3ª Série</option>
                   <option value="formado">Já Formado</option>
+                </select>
+              </div>
+
+              {/* Turno */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Turno *
+                </label>
+                <select
+                  value={formData.turno}
+                  onChange={(e) => setFormData({ ...formData, turno: e.target.value as any })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  required
+                >
+                  <option value="matutino">🌅 Matutino</option>
+                  <option value="vespertino">☁️ Vespertino</option>
+                  <option value="noturno">🌙 Noturno</option>
                 </select>
               </div>
 

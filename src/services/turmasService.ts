@@ -1,5 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { TurmaSimples } from '@/lib/types/turma'
+import { TurmaSimples, Turno } from '@/lib/types/turma'
 
 export interface BeneficioTurma {
   texto: string
@@ -61,6 +61,7 @@ class TurmasService {
           nome: turma.nome || '',
           foco: turma.descricao || '',
           serie: turma.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
+          turno: turma.turno || 'matutino' as Turno, // NOVO CAMPO DE TURNO
           beneficios: beneficiosValidos,
           ativa: turma.ativo ?? true,
           // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -91,6 +92,8 @@ class TurmasService {
         // NOVOS CAMPOS DE VALOR E DURAÇÃO
         preco_mensal: turma.precoMensal || 0,
         duracao_meses: turma.duracaoMeses || 12,
+        // CAMPO DE TURNO
+        turno: turma.turno || 'matutino',
         // Campos adicionais que podem ser necessários
         diferenciais: [],
         created_at: new Date().toISOString(),
@@ -134,7 +137,9 @@ class TurmasService {
         ativa: data.ativo ?? true,
         // NOVOS CAMPOS DE VALOR E DURAÇÃO
         precoMensal: data.preco_mensal || 0,
-        duracaoMeses: data.duracao_meses || 12
+        duracaoMeses: data.duracao_meses || 12,
+        // CAMPO DE TURNO
+        turno: data.turno || 'matutino' as Turno
       }
     } catch (error) {
       console.error('Erro ao criar turma:', error)
@@ -158,6 +163,8 @@ class TurmasService {
       // NOVOS CAMPOS DE VALOR E DURAÇÃO
       if (turma.precoMensal !== undefined) dadosBanco.preco_mensal = turma.precoMensal
       if (turma.duracaoMeses !== undefined) dadosBanco.duracao_meses = turma.duracaoMeses
+      // CAMPO DE TURNO
+      if (turma.turno !== undefined) dadosBanco.turno = turma.turno
       
       // Sempre atualizar timestamp
       dadosBanco.updated_at = new Date().toISOString()
@@ -194,6 +201,84 @@ class TurmasService {
     } catch (error) {
       console.error('Erro ao excluir turma:', error)
       return false
+    }
+  }
+
+  // NOVA FUNÇÃO: Listar turnos disponíveis por série
+  async listarTurnosPorSerie(serie: string): Promise<Turno[]> {
+    try {
+      console.log('Buscando turnos para série:', serie)
+      
+      const { data, error } = await this.supabase
+        .from('turmas')
+        .select('turno')
+        .eq('ordem', parseInt(serie))
+        .eq('ativo', true)
+
+      if (error) {
+        console.error('Erro do Supabase ao buscar turnos:', error)
+        throw error
+      }
+
+      // Retornar turnos únicos disponíveis
+      const turnosDisponiveis = [...new Set(data?.map(t => t.turno) || [])] as Turno[]
+      console.log('Turnos disponíveis para série', serie, ':', turnosDisponiveis)
+      
+      return turnosDisponiveis
+    } catch (error) {
+      console.error('Erro ao listar turnos por série:', error)
+      return []
+    }
+  }
+
+  // NOVA FUNÇÃO: Obter turmas por série e turno
+  async listarTurmasPorSerieETurno(serie: string, turno: Turno): Promise<TurmaSimples[]> {
+    try {
+      console.log('Buscando turmas para série:', serie, 'e turno:', turno)
+      
+      const { data, error } = await this.supabase
+        .from('turmas')
+        .select('*')
+        .eq('ordem', parseInt(serie))
+        .eq('turno', turno)
+        .eq('ativo', true)
+        .order('nome', { ascending: true })
+
+      if (error) {
+        console.error('Erro do Supabase ao buscar turmas por série e turno:', error)
+        throw error
+      }
+
+      // Adaptar formato do banco para o formato esperado
+      return (data || []).map(turma => {
+        // Validar e normalizar beneficios
+        let beneficiosValidos = []
+        try {
+          if (Array.isArray(turma.beneficios)) {
+            beneficiosValidos = turma.beneficios
+          } else if (typeof turma.beneficios === 'string') {
+            beneficiosValidos = JSON.parse(turma.beneficios)
+          }
+        } catch (error) {
+          console.warn('Benefícios inválidos para turma', turma.id, error)
+          beneficiosValidos = []
+        }
+
+        return {
+          id: turma.id.toString(),
+          nome: turma.nome || '',
+          foco: turma.descricao || '',
+          serie: turma.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
+          turno: turma.turno || 'matutino' as Turno,
+          beneficios: beneficiosValidos,
+          ativa: turma.ativo ?? true,
+          precoMensal: turma.preco_mensal || 0,
+          duracaoMeses: turma.duracao_meses || 12
+        }
+      })
+    } catch (error) {
+      console.error('Erro ao listar turmas por série e turno:', error)
+      return []
     }
   }
 }
