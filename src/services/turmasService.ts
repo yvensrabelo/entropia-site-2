@@ -31,7 +31,7 @@ class TurmasService {
         nome: turma.nome,
         foco: turma.descricao || '',
         serie: turma.ordem?.toString() || '3' as '1' | '2' | '3' | 'formado',
-        beneficios: [], // Temporariamente vazio até coluna ser adicionada
+        beneficios: turma.beneficios || [],
         ativa: turma.ativo ?? true
       }))
     } catch (error) {
@@ -46,7 +46,7 @@ class TurmasService {
         nome: turma.nome,
         descricao: turma.foco,
         ordem: parseInt(turma.serie),
-        // beneficios: turma.beneficios, // TEMPORARIAMENTE REMOVIDO - coluna não existe
+        beneficios: turma.beneficios,
         ativo: turma.ativa
       }
 
@@ -63,7 +63,7 @@ class TurmasService {
         nome: data.nome,
         foco: data.descricao || '',
         serie: data.ordem?.toString() || '3' as '1' | '2' | '3' | 'formado',
-        beneficios: [], // Temporariamente vazio até coluna ser adicionada
+        beneficios: data.beneficios || [],
         ativa: data.ativo ?? true
       }
     } catch (error) {
@@ -79,7 +79,7 @@ class TurmasService {
       if (turma.nome !== undefined) dadosBanco.nome = turma.nome
       if (turma.foco !== undefined) dadosBanco.descricao = turma.foco
       if (turma.serie !== undefined) dadosBanco.ordem = parseInt(turma.serie)
-      // if (turma.beneficios !== undefined) dadosBanco.beneficios = turma.beneficios // TEMPORARIAMENTE REMOVIDO
+      if (turma.beneficios !== undefined) dadosBanco.beneficios = turma.beneficios
       if (turma.ativa !== undefined) dadosBanco.ativo = turma.ativa
 
       const { error } = await this.supabase
