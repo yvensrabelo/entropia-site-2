@@ -56,15 +56,24 @@ export default function MatriculaPage() {
   // Quando selecionar série, descobrir turnos disponíveis
   useEffect(() => {
     if (serieSelecionada && todasTurmas.length > 0) {
+      console.log(`[FILTRO] Buscando turmas para série:`, serieSelecionada)
       console.log(`🔍 Buscando turnos para série: ${serieSelecionada}`)
       
       // Filtrar turmas que atendem esta série
       const turmasDaSerie = todasTurmas.filter(turma => {
-        const atende = turma.seriesAtendidas?.includes(serieSelecionada) || false
+        console.log(`[FILTRO] ${turma.nome} - seriesAtendidas:`, turma.seriesAtendidas)
+        
+        // Verificar ambos os formatos por segurança
+        const atende = turma.seriesAtendidas?.includes(serieSelecionada) || 
+                      (serieSelecionada === 'formado' && turma.seriesAtendidas?.includes('Já Formado')) ||
+                      (serieSelecionada === 'Já Formado' && turma.seriesAtendidas?.includes('formado'))
+        
+        console.log(`[FILTRO] ${turma.nome} atende ${serieSelecionada}?`, atende)
         console.log(`   - ${turma.nome}: seriesAtendidas=${JSON.stringify(turma.seriesAtendidas)} | Atende? ${atende}`)
         return atende
       })
       
+      console.log(`[FILTRO] Turmas encontradas:`, turmasDaSerie)
       console.log(`📚 Turmas que atendem ${serieSelecionada}:`, turmasDaSerie)
       
       // Extrair turnos únicos
@@ -106,6 +115,8 @@ export default function MatriculaPage() {
   }, [serieSelecionada, turnoSelecionado, todasTurmas])
 
   const handleSelectSerie = (serie: Serie) => {
+    console.log(`[SELEÇÃO] Série selecionada:`, serie)
+    console.log(`[SELEÇÃO] Tipo da série:`, typeof serie)
     console.log(`🎓 Série selecionada: ${serie}`)
     setSerieSelecionada(serie)
     setTurnoSelecionado(null)

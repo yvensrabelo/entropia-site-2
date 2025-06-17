@@ -69,6 +69,13 @@ class TurmasService {
           duracaoMeses: turma.duracao_meses || 12
         }
         
+        // ADICIONE ESTE LOG ESPECÍFICO PARA DEBUG
+        if (turma.series_atendidas && turma.series_atendidas.length > 0) {
+          console.log(`[TURMA ${turma.nome}] series_atendidas no banco:`, turma.series_atendidas)
+          console.log(`[TURMA ${turma.nome}] tem "formado"?`, turma.series_atendidas.includes('formado'))
+          console.log(`[TURMA ${turma.nome}] tem "Já Formado"?`, turma.series_atendidas.includes('Já Formado'))
+        }
+        
         console.log(`[MAPEAMENTO] ${turma.nome}:`, {
           original: { turnos: turma.turnos, series_atendidas: turma.series_atendidas },
           mapeado: { turnos: mapped.turnos, seriesAtendidas: mapped.seriesAtendidas }
