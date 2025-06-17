@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, Suspense, useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, ChevronRight, User, UserCheck, CreditCard, Calendar, DollarSign, Gift } from 'lucide-react'
@@ -34,6 +34,302 @@ interface OpcaoPagamento {
   icon: any
   cor: string
 }
+
+// Componente da Etapa 1 - Dados do Aluno
+const EtapaDadosAluno = ({ 
+  dadosAluno, 
+  setDadosAluno, 
+  onAvancar,
+  mascaraCPF,
+  mascaraWhatsApp 
+}: {
+  dadosAluno: DadosAluno
+  setDadosAluno: (dados: DadosAluno) => void
+  onAvancar: () => void
+  mascaraCPF: (valor: string) => string
+  mascaraWhatsApp: (valor: string) => string
+}) => (
+  <motion.div
+    initial={{ opacity: 0, x: 20 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: -20 }}
+    className="space-y-6"
+  >
+    <div className="text-center mb-8">
+      <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <User className="w-10 h-10 text-white" />
+      </div>
+      <h2 className="text-3xl font-bold text-white mb-2">Dados do Aluno</h2>
+      <p className="text-white/70">Preencha suas informações pessoais</p>
+    </div>
+
+    <div className="space-y-4">
+      <div>
+        <label className="block text-white mb-2">Nome Completo *</label>
+        <input
+          type="text"
+          value={dadosAluno.nomeCompleto}
+          onChange={(e) => setDadosAluno({...dadosAluno, nomeCompleto: e.target.value})}
+          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="Digite seu nome completo"
+        />
+      </div>
+
+      <div>
+        <label className="block text-white mb-2">WhatsApp *</label>
+        <input
+          type="tel"
+          value={dadosAluno.whatsapp}
+          onChange={(e) => setDadosAluno({...dadosAluno, whatsapp: mascaraWhatsApp(e.target.value)})}
+          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="(00) 90000-0000"
+          maxLength={15}
+        />
+      </div>
+
+      <div>
+        <label className="block text-white mb-2">CPF *</label>
+        <input
+          type="text"
+          value={dadosAluno.cpf}
+          onChange={(e) => setDadosAluno({...dadosAluno, cpf: mascaraCPF(e.target.value)})}
+          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="000.000.000-00"
+          maxLength={14}
+        />
+      </div>
+
+      <div>
+        <label className="block text-white mb-2">Data de Nascimento *</label>
+        <input
+          type="date"
+          value={dadosAluno.dataNascimento}
+          onChange={(e) => setDadosAluno({...dadosAluno, dataNascimento: e.target.value})}
+          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+      </div>
+    </div>
+
+    <button
+      onClick={onAvancar}
+      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all flex items-center justify-center gap-2"
+    >
+      Continuar
+      <ChevronRight className="w-5 h-5" />
+    </button>
+  </motion.div>
+)
+
+// Componente da Etapa 2 - Responsável
+const EtapaResponsavel = ({
+  dadosResponsavel,
+  setDadosResponsavel,
+  maiorIdade,
+  onAvancar,
+  onVoltar,
+  mascaraCPF,
+  mascaraWhatsApp
+}: {
+  dadosResponsavel: DadosResponsavel
+  setDadosResponsavel: (dados: DadosResponsavel) => void
+  maiorIdade: boolean
+  onAvancar: () => void
+  onVoltar: () => void
+  mascaraCPF: (valor: string) => string
+  mascaraWhatsApp: (valor: string) => string
+}) => (
+  <motion.div
+    initial={{ opacity: 0, x: 20 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: -20 }}
+    className="space-y-6"
+  >
+    <div className="text-center mb-8">
+      <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <UserCheck className="w-10 h-10 text-white" />
+      </div>
+      <h2 className="text-3xl font-bold text-white mb-2">Responsável Financeiro</h2>
+      <p className="text-white/70">
+        {maiorIdade ? 'Você pode ser seu próprio responsável' : 'Informe os dados do responsável'}
+      </p>
+    </div>
+
+    {maiorIdade && (
+      <div className="mb-6">
+        <label className="flex items-center gap-3 p-4 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all">
+          <input
+            type="checkbox"
+            checked={dadosResponsavel.souResponsavel}
+            onChange={(e) => setDadosResponsavel({...dadosResponsavel, souResponsavel: e.target.checked})}
+            className="w-5 h-5 text-green-500"
+          />
+          <span className="text-white font-medium">Sou meu próprio responsável financeiro</span>
+        </label>
+      </div>
+    )}
+
+    {(!dadosResponsavel.souResponsavel || !maiorIdade) && (
+      <div className="space-y-4">
+        <div>
+          <label className="block text-white mb-2">Nome do Responsável *</label>
+          <input
+            type="text"
+            value={dadosResponsavel.nome || ''}
+            onChange={(e) => setDadosResponsavel({...dadosResponsavel, nome: e.target.value})}
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="Nome completo do responsável"
+          />
+        </div>
+
+        <div>
+          <label className="block text-white mb-2">CPF do Responsável *</label>
+          <input
+            type="text"
+            value={dadosResponsavel.cpf || ''}
+            onChange={(e) => setDadosResponsavel({...dadosResponsavel, cpf: mascaraCPF(e.target.value)})}
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="000.000.000-00"
+            maxLength={14}
+          />
+        </div>
+
+        <div>
+          <label className="block text-white mb-2">WhatsApp do Responsável *</label>
+          <input
+            type="tel"
+            value={dadosResponsavel.whatsapp || ''}
+            onChange={(e) => setDadosResponsavel({...dadosResponsavel, whatsapp: mascaraWhatsApp(e.target.value)})}
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="(00) 90000-0000"
+            maxLength={15}
+          />
+        </div>
+      </div>
+    )}
+
+    <div className="flex gap-4">
+      <button
+        onClick={onVoltar}
+        className="flex-1 bg-white/10 text-white font-bold py-4 rounded-xl hover:bg-white/20 transition-all"
+      >
+        Voltar
+      </button>
+      <button
+        onClick={onAvancar}
+        className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all flex items-center justify-center gap-2"
+      >
+        Continuar
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
+  </motion.div>
+)
+
+// Componente da Etapa 3 - Pagamento
+const EtapaPagamento = ({
+  opcoesPagamento,
+  pagamentoSelecionado,
+  setPagamentoSelecionado,
+  enviando,
+  onVoltar,
+  onFinalizar
+}: {
+  opcoesPagamento: OpcaoPagamento[]
+  pagamentoSelecionado: string
+  setPagamentoSelecionado: (tipo: string) => void
+  enviando: boolean
+  onVoltar: () => void
+  onFinalizar: () => void
+}) => (
+  <motion.div
+    initial={{ opacity: 0, x: 20 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: -20 }}
+    className="space-y-6"
+  >
+    <div className="text-center mb-8">
+      <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <CreditCard className="w-10 h-10 text-white" />
+      </div>
+      <h2 className="text-3xl font-bold text-white mb-2">Forma de Pagamento</h2>
+      <p className="text-white/70">Escolha a melhor opção para você</p>
+    </div>
+
+    <div className="space-y-4">
+      {opcoesPagamento.map((opcao) => {
+        const Icon = opcao.icon
+        const selecionado = pagamentoSelecionado === opcao.tipo
+        
+        return (
+          <motion.button
+            key={opcao.tipo}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setPagamentoSelecionado(opcao.tipo)}
+            className={`w-full p-6 rounded-2xl border-2 transition-all ${
+              selecionado
+                ? 'bg-white/20 border-white'
+                : 'bg-white/5 border-white/20 hover:bg-white/10'
+            }`}
+          >
+            <div className="flex items-start gap-4">
+              <div className={`w-16 h-16 bg-gradient-to-br ${opcao.cor} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                <Icon className="w-8 h-8 text-white" />
+              </div>
+              
+              <div className="flex-1 text-left">
+                <h3 className="text-xl font-bold text-white mb-1">{opcao.nome}</h3>
+                <p className="text-white/70 mb-3">{opcao.descricao}</p>
+                
+                <div className="flex items-end justify-between">
+                  <div>
+                    <p className="text-3xl font-bold text-white">
+                      R$ {opcao.valorParcela.toFixed(2)}
+                      {opcao.parcelas > 1 && <span className="text-lg font-normal">/mês</span>}
+                    </p>
+                    <p className="text-sm text-white/50">
+                      Total: R$ {opcao.valorTotal.toFixed(2)}
+                    </p>
+                  </div>
+                  
+                  {opcao.economia && (
+                    <div className="bg-green-500/20 px-3 py-1 rounded-full">
+                      <p className="text-green-300 text-sm font-bold">
+                        Economia de R$ {opcao.economia.toFixed(2)}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {selecionado && (
+                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+              )}
+            </div>
+          </motion.button>
+        )
+      })}
+    </div>
+
+    <div className="flex gap-4">
+      <button
+        onClick={onVoltar}
+        className="flex-1 bg-white/10 text-white font-bold py-4 rounded-xl hover:bg-white/20 transition-all"
+      >
+        Voltar
+      </button>
+      <button
+        onClick={onFinalizar}
+        disabled={!pagamentoSelecionado || enviando}
+        className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {enviando ? 'Enviando...' : 'Finalizar Matrícula'}
+      </button>
+    </div>
+  </motion.div>
+)
 
 function FormularioMatriculaContent() {
   const searchParams = useSearchParams()
@@ -117,23 +413,23 @@ function FormularioMatriculaContent() {
     return numeros.length === 11 && numeros[2] === '9'
   }
 
-  // Máscaras
-  const mascaraCPF = (valor: string) => {
+  // Máscaras com useCallback para evitar re-renderização
+  const mascaraCPF = useCallback((valor: string) => {
     return valor
       .replace(/\D/g, '')
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d{1,2})/, '$1-$2')
       .replace(/(-\d{2})\d+?$/, '$1')
-  }
+  }, [])
 
-  const mascaraWhatsApp = (valor: string) => {
+  const mascaraWhatsApp = useCallback((valor: string) => {
     return valor
       .replace(/\D/g, '')
       .replace(/(\d{2})(\d)/, '($1) $2')
       .replace(/(\d{5})(\d)/, '$1-$2')
       .replace(/(-\d{4})\d+?$/, '$1')
-  }
+  }, [])
 
   // Calcular opções de pagamento
   const calcularOpcoesPagamento = (): OpcaoPagamento[] => {
@@ -177,8 +473,8 @@ function FormularioMatriculaContent() {
     ]
   }
 
-  // Navegação
-  const avancarEtapa = () => {
+  // Navegação com useCallback
+  const avancarEtapa = useCallback(() => {
     if (etapaAtual === 'dados-aluno') {
       // Validar dados do aluno
       if (!dadosAluno.nomeCompleto || !validarCPF(dadosAluno.cpf) || 
@@ -199,15 +495,15 @@ function FormularioMatriculaContent() {
       }
       setEtapaAtual('pagamento')
     }
-  }
+  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade])
 
-  const voltarEtapa = () => {
+  const voltarEtapa = useCallback(() => {
     if (etapaAtual === 'responsavel') setEtapaAtual('dados-aluno')
     else if (etapaAtual === 'pagamento') setEtapaAtual('responsavel')
-  }
+  }, [etapaAtual])
 
-  // Enviar formulário
-  const enviarFormulario = async () => {
+  // Enviar formulário com useCallback
+  const enviarFormulario = useCallback(async () => {
     if (!pagamentoSelecionado) {
       alert('Selecione uma forma de pagamento')
       return
@@ -243,263 +539,10 @@ function FormularioMatriculaContent() {
     } finally {
       setEnviando(false)
     }
-  }
+  }, [pagamentoSelecionado, dadosAluno, dadosResponsavel, turmaInfo, router])
 
-  // Componentes das etapas
-  const EtapaDadosAluno = () => (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-6"
-    >
-      <div className="text-center mb-8">
-        <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-          <User className="w-10 h-10 text-white" />
-        </div>
-        <h2 className="text-3xl font-bold text-white mb-2">Dados do Aluno</h2>
-        <p className="text-white/70">Preencha suas informações pessoais</p>
-      </div>
-
-      <div className="space-y-4">
-        <div>
-          <label className="block text-white mb-2">Nome Completo *</label>
-          <input
-            type="text"
-            value={dadosAluno.nomeCompleto}
-            onChange={(e) => setDadosAluno({...dadosAluno, nomeCompleto: e.target.value})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
-            placeholder="Digite seu nome completo"
-          />
-        </div>
-
-        <div>
-          <label className="block text-white mb-2">WhatsApp *</label>
-          <input
-            type="tel"
-            value={dadosAluno.whatsapp}
-            onChange={(e) => setDadosAluno({...dadosAluno, whatsapp: mascaraWhatsApp(e.target.value)})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
-            placeholder="(00) 90000-0000"
-            maxLength={15}
-          />
-        </div>
-
-        <div>
-          <label className="block text-white mb-2">CPF *</label>
-          <input
-            type="text"
-            value={dadosAluno.cpf}
-            onChange={(e) => setDadosAluno({...dadosAluno, cpf: mascaraCPF(e.target.value)})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
-            placeholder="000.000.000-00"
-            maxLength={14}
-          />
-        </div>
-
-        <div>
-          <label className="block text-white mb-2">Data de Nascimento *</label>
-          <input
-            type="date"
-            value={dadosAluno.dataNascimento}
-            onChange={(e) => setDadosAluno({...dadosAluno, dataNascimento: e.target.value})}
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-        </div>
-      </div>
-
-      <button
-        onClick={avancarEtapa}
-        className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all flex items-center justify-center gap-2"
-      >
-        Continuar
-        <ChevronRight className="w-5 h-5" />
-      </button>
-    </motion.div>
-  )
-
-  const EtapaResponsavel = () => (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-6"
-    >
-      <div className="text-center mb-8">
-        <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-          <UserCheck className="w-10 h-10 text-white" />
-        </div>
-        <h2 className="text-3xl font-bold text-white mb-2">Responsável Financeiro</h2>
-        <p className="text-white/70">
-          {maiorIdade ? 'Você pode ser seu próprio responsável' : 'Informe os dados do responsável'}
-        </p>
-      </div>
-
-      {maiorIdade && (
-        <div className="mb-6">
-          <label className="flex items-center gap-3 p-4 bg-white/10 rounded-xl cursor-pointer hover:bg-white/20 transition-all">
-            <input
-              type="checkbox"
-              checked={dadosResponsavel.souResponsavel}
-              onChange={(e) => setDadosResponsavel({...dadosResponsavel, souResponsavel: e.target.checked})}
-              className="w-5 h-5 text-green-500"
-            />
-            <span className="text-white font-medium">Sou meu próprio responsável financeiro</span>
-          </label>
-        </div>
-      )}
-
-      {(!dadosResponsavel.souResponsavel || !maiorIdade) && (
-        <div className="space-y-4">
-          <div>
-            <label className="block text-white mb-2">Nome do Responsável *</label>
-            <input
-              type="text"
-              value={dadosResponsavel.nome || ''}
-              onChange={(e) => setDadosResponsavel({...dadosResponsavel, nome: e.target.value})}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Nome completo do responsável"
-            />
-          </div>
-
-          <div>
-            <label className="block text-white mb-2">CPF do Responsável *</label>
-            <input
-              type="text"
-              value={dadosResponsavel.cpf || ''}
-              onChange={(e) => setDadosResponsavel({...dadosResponsavel, cpf: mascaraCPF(e.target.value)})}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="000.000.000-00"
-              maxLength={14}
-            />
-          </div>
-
-          <div>
-            <label className="block text-white mb-2">WhatsApp do Responsável *</label>
-            <input
-              type="tel"
-              value={dadosResponsavel.whatsapp || ''}
-              onChange={(e) => setDadosResponsavel({...dadosResponsavel, whatsapp: mascaraWhatsApp(e.target.value)})}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="(00) 90000-0000"
-              maxLength={15}
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="flex gap-4">
-        <button
-          onClick={voltarEtapa}
-          className="flex-1 bg-white/10 text-white font-bold py-4 rounded-xl hover:bg-white/20 transition-all"
-        >
-          Voltar
-        </button>
-        <button
-          onClick={avancarEtapa}
-          className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all flex items-center justify-center gap-2"
-        >
-          Continuar
-          <ChevronRight className="w-5 h-5" />
-        </button>
-      </div>
-    </motion.div>
-  )
-
-  const EtapaPagamento = () => {
-    const opcoes = calcularOpcoesPagamento()
-    
-    return (
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        className="space-y-6"
-      >
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CreditCard className="w-10 h-10 text-white" />
-          </div>
-          <h2 className="text-3xl font-bold text-white mb-2">Forma de Pagamento</h2>
-          <p className="text-white/70">Escolha a melhor opção para você</p>
-        </div>
-
-        <div className="space-y-4">
-          {opcoes.map((opcao) => {
-            const Icon = opcao.icon
-            const selecionado = pagamentoSelecionado === opcao.tipo
-            
-            return (
-              <motion.button
-                key={opcao.tipo}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setPagamentoSelecionado(opcao.tipo)}
-                className={`w-full p-6 rounded-2xl border-2 transition-all ${
-                  selecionado
-                    ? 'bg-white/20 border-white'
-                    : 'bg-white/5 border-white/20 hover:bg-white/10'
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${opcao.cor} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                    <Icon className="w-8 h-8 text-white" />
-                  </div>
-                  
-                  <div className="flex-1 text-left">
-                    <h3 className="text-xl font-bold text-white mb-1">{opcao.nome}</h3>
-                    <p className="text-white/70 mb-3">{opcao.descricao}</p>
-                    
-                    <div className="flex items-end justify-between">
-                      <div>
-                        <p className="text-3xl font-bold text-white">
-                          R$ {opcao.valorParcela.toFixed(2)}
-                          {opcao.parcelas > 1 && <span className="text-lg font-normal">/mês</span>}
-                        </p>
-                        <p className="text-sm text-white/50">
-                          Total: R$ {opcao.valorTotal.toFixed(2)}
-                        </p>
-                      </div>
-                      
-                      {opcao.economia && (
-                        <div className="bg-green-500/20 px-3 py-1 rounded-full">
-                          <p className="text-green-300 text-sm font-bold">
-                            Economia de R$ {opcao.economia.toFixed(2)}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {selecionado && (
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Check className="w-5 h-5 text-white" />
-                    </div>
-                  )}
-                </div>
-              </motion.button>
-            )
-          })}
-        </div>
-
-        <div className="flex gap-4">
-          <button
-            onClick={voltarEtapa}
-            className="flex-1 bg-white/10 text-white font-bold py-4 rounded-xl hover:bg-white/20 transition-all"
-          >
-            Voltar
-          </button>
-          <button
-            onClick={enviarFormulario}
-            disabled={!pagamentoSelecionado || enviando}
-            className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {enviando ? 'Enviando...' : 'Finalizar Matrícula'}
-          </button>
-        </div>
-      </motion.div>
-    )
-  }
+  // Calcular opções de pagamento memoizado
+  const opcoesPagamento = calcularOpcoesPagamento()
 
   // Indicador de progresso
   const ProgressBar = () => {
@@ -559,9 +602,39 @@ function FormularioMatriculaContent() {
           <ProgressBar />
           
           <AnimatePresence mode="wait">
-            {etapaAtual === 'dados-aluno' && <EtapaDadosAluno key="aluno" />}
-            {etapaAtual === 'responsavel' && <EtapaResponsavel key="responsavel" />}
-            {etapaAtual === 'pagamento' && <EtapaPagamento key="pagamento" />}
+            {etapaAtual === 'dados-aluno' && (
+              <EtapaDadosAluno 
+                key="aluno"
+                dadosAluno={dadosAluno}
+                setDadosAluno={setDadosAluno}
+                onAvancar={avancarEtapa}
+                mascaraCPF={mascaraCPF}
+                mascaraWhatsApp={mascaraWhatsApp}
+              />
+            )}
+            {etapaAtual === 'responsavel' && (
+              <EtapaResponsavel 
+                key="responsavel"
+                dadosResponsavel={dadosResponsavel}
+                setDadosResponsavel={setDadosResponsavel}
+                maiorIdade={maiorIdade}
+                onAvancar={avancarEtapa}
+                onVoltar={voltarEtapa}
+                mascaraCPF={mascaraCPF}
+                mascaraWhatsApp={mascaraWhatsApp}
+              />
+            )}
+            {etapaAtual === 'pagamento' && (
+              <EtapaPagamento 
+                key="pagamento"
+                opcoesPagamento={opcoesPagamento}
+                pagamentoSelecionado={pagamentoSelecionado}
+                setPagamentoSelecionado={setPagamentoSelecionado}
+                enviando={enviando}
+                onVoltar={voltarEtapa}
+                onFinalizar={enviarFormulario}
+              />
+            )}
           </AnimatePresence>
         </motion.div>
       </div>
