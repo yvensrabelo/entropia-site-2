@@ -13,9 +13,9 @@ export default function TurmasSimples() {
   const [formData, setFormData] = useState<Omit<TurmaSimples, 'id'>>({
     nome: '',
     foco: '',
-    serie: '3',
+    serie: '3', // mantido para compatibilidade
     turnos: ['matutino'], // NOVO - array de turnos
-    seriesAtendidas: ['3'], // NOVO - array de séries
+    seriesAtendidas: ['3'], // NOVO - array de séries - campo principal
     beneficios: [],
     ativa: true,
     // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -108,9 +108,10 @@ export default function TurmasSimples() {
             const resultado = await turmasService.atualizarTurma(turma.id, {
               nome: turma.nome,
               foco: turma.foco,
-              serie: turma.serie,
+              // Usar primeira série atendida como série padrão para compatibilidade
+              serie: turma.seriesAtendidas?.[0] || '3',
               turnos: turma.turnos || ['matutino'], // NOVO - array de turnos
-              seriesAtendidas: turma.seriesAtendidas || [turma.serie], // NOVO - array de séries
+              seriesAtendidas: turma.seriesAtendidas || ['3'], // PRINCIPAL - array de séries
               beneficios: turma.beneficios || [],
               ativa: turma.ativa !== false, // default true
               // NOVOS CAMPOS OBRIGATÓRIOS
@@ -130,9 +131,10 @@ export default function TurmasSimples() {
             const novaTurma = await turmasService.criarTurma({
               nome: turma.nome,
               foco: turma.foco,
-              serie: turma.serie,
+              // Usar primeira série atendida como série padrão para compatibilidade
+              serie: turma.seriesAtendidas?.[0] || '3',
               turnos: turma.turnos || ['matutino'], // NOVO - array de turnos
-              seriesAtendidas: turma.seriesAtendidas || [turma.serie], // NOVO - array de séries
+              seriesAtendidas: turma.seriesAtendidas || ['3'], // PRINCIPAL - array de séries
               beneficios: turma.beneficios || [],
               ativa: turma.ativa !== false,
               // NOVOS CAMPOS OBRIGATÓRIOS
@@ -207,9 +209,9 @@ export default function TurmasSimples() {
     setFormData({
       nome: turma.nome,
       foco: turma.foco,
-      serie: turma.serie,
+      serie: turma.seriesAtendidas?.[0] || turma.serie || '3', // compatibilidade
       turnos: turma.turnos || ['matutino'], // NOVO - array de turnos
-      seriesAtendidas: turma.seriesAtendidas || [turma.serie], // NOVO - array de séries
+      seriesAtendidas: turma.seriesAtendidas || [turma.serie] || ['3'], // PRINCIPAL - array de séries
       beneficios: [...turma.beneficios],
       ativa: turma.ativa ?? true,
       // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -566,7 +568,7 @@ export default function TurmasSimples() {
                   required
                   value={formData.nome}
                   onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                   placeholder="Ex: PSC INTENSIVO"
                 />
               </div>
@@ -581,28 +583,12 @@ export default function TurmasSimples() {
                   required
                   value={formData.foco}
                   onChange={(e) => setFormData({ ...formData, foco: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                   placeholder="Ex: PREPARAÇÃO COMPLETA PARA O PSC"
                 />
               </div>
 
-              {/* Série Vinculada */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Série Vinculada *
-                </label>
-                <select
-                  value={formData.serie}
-                  onChange={(e) => setFormData({ ...formData, serie: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  required
-                >
-                  <option value="1">1ª Série</option>
-                  <option value="2">2ª Série</option>
-                  <option value="3">3ª Série</option>
-                  <option value="formado">Já Formado</option>
-                </select>
-              </div>
+              {/* CAMPO REMOVIDO - USAMOS APENAS "SÉRIES/PÚBLICOS ATENDIDOS" AGORA */}
 
               {/* Seleção Múltipla de Turnos */}
               <div>
@@ -708,7 +694,7 @@ export default function TurmasSimples() {
                     min="0"
                     value={formData.precoMensal || 0}
                     onChange={(e) => setFormData({ ...formData, precoMensal: parseFloat(e.target.value) || 0 })}
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                     placeholder="0.00"
                   />
                 </div>
@@ -725,7 +711,7 @@ export default function TurmasSimples() {
                   max="24"
                   value={formData.duracaoMeses || 12}
                   onChange={(e) => setFormData({ ...formData, duracaoMeses: parseInt(e.target.value) || 12 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                   placeholder="12"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -751,7 +737,7 @@ export default function TurmasSimples() {
                     value={newBeneficio}
                     onChange={(e) => setNewBeneficio(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addBeneficio())}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 placeholder-gray-400"
                     placeholder="Digite um benefício..."
                   />
                   <button
