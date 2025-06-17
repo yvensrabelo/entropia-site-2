@@ -2,16 +2,25 @@
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle, User, Phone, CreditCard, Calendar, ArrowRight, Sparkles, Trophy, Zap, Scale, Sofa } from 'lucide-react';
+import { CheckCircle, User, Phone, CreditCard, Calendar, ArrowRight, Sparkles, Trophy, Zap, Scale, Sofa, Lock, Sun, Cloud, Moon, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { turmasService } from '@/services/turmasService';
+import type { Turno, Serie, TurmaSimples } from '@/lib/types/turma';
 
 // SOLUÇÃO SIMPLES: Inputs HTML nativos sem complexidade
 
 const FormularioMatricula = () => {
   const searchParams = useSearchParams();
+  const [etapaFluxo, setEtapaFluxo] = useState<'serie' | 'turno' | 'turmas' | 'formulario'>('serie');
   const [etapaAtual, setEtapaAtual] = useState(1);
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
+  const [serieSelecionada, setSerieSelecionada] = useState<Serie | null>(null);
+  const [turnoSelecionado, setTurnoSelecionado] = useState<Turno | null>(null);
+  const [turmasDisponiveis, setTurmasDisponiveis] = useState<TurmaSimples[]>([]);
+  const [turnosDisponiveis, setTurnosDisponiveis] = useState<Turno[]>([]);
+  const [carregandoTurnos, setCarregandoTurnos] = useState(false);
+  const [carregandoTurmas, setCarregandoTurmas] = useState(false);
   const [turmaInfo, setTurmaInfo] = useState({
     turma: '',
     serie: '',
@@ -45,13 +54,40 @@ const FormularioMatricula = () => {
   // Capturar parâmetros da URL
   useEffect(() => {
     if (searchParams) {
+      const turmaParam = searchParams.get('turma');
+      const serieParam = searchParams.get('serie');
+      const turmaIdParam = searchParams.get('turmaId');
+      
       setTurmaInfo({
-        turma: searchParams.get('turma') || '',
-        serie: searchParams.get('serie') || '',
+        turma: turmaParam || '',
+        serie: serieParam || '',
         origem: searchParams.get('origem') || ''
       });
+      
+      // Se já tem turmaId, pular direto para o formulário
+      if (turmaIdParam) {
+        setEtapaFluxo('formulario');
+      }
     }
   }, [searchParams]);
+
+  // Carregar turnos quando série for selecionada
+  useEffect(() => {
+    const carregarTurnos = async () => {
+      if (serieSelecionada && etapaFluxo === 'turno') {
+        setCarregandoTurnos(true);
+        try {
+          const turnos = await turmasService.listarTurnosDisponiveisPorSerie(serieSelecionada);
+          setTurnosDisponiveis(turnos);
+        } catch (error) {
+          console.error('Erro ao carregar turnos:', error);
+        } finally {
+          setCarregandoTurnos(false);
+        }
+      }
+    };
+    carregarTurnos();
+  }, [serieSelecionada, etapaFluxo]);
 
   // Buscar turma selecionada pelos parâmetros da URL
   useEffect(() => {
@@ -96,6 +132,43 @@ const FormularioMatricula = () => {
     buscarTurma();
   }, [searchParams]);
 
+
+  // Funções de seleção
+  const handleSelectSerie = (serie: Serie) => {
+    setSerieSelecionada(serie);
+    setEtapaFluxo('turno');
+  };
+
+  const handleSelectTurno = async (turno: Turno) => {
+    if (!serieSelecionada) return;
+    
+    setTurnoSelecionado(turno);
+    setCarregandoTurmas(true);
+    
+    try {
+      const turmas = await turmasService.listarTurmasPorSerieETurno(serieSelecionada, turno);
+      setTurmasDisponiveis(turmas);
+      setEtapaFluxo('turmas');
+    } catch (error) {
+      console.error('Erro ao carregar turmas:', error);
+    } finally {
+      setCarregandoTurmas(false);
+    }
+  };
+
+  const handleSelectTurma = (turma: TurmaSimples) => {
+    setTurmaSelecionada({
+      ...turma,
+      valorMensal: turma.precoMensal || 180.00,
+      terminoAulas: '2024-12'
+    });
+    setTurmaInfo({
+      turma: turma.nome,
+      serie: serieSelecionada || '',
+      origem: 'site-entropia'
+    });
+    setEtapaFluxo('formulario');
+  };
 
   // Funções de cálculo para pagamento
   const calcularMesesAteTermino = () => {
@@ -481,6 +554,202 @@ const FormularioMatricula = () => {
     }
   };
 
+  // Componentes de seleção
+  const SelecaoSerie = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="w-full max-w-4xl mx-auto"
+    >
+      <div className="text-center mb-8">
+        <h1 className="text-5xl font-bold text-white mb-4">ENTROPIA</h1>
+        <h2 className="text-2xl text-white/90">SELECIONE A SUA SÉRIE</h2>
+        <div className="mt-4 text-white text-2xl">↓</div>
+      </div>
+
+      <div className="space-y-4">
+        {/* Séries 1-3 em uma linha */}
+        <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-2">
+          <div className="grid grid-cols-3 gap-2">
+            {(['1', '2', '3'] as Serie[]).map((serie) => (
+              <button
+                key={serie}
+                onClick={() => handleSelectSerie(serie)}
+                className="py-4 px-6 rounded-xl font-semibold text-white transition-all hover:bg-white/20"
+              >
+                {serie}ª Série
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Já Formado */}
+        <button
+          onClick={() => handleSelectSerie('formado')}
+          className="w-full bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:bg-white/20 transition-all"
+        >
+          <span className="text-xl font-semibold text-white">Já Formado</span>
+        </button>
+
+        {/* Card especial para turmas */}
+        <div className="bg-white rounded-2xl p-8 text-center">
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            VESTIBULARES SERIADOS<br/>(1°ANO)
+          </h3>
+          <p className="text-gray-600">PSC | SIS</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  const SelecaoTurno = () => {
+    const todosTurnos: { value: Turno; label: string; icon: any; color: string }[] = [
+      { value: 'matutino', label: 'Matutino', icon: Sun, color: 'text-yellow-500' },
+      { value: 'vespertino', label: 'Vespertino', icon: Cloud, color: 'text-orange-500' },
+      { value: 'noturno', label: 'Noturno', icon: Moon, color: 'text-blue-500' }
+    ];
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-4xl mx-auto"
+      >
+        <div className="text-center mb-8">
+          <button
+            onClick={() => setEtapaFluxo('serie')}
+            className="text-white/70 hover:text-white mb-4 flex items-center gap-2 mx-auto"
+          >
+            <ArrowLeft className="w-4 h-4" /> Voltar
+          </button>
+          <h2 className="text-3xl font-bold text-white mb-2">Selecione o Turno</h2>
+          <p className="text-white/70">
+            {serieSelecionada === 'formado' ? 'Já Formado' : `${serieSelecionada}ª Série`}
+          </p>
+        </div>
+
+        {carregandoTurnos ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {todosTurnos.map((turno) => {
+              const disponivel = turnosDisponiveis.includes(turno.value);
+              const Icon = turno.icon;
+
+              return (
+                <motion.button
+                  key={turno.value}
+                  whileHover={disponivel ? { scale: 1.05 } : {}}
+                  whileTap={disponivel ? { scale: 0.95 } : {}}
+                  onClick={() => disponivel && handleSelectTurno(turno.value)}
+                  disabled={!disponivel}
+                  className={`
+                    relative p-8 rounded-2xl border-2 transition-all
+                    ${disponivel
+                      ? 'bg-white/10 backdrop-blur-md border-white/30 hover:bg-white/15 cursor-pointer'
+                      : 'bg-gray-800/50 border-gray-600 cursor-not-allowed'
+                    }
+                  `}
+                >
+                  {!disponivel && (
+                    <div className="absolute top-4 right-4">
+                      <Lock className="w-6 h-6 text-gray-500" />
+                    </div>
+                  )}
+
+                  <div className={`flex flex-col items-center gap-4 ${!disponivel ? 'opacity-50' : ''}`}>
+                    <Icon className={`w-16 h-16 ${disponivel ? turno.color : 'text-gray-500'}`} />
+                    <span className={`text-xl font-bold ${disponivel ? 'text-white' : 'text-gray-400'}`}>
+                      {turno.label}
+                    </span>
+                    {!disponivel && (
+                      <span className="text-sm text-gray-400">
+                        Não disponível para esta série
+                      </span>
+                    )}
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
+        )}
+      </motion.div>
+    );
+  };
+
+  const SelecaoTurmas = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="w-full max-w-4xl mx-auto"
+    >
+      <div className="text-center mb-8">
+        <button
+          onClick={() => setEtapaFluxo('turno')}
+          className="text-white/70 hover:text-white mb-4 flex items-center gap-2 mx-auto"
+        >
+          <ArrowLeft className="w-4 h-4" /> Voltar para turnos
+        </button>
+        <h2 className="text-3xl font-bold text-white mb-2">Escolha sua Turma</h2>
+        <p className="text-white/70">
+          {serieSelecionada === 'formado' ? 'Já Formado' : `${serieSelecionada}ª Série`} • 
+          {turnoSelecionado && ` ${turnoSelecionado.charAt(0).toUpperCase() + turnoSelecionado.slice(1)}`}
+        </p>
+      </div>
+      
+      {carregandoTurmas ? (
+        <div className="flex justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+        </div>
+      ) : (
+        <div className="grid gap-4 max-w-4xl mx-auto">
+          {turmasDisponiveis.map((turma) => (
+            <TurmaCard key={turma.id} turma={turma} onSelect={() => handleSelectTurma(turma)} />
+          ))}
+        </div>
+      )}
+    </motion.div>
+  );
+
+  const TurmaCard = ({ turma, onSelect }: { turma: TurmaSimples; onSelect: () => void }) => (
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className="bg-white rounded-2xl shadow-lg p-6 cursor-pointer"
+      onClick={onSelect}
+    >
+      <h3 className="text-2xl font-bold text-gray-900 mb-2">{turma.nome}</h3>
+      <p className="text-gray-600 mb-4">{turma.foco}</p>
+      
+      {turma.beneficios.length > 0 && (
+        <ul className="space-y-2 mb-6">
+          {turma.beneficios.slice(0, 3).map((beneficio, idx) => (
+            <li key={idx} className="flex items-center gap-2 text-gray-700">
+              <span className="text-green-600">✓</span>
+              {beneficio.texto}
+            </li>
+          ))}
+          {turma.beneficios.length > 3 && (
+            <li className="text-gray-500 text-sm">
+              +{turma.beneficios.length - 3} benefícios
+            </li>
+          )}
+        </ul>
+      )}
+      
+      <div className="flex justify-between items-center">
+        <div className="text-sm text-gray-500">
+          R$ {(turma.precoMensal || 180).toFixed(2)}/mês
+        </div>
+        <button className="bg-green-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-green-700 transition-colors">
+          Escolher Turma
+        </button>
+      </div>
+    </motion.div>
+  );
+
   // Componente de Input customizado
   const InputAnimado = ({ label, value, onChange, error, icon: Icon, ...props }: any) => (
     <div className="group">
@@ -543,64 +812,82 @@ const FormularioMatricula = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-800 via-green-700 to-green-600 py-12 px-4">
-      <div className="max-w-2xl mx-auto">
-        {/* Header com Progress Bar */}
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-6">
-          <h1 className="text-2xl font-bold text-white mb-4 text-center">
-            Reserve sua Vaga na Entropia! 🚀
-          </h1>
-          
-          {/* Informações da turma selecionada */}
-          {turmaInfo.turma && (
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 mb-4">
-              <p className="text-white/90 text-sm text-center">
-                ✨ <strong>Turma selecionada:</strong> {turmaInfo.turma}
-                {turmaInfo.serie && (
-                  <span className="block text-white/70 text-xs mt-1">
-                    Para {turmaInfo.serie === '1' ? '1ª série' : 
-                          turmaInfo.serie === '2' ? '2ª série' : 
-                          turmaInfo.serie === '3' ? '3ª série' : 
-                          'formados'}
-                  </span>
-                )}
-              </p>
-            </div>
-          )}
-          
-          {/* Progress Bar */}
-          <div className="relative">
-            <div className="flex items-center justify-between mb-2">
-              {[1, 2, 3].map((step) => (
-                <div
-                  key={step}
-                  className={`
-                    flex items-center justify-center w-10 h-10 rounded-full
-                    transition-all duration-300 transform
-                    ${etapaAtual >= step ? 
-                      'bg-white text-green-600 scale-110' : 
-                      'bg-white/20 text-white/60'}
-                  `}
-                >
-                  {etapaAtual > step ? (
-                    <CheckCircle className="w-6 h-6" />
-                  ) : (
-                    <span className="font-bold">{step}</span>
-                  )}
+      <AnimatePresence mode="wait">
+        {etapaFluxo === 'serie' && (
+          <SelecaoSerie key="serie" />
+        )}
+        
+        {etapaFluxo === 'turno' && serieSelecionada && (
+          <SelecaoTurno key="turno" />
+        )}
+        
+        {etapaFluxo === 'turmas' && turmasDisponiveis.length > 0 && (
+          <SelecaoTurmas key="turmas" />
+        )}
+        
+        {etapaFluxo === 'formulario' && (
+          <motion.div
+            key="formulario"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-2xl mx-auto"
+          >
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-6">
+              <h1 className="text-2xl font-bold text-white mb-4 text-center">
+                Reserve sua Vaga na Entropia! 🚀
+              </h1>
+              
+              {/* Informações da turma selecionada */}
+              {turmaInfo.turma && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 mb-4">
+                  <p className="text-white/90 text-sm text-center">
+                    ✨ <strong>Turma selecionada:</strong> {turmaInfo.turma}
+                    {turmaInfo.serie && (
+                      <span className="block text-white/70 text-xs mt-1">
+                        Para {turmaInfo.serie === '1' ? '1ª série' : 
+                              turmaInfo.serie === '2' ? '2ª série' : 
+                              turmaInfo.serie === '3' ? '3ª série' : 
+                              'formados'}
+                      </span>
+                    )}
+                  </p>
                 </div>
-              ))}
+              )}
+              
+              {/* Progress Bar */}
+              <div className="relative">
+                <div className="flex items-center justify-between mb-2">
+                  {[1, 2, 3].map((step) => (
+                    <div
+                      key={step}
+                      className={`
+                        flex items-center justify-center w-10 h-10 rounded-full
+                        transition-all duration-300 transform
+                        ${etapaAtual >= step ? 
+                          'bg-white text-green-600 scale-110' : 
+                          'bg-white/20 text-white/60'}
+                      `}
+                    >
+                      {etapaAtual > step ? (
+                        <CheckCircle className="w-6 h-6" />
+                      ) : (
+                        <span className="font-bold">{step}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="absolute top-5 left-0 right-0 h-0.5 bg-white/20 -z-10">
+                  <div 
+                    className="h-full bg-white transition-all duration-500"
+                    style={{ width: `${((etapaAtual - 1) / 2) * 100}%` }}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="absolute top-5 left-0 right-0 h-0.5 bg-white/20 -z-10">
-              <div 
-                className="h-full bg-white transition-all duration-500"
-                style={{ width: `${((etapaAtual - 1) / 2) * 100}%` }}
-              />
-            </div>
-          </div>
-        </div>
 
-        {/* Formulário */}
-        <div className="max-w-lg mx-auto">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
+            {/* Formulário */}
+            <div className="max-w-lg mx-auto">
+              <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
           {/* Etapa 1 - Dados do Aluno */}
           {etapaAtual === 1 && (
             <div className="space-y-6 animate-fade-in">
@@ -1136,10 +1423,11 @@ const FormularioMatricula = () => {
               )}
             </button>
           </div>
-        </div>
-        </div>
-
-      </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <style jsx>{`
         @keyframes fade-in {
