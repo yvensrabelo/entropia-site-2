@@ -80,6 +80,9 @@ export interface TurmaSimples {
     destaquePlatinado: boolean;
   }>;
   ativa?: boolean; // Para controle interno
+  // NOVOS CAMPOS PARA VALOR E DURAÇÃO
+  precoMensal: number;
+  duracaoMeses: number;
 }
 
 // Interface for the robust admin turmas (DEPRECATED - mantido para compatibilidade)

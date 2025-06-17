@@ -62,7 +62,10 @@ class TurmasService {
           foco: turma.descricao || '',
           serie: turma.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
           beneficios: beneficiosValidos,
-          ativa: turma.ativo ?? true
+          ativa: turma.ativo ?? true,
+          // NOVOS CAMPOS DE VALOR E DURAÇÃO
+          precoMensal: turma.preco_mensal || 0,
+          duracaoMeses: turma.duracao_meses || 12
         }
       })
     } catch (error) {
@@ -85,6 +88,9 @@ class TurmasService {
         exibir_periodo: true,
         exibir_duracao: true,
         exibir_vagas: true,
+        // NOVOS CAMPOS DE VALOR E DURAÇÃO
+        preco_mensal: turma.precoMensal || 0,
+        duracao_meses: turma.duracaoMeses || 12,
         // Campos adicionais que podem ser necessários
         diferenciais: [],
         created_at: new Date().toISOString(),
@@ -125,7 +131,10 @@ class TurmasService {
         foco: data.descricao || '',
         serie: data.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
         beneficios: beneficiosValidos,
-        ativa: data.ativo ?? true
+        ativa: data.ativo ?? true,
+        // NOVOS CAMPOS DE VALOR E DURAÇÃO
+        precoMensal: data.preco_mensal || 0,
+        duracaoMeses: data.duracao_meses || 12
       }
     } catch (error) {
       console.error('Erro ao criar turma:', error)
@@ -146,6 +155,9 @@ class TurmasService {
       if (turma.serie !== undefined) dadosBanco.ordem = parseInt(turma.serie)
       if (turma.beneficios !== undefined) dadosBanco.beneficios = turma.beneficios
       if (turma.ativa !== undefined) dadosBanco.ativo = turma.ativa
+      // NOVOS CAMPOS DE VALOR E DURAÇÃO
+      if (turma.precoMensal !== undefined) dadosBanco.preco_mensal = turma.precoMensal
+      if (turma.duracaoMeses !== undefined) dadosBanco.duracao_meses = turma.duracaoMeses
       
       // Sempre atualizar timestamp
       dadosBanco.updated_at = new Date().toISOString()

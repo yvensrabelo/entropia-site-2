@@ -68,7 +68,10 @@ export default function TurmasAtivasPage() {
             nome: turma.nome,
             foco: turma.tipo, // Mapear tipo para foco
             serie: '1', // Default 
-            beneficios: [] // Vazio por padrão
+            beneficios: [], // Vazio por padrão
+            // NOVOS CAMPOS OBRIGATÓRIOS
+            precoMensal: 180.00, // Valor padrão
+            duracaoMeses: 12 // Duração padrão
           });
         }
         // Recarregar após inserir
@@ -92,7 +95,10 @@ export default function TurmasAtivasPage() {
              formData.serie === '2ª série' ? '2' : 
              formData.serie === '3ª série' ? '3' : 'formado') as '1' | '2' | '3' | 'formado',
       beneficios: [], // Vazio por padrão
-      ativa: formData.ativa
+      ativa: formData.ativa,
+      // NOVOS CAMPOS OBRIGATÓRIOS
+      precoMensal: 180.00, // Valor padrão
+      duracaoMeses: 12 // Duração padrão
     };
 
     try {
