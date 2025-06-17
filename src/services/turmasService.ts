@@ -14,7 +14,7 @@ class TurmasService {
       let query = this.supabase
         .from('turmas')
         .select('*')
-        .order('serie', { ascending: true })
+        .order('ordem', { ascending: true })
         .order('nome', { ascending: true })
       
       if (apenasAtivas) {
@@ -26,14 +26,29 @@ class TurmasService {
       if (error) throw error
 
       // Adaptar formato do banco para o formato esperado
-      return (data || []).map(turma => ({
-        id: turma.id.toString(),
-        nome: turma.nome,
-        foco: turma.descricao || '',
-        serie: turma.ordem?.toString() || '3' as '1' | '2' | '3' | 'formado',
-        beneficios: turma.beneficios || [],
-        ativa: turma.ativo ?? true
-      }))
+      return (data || []).map(turma => {
+        // Validar e normalizar beneficios
+        let beneficiosValidos = []
+        try {
+          if (Array.isArray(turma.beneficios)) {
+            beneficiosValidos = turma.beneficios
+          } else if (typeof turma.beneficios === 'string') {
+            beneficiosValidos = JSON.parse(turma.beneficios)
+          }
+        } catch (error) {
+          console.warn('Benefícios inválidos para turma', turma.id, error)
+          beneficiosValidos = []
+        }
+
+        return {
+          id: turma.id.toString(),
+          nome: turma.nome || '',
+          foco: turma.descricao || '',
+          serie: turma.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
+          beneficios: beneficiosValidos,
+          ativa: turma.ativo ?? true
+        }
+      })
     } catch (error) {
       console.error('Erro ao listar turmas:', error)
       return []
@@ -58,12 +73,25 @@ class TurmasService {
 
       if (error) throw error
 
+      // Validar beneficios retornados
+      let beneficiosValidos = []
+      try {
+        if (Array.isArray(data.beneficios)) {
+          beneficiosValidos = data.beneficios
+        } else if (typeof data.beneficios === 'string') {
+          beneficiosValidos = JSON.parse(data.beneficios)
+        }
+      } catch (error) {
+        console.warn('Benefícios inválidos ao criar turma', error)
+        beneficiosValidos = []
+      }
+
       return {
         id: data.id.toString(),
-        nome: data.nome,
+        nome: data.nome || '',
         foco: data.descricao || '',
-        serie: data.ordem?.toString() || '3' as '1' | '2' | '3' | 'formado',
-        beneficios: data.beneficios || [],
+        serie: data.ordem?.toString() || '1' as '1' | '2' | '3' | 'formado',
+        beneficios: beneficiosValidos,
         ativa: data.ativo ?? true
       }
     } catch (error) {

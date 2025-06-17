@@ -27,10 +27,26 @@ export default function TurmasSimples() {
       setIsLoading(true);
       try {
         const turmasDB = await turmasService.listarTurmas(false); // false para mostrar todas
-        setTurmas(turmasDB);
+        
+        // Validar dados antes de usar
+        const turmasValidas = turmasDB.filter(turma => {
+          if (!turma.nome || !turma.id) {
+            console.warn('Turma inválida encontrada:', turma);
+            return false;
+          }
+          
+          // Garantir que beneficios é um array válido
+          if (!Array.isArray(turma.beneficios)) {
+            turma.beneficios = [];
+          }
+          
+          return true;
+        });
+        
+        setTurmas(turmasValidas);
       } catch (error) {
         console.error('Erro ao carregar turmas:', error);
-        alert('Erro ao carregar turmas. Tente novamente.');
+        alert('Erro ao carregar turmas. Recarregue a página.');
       } finally {
         setIsLoading(false);
       }
