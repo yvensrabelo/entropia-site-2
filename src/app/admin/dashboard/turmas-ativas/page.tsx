@@ -52,6 +52,7 @@ export default function TurmasAtivasPage() {
     serie: '' as '1ª série' | '2ª série' | '3ª série' | 'Extensivo' | '',
     ativa: true
   });
+  const [avisoTemporario] = useState(true);
 
   useEffect(() => {
     loadTurmas();
@@ -238,6 +239,15 @@ export default function TurmasAtivasPage() {
           </div>
         </div>
       </div>
+
+      {/* Aviso Temporário */}
+      {avisoTemporario && (
+        <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
+          <p className="text-yellow-800 text-sm">
+            ⚠️ Atenção: Os benefícios das turmas estão temporariamente desabilitados enquanto atualizamos o banco de dados.
+          </p>
+        </div>
+      )}
 
       {/* Ações */}
       <div className="flex justify-end mb-6">

@@ -21,6 +21,7 @@ export default function TurmasSimples() {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [avisoTemporario] = useState(true);
 
   useEffect(() => {
     const carregarTurmas = async () => {
@@ -233,6 +234,15 @@ export default function TurmasSimples() {
           Nova Turma
         </button>
       </div>
+
+      {/* Aviso Temporário */}
+      {avisoTemporario && (
+        <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
+          <p className="text-yellow-800 text-sm">
+            ⚠️ Atenção: Os benefícios das turmas estão temporariamente desabilitados enquanto atualizamos o banco de dados.
+          </p>
+        </div>
+      )}
 
       {/* Lista de Turmas */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
