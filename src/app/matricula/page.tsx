@@ -280,7 +280,7 @@ export default function MatriculaPage() {
         <h2 className="text-4xl font-bold text-white mb-2">Escolha sua Turma</h2>
         <p className="text-xl text-white/70">
           {serieSelecionada === 'formado' ? 'Já Formado' : `${serieSelecionada}ª Série`} • {' '}
-          {turnoSelecionado?.charAt(0).toUpperCase() + turnoSelecionado?.slice(1)}
+          {turnoSelecionado ? turnoSelecionado.charAt(0).toUpperCase() + turnoSelecionado.slice(1) : ''}
         </p>
       </div>
 
