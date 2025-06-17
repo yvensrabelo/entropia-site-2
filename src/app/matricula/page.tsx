@@ -63,10 +63,10 @@ export default function MatriculaPage() {
       const turmasDaSerie = todasTurmas.filter(turma => {
         console.log(`[FILTRO] ${turma.nome} - seriesAtendidas:`, turma.seriesAtendidas)
         
-        // Verificar ambos os formatos por segurança
+        // Verificar ambos os formatos por segurança  
         const atende = turma.seriesAtendidas?.includes(serieSelecionada) || 
-                      (serieSelecionada === 'formado' && turma.seriesAtendidas?.includes('Já Formado')) ||
-                      (serieSelecionada === 'Já Formado' && turma.seriesAtendidas?.includes('formado'))
+                      (serieSelecionada === 'formado' && turma.seriesAtendidas?.includes('formado' as Serie)) ||
+                      false
         
         console.log(`[FILTRO] ${turma.nome} atende ${serieSelecionada}?`, atende)
         console.log(`   - ${turma.nome}: seriesAtendidas=${JSON.stringify(turma.seriesAtendidas)} | Atende? ${atende}`)
@@ -225,7 +225,7 @@ export default function MatriculaPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {turnos.map((turno) => {
-            const disponivel = turnosDisponiveis.includes(turno.value)
+            const disponivel = turnosDisponiveis?.includes(turno.value) || false
             const Icon = turno.icon
 
             return (
@@ -290,7 +290,7 @@ export default function MatriculaPage() {
         </button>
         <h2 className="text-4xl font-bold text-white mb-2">Escolha sua Turma</h2>
         <p className="text-xl text-white/70">
-          {serieSelecionada === 'formado' ? 'Já Formado' : `${serieSelecionada}ª Série`} • {' '}
+          {serieSelecionada === 'formado' ? 'Já Formado' : `${serieSelecionada || ''}ª Série`} • {' '}
           {turnoSelecionado ? turnoSelecionado.charAt(0).toUpperCase() + turnoSelecionado.slice(1) : ''}
         </p>
       </div>
@@ -305,8 +305,8 @@ export default function MatriculaPage() {
             >
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h3 className="text-3xl font-bold text-gray-800 mb-2">{turma.nome}</h3>
-                  <p className="text-xl text-gray-600">{turma.foco}</p>
+                  <h3 className="text-3xl font-bold text-gray-800 mb-2">{turma.nome || 'Turma'}</h3>
+                  <p className="text-xl text-gray-600">{turma.foco || ''}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-500">Mensalidade</p>
@@ -314,7 +314,7 @@ export default function MatriculaPage() {
                     R$ {turma.precoMensal?.toFixed(2) || '0.00'}
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
-                    {turma.duracaoMeses} meses
+                    {turma.duracaoMeses || 12} meses
                   </p>
                 </div>
               </div>
@@ -323,14 +323,14 @@ export default function MatriculaPage() {
                 <div className="mb-6">
                   <h4 className="font-semibold text-gray-700 mb-3">Benefícios:</h4>
                   <div className="space-y-2">
-                    {turma.beneficios.map((beneficio, idx) => (
+                    {turma.beneficios?.map((beneficio, idx) => (
                       <div key={idx} className="flex items-center gap-3">
-                        <CheckCircle className={`w-5 h-5 ${beneficio.destaquePlatinado ? 'text-purple-600' : 'text-green-500'}`} />
-                        <span className={`${beneficio.destaquePlatinado ? 'font-bold text-purple-600' : 'text-gray-700'}`}>
-                          {beneficio.texto}
+                        <CheckCircle className={`w-5 h-5 ${beneficio?.destaquePlatinado ? 'text-purple-600' : 'text-green-500'}`} />
+                        <span className={`${beneficio?.destaquePlatinado ? 'font-bold text-purple-600' : 'text-gray-700'}`}>
+                          {beneficio?.texto || ''}
                         </span>
                       </div>
-                    ))}
+                    )) || []}
                   </div>
                 </div>
               )}
