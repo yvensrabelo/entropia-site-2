@@ -168,12 +168,15 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
       {/* Botão Reservar Minha Vaga */}
       <button 
         onClick={() => {
-          // Ir diretamente para o formulário de matrícula com ID da turma
+          // Se há turma real do banco com ID, vai para formulário específico
           if (dados.turmaId) {
             window.location.href = `/matricula/${dados.turmaId}`;
           } else {
-            // Fallback para página geral de matrícula
-            window.location.href = '/matricula';
+            // Se é fallback (dados de exemplo), vai para página de seleção
+            const params = new URLSearchParams();
+            if (dados.serie) params.set('serie', dados.serie);
+            params.set('origem', 'home-fallback');
+            window.location.href = `/matricula?${params.toString()}`;
           }
         }}
         className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer"
