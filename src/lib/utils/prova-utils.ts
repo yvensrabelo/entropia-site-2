@@ -299,30 +299,42 @@ export function extractMetadataFromFilename(filename: string): ProvaGroup['metad
     metadata.instituicao = metadata.instituicao || 'UFAM';
     console.log('║ ✓ Tipo: PSI (UFAM)');
     
-    // IMPORTANTE: Detectar -II ANTES de -I para evitar falso positivo!
-    if (name.includes('-ii') || name.includes('_ii') || name.includes(' ii')) {
-      metadata.subcategoria = 'DIA 2';
-      console.log('║   → Detectado -II como DIA 2');
-    }
-    else if (name.includes('-i') || name.includes('_i') || name.includes(' i')) {
-      metadata.subcategoria = 'DIA 1';
-      console.log('║   → Detectado -I como DIA 1');
-    }
-    // Detectar CG-II ANTES de CG-I para evitar falso positivo!
-    else if (name.includes('cg-ii') || name.includes('cgii') || name.includes('cg ii')) {
+    // IMPORTANTE: Detectar padrões mais específicos primeiro
+    // Padrões com CG (Conhecimentos Gerais)
+    if (name.includes('cg-ii') || name.includes('cgii') || name.includes('cg ii') || name.includes('cg_ii')) {
       metadata.subcategoria = 'DIA 2';
       console.log('║   → Detectado CG-II como DIA 2');
     }
-    else if (name.includes('cg-i') || name.includes('cgi') || name.includes('cg i')) {
+    else if (name.includes('cg-i') || name.includes('cgi') || name.includes('cg i') || name.includes('cg_i')) {
       metadata.subcategoria = 'DIA 1';
       console.log('║   → Detectado CG-I como DIA 1');
     }
-    // Alternativas com "dia"
-    else if (name.includes('dia-2') || name.includes('dia 2') || name.includes('dia2')) {
+    // Padrões gerais com -II/-I (DETECTAR -II ANTES de -I!)
+    else if (name.includes('-ii') || name.includes('_ii') || name.includes(' ii') || name.includes('.ii')) {
       metadata.subcategoria = 'DIA 2';
+      console.log('║   → Detectado -II como DIA 2');
     }
-    else if (name.includes('dia-1') || name.includes('dia 1') || name.includes('dia1')) {
+    else if (name.includes('-i') || name.includes('_i') || name.includes(' i') || name.includes('.i')) {
       metadata.subcategoria = 'DIA 1';
+      console.log('║   → Detectado -I como DIA 1');
+    }
+    // Padrões com "dia"
+    else if (name.includes('dia-2') || name.includes('dia 2') || name.includes('dia2') || name.includes('dia_2')) {
+      metadata.subcategoria = 'DIA 2';
+      console.log('║   → Detectado DIA 2');
+    }
+    else if (name.includes('dia-1') || name.includes('dia 1') || name.includes('dia1') || name.includes('dia_1')) {
+      metadata.subcategoria = 'DIA 1';
+      console.log('║   → Detectado DIA 1');
+    }
+    // Padrões numéricos
+    else if (name.includes('2o dia') || name.includes('segundo dia') || name.includes('2º dia')) {
+      metadata.subcategoria = 'DIA 2';
+      console.log('║   → Detectado segundo dia');
+    }
+    else if (name.includes('1o dia') || name.includes('primeiro dia') || name.includes('1º dia')) {
+      metadata.subcategoria = 'DIA 1';
+      console.log('║   → Detectado primeiro dia');
     }
     
     console.log('║   → Dia:', metadata.subcategoria || 'não identificado');

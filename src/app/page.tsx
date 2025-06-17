@@ -277,6 +277,7 @@ const HomePage = () => {
   const [turnoSelecionado, setTurnoSelecionado] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [turmas, setTurmas] = useState<TurmaSimples[]>([]);
+  const [key, setKey] = useState(0); // Forçar re-render no mobile
 
   // Limpeza de dados obsoletos e carregamento de turmas
   useEffect(() => {
@@ -297,6 +298,20 @@ const HomePage = () => {
   useEffect(() => {
     setTurnoSelecionado(null);
   }, [serieAtiva]);
+
+  // Função para mudança de série com forçamento de re-render
+  const handleSerieChange = (serie: string) => {
+    setSerieAtiva(serie);
+    setKey(prev => prev + 1); // Forçar re-render
+    
+    // Forçar atualização do DOM no mobile
+    setTimeout(() => {
+      const elemento = document.querySelector(`[data-serie="${serie}"]`);
+      if (elemento) {
+        elemento.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 100);
+  };
 
   return (
     <>
@@ -567,10 +582,11 @@ const HomePage = () => {
                     
                     {/* Bloco 1: Séries do Ensino Médio */}
                     <div className="bg-white/10 backdrop-blur-md rounded-3xl p-2 
-                                  border border-white/20 shadow-xl glass-effect">
+                                  border border-white/20 shadow-xl glass-effect" key={`series-${key}`}>
                       <div className="grid grid-cols-3 gap-2">
                         <button
-                          onClick={() => setSerieAtiva('1serie')}
+                          data-serie="1serie"
+                          onClick={() => handleSerieChange('1serie')}
                           className={`
                             py-4 rounded-2xl font-bold transition-all
                             ${serieAtiva === '1serie' 
@@ -583,7 +599,8 @@ const HomePage = () => {
                         </button>
                         
                         <button
-                          onClick={() => setSerieAtiva('2serie')}
+                          data-serie="2serie"
+                          onClick={() => handleSerieChange('2serie')}
                           className={`
                             py-4 rounded-2xl font-bold transition-all
                             ${serieAtiva === '2serie' 
@@ -596,7 +613,8 @@ const HomePage = () => {
                         </button>
                         
                         <button
-                          onClick={() => setSerieAtiva('3serie')}
+                          data-serie="3serie"
+                          onClick={() => handleSerieChange('3serie')}
                           className={`
                             py-4 rounded-2xl font-bold transition-all
                             ${serieAtiva === '3serie' 
@@ -612,9 +630,10 @@ const HomePage = () => {
                     
                     {/* Bloco 2: Já Formado */}
                     <div className="bg-white/10 backdrop-blur-md rounded-3xl p-2 
-                                  border border-white/20 shadow-xl glass-effect">
+                                  border border-white/20 shadow-xl glass-effect" key={`formado-${key}`}>
                       <button
-                        onClick={() => setSerieAtiva('formado')}
+                        data-serie="formado"
+                        onClick={() => handleSerieChange('formado')}
                         className={`
                           w-full py-4 rounded-2xl font-bold transition-all
                           ${serieAtiva === 'formado' 
@@ -638,7 +657,8 @@ const HomePage = () => {
 
                   {/* CARD DE CONTEÚDO */}
                   <div className="mt-8 bg-white/95 backdrop-blur-xl rounded-3xl 
-                                shadow-2xl p-8 border border-white/50 glass-effect">
+                                shadow-2xl p-8 border border-white/50 glass-effect" 
+                       key={`content-${serieAtiva}-${turnoSelecionado}-${key}`}>
                     {/* Conteúdo dinâmico baseado na série e turno */}
                     <ConteudoDinamico serieAtiva={serieAtiva} turnoSelecionado={turnoSelecionado} />
                   </div>

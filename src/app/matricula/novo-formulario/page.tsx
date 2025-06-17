@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, ChevronRight, User, UserCheck, CreditCard, Calendar, DollarSign, Gift, Star } from 'lucide-react'
+import { Check, ChevronRight, User, UserCheck, CreditCard, Calendar, DollarSign, Gift } from 'lucide-react'
 import { turmasService } from '@/services/turmasService'
 
 // Tipos
@@ -35,50 +35,23 @@ interface OpcaoPagamento {
   cor: string
 }
 
-// Dados dos alunos para os cards
-const alunosDestaques = [
-  {
-    nome: 'Lucca Beulch',
-    imagem: '/images/lucca-beulch.png',
-    depoimento: 'O Entropia me deu toda base para conquistar minha vaga!'
-  },
-  {
-    nome: 'Eduarda Braga',
-    imagem: '/images/eduarda-braga.png',
-    depoimento: 'Professores incríveis e material completo. Recomendo!'
-  },
-  {
-    nome: 'Gabriela Parente',
-    imagem: '/images/gabriela-parente.png',
-    depoimento: 'Ambiente acolhedor e metodologia que funciona de verdade!'
-  }
+// Imagens dos alunos para cada etapa
+const imagensAlunos = [
+  "/images/lucca-beulch.png",     // Etapa 1
+  "/images/eduarda-braga.png",   // Etapa 2
+  "/images/gabriela-parente.png" // Etapa 3
 ]
 
-// Componente de Card do Aluno para Mobile
-const CardAluno = ({ nome, imagem, depoimento }: { nome: string; imagem: string; depoimento: string }) => {
+// Componente simplificado - apenas imagem
+const CardAlunoSimples = ({ imagem, nome }: { imagem: string; nome: string }) => {
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="md:hidden bg-white/10 backdrop-blur-md rounded-xl p-4 mb-6 border border-white/20"
-    >
-      <div className="flex items-center gap-4">
-        <img 
-          src={imagem} 
-          alt={nome}
-          className="w-20 h-20 rounded-full object-cover border-2 border-white/30"
-        />
-        <div className="flex-1">
-          <h4 className="font-bold text-white mb-1">{nome}</h4>
-          <p className="text-white/80 text-sm italic">"{depoimento}"</p>
-          <div className="flex gap-1 mt-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star key={star} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
+    <div className="md:hidden w-full mb-6">
+      <img 
+        src={imagem} 
+        alt={`Depoimento de ${nome}`}
+        className="w-full h-auto rounded-xl shadow-lg"
+      />
+    </div>
   );
 }
 
@@ -103,7 +76,7 @@ const EtapaDadosAluno = ({
     className="space-y-6"
   >
     {/* Card do Lucca no mobile */}
-    <CardAluno {...alunosDestaques[0]} />
+    <CardAlunoSimples imagem={imagensAlunos[0]} nome="Lucca Beulch" />
     
     <div className="text-center mb-8">
       <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -195,7 +168,7 @@ const EtapaResponsavel = ({
     className="space-y-6"
   >
     {/* Card da Eduarda no mobile */}
-    <CardAluno {...alunosDestaques[1]} />
+    <CardAlunoSimples imagem={imagensAlunos[1]} nome="Eduarda Braga" />
     
     <div className="text-center mb-8">
       <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -301,7 +274,7 @@ const EtapaPagamento = ({
     className="space-y-6"
   >
     {/* Card da Gabriela no mobile */}
-    <CardAluno {...alunosDestaques[2]} />
+    <CardAlunoSimples imagem={imagensAlunos[2]} nome="Gabriela Parente" />
     
     <div className="text-center mb-8">
       <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -568,38 +541,76 @@ function FormularioMatriculaContent() {
     setEnviando(true)
     
     try {
-      const dados = {
-        aluno: dadosAluno,
-        responsavel: dadosResponsavel.souResponsavel ? dadosAluno : dadosResponsavel,
-        turma: turmaInfo,
-        pagamento: pagamentoSelecionado,
-        timestamp: new Date().toISOString()
+      // Reformatar os dados para o formato esperado pelo webhook
+      const dadosWebhook = {
+        // Dados do aluno
+        nome_aluno: dadosAluno.nomeCompleto,
+        whatsapp_aluno: dadosAluno.whatsapp.replace(/\D/g, ''), // Remove formatação
+        cpf_aluno: dadosAluno.cpf.replace(/\D/g, ''), // Remove formatação
+        data_nascimento_aluno: dadosAluno.dataNascimento,
+        
+        // Dados do responsável
+        nome_responsavel: dadosResponsavel.souResponsavel ? dadosAluno.nomeCompleto : (dadosResponsavel.nome || ''),
+        whatsapp_responsavel: dadosResponsavel.souResponsavel ? dadosAluno.whatsapp.replace(/\D/g, '') : (dadosResponsavel.whatsapp?.replace(/\D/g, '') || ''),
+        cpf_responsavel: dadosResponsavel.souResponsavel ? dadosAluno.cpf.replace(/\D/g, '') : (dadosResponsavel.cpf?.replace(/\D/g, '') || ''),
+        
+        // Dados da turma
+        turma_id: turmaInfo?.id || '',
+        turma_nome: turmaInfo?.nome || '',
+        turma_foco: turmaInfo?.foco || '',
+        turma_turnos: turmaInfo?.turnos?.join(', ') || '',
+        turma_preco: turmaInfo?.precoMensal || 0,
+        turma_duracao: turmaInfo?.duracaoMeses || 12,
+        
+        // Pagamento
+        plano_pagamento: pagamentoSelecionado,
+        
+        // Metadata
+        timestamp: new Date().toISOString(),
+        origem: 'site_entropia'
       }
 
-      // Logs detalhados para debug
-      console.log('=== DADOS ENVIADOS AO WEBHOOK ===');
-      console.log(JSON.stringify(dados, null, 2));
-
-      // Enviar para o webhook
+      console.log('=== DADOS FORMATADOS PARA WEBHOOK ===');
+      console.log(JSON.stringify(dadosWebhook, null, 2));
+      
       const response = await fetch('https://webhook.cursoentropia.com/webhook/siteentropiaoficial', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados)
-      })
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(dadosWebhook),
+      });
 
-      // Log da resposta completa
-      console.log('Status:', response.status);
-      console.log('Status Text:', response.statusText);
-      
-      // Tentar ler o corpo da resposta mesmo em caso de erro
       const responseText = await response.text();
-      console.log('Resposta do servidor:', responseText);
-
+      console.log('Resposta:', response.status, responseText);
+      
       if (!response.ok) {
-        throw new Error(`Erro ${response.status}: ${responseText || response.statusText}`);
+        // Tentar envio alternativo com estrutura simplificada
+        console.log('Tentando formato alternativo...');
+        
+        const dadosSimplificados = {
+          aluno: dadosAluno.nomeCompleto,
+          whatsapp: dadosAluno.whatsapp,
+          cpf: dadosAluno.cpf,
+          turma: turmaInfo?.nome || '',
+          pagamento: pagamentoSelecionado,
+          timestamp: new Date().toISOString()
+        };
+        
+        const retryResponse = await fetch('https://webhook.cursoentropia.com/webhook/siteentropiaoficial', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dadosSimplificados),
+        });
+        
+        if (!retryResponse.ok) {
+          throw new Error(`Webhook falhou: ${responseText}`);
+        }
       }
-
-      // Se chegou aqui, foi sucesso
+      
       console.log('✅ Formulário enviado com sucesso!');
       router.push('/matricula/sucesso')
     } catch (error) {
