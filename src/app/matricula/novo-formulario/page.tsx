@@ -256,6 +256,8 @@ const EtapaPagamento = ({
   opcoesPagamento,
   pagamentoSelecionado,
   setPagamentoSelecionado,
+  dataPrimeiroPagamento,
+  setDataPrimeiroPagamento,
   enviando,
   onVoltar,
   onFinalizar
@@ -263,10 +265,21 @@ const EtapaPagamento = ({
   opcoesPagamento: OpcaoPagamento[]
   pagamentoSelecionado: string
   setPagamentoSelecionado: (tipo: string) => void
+  dataPrimeiroPagamento: string
+  setDataPrimeiroPagamento: (data: string) => void
   enviando: boolean
   onVoltar: () => void
   onFinalizar: () => void
-}) => (
+}) => {
+  // Calcular datas mínima (hoje) e máxima (15 dias)
+  const hoje = new Date();
+  const dataMinima = hoje.toISOString().split('T')[0];
+  
+  const dataMaxima = new Date();
+  dataMaxima.setDate(dataMaxima.getDate() + 15);
+  const dataMaximaStr = dataMaxima.toISOString().split('T')[0];
+
+  return (
   <motion.div
     initial={{ opacity: 0, x: 20 }}
     animate={{ opacity: 1, x: 0 }}
@@ -342,6 +355,28 @@ const EtapaPagamento = ({
       })}
     </div>
 
+    {/* Campo de Data do Primeiro Pagamento */}
+    {pagamentoSelecionado && (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-6 p-4 bg-white/10 rounded-xl border border-white/20"
+      >
+        <label className="block text-white mb-3 font-medium">
+          Data do Primeiro Pagamento
+        </label>
+        <input
+          type="date"
+          value={dataPrimeiroPagamento}
+          onChange={(e) => setDataPrimeiroPagamento(e.target.value)}
+          min={dataMinima}
+          max={dataMaximaStr}
+          required
+          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 [color-scheme:dark]"
+        />
+      </motion.div>
+    )}
+
     <div className="flex gap-4">
       <button
         onClick={onVoltar}
@@ -351,14 +386,15 @@ const EtapaPagamento = ({
       </button>
       <button
         onClick={onFinalizar}
-        disabled={!pagamentoSelecionado || enviando}
+        disabled={!pagamentoSelecionado || !dataPrimeiroPagamento || enviando}
         className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {enviando ? 'Enviando...' : 'Finalizar Matrícula'}
       </button>
     </div>
   </motion.div>
-)
+  );
+}
 
 function FormularioMatriculaContent() {
   const searchParams = useSearchParams()
@@ -374,6 +410,7 @@ function FormularioMatriculaContent() {
   })
   const [dadosResponsavel, setDadosResponsavel] = useState<DadosResponsavel>({})
   const [pagamentoSelecionado, setPagamentoSelecionado] = useState<string>('')
+  const [dataPrimeiroPagamento, setDataPrimeiroPagamento] = useState<string>('')
   const [turmaInfo, setTurmaInfo] = useState<any>(null)
   const [maiorIdade, setMaiorIdade] = useState(false)
   const [enviando, setEnviando] = useState(false)
@@ -531,6 +568,9 @@ function FormularioMatriculaContent() {
     else if (etapaAtual === 'pagamento') setEtapaAtual('responsavel')
   }, [etapaAtual])
 
+  // Calcular opções de pagamento memoizado
+  const opcoesPagamento = calcularOpcoesPagamento()
+
   // Enviar formulário com useCallback
   const enviarFormulario = useCallback(async () => {
     if (!pagamentoSelecionado) {
@@ -538,9 +578,24 @@ function FormularioMatriculaContent() {
       return
     }
 
+    if (!dataPrimeiroPagamento) {
+      alert('Selecione a data do primeiro pagamento')
+      return
+    }
+
     setEnviando(true)
     
     try {
+      // Calcular informações de pagamento
+      const opcaoSelecionada = opcoesPagamento.find(opcao => opcao.tipo === pagamentoSelecionado)
+      const infoPagamento = {
+        plano: pagamentoSelecionado,
+        numeroParcelas: opcaoSelecionada?.parcelas || 1,
+        valorParcela: opcaoSelecionada?.valorParcela || 0,
+        valorTotal: opcaoSelecionada?.valorTotal || 0,
+        dataPrimeiroPagamento: dataPrimeiroPagamento
+      }
+
       // Reformatar os dados para o formato esperado pelo webhook
       const dadosWebhook = {
         // Dados do aluno
@@ -564,6 +619,10 @@ function FormularioMatriculaContent() {
         
         // Pagamento
         plano_pagamento: pagamentoSelecionado,
+        numero_parcelas: infoPagamento.numeroParcelas,
+        valor_parcela: infoPagamento.valorParcela.toFixed(2),
+        valor_total: infoPagamento.valorTotal.toFixed(2),
+        data_primeiro_pagamento: dataPrimeiroPagamento,
         
         // Metadata
         timestamp: new Date().toISOString(),
@@ -627,10 +686,7 @@ function FormularioMatriculaContent() {
     } finally {
       setEnviando(false)
     }
-  }, [pagamentoSelecionado, dadosAluno, dadosResponsavel, turmaInfo, router])
-
-  // Calcular opções de pagamento memoizado
-  const opcoesPagamento = calcularOpcoesPagamento()
+  }, [pagamentoSelecionado, dataPrimeiroPagamento, dadosAluno, dadosResponsavel, turmaInfo, opcoesPagamento, router])
 
   // Indicador de progresso
   const ProgressBar = () => {
@@ -718,6 +774,8 @@ function FormularioMatriculaContent() {
                 opcoesPagamento={opcoesPagamento}
                 pagamentoSelecionado={pagamentoSelecionado}
                 setPagamentoSelecionado={setPagamentoSelecionado}
+                dataPrimeiroPagamento={dataPrimeiroPagamento}
+                setDataPrimeiroPagamento={setDataPrimeiroPagamento}
                 enviando={enviando}
                 onVoltar={voltarEtapa}
                 onFinalizar={enviarFormulario}
