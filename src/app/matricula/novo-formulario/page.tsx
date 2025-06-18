@@ -6,6 +6,118 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, ChevronRight, User, UserCheck, CreditCard, Calendar, DollarSign, Gift } from 'lucide-react'
 import { turmasService } from '@/services/turmasService'
 
+// Componente de Data Fluido
+const CampoDataFluido = ({ 
+  label, 
+  value, 
+  onChange, 
+  placeholder = "DD/MM/AAAA",
+  className = ""
+}: {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  placeholder?: string
+  className?: string
+}) => {
+  const [displayValue, setDisplayValue] = useState('')
+  
+  // Formatar valor para exibição (DD/MM/YYYY)
+  useEffect(() => {
+    if (value) {
+      const date = new Date(value)
+      if (!isNaN(date.getTime())) {
+        const dia = String(date.getDate()).padStart(2, '0')
+        const mes = String(date.getMonth() + 1).padStart(2, '0')
+        const ano = date.getFullYear()
+        setDisplayValue(`${dia}/${mes}/${ano}`)
+      }
+    } else {
+      setDisplayValue('')
+    }
+  }, [value])
+  
+  // Função para adicionar máscara enquanto digita
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let valor = e.target.value.replace(/\D/g, '') // Remove não-números
+    
+    // Limitar a 8 dígitos (DDMMYYYY)
+    valor = valor.substring(0, 8)
+    
+    // Aplicar máscara
+    if (valor.length >= 2) {
+      valor = valor.substring(0, 2) + '/' + valor.substring(2)
+    }
+    if (valor.length >= 5) {
+      valor = valor.substring(0, 5) + '/' + valor.substring(5)
+    }
+    
+    setDisplayValue(valor)
+    
+    // Se a data estiver completa, converter para YYYY-MM-DD
+    if (valor.length === 10) {
+      const [dia, mes, ano] = valor.split('/')
+      const dataFormatada = `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`
+      
+      // Validar se é uma data válida
+      const date = new Date(dataFormatada)
+      if (!isNaN(date.getTime()) && 
+          date.getDate() == parseInt(dia) &&
+          date.getMonth() + 1 == parseInt(mes) &&
+          date.getFullYear() == parseInt(ano)) {
+        onChange(dataFormatada) // Salva no formato YYYY-MM-DD
+      }
+    } else {
+      // Se não estiver completa, limpar o valor
+      onChange('')
+    }
+  }
+  
+  // Função para lidar com teclas especiais
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { key, currentTarget } = e
+    const valor = currentTarget.value
+    const posicaoCursor = currentTarget.selectionStart || 0
+    
+    // Permitir navegação e deleção
+    if (['Backspace', 'Delete', 'Tab', 'Escape', 'Enter'].includes(key)) {
+      if (key === 'Backspace' && valor[posicaoCursor - 1] === '/') {
+        e.preventDefault()
+        // Remove o caractere antes da barra
+        const novoValor = valor.slice(0, posicaoCursor - 2) + valor.slice(posicaoCursor)
+        setDisplayValue(novoValor)
+      }
+      return
+    }
+    
+    // Permitir Ctrl+A, Ctrl+C, Ctrl+V
+    if ((e.ctrlKey || e.metaKey) && ['a', 'c', 'v'].includes(key.toLowerCase())) {
+      return
+    }
+    
+    // Bloquear se não for número
+    if (!/\d/.test(key)) {
+      e.preventDefault()
+    }
+  }
+  
+  return (
+    <div>
+      <label className="block text-white mb-2">{label}</label>
+      <input
+        type="text"
+        value={displayValue}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+        maxLength={10}
+        className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500 ${className}`}
+        inputMode="numeric" // Teclado numérico no mobile
+      />
+    </div>
+  )
+}
+
 // Tipos
 type Etapa = 'dados-aluno' | 'responsavel' | 'pagamento'
 
@@ -122,15 +234,12 @@ const EtapaDadosAluno = ({
         />
       </div>
 
-      <div>
-        <label className="block text-white mb-2">Data de Nascimento *</label>
-        <input
-          type="date"
-          value={dadosAluno.dataNascimento}
-          onChange={(e) => setDadosAluno({...dadosAluno, dataNascimento: e.target.value})}
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
-      </div>
+      <CampoDataFluido
+        label="Data de Nascimento *"
+        value={dadosAluno.dataNascimento}
+        onChange={(value) => setDadosAluno({...dadosAluno, dataNascimento: value})}
+        placeholder="DD/MM/AAAA"
+      />
     </div>
 
     <button
@@ -372,8 +481,9 @@ const EtapaPagamento = ({
           min={dataMinima}
           max={dataMaximaStr}
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 [color-scheme:dark]"
+          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:filter-invert [&::-webkit-calendar-picker-indicator]:opacity-80"
         />
+        <p className="text-xs text-white/60 mt-2">Selecione uma data até 15 dias a partir de hoje</p>
       </motion.div>
     )}
 
