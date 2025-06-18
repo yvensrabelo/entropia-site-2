@@ -1,7 +1,7 @@
 {
-  "name": "Entropia Cursinho - PSC UFAM, ENEM, SIS UEA",
+  "name": "Portal do Vestibulando - Entropia",
   "short_name": "Entropia",
-  "description": "Cursinho pré-vestibular em Manaus com mais de 850 aprovações. PSC, ENEM, SIS, MACRO.",
+  "description": "Calculadora de Notas | Banco de Provas",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

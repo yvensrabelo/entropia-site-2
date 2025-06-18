@@ -10,16 +10,24 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Entropia Cursinho | PSC UFAM, ENEM, SIS UEA, MACRO | +850 Aprovações',
-  description: 'Cursinho pré-vestibular em Manaus com mais de 850 aprovações. Prepare-se para PSC UFAM, ENEM, SIS UEA e MACRO com o melhor material e professores.',
-  keywords: 'cursinho manaus, psc ufam, enem, sis uea, macro, vestibular manaus, cursinho pré-vestibular',
+  title: 'Portal do Vestibulando - Entropia',
+  description: 'Calculadora de Notas | Banco de Provas',
+  keywords: 'vestibular, psc, enem, calculadora de notas, banco de provas, manaus, cursinho, vestibulando',
+  authors: [{ name: 'Entropia Cursinho' }],
+  creator: 'Entropia',
+  publisher: 'Entropia',
   openGraph: {
-    title: 'Entropia Cursinho - +850 Aprovações em Vestibulares',
-    description: 'O cursinho que mais aprova em Manaus. PSC, ENEM, SIS, MACRO.',
-    url: 'https://entropiacursinho.com.br',
-    siteName: 'Entropia Cursinho',
+    title: 'Portal do Vestibulando - Entropia',
+    description: 'Calculadora de Notas | Banco de Provas',
+    url: 'https://souentropia.com.br',
+    siteName: 'Entropia',
     locale: 'pt_BR',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Portal do Vestibulando - Entropia',
+    description: 'Calculadora de Notas | Banco de Provas',
   },
 }
 
@@ -27,6 +35,26 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   userScalable: true,
+}
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Entropia Cursinho",
+  "alternateName": "Portal do Vestibulando - Entropia",
+  "url": "https://souentropia.com.br",
+  "description": "Calculadora de Notas | Banco de Provas",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Manaus",
+    "addressRegion": "AM",
+    "addressCountry": "BR"
+  },
+  "offers": {
+    "@type": "Offer",
+    "name": "Ferramentas para Vestibulando",
+    "description": "Calculadora de Notas e Banco de Provas gratuitos"
+  }
 }
 
 export default function RootLayout({
@@ -49,6 +77,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Entropia" />
         {/* Previne zoom no iOS */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body className={`${inter.className} antialiased bg-black text-white`}>
         <ToastProvider>
