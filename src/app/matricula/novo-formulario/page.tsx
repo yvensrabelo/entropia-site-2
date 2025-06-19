@@ -53,11 +53,14 @@ const CampoDataFluido = ({
     }
     
     setDisplayValue(valor)
+    console.log('CampoDataFluido - valor digitado:', valor)
     
     // Se a data estiver completa, converter para YYYY-MM-DD
     if (valor.length === 10) {
       const [dia, mes, ano] = valor.split('/')
       const dataFormatada = `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`
+      
+      console.log('CampoDataFluido - tentando converter:', dataFormatada)
       
       // Validar se é uma data válida
       const date = new Date(dataFormatada)
@@ -65,12 +68,16 @@ const CampoDataFluido = ({
           date.getDate() == parseInt(dia) &&
           date.getMonth() + 1 == parseInt(mes) &&
           date.getFullYear() == parseInt(ano)) {
+        console.log('CampoDataFluido - data válida, salvando:', dataFormatada)
         onChange(dataFormatada) // Salva no formato YYYY-MM-DD
+      } else {
+        console.log('CampoDataFluido - data inválida')
       }
-    } else {
-      // Se não estiver completa, limpar o valor
+    } else if (valor.length === 0) {
+      // Só limpar quando campo estiver completamente vazio
       onChange('')
     }
+    // NÃO limpar enquanto usuário está digitando
   }
   
   // Função para lidar com teclas especiais
@@ -234,12 +241,33 @@ const EtapaDadosAluno = ({
         />
       </div>
 
+      {/* Alternativa: Campo de data nativo com debug */}
+      <div>
+        <label className="block text-white mb-2">Data de Nascimento *</label>
+        <input
+          type="date"
+          value={dadosAluno.dataNascimento || ''}
+          onChange={(e) => {
+            console.log('Data nativa selecionada:', e.target.value)
+            setDadosAluno({...dadosAluno, dataNascimento: e.target.value})
+          }}
+          max={new Date().toISOString().split('T')[0]}
+          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 [color-scheme:dark]"
+          required
+        />
+      </div>
+      
+      {/* Campo fluido como alternativa comentada
       <CampoDataFluido
         label="Data de Nascimento *"
         value={dadosAluno.dataNascimento}
-        onChange={(value) => setDadosAluno({...dadosAluno, dataNascimento: value})}
+        onChange={(value) => {
+          console.log('Data fluida alterada:', value)
+          setDadosAluno({...dadosAluno, dataNascimento: value})
+        }}
         placeholder="DD/MM/AAAA"
       />
+      */}
     </div>
 
     <button
@@ -668,10 +696,11 @@ function FormularioMatriculaContent() {
     if (etapaAtual === 'dados-aluno') {
       // Debug - mostrar estado atual
       console.log('=== VALIDAÇÃO DADOS DO ALUNO ===')
-      console.log('Nome:', dadosAluno.nomeCompleto, '→', dadosAluno.nomeCompleto.length > 2)
-      console.log('CPF:', dadosAluno.cpf, '→', validarCPF(dadosAluno.cpf))
-      console.log('WhatsApp:', dadosAluno.whatsapp, '→', validarWhatsApp(dadosAluno.whatsapp))
-      console.log('Data Nascimento:', dadosAluno.dataNascimento, '→', !!dadosAluno.dataNascimento)
+      console.log('Nome completo:', `"${dadosAluno.nomeCompleto}"`, '→ Válido:', dadosAluno.nomeCompleto && dadosAluno.nomeCompleto.trim().length >= 3)
+      console.log('CPF:', `"${dadosAluno.cpf}"`, '→ Válido:', validarCPF(dadosAluno.cpf))
+      console.log('WhatsApp:', `"${dadosAluno.whatsapp}"`, '→ Válido:', validarWhatsApp(dadosAluno.whatsapp))
+      console.log('Data Nascimento:', `"${dadosAluno.dataNascimento}"`, '→ Válido:', !!dadosAluno.dataNascimento)
+      console.log('Dados completos:', dadosAluno)
       
       // Validar dados do aluno com mensagens específicas
       const erros: string[] = []
