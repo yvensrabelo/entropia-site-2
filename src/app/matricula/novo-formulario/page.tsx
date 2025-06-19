@@ -541,6 +541,13 @@ function FormularioMatriculaContent() {
     carregarTurma()
   }, [searchParams])
 
+  // Debug: monitorar mudanças no formulário
+  useEffect(() => {
+    console.log('=== ESTADO DO FORMULÁRIO ATUALIZADO ===')
+    console.log('Dados do Aluno:', dadosAluno)
+    console.log('Etapa Atual:', etapaAtual)
+  }, [dadosAluno, etapaAtual])
+
   // Verificar maioridade
   useEffect(() => {
     if (dadosAluno.dataNascimento) {
@@ -564,22 +571,29 @@ function FormularioMatriculaContent() {
     cpf = cpf.replace(/\D/g, '')
     if (cpf.length !== 11) return false
     
-    // Validação básica de CPF
-    let soma = 0
-    for (let i = 0; i < 9; i++) {
-      soma += parseInt(cpf.charAt(i)) * (10 - i)
-    }
-    let resto = (soma * 10) % 11
-    if (resto === 10 || resto === 11) resto = 0
-    if (resto !== parseInt(cpf.charAt(9))) return false
+    // Verificar se todos os dígitos são iguais (CPF inválido)
+    if (/^(\d)\1{10}$/.test(cpf)) return false
     
-    soma = 0
-    for (let i = 0; i < 10; i++) {
-      soma += parseInt(cpf.charAt(i)) * (11 - i)
+    // Validação dos dígitos verificadores
+    let soma = 0
+    let resto
+    
+    // Valida primeiro dígito
+    for (let i = 1; i <= 9; i++) {
+      soma += parseInt(cpf.substring(i - 1, i)) * (11 - i)
     }
     resto = (soma * 10) % 11
     if (resto === 10 || resto === 11) resto = 0
-    if (resto !== parseInt(cpf.charAt(10))) return false
+    if (resto !== parseInt(cpf.substring(9, 10))) return false
+    
+    // Valida segundo dígito  
+    soma = 0
+    for (let i = 1; i <= 10; i++) {
+      soma += parseInt(cpf.substring(i - 1, i)) * (12 - i)
+    }
+    resto = (soma * 10) % 11
+    if (resto === 10 || resto === 11) resto = 0
+    if (resto !== parseInt(cpf.substring(10, 11))) return false
     
     return true
   }
@@ -652,12 +666,37 @@ function FormularioMatriculaContent() {
   // Navegação com useCallback
   const avancarEtapa = useCallback(() => {
     if (etapaAtual === 'dados-aluno') {
-      // Validar dados do aluno
-      if (!dadosAluno.nomeCompleto || !validarCPF(dadosAluno.cpf) || 
-          !validarWhatsApp(dadosAluno.whatsapp) || !dadosAluno.dataNascimento) {
-        alert('Por favor, preencha todos os campos corretamente')
+      // Debug - mostrar estado atual
+      console.log('=== VALIDAÇÃO DADOS DO ALUNO ===')
+      console.log('Nome:', dadosAluno.nomeCompleto, '→', dadosAluno.nomeCompleto.length > 2)
+      console.log('CPF:', dadosAluno.cpf, '→', validarCPF(dadosAluno.cpf))
+      console.log('WhatsApp:', dadosAluno.whatsapp, '→', validarWhatsApp(dadosAluno.whatsapp))
+      console.log('Data Nascimento:', dadosAluno.dataNascimento, '→', !!dadosAluno.dataNascimento)
+      
+      // Validar dados do aluno com mensagens específicas
+      const erros = []
+      
+      if (!dadosAluno.nomeCompleto || dadosAluno.nomeCompleto.trim().length < 3) {
+        erros.push('Nome deve ter pelo menos 3 caracteres')
+      }
+      
+      if (!validarCPF(dadosAluno.cpf)) {
+        erros.push('CPF inválido')
+      }
+      
+      if (!validarWhatsApp(dadosAluno.whatsapp)) {
+        erros.push('WhatsApp deve ter 11 dígitos (com DDD)')
+      }
+      
+      if (!dadosAluno.dataNascimento) {
+        erros.push('Data de nascimento é obrigatória')
+      }
+      
+      if (erros.length > 0) {
+        alert('Por favor, corrija:\n' + erros.join('\n'))
         return
       }
+      
       setEtapaAtual('responsavel')
     } else if (etapaAtual === 'responsavel') {
       // Validar dados do responsável
