@@ -674,7 +674,7 @@ function FormularioMatriculaContent() {
       console.log('Data Nascimento:', dadosAluno.dataNascimento, '→', !!dadosAluno.dataNascimento)
       
       // Validar dados do aluno com mensagens específicas
-      const erros = []
+      const erros: string[] = []
       
       if (!dadosAluno.nomeCompleto || dadosAluno.nomeCompleto.trim().length < 3) {
         erros.push('Nome deve ter pelo menos 3 caracteres')
