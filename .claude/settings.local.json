@@ -56,7 +56,17 @@
       "Bash(rg:*)",
       "Bash(/dev/null)",
       "Bash(git checkout:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(./git-commit.sh)",
+      "Bash(SHELL=/bin/bash npm --prefix \"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2\" run build)",
+      "Bash(export SHELL=/bin/bash)",
+      "Bash(bash:*)",
+      "Bash(/bin/bash -c 'cd \"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2\" && npm run build')",
+      "Bash(env -i PATH=/usr/bin:/bin git --git-dir=\"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2/.git\" --work-tree=\"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2\" status)",
+      "Bash(HOME=/tmp /bin/bash -c:*)",
+      "Bash(/usr/bin/git status)",
+      "Bash(env)",
+      "Bash(git --version)"
     ],
     "deny": []
   },

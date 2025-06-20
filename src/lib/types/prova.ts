@@ -25,7 +25,7 @@ export const SUBCATEGORIAS: Record<string, string[]> = {
   PSC: ['1', '2', '3'],
   PSI: ['DIA 1', 'DIA 2'],
   SIS: ['1', '2', '3'],
-  MACRO: ['CONHECIMENTOS GERAIS'],
+  MACRO: ['DIA 1', 'DIA 2'],
   PSS: ['1', '2', '3'],
   ENEM: ['DIA 1', 'DIA 2']
 };

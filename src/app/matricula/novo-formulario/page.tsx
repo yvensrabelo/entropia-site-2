@@ -6,104 +6,95 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, ChevronRight, User, UserCheck, CreditCard, Calendar, DollarSign, Gift } from 'lucide-react'
 import { turmasService } from '@/services/turmasService'
 
-// Componente de Data Fluido
+// Componente de Data Fluido Melhorado
 const CampoDataFluido = ({ 
   label, 
   value, 
   onChange, 
-  placeholder = "DD/MM/AAAA",
-  className = ""
+  error
 }: {
   label: string
   value: string
   onChange: (value: string) => void
-  placeholder?: string
-  className?: string
+  error?: string
 }) => {
   const [displayValue, setDisplayValue] = useState('')
   
-  // Formatar valor para exibição (DD/MM/YYYY)
+  // Converter YYYY-MM-DD para DD/MM/YYYY para exibição
   useEffect(() => {
-    if (value) {
-      const date = new Date(value)
-      if (!isNaN(date.getTime())) {
-        const dia = String(date.getDate()).padStart(2, '0')
-        const mes = String(date.getMonth() + 1).padStart(2, '0')
-        const ano = date.getFullYear()
+    if (value && value.includes('-')) {
+      const [ano, mes, dia] = value.split('-')
+      if (ano && mes && dia) {
         setDisplayValue(`${dia}/${mes}/${ano}`)
       }
-    } else {
+    } else if (!value) {
       setDisplayValue('')
     }
   }, [value])
   
-  // Função para adicionar máscara enquanto digita
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let valor = e.target.value.replace(/\D/g, '') // Remove não-números
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value
     
-    // Limitar a 8 dígitos (DDMMYYYY)
-    valor = valor.substring(0, 8)
+    // Remove tudo que não é número
+    const numbers = input.replace(/\D/g, '')
     
-    // Aplicar máscara
-    if (valor.length >= 2) {
-      valor = valor.substring(0, 2) + '/' + valor.substring(2)
-    }
-    if (valor.length >= 5) {
-      valor = valor.substring(0, 5) + '/' + valor.substring(5)
-    }
+    // Limita a 8 dígitos (DDMMYYYY)
+    const limitedNumbers = numbers.slice(0, 8)
     
-    setDisplayValue(valor)
-    console.log('CampoDataFluido - valor digitado:', valor)
-    
-    // Se a data estiver completa, converter para YYYY-MM-DD
-    if (valor.length === 10) {
-      const [dia, mes, ano] = valor.split('/')
-      const dataFormatada = `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`
+    // Aplica máscara conforme digita
+    let formatted = ''
+    if (limitedNumbers.length > 0) {
+      formatted = limitedNumbers
       
-      console.log('CampoDataFluido - tentando converter:', dataFormatada)
-      
-      // Validar se é uma data válida
-      const date = new Date(dataFormatada)
-      if (!isNaN(date.getTime()) && 
-          date.getDate() == parseInt(dia) &&
-          date.getMonth() + 1 == parseInt(mes) &&
-          date.getFullYear() == parseInt(ano)) {
-        console.log('CampoDataFluido - data válida, salvando:', dataFormatada)
-        onChange(dataFormatada) // Salva no formato YYYY-MM-DD
-      } else {
-        console.log('CampoDataFluido - data inválida')
+      if (limitedNumbers.length > 2) {
+        formatted = `${limitedNumbers.slice(0, 2)}/${limitedNumbers.slice(2)}`
       }
-    } else if (valor.length === 0) {
-      // Só limpar quando campo estiver completamente vazio
+      if (limitedNumbers.length > 4) {
+        formatted = `${limitedNumbers.slice(0, 2)}/${limitedNumbers.slice(2, 4)}/${limitedNumbers.slice(4)}`
+      }
+    }
+    
+    setDisplayValue(formatted)
+    console.log('Data digitada:', formatted, 'números:', limitedNumbers)
+    
+    // Se tiver 8 dígitos, valida e converte para YYYY-MM-DD
+    if (limitedNumbers.length === 8) {
+      const dia = limitedNumbers.slice(0, 2)
+      const mes = limitedNumbers.slice(2, 4)
+      const ano = limitedNumbers.slice(4, 8)
+      
+      // Validação básica
+      const diaNum = parseInt(dia)
+      const mesNum = parseInt(mes)
+      const anoNum = parseInt(ano)
+      
+      if (diaNum >= 1 && diaNum <= 31 && mesNum >= 1 && mesNum <= 12 && anoNum >= 1900 && anoNum <= new Date().getFullYear()) {
+        // Formato YYYY-MM-DD para salvar
+        const dataFormatada = `${ano}-${mes}-${dia}`
+        
+        // Verifica se é uma data válida
+        const dataObj = new Date(dataFormatada)
+        if (!isNaN(dataObj.getTime())) {
+          onChange(dataFormatada)
+          console.log('✅ Data válida salva:', dataFormatada)
+        } else {
+          console.log('❌ Data inválida:', dataFormatada)
+        }
+      } else {
+        console.log('❌ Números fora do intervalo válido')
+      }
+    } else if (limitedNumbers.length === 0) {
+      // Limpa o valor se campo estiver vazio
       onChange('')
     }
-    // NÃO limpar enquanto usuário está digitando
+    // Não limpar enquanto usuário está digitando (menos de 8 dígitos)
   }
   
-  // Função para lidar com teclas especiais
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { key, currentTarget } = e
-    const valor = currentTarget.value
-    const posicaoCursor = currentTarget.selectionStart || 0
+    // Permite apenas números, backspace, delete, tab, setas
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End']
     
-    // Permitir navegação e deleção
-    if (['Backspace', 'Delete', 'Tab', 'Escape', 'Enter'].includes(key)) {
-      if (key === 'Backspace' && valor[posicaoCursor - 1] === '/') {
-        e.preventDefault()
-        // Remove o caractere antes da barra
-        const novoValor = valor.slice(0, posicaoCursor - 2) + valor.slice(posicaoCursor)
-        setDisplayValue(novoValor)
-      }
-      return
-    }
-    
-    // Permitir Ctrl+A, Ctrl+C, Ctrl+V
-    if ((e.ctrlKey || e.metaKey) && ['a', 'c', 'v'].includes(key.toLowerCase())) {
-      return
-    }
-    
-    // Bloquear se não for número
-    if (!/\d/.test(key)) {
+    if (!allowedKeys.includes(e.key) && !/^\d$/.test(e.key)) {
       e.preventDefault()
     }
   }
@@ -111,16 +102,28 @@ const CampoDataFluido = ({
   return (
     <div>
       <label className="block text-white mb-2">{label}</label>
-      <input
-        type="text"
-        value={displayValue}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        maxLength={10}
-        className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500 ${className}`}
-        inputMode="numeric" // Teclado numérico no mobile
-      />
+      <div className="relative">
+        <input
+          type="text"
+          value={displayValue}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="DD/MM/AAAA"
+          maxLength={10}
+          className={`w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-500 ${error ? 'border-red-400' : ''}`}
+          inputMode="numeric"
+          autoComplete="off"
+        />
+        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <svg className="h-5 w-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+      </div>
+      {error && (
+        <p className="text-red-400 text-sm mt-1">{error}</p>
+      )}
+      <p className="text-xs text-white/60 mt-1">Digite apenas números: dia, mês e ano</p>
     </div>
   )
 }
@@ -241,23 +244,6 @@ const EtapaDadosAluno = ({
         />
       </div>
 
-      {/* Alternativa: Campo de data nativo com debug */}
-      <div>
-        <label className="block text-white mb-2">Data de Nascimento *</label>
-        <input
-          type="date"
-          value={dadosAluno.dataNascimento || ''}
-          onChange={(e) => {
-            console.log('Data nativa selecionada:', e.target.value)
-            setDadosAluno({...dadosAluno, dataNascimento: e.target.value})
-          }}
-          max={new Date().toISOString().split('T')[0]}
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-500 [color-scheme:dark]"
-          required
-        />
-      </div>
-      
-      {/* Campo fluido como alternativa comentada
       <CampoDataFluido
         label="Data de Nascimento *"
         value={dadosAluno.dataNascimento}
@@ -265,9 +251,7 @@ const EtapaDadosAluno = ({
           console.log('Data fluida alterada:', value)
           setDadosAluno({...dadosAluno, dataNascimento: value})
         }}
-        placeholder="DD/MM/AAAA"
       />
-      */}
     </div>
 
     <button
