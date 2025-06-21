@@ -300,6 +300,36 @@ export default function CalculadoraDinamica() {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
+  // Previne zoom automático em campos de formulário no iOS/WhatsApp
+  React.useEffect(() => {
+    const metaViewport = document.querySelector('meta[name=viewport]');
+    if (metaViewport) {
+      metaViewport.setAttribute('content', 
+        'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'
+      );
+    }
+    
+    // Força reset do zoom quando o teclado fecha
+    const handleBlur = () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.style.zoom = '1';
+      }, 300);
+    };
+    
+    // Adiciona listener em todos os inputs
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('blur', handleBlur);
+    });
+    
+    return () => {
+      inputs.forEach(input => {
+        input.removeEventListener('blur', handleBlur);
+      });
+    };
+  }, []);
+
   // Criar lista de cursos ordenada (apenas cursos com dados disponíveis)
   const cursosOrdenados = useMemo(() => {
     // Filtrar cursos que têm dados para o processo atual
@@ -547,21 +577,17 @@ export default function CalculadoraDinamica() {
   return (
     <div className={`w-full max-w-7xl mx-auto ${resultadosPorCurso.length > 0 ? 'pb-20 md:pb-0' : ''}`}>
       {/* Desenvolvido por - Topo */}
-      <div className="w-full py-4 text-center bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+      <div className="w-full py-1.5 text-center bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
         <div className="relative inline-block">
-          {/* Ornamentos decorativos */}
-          <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-gray-300 text-lg">◆</span>
-          <span className="absolute -right-8 top-1/2 -translate-y-1/2 text-gray-300 text-lg">◆</span>
-          
-          {/* Texto principal */}
-          <h1 className="text-[11px] font-cinzel font-bold tracking-[0.3em] bg-gradient-to-r from-gray-400 via-gray-600 to-gray-400 bg-clip-text text-transparent uppercase">
+          {/* Texto principal - sem quebra de linha */}
+          <h1 className="text-[10px] sm:text-[11px] font-cinzel font-bold tracking-[0.15em] sm:tracking-[0.3em] bg-gradient-to-r from-gray-400 via-gray-600 to-gray-400 bg-clip-text text-transparent uppercase whitespace-nowrap">
             DESENVOLVIDO POR YVENS RABELO
           </h1>
           
           {/* Linha decorativa abaixo */}
-          <div className="mt-1 flex items-center justify-center gap-2">
+          <div className="mt-0.5 flex items-center justify-center gap-2">
             <div className="h-px w-8 bg-gradient-to-r from-transparent to-gray-400"></div>
-            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+            <div className="w-0.5 h-0.5 bg-gray-400 rounded-full"></div>
             <div className="h-px w-8 bg-gradient-to-l from-transparent to-gray-400"></div>
           </div>
         </div>
@@ -789,7 +815,7 @@ export default function CalculadoraDinamica() {
                         min={0}
                         max={campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? (campo.label.includes('(0-28)') ? 28 : 9) : campo.max}
                         step={campo.label.includes('Redação') ? 0.1 : 1}
-                        className="w-full px-3 py-2 pr-12 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-sm"
+                        className="w-full px-3 py-2 pr-12 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-0 transition-colors text-base"
                         placeholder={`0-${campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? (campo.label.includes('(0-28)') ? 28 : 9) : campo.max}`}
                       />
                       <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs font-medium">
@@ -814,6 +840,7 @@ export default function CalculadoraDinamica() {
                     </label>
                     <input
                       type="number"
+                      inputMode="decimal"
                       min="0"
                       max="84"
                       step="0.001"
@@ -829,7 +856,7 @@ export default function CalculadoraDinamica() {
                         }
                       }}
                       onBlur={(e) => handleMacroBlur('Dia 1 (0-84)', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                      className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                       placeholder="0.000"
                     />
                   </div>
@@ -839,6 +866,7 @@ export default function CalculadoraDinamica() {
                     </label>
                     <input
                       type="number"
+                      inputMode="decimal"
                       min="0"
                       max="36"
                       step="0.001"
@@ -854,7 +882,7 @@ export default function CalculadoraDinamica() {
                         }
                       }}
                       onBlur={(e) => handleMacroBlur('Dia 2 (0-36)', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                      className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                       placeholder="0.000"
                     />
                   </div>
@@ -867,6 +895,7 @@ export default function CalculadoraDinamica() {
                   </label>
                   <input
                     type="number"
+                    inputMode="decimal"
                     min="0"
                     max="28"
                     step="0.001"
@@ -882,7 +911,7 @@ export default function CalculadoraDinamica() {
                       }
                     }}
                     onBlur={(e) => handleMacroBlur('Redação (0-28)', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                     placeholder="0.000"
                   />
                 </div>
@@ -955,10 +984,11 @@ export default function CalculadoraDinamica() {
           <div className="mb-4">
             <input
               type="text"
+              inputMode="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="🔍 Pesquisar curso..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm"
+              className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
             />
           </div>
 
@@ -1071,12 +1101,8 @@ export default function CalculadoraDinamica() {
       {/* Crédito no final da página */}
       <div className="w-full py-8 text-center bg-gradient-to-t from-gray-50 to-white border-t border-gray-100 mt-12">
         <div className="relative inline-block">
-          {/* Ornamentos decorativos */}
-          <span className="absolute -left-8 top-1/2 -translate-y-1/2 text-gray-300 text-lg">◆</span>
-          <span className="absolute -right-8 top-1/2 -translate-y-1/2 text-gray-300 text-lg">◆</span>
-          
-          {/* Texto principal */}
-          <h1 className="text-[11px] font-cinzel font-bold tracking-[0.3em] bg-gradient-to-r from-gray-400 via-gray-600 to-gray-400 bg-clip-text text-transparent uppercase">
+          {/* Texto principal - sem quebra de linha */}
+          <h1 className="text-[10px] sm:text-[11px] font-cinzel font-bold tracking-[0.15em] sm:tracking-[0.3em] bg-gradient-to-r from-gray-400 via-gray-600 to-gray-400 bg-clip-text text-transparent uppercase whitespace-nowrap">
             DESENVOLVIDO POR YVENS RABELO
           </h1>
           
