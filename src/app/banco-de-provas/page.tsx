@@ -677,16 +677,22 @@ export default function BancoDeProvas() {
           </button>
           
           <button 
-            className="filter-btn locked"
+            className={`filter-btn ${filtro === 'PSI' ? 'active' : ''} ${contadores['PSI'] === 0 ? 'locked' : ''}`}
             onClick={(e) => {
-              e.preventDefault();
-              alert('PSI em breve!');
+              if (contadores['PSI'] === 0) {
+                e.preventDefault();
+                alert('PSI em breve!');
+              } else {
+                setFiltro('PSI');
+              }
             }}
           >
             PSI
-            <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
-            </svg>
+            {contadores['PSI'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
           </button>
           
           <button 
@@ -747,16 +753,22 @@ export default function BancoDeProvas() {
           </button>
           
           <button 
-            className="filter-btn locked"
+            className={`filter-btn ${filtro === 'ENEM' ? 'active' : ''} ${contadores['ENEM'] === 0 ? 'locked' : ''}`}
             onClick={(e) => {
-              e.preventDefault();
-              alert('ENEM em breve!');
+              if (contadores['ENEM'] === 0) {
+                e.preventDefault();
+                alert('ENEM em breve!');
+              } else {
+                setFiltro('ENEM');
+              }
             }}
           >
             ENEM
-            <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
-            </svg>
+            {contadores['ENEM'] === 0 && (
+              <svg className="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM18 20H6V12H18V20Z"/>
+              </svg>
+            )}
           </button>
         </div>
       </div>

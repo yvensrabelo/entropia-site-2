@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Playfair_Display, Cinzel } from 'next/font/google'
 import './globals.css'
 import { ToastProvider } from '@/contexts/ToastContext'
 
@@ -7,6 +7,18 @@ const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
+})
+
+const playfair = Playfair_Display({ 
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+})
+
+const cinzel = Cinzel({ 
+  subsets: ['latin'],
+  variable: '--font-cinzel',
+  weight: ['400', '600', '700']
 })
 
 export const metadata: Metadata = {
@@ -83,7 +95,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className={`${inter.className} antialiased bg-black text-white`}>
+      <body className={`${inter.className} ${playfair.variable} ${cinzel.variable} antialiased bg-black text-white`}>
         <ToastProvider>
           {children}
         </ToastProvider>

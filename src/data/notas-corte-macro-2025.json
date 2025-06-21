@@ -1,0 +1,4853 @@
+[
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 64.857,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07001",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 64.667,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 23.119,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07003",
+    "turno": "VESPERTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 32.905,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07004",
+    "turno": "VESPERTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 23.024,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07005",
+    "turno": "VESPERTINO",
+    "cidade": "NOVA OLINDA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 44.429,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07006",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 35.786,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07007",
+    "turno": "VESPERTINO",
+    "cidade": "SANTO ANTONIO DO IÇÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 30.715,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07008",
+    "turno": "VESPERTINO",
+    "cidade": "SÃO SEBASTIÃO DO UATUMÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 46.738,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07014",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 50.119,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07015",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 61.548,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 53.595,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07017",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 53.143,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07018",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 44.834,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07019",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 79.476,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 77.786,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 65.143,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA CIVIL",
+    "nota": 60.691,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07023",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "nota": 82.262,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07024",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "nota": 46.119,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07025",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "nota": 58.786,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07026",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "nota": 46.81,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07027",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "nota": 61.167,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07029",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "nota": 67.548,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07028",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA FLORESTAL",
+    "nota": 38.857,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07030",
+    "turno": "INTEGRAL",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 58.976,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA NAVAL",
+    "nota": 54.381,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07032",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA QUÍMICA",
+    "nota": 58.548,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07033",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 66.334,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07034",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 49.595,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07035",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 56.381,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07036",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 32.976,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07037",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 37.857,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07038",
+    "turno": "NOTURNO",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 53.215,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07039",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 25.691,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07042",
+    "turno": "MATUTINO",
+    "cidade": "APUÍ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 34.095,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07043",
+    "turno": "MATUTINO",
+    "cidade": "NOVO ARIPUANÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 30.0,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07044",
+    "turno": "MATUTINO",
+    "cidade": "BOCA DO ACRE"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 30.191,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07045",
+    "turno": "MATUTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 35.286,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07046",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 43.834,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07047",
+    "turno": "MATUTINO",
+    "cidade": "MANACAPURU"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 32.262,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07048",
+    "turno": "MATUTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 40.476,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07049",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 41.476,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07050",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 65.357,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07051",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM FÍSICA",
+    "nota": 23.81,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07052",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 57.476,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07053",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 37.048,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07054",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 25.524,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07055",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 55.976,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07056",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 20.834,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07057",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 23.143,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07058",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 38.667,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07059",
+    "turno": "NOTURNO",
+    "cidade": "IPIXUNA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 61.024,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07060",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 24.334,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07061",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 62.976,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07062",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 37.715,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07063",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 45.453,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07064",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 37.072,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07065",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 24.405,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07066",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 26.429,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07067",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 50.595,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07068",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 60.31,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07071",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 34.857,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07072",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 53.548,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07073",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 50.048,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07074",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 36.381,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07075",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 37.262,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07076",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA INTERCULTURAL",
+    "nota": 23.31,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07077",
+    "turno": "VESPERTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "nota": 33.31,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07078",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "nota": 32.31,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07079",
+    "turno": "VESPERTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 90.857,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "METEOROLOGIA",
+    "nota": 27.31,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07082",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 67.453,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 73.405,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM AGROECOLOGIA",
+    "nota": 30.905,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07085",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 25.929,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07086",
+    "turno": "MATUTINO",
+    "cidade": "APUÍ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 35.095,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07088",
+    "turno": "MATUTINO",
+    "cidade": "BARCELOS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 30.524,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07089",
+    "turno": "MATUTINO",
+    "cidade": "BOCA DO ACRE"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 34.31,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07090",
+    "turno": "MATUTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 39.881,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07091",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 33.5,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07092",
+    "turno": "MATUTINO",
+    "cidade": "IRANDUBA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 21.119,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07093",
+    "turno": "MATUTINO",
+    "cidade": "PRESIDENTE FIGUEIREDO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 39.048,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07097",
+    "turno": "MATUTINO",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 29.524,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07098",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 26.286,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07099",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM MINERAÇÃO",
+    "nota": 31.095,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07100",
+    "turno": "VESPERTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM PRODUÇÃO PESQUEIRA",
+    "nota": 33.095,
+    "cota": "Estudantes de Escola Pública Amazonas",
+    "codigo": "07101",
+    "turno": "NOTURNO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 72.024,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01001",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 69.738,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 33.857,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01003",
+    "turno": "VESPERTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 44.334,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01004",
+    "turno": "VESPERTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 33.857,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01005",
+    "turno": "VESPERTINO",
+    "cidade": "NOVA OLINDA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 45.738,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01006",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 39.453,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01007",
+    "turno": "VESPERTINO",
+    "cidade": "SANTO ANTONIO DO IÇÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 20.238,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01008",
+    "turno": "VESPERTINO",
+    "cidade": "SÃO SEBASTIÃO DO UATUMÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 48.453,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01014",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 48.453,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01015",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 57.595,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 53.381,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01017",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 53.405,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01018",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 45.738,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01019",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 79.762,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 79.905,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 51.024,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA CIVIL",
+    "nota": 67.929,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01023",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "nota": 85.572,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01024",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "nota": 44.715,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01025",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "nota": 59.572,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01026",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "nota": 48.81,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01027",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "nota": 67.143,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01029",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "nota": 65.381,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01028",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA FLORESTAL",
+    "nota": 41.453,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01030",
+    "turno": "INTEGRAL",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 59.357,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA NAVAL",
+    "nota": 57.357,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01032",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA QUÍMICA",
+    "nota": 58.453,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01033",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 74.905,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01034",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 49.453,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01035",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 55.643,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01036",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 47.238,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01037",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 38.643,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01038",
+    "turno": "NOTURNO",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 54.476,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01039",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 40.881,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01042",
+    "turno": "MATUTINO",
+    "cidade": "APUÍ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 42.953,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01043",
+    "turno": "MATUTINO",
+    "cidade": "NOVO ARIPUANÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 41.262,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01044",
+    "turno": "MATUTINO",
+    "cidade": "BOCA DO ACRE"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 45.429,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01045",
+    "turno": "MATUTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 43.238,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01046",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 45.024,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01047",
+    "turno": "MATUTINO",
+    "cidade": "MANACAPURU"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 41.238,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01048",
+    "turno": "MATUTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 46.119,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01049",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 43.524,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01050",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 58.953,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01051",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM FÍSICA",
+    "nota": 26.334,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01052",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 55.875,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01053",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 48.334,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01054",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 35.215,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01055",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 53.834,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01056",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 35.072,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01057",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 39.072,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01058",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 58.238,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01059",
+    "turno": "NOTURNO",
+    "cidade": "IPIXUNA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 60.691,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01060",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 30.119,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01061",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 62.881,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01062",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 44.476,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01063",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 47.81,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01064",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 41.429,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01065",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 31.81,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01066",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 44.048,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01067",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 62.953,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01068",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 59.572,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01071",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 44.048,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01072",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 54.357,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01073",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 50.429,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01074",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 44.953,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01075",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 49.667,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01076",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA INTERCULTURAL",
+    "nota": 28.905,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01077",
+    "turno": "VESPERTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "nota": 40.857,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01078",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "nota": 24.929,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01079",
+    "turno": "VESPERTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 92.738,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "METEOROLOGIA",
+    "nota": 37.048,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01082",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 72.524,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 77.0,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM AGROECOLOGIA",
+    "nota": 24.929,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01085",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 26.31,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01086",
+    "turno": "MATUTINO",
+    "cidade": "APUÍ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 25.095,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01087",
+    "turno": "MATUTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 44.167,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01088",
+    "turno": "MATUTINO",
+    "cidade": "BARCELOS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 38.476,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01089",
+    "turno": "MATUTINO",
+    "cidade": "BOCA DO ACRE"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 50.619,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01090",
+    "turno": "MATUTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 50.929,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01091",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 34.691,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01092",
+    "turno": "MATUTINO",
+    "cidade": "IRANDUBA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 42.565,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01093",
+    "turno": "MATUTINO",
+    "cidade": "PRESIDENTE FIGUEIREDO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 26.905,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01094",
+    "turno": "MATUTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 28.905,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01095",
+    "turno": "MATUTINO",
+    "cidade": "BOCA DO ACRE"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 19.738,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01096",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 39.857,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01097",
+    "turno": "MATUTINO",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 31.286,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01098",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 39.762,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01099",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM MINERAÇÃO",
+    "nota": 25.524,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01100",
+    "turno": "VESPERTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM PRODUÇÃO PESQUEIRA",
+    "nota": 33.31,
+    "cota": "Estudantes de Escola Pública Brasil",
+    "codigo": "01101",
+    "turno": "NOTURNO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 74.215,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08001",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 74.595,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 28.905,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08004",
+    "turno": "VESPERTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 30.334,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08005",
+    "turno": "VESPERTINO",
+    "cidade": "NOVA OLINDA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 32.786,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08006",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 32.565,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08007",
+    "turno": "VESPERTINO",
+    "cidade": "SANTO ANTONIO DO IÇÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 63.531,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08014",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 60.191,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08015",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 58.786,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 70.524,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08017",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 67.643,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08018",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 65.715,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08019",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 86.262,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 89.143,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 72.929,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "nota": 93.048,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08024",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "nota": 60.048,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08025",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "nota": 80.191,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08026",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "nota": 51.976,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08027",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "nota": 77.5,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08029",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "nota": 83.357,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08028",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 80.095,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA NAVAL",
+    "nota": 71.834,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08032",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA QUÍMICA",
+    "nota": 85.381,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08033",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 75.31,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08034",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 35.286,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08035",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 48.786,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08036",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 32.738,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08037",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 75.119,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08039",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 28.215,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08042",
+    "turno": "MATUTINO",
+    "cidade": "APUÍ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 27.5,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08043",
+    "turno": "MATUTINO",
+    "cidade": "NOVO ARIPUANÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 35.81,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08046",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 31.691,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08047",
+    "turno": "MATUTINO",
+    "cidade": "MANACAPURU"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 34.857,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08049",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 58.446,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08051",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 47.429,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08053",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 26.024,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08056",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 20.715,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08058",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 65.262,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08060",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 69.738,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08062",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 54.572,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08064",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 28.5,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08066",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 29.405,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08067",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 31.667,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08068",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 64.191,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08071",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 29.905,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08072",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 53.143,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08073",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 39.262,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08074",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 35.095,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08075",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 32.31,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08076",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA INTERCULTURAL",
+    "nota": 26.905,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08077",
+    "turno": "VESPERTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 94.429,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "METEOROLOGIA",
+    "nota": 45.81,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08082",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 80.0,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 84.762,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 25.31,
+    "cota": "Estudantes de Escola de Qualquer Natureza Amazonas",
+    "codigo": "08099",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 75.024,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02001",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 75.524,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 32.072,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02003",
+    "turno": "VESPERTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 34.762,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02004",
+    "turno": "VESPERTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 38.476,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02005",
+    "turno": "VESPERTINO",
+    "cidade": "NOVA OLINDA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 39.667,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02006",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 36.0,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02007",
+    "turno": "VESPERTINO",
+    "cidade": "SANTO ANTONIO DO IÇÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 64.072,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02014",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 61.881,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02015",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 66.024,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 71.31,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02017",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 80.572,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02018",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 71.024,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02019",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 88.238,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 89.834,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 74.31,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA CIVIL",
+    "nota": 82.946,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02023",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "nota": 93.834,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02024",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "nota": 78.31,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02025",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "nota": 86.381,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02026",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "nota": 54.095,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02027",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "nota": 81.81,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02029",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "nota": 86.262,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02028",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA FLORESTAL",
+    "nota": 39.262,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02030",
+    "turno": "INTEGRAL",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 82.595,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA NAVAL",
+    "nota": 80.191,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02032",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA QUÍMICA",
+    "nota": 88.072,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02033",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 77.619,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02034",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 37.262,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02035",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 65.953,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02036",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 44.238,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02037",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 36.476,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02038",
+    "turno": "NOTURNO",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 77.476,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02039",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 37.167,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02042",
+    "turno": "MATUTINO",
+    "cidade": "APUÍ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 32.476,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02043",
+    "turno": "MATUTINO",
+    "cidade": "NOVO ARIPUANÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 25.738,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02045",
+    "turno": "MATUTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 46.429,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02046",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 31.81,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02047",
+    "turno": "MATUTINO",
+    "cidade": "MANACAPURU"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 33.881,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02048",
+    "turno": "MATUTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 49.0,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02049",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 41.857,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02050",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 60.667,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02051",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 50.834,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02053",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 49.643,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02054",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 41.262,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02055",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 56.215,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02056",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 50.834,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02057",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 34.905,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02058",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 34.0,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02059",
+    "turno": "NOTURNO",
+    "cidade": "IPIXUNA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 72.834,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02060",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 40.667,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02061",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 79.095,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02062",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 32.286,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02063",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 69.81,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02064",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 29.5,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02065",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 44.643,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02066",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 33.786,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02067",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 53.691,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02068",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 65.143,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02071",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 37.167,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02072",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 55.715,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02073",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 45.667,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02074",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 36.667,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02075",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 44.334,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02076",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA INTERCULTURAL",
+    "nota": 34.31,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02077",
+    "turno": "VESPERTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "nota": 36.476,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02079",
+    "turno": "VESPERTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 95.215,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "METEOROLOGIA",
+    "nota": 52.619,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02082",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 81.691,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 86.357,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 31.905,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02086",
+    "turno": "MATUTINO",
+    "cidade": "APUÍ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 47.643,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02091",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 52.548,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02092",
+    "turno": "MATUTINO",
+    "cidade": "IRANDUBA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 37.5,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02093",
+    "turno": "MATUTINO",
+    "cidade": "PRESIDENTE FIGUEIREDO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 49.429,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02096",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 45.334,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02097",
+    "turno": "MATUTINO",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 44.0,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02098",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 30.215,
+    "cota": "Estudantes de Escola de Qualquer Natureza Brasil",
+    "codigo": "02099",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 47.494,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12001",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 57.834,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 43.072,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12014",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 38.667,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12015",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 52.405,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 47.143,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12017",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 75.905,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 84.453,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 64.429,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA CIVIL",
+    "nota": 59.613,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12023",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA FLORESTAL",
+    "nota": 37.857,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12030",
+    "turno": "INTEGRAL",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 86.167,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 67.81,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 53.262,
+    "cota": "Estudantes do Interior Amazonas",
+    "codigo": "12084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 37.786,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11001",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 40.667,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 32.31,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11005",
+    "turno": "VESPERTINO",
+    "cidade": "NOVA OLINDA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 38.953,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11007",
+    "turno": "VESPERTINO",
+    "cidade": "SANTO ANTONIO DO IÇÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 37.262,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11015",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 41.738,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 53.238,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 62.619,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 43.453,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA CIVIL",
+    "nota": 43.643,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11023",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "nota": 44.643,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11024",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "nota": 36.857,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11025",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "nota": 36.762,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11029",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "nota": 30.976,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11028",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 29.119,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA NAVAL",
+    "nota": 38.976,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11032",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 37.286,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11034",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 37.357,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11035",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 42.643,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11037",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 40.929,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11039",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 29.095,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11043",
+    "turno": "MATUTINO",
+    "cidade": "NOVO ARIPUANÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 29.715,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11048",
+    "turno": "MATUTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 42.572,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11049",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 36.691,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11050",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 41.357,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11051",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 35.191,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11053",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 25.31,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11055",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 34.095,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11056",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 27.524,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11057",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 37.691,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11058",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 29.334,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11061",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 53.834,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11062",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 28.5,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11063",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 36.262,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11066",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 29.905,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11067",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 23.5,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11068",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 39.953,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11071",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 37.595,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11072",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 37.286,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11073",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 32.286,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11074",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 33.786,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11075",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 39.572,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11076",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA INTERCULTURAL",
+    "nota": 37.095,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11077",
+    "turno": "VESPERTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "nota": 25.5,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11078",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 76.215,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 50.81,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 47.215,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 43.334,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11087",
+    "turno": "MATUTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 26.334,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11092",
+    "turno": "MATUTINO",
+    "cidade": "IRANDUBA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 21.334,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11098",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 31.286,
+    "cota": "Pessoas Indígenas Amazonas",
+    "codigo": "11099",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 38.072,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06001",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 44.286,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 37.191,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06004",
+    "turno": "VESPERTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 34.286,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06005",
+    "turno": "VESPERTINO",
+    "cidade": "NOVA OLINDA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 33.667,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06006",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 49.0,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06007",
+    "turno": "VESPERTINO",
+    "cidade": "SANTO ANTONIO DO IÇÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 33.5,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06014",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM TURISMO",
+    "nota": 46.167,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06015",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 43.453,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 37.976,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06017",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 45.048,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06018",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 58.786,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 70.143,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 48.524,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA CIVIL",
+    "nota": 52.191,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06023",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "nota": 54.334,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06024",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "nota": 39.953,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06025",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "nota": 26.738,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06026",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "nota": 35.881,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06027",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "nota": 39.762,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06029",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "nota": 51.286,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06028",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA FLORESTAL",
+    "nota": 35.5,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06030",
+    "turno": "INTEGRAL",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 59.762,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA NAVAL",
+    "nota": 49.024,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06032",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA QUÍMICA",
+    "nota": 41.357,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06033",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 43.953,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06034",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 48.738,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06035",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 43.143,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06036",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 47.429,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06037",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 48.619,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06039",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 35.667,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06043",
+    "turno": "MATUTINO",
+    "cidade": "NOVO ARIPUANÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 42.167,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06044",
+    "turno": "MATUTINO",
+    "cidade": "BOCA DO ACRE"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 45.453,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06046",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 30.667,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06047",
+    "turno": "MATUTINO",
+    "cidade": "MANACAPURU"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 35.095,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06048",
+    "turno": "MATUTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 43.024,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06049",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 47.215,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06050",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 41.857,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06051",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 37.476,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06053",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 59.095,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06054",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 42.976,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06055",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 36.286,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06056",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 44.453,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06057",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 47.834,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06058",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 41.381,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06060",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 46.262,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06061",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 63.405,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06062",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 44.167,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06063",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 29.31,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06065",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 45.619,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06066",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 33.191,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06067",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 30.691,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06068",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 49.143,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06071",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 46.643,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06072",
+    "turno": "MATUTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 38.095,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06073",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 34.095,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06074",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 45.072,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06075",
+    "turno": "NOTURNO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 41.476,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06076",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA INTERCULTURAL",
+    "nota": 51.238,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06077",
+    "turno": "VESPERTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "nota": 25.715,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06078",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 86.143,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "METEOROLOGIA",
+    "nota": 30.715,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06082",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 54.5,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 49.048,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM AGROECOLOGIA",
+    "nota": 34.976,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06085",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 45.857,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06087",
+    "turno": "MATUTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 42.953,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06092",
+    "turno": "MATUTINO",
+    "cidade": "IRANDUBA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 32.5,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06094",
+    "turno": "MATUTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "nota": 34.476,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06099",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM MINERAÇÃO",
+    "nota": 36.286,
+    "cota": "Pessoas Indígenas Brasil",
+    "codigo": "06100",
+    "turno": "VESPERTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 49.619,
+    "cota": "Pessoas Pretas Amazonas",
+    "codigo": "10022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA QUÍMICA",
+    "nota": 51.595,
+    "cota": "Pessoas Pretas Amazonas",
+    "codigo": "10033",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 83.976,
+    "cota": "Pessoas Pretas Amazonas",
+    "codigo": "10081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 51.215,
+    "cota": "Pessoas Pretas Amazonas",
+    "codigo": "10083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 54.905,
+    "cota": "Pessoas Pretas Brasil",
+    "codigo": "05022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "nota": 66.953,
+    "cota": "Pessoas Pretas Brasil",
+    "codigo": "05025",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "nota": 74.619,
+    "cota": "Pessoas Pretas Brasil",
+    "codigo": "05028",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 45.453,
+    "cota": "Pessoas Pretas Brasil",
+    "codigo": "05031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA QUÍMICA",
+    "nota": 63.548,
+    "cota": "Pessoas Pretas Brasil",
+    "codigo": "05033",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 86.643,
+    "cota": "Pessoas Pretas Brasil",
+    "codigo": "05081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 76.476,
+    "cota": "Pessoas Pretas Brasil",
+    "codigo": "05083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 45.143,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 50.857,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 60.881,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "nota": 46.81,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09024",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "nota": 25.024,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09029",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 30.191,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09034",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 32.167,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09045",
+    "turno": "MATUTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 28.215,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09055",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 35.095,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09071",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 78.095,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 38.762,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 40.024,
+    "cota": "Pessoas com Deficiência (PCD) Amazonas",
+    "codigo": "09084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 37.072,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04001",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 49.691,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 28.31,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04004",
+    "turno": "VESPERTINO",
+    "cidade": "MAUÉS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 21.905,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04005",
+    "turno": "VESPERTINO",
+    "cidade": "NOVA OLINDA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 54.786,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 27.095,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04017",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 37.857,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04018",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 57.405,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 62.81,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 33.5,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "nota": 64.476,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04024",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "nota": 32.119,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04026",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "nota": 62.143,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04029",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "nota": 61.453,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04028",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 35.095,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 40.167,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04034",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 24.31,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04035",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "nota": 24.905,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04036",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 32.946,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04039",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 30.191,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04043",
+    "turno": "MATUTINO",
+    "cidade": "NOVO ARIPUANÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 38.595,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04044",
+    "turno": "MATUTINO",
+    "cidade": "BOCA DO ACRE"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 35.5,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04045",
+    "turno": "MATUTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 22.738,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04046",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 45.453,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04050",
+    "turno": "MATUTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "nota": 35.286,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04051",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM FÍSICA",
+    "nota": 36.857,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04052",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 35.881,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04054",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "nota": 30.024,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04055",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "nota": 35.357,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04056",
+    "turno": "MATUTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 59.024,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04060",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 23.31,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04062",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 27.738,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04063",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 45.881,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04064",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 27.024,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04067",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 47.405,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04068",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 45.167,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04071",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 31.619,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04076",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA INTERCULTURAL",
+    "nota": 32.286,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04077",
+    "turno": "VESPERTINO",
+    "cidade": "TABATINGA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 84.953,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "METEOROLOGIA",
+    "nota": 36.953,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04082",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 49.215,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "nota": 44.024,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04084",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM AGROECOLOGIA",
+    "nota": 29.5,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04085",
+    "turno": "MATUTINO",
+    "cidade": "HUMAITÁ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 28.024,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04092",
+    "turno": "MATUTINO",
+    "cidade": "IRANDUBA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 37.095,
+    "cota": "Pessoas com Deficiência (PCD) Brasil",
+    "codigo": "04093",
+    "turno": "MATUTINO",
+    "cidade": "PRESIDENTE FIGUEIREDO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ADMINISTRAÇÃO",
+    "nota": 74.5,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03002",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 31.715,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03003",
+    "turno": "VESPERTINO",
+    "cidade": "CAREIRO CASTANHO"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "nota": 39.857,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03008",
+    "turno": "VESPERTINO",
+    "cidade": "SÃO SEBASTIÃO DO UATUMÃ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 72.429,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03016",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "nota": 83.857,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03017",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 27.881,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03018",
+    "turno": "MATUTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "nota": 63.357,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03019",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 78.786,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03020",
+    "turno": "NOTURNO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "DIREITO",
+    "nota": 78.715,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03021",
+    "turno": "VESPERTINO",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENFERMAGEM",
+    "nota": 61.453,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03022",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "nota": 66.524,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03026",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA MECÂNICA",
+    "nota": 73.548,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03031",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ENGENHARIA QUÍMICA",
+    "nota": 55.762,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03033",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "nota": 31.476,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03038",
+    "turno": "NOTURNO",
+    "cidade": "ITACOATIARA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM FÍSICA",
+    "nota": 42.334,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03052",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM LETRAS",
+    "nota": 56.524,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03063",
+    "turno": "VESPERTINO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "nota": 39.834,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03065",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 64.0,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03074",
+    "turno": "NOTURNO",
+    "cidade": "PARINTINS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "nota": 46.857,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03076",
+    "turno": "NOTURNO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "nota": 69.429,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03079",
+    "turno": "VESPERTINO",
+    "cidade": "TEFÉ"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "ODONTOLOGIA",
+    "nota": 46.334,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03083",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "nota": 35.595,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03092",
+    "turno": "MATUTINO",
+    "cidade": "IRANDUBA"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM MINERAÇÃO",
+    "nota": 40.548,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03100",
+    "turno": "VESPERTINO",
+    "cidade": "AUTAZES"
+  },
+  {
+    "processo": "MACRO",
+    "curso": "TECNOLOGIA EM PRODUÇÃO PESQUEIRA",
+    "nota": 28.905,
+    "cota": "Portador de Diploma Brasil",
+    "codigo": "03101",
+    "turno": "NOTURNO",
+    "cidade": "CAREIRO CASTANHO"
+  }
+]

@@ -56,9 +56,9 @@ export const CAMPOS_POR_PROCESSO: Record<Processo, CampoNota[]> = {
     { label: 'Redação', min: 0, max: 9 },
   ],
   MACRO: [
-    { label: 'Conhecimentos Gerais', min: 0, max: 100 },
-    { label: 'Conhecimentos Específicos', min: 0, max: 100 },
-    { label: 'Redação', min: 0, max: 100 },
+    { label: 'Dia 1 (0-84)', min: 0, max: 84 },
+    { label: 'Dia 2 (0-36)', min: 0, max: 36 },
+    { label: 'Redação (0-28)', min: 0, max: 28 },
   ],
   SIS: [
     { label: 'SIS 1', min: 0, max: 60 },
