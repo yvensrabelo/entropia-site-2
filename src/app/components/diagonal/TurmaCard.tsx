@@ -33,101 +33,138 @@ export default function TurmaCard({
   exibirDuracao = true,
   exibirVagas = true,
   href = "/matricula",
-  linkText = "Saiba mais",
+  linkText = "RESERVAR MINHA VAGA",
   className = "",
   enableWhatsApp = true
 }: TurmaCardProps) {
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false)
+  
   return (
-    <div className={`relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-500/10 border border-gray-100 ${className}`}>
-      {/* Tag de destaque opcional - ajustada para não sobrepor */}
-      {destaque && (
-        <div className="absolute top-4 right-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg z-10">
-          {destaque}
+    <div className={`relative group ${className}`}>
+      {/* Efeito de glow suave ao hover */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-green-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
+      
+      {/* Card principal */}
+      <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+        {/* Header com gradiente sutil */}
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 px-8 py-6 border-b border-gray-100">
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            {title}
+          </h3>
+          {destaque && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-600">{destaque}</span>
+            </div>
+          )}
+          {descricao && (
+            <p className="text-sm text-gray-600 mt-2">{descricao}</p>
+          )}
         </div>
-      )}
-      
-      <div className="p-4 sm:p-6 md:p-8">
-        {/* Título com espaço extra quando há destaque */}
-        <h3 className={`text-xl sm:text-2xl font-bold text-gray-900 mb-3 ${destaque ? 'mt-8' : ''}`}>{title}</h3>
-        
-        {descricao && (
-          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">{descricao}</p>
-        )}
-        
-        {/* Informações básicas - só renderiza se existir e estiver habilitado */}
-        {((periodo && exibirPeriodo) || (duracao && exibirDuracao) || (vagas && exibirVagas)) && (
-          <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-            {periodo && exibirPeriodo && (
-              <div className="flex items-center gap-3 text-gray-700 group">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 min-w-[44px] min-h-[44px] flex items-center justify-center group-hover:shadow-md transition-all duration-300">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                </div>
-                <span className="text-sm sm:text-base">Período: {periodo}</span>
+
+        {/* Lista de benefícios/diferenciais */}
+        <div className="px-8 py-6 space-y-4">
+          {/* Informações básicas primeiro */}
+          {periodo && exibirPeriodo && (
+            <div className="flex items-start gap-3 group/item">
+              <div className="mt-0.5 w-5 h-5 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                <Clock className="w-3 h-3 text-purple-600" />
               </div>
-            )}
-            
-            {duracao && exibirDuracao && (
-              <div className="flex items-center gap-3 text-gray-700 group">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 min-w-[44px] min-h-[44px] flex items-center justify-center group-hover:shadow-md transition-all duration-300">
-                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                </div>
-                <span className="text-sm sm:text-base">Duração: {duracao}</span>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                PERÍODO: {periodo.toUpperCase()}
+              </p>
+            </div>
+          )}
+
+          {duracao && exibirDuracao && (
+            <div className="flex items-start gap-3 group/item">
+              <div className="mt-0.5 w-5 h-5 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                <Calendar className="w-3 h-3 text-purple-600" />
               </div>
-            )}
-            
-            {vagas && exibirVagas && (
-              <div className="flex items-center gap-3 text-gray-700 group">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 min-w-[44px] min-h-[44px] flex items-center justify-center group-hover:shadow-md transition-all duration-300">
-                  <Users className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                </div>
-                <span className="text-sm sm:text-base">
-                  {typeof vagas === 'number' ? `${vagas} vagas disponíveis` : vagas}
-                </span>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                DURAÇÃO: {duracao.toUpperCase()}
+              </p>
+            </div>
+          )}
+
+          {vagas && exibirVagas && (
+            <div className="flex items-start gap-3 group/item">
+              <div className="mt-0.5 w-5 h-5 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                <Users className="w-3 h-3 text-purple-600" />
               </div>
-            )}
-          </div>
-        )}
-        
-        {/* Diferenciais - só renderiza se existir */}
-        {diferenciais && diferenciais.length > 0 && (
-          <div className="border-t border-gray-100 pt-4 sm:pt-6">
-            <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 min-w-[44px] min-h-[44px] flex items-center justify-center shadow-sm">
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {typeof vagas === 'number' ? `${vagas} VAGAS DISPONÍVEIS` : vagas.toString().toUpperCase()}
+              </p>
+            </div>
+          )}
+
+          {/* Diferenciais */}
+          {diferenciais && diferenciais.map((diferencial, idx) => (
+            <div key={idx} className="flex items-start gap-3 group/item">
+              <div className="mt-0.5 w-5 h-5 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                <svg className="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
+                </svg>
               </div>
-              <span className="text-base sm:text-lg">Diferenciais</span>
-            </h4>
-            <ul className="space-y-2 ml-2">
-              {diferenciais.map((diferencial, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-gray-600 hover:text-gray-800 transition-colors">
-                  <div className="p-1.5 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 min-w-[32px] min-h-[32px] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                  </div>
-                  <span className="text-sm sm:text-base break-words hyphens-auto flex-1">{diferencial}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        
-        {enableWhatsApp ? (
-          <button 
-            onClick={() => setShowWhatsAppModal(true)}
-            className="block w-full mt-6 sm:mt-8 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 sm:py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-green-500/30 hover:scale-105 transition-all duration-300 min-h-[44px] text-sm sm:text-base text-center"
-          >
-            {linkText}
-          </button>
-        ) : (
-          <a 
-            href={href} 
-            className="block w-full mt-6 sm:mt-8 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 sm:py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-green-500/30 hover:scale-105 transition-all duration-300 min-h-[44px] text-sm sm:text-base text-center"
-          >
-            {linkText}
-          </a>
-        )}
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {diferencial.toUpperCase()}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Botão de ação */}
+        <div className="px-8 pb-8">
+          {enableWhatsApp ? (
+            <button 
+              onClick={() => setShowWhatsAppModal(true)}
+              className="w-full relative group/btn overflow-hidden rounded-xl"
+            >
+              {/* Gradiente animado de fundo */}
+              <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 transition-all duration-300 group-hover/btn:from-green-700 group-hover/btn:to-emerald-700"></div>
+              
+              {/* Efeito de shine ao hover */}
+              <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-200%] group-hover/btn:translate-x-[200%] transition-transform duration-1000"></div>
+              </div>
+              
+              {/* Texto do botão */}
+              <span className="relative flex items-center justify-center gap-2 px-6 py-4 text-white font-semibold text-sm tracking-wide">
+                {linkText}
+                <svg className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </button>
+          ) : (
+            <a 
+              href={href}
+              className="w-full relative group/btn overflow-hidden rounded-xl block"
+            >
+              {/* Gradiente animado de fundo */}
+              <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 transition-all duration-300 group-hover/btn:from-green-700 group-hover/btn:to-emerald-700"></div>
+              
+              {/* Efeito de shine ao hover */}
+              <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-200%] group-hover/btn:translate-x-[200%] transition-transform duration-1000"></div>
+              </div>
+              
+              {/* Texto do botão */}
+              <span className="relative flex items-center justify-center gap-2 px-6 py-4 text-white font-semibold text-sm tracking-wide">
+                {linkText}
+                <svg className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </a>
+          )}
+        </div>
+
+        {/* Detalhe decorativo no canto */}
+        <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden">
+          <div className="absolute -top-12 -right-12 w-24 h-24 bg-gradient-to-br from-purple-100/50 to-green-100/50 rotate-45"></div>
+        </div>
       </div>
-      
+
       {/* Modal WhatsApp */}
       <WhatsAppModal 
         isOpen={showWhatsAppModal}
