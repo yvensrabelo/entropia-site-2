@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calculator, 
@@ -107,6 +107,23 @@ const obterDadosMacro = (curso: string, cota: string) => {
   };
 };
 
+// Hook personalizado para debounce
+const useDebounce = (value: string, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
 // Extrair lista única de cursos do JSON
 const cursosUnicos = [...new Set([...notasDeCorte, ...notasCorteMacro].map(item => item.curso))];
 
@@ -192,9 +209,23 @@ const MobileNavbar = ({
             {/* Seção 2: Breakdown das notas */}
             <div className="flex-1">
               {processoSelecionado === 'PSC' ? (
-                <div className="text-center">
-                  <p className="text-[10px] text-gray-500 mb-1">ETAPA 1</p>
-                  <p className="text-lg font-semibold text-green-400">{notas['PSC 1'] || '0'}</p>
+                <div className="grid grid-cols-4 gap-1 text-center">
+                  <div>
+                    <p className="text-[9px] text-gray-500">E1</p>
+                    <p className="text-xs font-semibold text-green-400">{notas['PSC 1'] || '0'}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] text-gray-500">E2</p>
+                    <p className="text-xs font-semibold text-green-400">{notas['PSC 2'] || '0'}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] text-gray-500">E3</p>
+                    <p className="text-xs font-semibold text-green-400">{notas['PSC 3'] || '0'}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] text-gray-500">RED</p>
+                    <p className="text-xs font-semibold text-green-400">{notas['Redação'] || '0'}</p>
+                  </div>
                 </div>
               ) : (
                 <div className="grid grid-cols-3 gap-1 text-center">
@@ -267,6 +298,7 @@ export default function CalculadoraDinamica() {
   const [notaTotal, setNotaTotal] = useState(0);
   const [cotaDeterminada, setCotaDeterminada] = useState('AC');
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // Criar lista de cursos ordenada (apenas cursos com dados disponíveis)
   const cursosOrdenados = useMemo(() => {
@@ -390,13 +422,16 @@ export default function CalculadoraDinamica() {
     setNotaTotal(total);
   }, [notas, processoSelecionado]);
 
+  // Filtrar cursos com debounce para melhor performance
+  const cursosFiltrados = useMemo(() => {
+    if (!debouncedSearchTerm) return cursosOrdenados;
+    return cursosOrdenados.filter(curso => 
+      curso.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    );
+  }, [cursosOrdenados, debouncedSearchTerm]);
+
   // Calcular resultados para todos os cursos
   const resultadosPorCurso = useMemo((): ResultadoCurso[] => {
-    // Filtrar cursos com base na pesquisa
-    const cursosFiltrados = cursosOrdenados.filter(curso => 
-      curso.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    
     // Primeiro calcular os resultados para os cursos filtrados
     const resultados = cursosFiltrados.map(curso => {
       let notaCorte = 0;
@@ -452,7 +487,7 @@ export default function CalculadoraDinamica() {
     
     // Retornar cursos ordenados: primeiro aprovados, depois reprovados
     return [...cursosAprovados, ...cursosReprovados];
-  }, [processoSelecionado, cotaDeterminada, notaTotal, searchTerm, cursosOrdenados]);
+  }, [processoSelecionado, cotaDeterminada, notaTotal, cursosFiltrados]);
 
   const handleNotaChange = (campo: string, valor: string) => {
     let numero = parseFloat(valor) || 0;

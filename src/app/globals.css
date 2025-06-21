@@ -160,6 +160,24 @@ body {
   animation: shimmer 8s linear infinite;
 }
 
+/* Adicione will-change para melhorar performance das animações */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+  will-change: background-position;
+}
+
+.animate-pulse {
+  will-change: opacity;
+}
+
+/* Desabilite animações complexas em dispositivos móveis */
+@media (max-width: 768px) {
+  * {
+    animation-duration: 0.3s !important;
+  }
+}
+
 .banco-subtitle {
   font-size: 1.2rem;
   color: #666;
