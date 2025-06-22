@@ -5,6 +5,7 @@ import { TurmaSimples } from '@/lib/types/turma';
 import { cleanupObsoleteStorage } from '@/lib/utils/cleanup-storage';
 import { turmasService } from '@/services/turmasService';
 import { Sun, Cloud, Moon } from 'lucide-react';
+import TurmaIntensiva160 from '@/components/TurmaIntensiva160';
 
 // Componente de conteúdo dinâmico
 const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string; turnoSelecionado?: string | null }) => {
@@ -775,7 +776,11 @@ const HomePage = () => {
                     </div>
                   </div>
                 </a>
-                
+
+                {/* Card Turma Intensiva 160 */}
+                <div className="transform transition-all duration-300 hover:scale-[1.02]">
+                  <TurmaIntensiva160 />
+                </div>
                 
               </div>
             </div>

@@ -300,33 +300,29 @@ export default function CalculadoraDinamica() {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // Previne zoom automático em campos de formulário no iOS/WhatsApp
+  // Solução para zoom do WhatsApp sem afetar scroll
   React.useEffect(() => {
+    // Configura viewport apenas uma vez
     const metaViewport = document.querySelector('meta[name=viewport]');
     if (metaViewport) {
       metaViewport.setAttribute('content', 
-        'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'
+        'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
       );
     }
+  }, []); // Array vazio - executa apenas uma vez
+
+  // Debug temporário para monitorar scroll
+  React.useEffect(() => {
+    console.log('Componente montado. Posição do scroll:', window.scrollY);
     
-    // Força reset do zoom quando o teclado fecha
-    const handleBlur = () => {
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        document.body.style.zoom = '1';
-      }, 300);
+    const handleScroll = () => {
+      console.log('Scroll detectado! Posição:', window.scrollY);
     };
     
-    // Adiciona listener em todos os inputs
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-      input.addEventListener('blur', handleBlur);
-    });
+    window.addEventListener('scroll', handleScroll);
     
     return () => {
-      inputs.forEach(input => {
-        input.removeEventListener('blur', handleBlur);
-      });
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -810,8 +806,18 @@ export default function CalculadoraDinamica() {
                         type="number"
                         inputMode="decimal"
                         pattern="[0-9]*"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck="false"
                         value={notas[campo.label] || ''}
                         onChange={(e) => handleNotaChange(campo.label, e.target.value)}
+                        onFocus={(e) => {
+                          e.target.setAttribute('readonly', 'true');
+                          setTimeout(() => {
+                            e.target.removeAttribute('readonly');
+                          }, 100);
+                        }}
                         min={0}
                         max={campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? (campo.label.includes('(0-28)') ? 28 : 9) : campo.max}
                         step={campo.label.includes('Redação') ? 0.1 : 1}
@@ -841,6 +847,10 @@ export default function CalculadoraDinamica() {
                     <input
                       type="number"
                       inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
                       min="0"
                       max="84"
                       step="0.001"
@@ -855,6 +865,12 @@ export default function CalculadoraDinamica() {
                           handleNotaChange('Dia 1 (0-84)', e.target.value);
                         }
                       }}
+                      onFocus={(e) => {
+                        e.target.setAttribute('readonly', 'true');
+                        setTimeout(() => {
+                          e.target.removeAttribute('readonly');
+                        }, 100);
+                      }}
                       onBlur={(e) => handleMacroBlur('Dia 1 (0-84)', e.target.value)}
                       className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                       placeholder="0.000"
@@ -867,6 +883,10 @@ export default function CalculadoraDinamica() {
                     <input
                       type="number"
                       inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
                       min="0"
                       max="36"
                       step="0.001"
@@ -880,6 +900,12 @@ export default function CalculadoraDinamica() {
                         } else {
                           handleNotaChange('Dia 2 (0-36)', e.target.value);
                         }
+                      }}
+                      onFocus={(e) => {
+                        e.target.setAttribute('readonly', 'true');
+                        setTimeout(() => {
+                          e.target.removeAttribute('readonly');
+                        }, 100);
                       }}
                       onBlur={(e) => handleMacroBlur('Dia 2 (0-36)', e.target.value)}
                       className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
@@ -896,6 +922,10 @@ export default function CalculadoraDinamica() {
                   <input
                     type="number"
                     inputMode="decimal"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
                     min="0"
                     max="28"
                     step="0.001"
@@ -909,6 +939,12 @@ export default function CalculadoraDinamica() {
                       } else {
                         handleNotaChange('Redação (0-28)', e.target.value);
                       }
+                    }}
+                    onFocus={(e) => {
+                      e.target.setAttribute('readonly', 'true');
+                      setTimeout(() => {
+                        e.target.removeAttribute('readonly');
+                      }, 100);
                     }}
                     onBlur={(e) => handleMacroBlur('Redação (0-28)', e.target.value)}
                     className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
@@ -933,8 +969,18 @@ export default function CalculadoraDinamica() {
                       type="number"
                       inputMode="decimal"
                       pattern="[0-9]*"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
                       value={notas[campo.label] || ''}
                       onChange={(e) => handleNotaChange(campo.label, e.target.value)}
+                      onFocus={(e) => {
+                        e.target.setAttribute('readonly', 'true');
+                        setTimeout(() => {
+                          e.target.removeAttribute('readonly');
+                        }, 100);
+                      }}
                       min={0}
                       max={campo.label.includes('PSC') ? 54 : campo.label.includes('Redação') ? (campo.label.includes('(0-28)') ? 28 : 9) : campo.max}
                       step={campo.label.includes('Redação') ? 0.1 : 1}
