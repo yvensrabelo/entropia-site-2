@@ -129,7 +129,7 @@ const CampoDataFluido = ({
 }
 
 // Tipos
-type Etapa = 'dados-aluno' | 'responsavel' | 'pagamento'
+type Etapa = 'pagamento' | 'dados-aluno' | 'responsavel'
 
 interface DadosAluno {
   nomeCompleto: string
@@ -272,7 +272,8 @@ const EtapaResponsavel = ({
   onAvancar,
   onVoltar,
   mascaraCPF,
-  mascaraWhatsApp
+  mascaraWhatsApp,
+  enviando = false
 }: {
   dadosResponsavel: DadosResponsavel
   setDadosResponsavel: (dados: DadosResponsavel) => void
@@ -281,6 +282,7 @@ const EtapaResponsavel = ({
   onVoltar: () => void
   mascaraCPF: (valor: string) => string
   mascaraWhatsApp: (valor: string) => string
+  enviando?: boolean
 }) => (
   <motion.div
     initial={{ opacity: 0, x: 20 }}
@@ -363,10 +365,11 @@ const EtapaResponsavel = ({
       </button>
       <button
         onClick={onAvancar}
-        className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all flex items-center justify-center gap-2"
+        disabled={enviando}
+        className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Continuar
-        <ChevronRight className="w-5 h-5" />
+        {enviando ? 'Enviando...' : 'Finalizar Matrícula'}
+        {!enviando && <ChevronRight className="w-5 h-5" />}
       </button>
     </div>
   </motion.div>
@@ -501,17 +504,11 @@ const EtapaPagamento = ({
 
     <div className="flex gap-4">
       <button
-        onClick={onVoltar}
-        className="flex-1 bg-white/10 text-white font-bold py-4 rounded-xl hover:bg-white/20 transition-all"
-      >
-        Voltar
-      </button>
-      <button
         onClick={onFinalizar}
         disabled={!pagamentoSelecionado || !dataPrimeiroPagamento || enviando}
-        className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {enviando ? 'Enviando...' : 'Finalizar Matrícula'}
+        {enviando ? 'Enviando...' : 'Próximo'}
       </button>
     </div>
   </motion.div>
@@ -523,7 +520,7 @@ function FormularioMatriculaContent() {
   const router = useRouter()
   
   // Estados
-  const [etapaAtual, setEtapaAtual] = useState<Etapa>('dados-aluno')
+  const [etapaAtual, setEtapaAtual] = useState<Etapa>('pagamento')
   const [dadosAluno, setDadosAluno] = useState<DadosAluno>({
     nomeCompleto: '',
     whatsapp: '',
@@ -675,9 +672,20 @@ function FormularioMatriculaContent() {
     ]
   }
 
-  // Navegação com useCallback
+  // Navegação com useCallback - NOVA ORDEM: pagamento -> dados-aluno -> responsavel
   const avancarEtapa = useCallback(() => {
-    if (etapaAtual === 'dados-aluno') {
+    if (etapaAtual === 'pagamento') {
+      // Validar seleção de pagamento
+      if (!pagamentoSelecionado) {
+        alert('Por favor, selecione uma forma de pagamento')
+        return
+      }
+      if (!dataPrimeiroPagamento) {
+        alert('Por favor, selecione a data do primeiro pagamento')
+        return
+      }
+      setEtapaAtual('dados-aluno')
+    } else if (etapaAtual === 'dados-aluno') {
       // Debug - mostrar estado atual
       console.log('=== VALIDAÇÃO DADOS DO ALUNO ===')
       console.log('Nome completo:', `"${dadosAluno.nomeCompleto}"`, '→ Válido:', dadosAluno.nomeCompleto && dadosAluno.nomeCompleto.trim().length >= 3)
@@ -711,23 +719,12 @@ function FormularioMatriculaContent() {
       }
       
       setEtapaAtual('responsavel')
-    } else if (etapaAtual === 'responsavel') {
-      // Validar dados do responsável
-      if (!maiorIdade || !dadosResponsavel.souResponsavel) {
-        if (!dadosResponsavel.nome || 
-            !validarCPF(dadosResponsavel.cpf || '') || 
-            !validarWhatsApp(dadosResponsavel.whatsapp || '')) {
-          alert('Por favor, preencha os dados do responsável')
-          return
-        }
-      }
-      setEtapaAtual('pagamento')
     }
-  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade])
+  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade, pagamentoSelecionado, dataPrimeiroPagamento])
 
   const voltarEtapa = useCallback(() => {
-    if (etapaAtual === 'responsavel') setEtapaAtual('dados-aluno')
-    else if (etapaAtual === 'pagamento') setEtapaAtual('responsavel')
+    if (etapaAtual === 'dados-aluno') setEtapaAtual('pagamento')
+    else if (etapaAtual === 'responsavel') setEtapaAtual('dados-aluno')
   }, [etapaAtual])
 
   // Calcular opções de pagamento memoizado
@@ -853,9 +850,9 @@ function FormularioMatriculaContent() {
   // Indicador de progresso
   const ProgressBar = () => {
     const etapas = [
-      { id: 'dados-aluno', nome: 'Dados Pessoais', icon: User },
-      { id: 'responsavel', nome: 'Responsável', icon: UserCheck },
-      { id: 'pagamento', nome: 'Pagamento', icon: CreditCard }
+      { id: 'pagamento', nome: 'Valor dos Cursos', icon: CreditCard },
+      { id: 'dados-aluno', nome: 'Dados do Aluno', icon: User },
+      { id: 'responsavel', nome: 'Responsável Financeiro', icon: UserCheck }
     ]
     
     const etapaIndex = etapas.findIndex(e => e.id === etapaAtual)
@@ -908,6 +905,19 @@ function FormularioMatriculaContent() {
           <ProgressBar />
           
           <AnimatePresence mode="wait">
+            {etapaAtual === 'pagamento' && (
+              <EtapaPagamento 
+                key="pagamento"
+                opcoesPagamento={opcoesPagamento}
+                pagamentoSelecionado={pagamentoSelecionado}
+                setPagamentoSelecionado={setPagamentoSelecionado}
+                dataPrimeiroPagamento={dataPrimeiroPagamento}
+                setDataPrimeiroPagamento={setDataPrimeiroPagamento}
+                enviando={false}
+                onVoltar={() => {}}
+                onFinalizar={avancarEtapa}
+              />
+            )}
             {etapaAtual === 'dados-aluno' && (
               <EtapaDadosAluno 
                 key="aluno"
@@ -924,23 +934,11 @@ function FormularioMatriculaContent() {
                 dadosResponsavel={dadosResponsavel}
                 setDadosResponsavel={setDadosResponsavel}
                 maiorIdade={maiorIdade}
-                onAvancar={avancarEtapa}
+                onAvancar={enviarFormulario}
                 onVoltar={voltarEtapa}
                 mascaraCPF={mascaraCPF}
                 mascaraWhatsApp={mascaraWhatsApp}
-              />
-            )}
-            {etapaAtual === 'pagamento' && (
-              <EtapaPagamento 
-                key="pagamento"
-                opcoesPagamento={opcoesPagamento}
-                pagamentoSelecionado={pagamentoSelecionado}
-                setPagamentoSelecionado={setPagamentoSelecionado}
-                dataPrimeiroPagamento={dataPrimeiroPagamento}
-                setDataPrimeiroPagamento={setDataPrimeiroPagamento}
                 enviando={enviando}
-                onVoltar={voltarEtapa}
-                onFinalizar={enviarFormulario}
               />
             )}
           </AnimatePresence>
