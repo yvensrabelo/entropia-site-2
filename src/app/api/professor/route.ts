@@ -234,7 +234,7 @@ export async function POST(request: NextRequest) {
           nome, 
           cpf, 
           ativo,
-          materias(nome, cor_hex)
+          materias(id, nome, cor_hex)
         `)
         .eq('cpf', cpfLimpo)
         .single();
