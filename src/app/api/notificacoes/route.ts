@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
 
         // Tentar enviar via WhatsApp (usando Evolution API existente)
         let statusEnvio = 'falha';
-        let erroEnvio = null;
+        let erroEnvio: string | null = null;
 
         try {
           const whatsappResponse = await fetch('/api/whatsapp/send', {
