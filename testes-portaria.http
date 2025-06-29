@@ -1,0 +1,13 @@
+### Status da portaria
+GET http://localhost:3000/api/portaria?turno=manha&data=2025-06-29
+
+### Registrar presença
+POST http://localhost:3000/api/portaria
+Content-Type: application/json
+
+{
+  "professor_id": "00000000-0000-0000-0000-000000000003",
+  "horario_id": "00000000-0000-0000-0000-000000000001",
+  "status_presenca": "presente",
+  "data": "2025-06-29"
+}

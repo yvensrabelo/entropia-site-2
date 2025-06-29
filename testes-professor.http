@@ -1,0 +1,14 @@
+### 1. Login do professor
+POST http://localhost:3000/api/professor
+Content-Type: application/json
+
+{
+  "cpf": "12345678901",
+  "action": "login"
+}
+
+### 2. Grade semanal do professor
+GET http://localhost:3000/api/professor?cpf=12345678901&endpoint=grade
+
+### 3. Descritores do dia
+GET http://localhost:3000/api/professor?cpf=12345678901&endpoint=descritores&data=2025-06-29

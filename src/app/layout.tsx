@@ -82,6 +82,9 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="theme-color" content="#ffffff" />
+        {/* Desabilitar modo escuro */}
+        <meta name="color-scheme" content="only light" />
+        <meta name="supported-color-schemes" content="light" />
         {/* Meta tags essenciais para iPhone */}
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -95,7 +98,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className={`${inter.className} ${playfair.variable} ${cinzel.variable} antialiased bg-black text-white`}>
+      <body className={`${inter.className} ${playfair.variable} ${cinzel.variable} antialiased`}>
         <ToastProvider>
           {children}
         </ToastProvider>

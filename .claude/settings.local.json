@@ -66,7 +66,9 @@
       "Bash(HOME=/tmp /bin/bash -c:*)",
       "Bash(/usr/bin/git status)",
       "Bash(env)",
-      "Bash(git --version)"
+      "Bash(git --version)",
+      "Bash(jq:*)",
+      "Bash(npm run lint)"
     ],
     "deny": []
   },

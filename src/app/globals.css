@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Forçar modo claro - desabilitar modo escuro */
+:root {
+  color-scheme: only light;
+}
+
+* {
+  color-scheme: only light;
+}
+
+/* Forçar cores específicas para Android */
+html {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+body {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Prevenir modo escuro forçado pelo sistema */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: only light !important;
+  }
+  
+  * {
+    color-scheme: only light !important;
+  }
+  
+  html, body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+}
+
 /* Scroll suave global */
 html {
   scroll-behavior: smooth;

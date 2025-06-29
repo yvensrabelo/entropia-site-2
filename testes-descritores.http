@@ -1,0 +1,14 @@
+### Criar descritor
+POST http://localhost:3000/api/descritores-v2
+Content-Type: application/json
+
+{
+  "horario_id": "00000000-0000-0000-0000-000000000001",
+  "professor_cpf": "12345678901",
+  "data": "2025-06-29",
+  "topico_id": "00000000-0000-0000-0000-000000000002",
+  "descricao_livre": "Aula teste sobre cinemática"
+}
+
+### Buscar descritores (admin)
+GET http://localhost:3000/api/descritores-v2?admin=true&data=2025-06-29
