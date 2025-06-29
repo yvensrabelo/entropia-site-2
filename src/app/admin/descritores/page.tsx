@@ -176,7 +176,7 @@ export default function AdminDescritoresPage() {
 
   const confirmarEnvio = async () => {
     try {
-      const descritoresIds = modalEnvio.descritores.map(d => d.descritor_id);
+      const descritoresIds = modalEnvio.descritores.map(d => d.id);
       
       const response = await fetch('/api/descritores-v2', {
         method: 'PATCH',
@@ -594,7 +594,7 @@ export default function AdminDescritoresPage() {
               
               <div className="space-y-3 mb-6">
                 {modalEnvio.descritores.map(descritor => (
-                  <div key={descritor.descritor_id} className="bg-gray-50 rounded-lg p-3">
+                  <div key={descritor.id} className="bg-gray-50 rounded-lg p-3">
                     <p className="font-medium text-gray-900">
                       {descritor.materia_nome} - {descritor.professor_nome}
                     </p>
