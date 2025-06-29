@@ -37,7 +37,16 @@ export async function GET(request: NextRequest) {
     const horariosHoje = horariosProximos.filter(h => h.dia_semana === diaHoje);
 
     // Verificar quais professores ainda não foram notificados
-    const professoresParaNotificar = [];
+    const professoresParaNotificar: Array<{
+      professor_nome: string;
+      professor_cpf: string;
+      materia_nome: string;
+      turma_nome: string;
+      hora_inicio: string;
+      hora_fim: string;
+      horario_id: string;
+      telefone: string;
+    }> = [];
 
     for (const horario of horariosHoje) {
       if (!horario.professor_cpf) continue;
@@ -180,7 +189,7 @@ export async function POST(request: NextRequest) {
           }, { status: 400 });
         }
 
-        const resultados = [];
+        const resultados: any[] = [];
 
         for (const prof of professores) {
           try {
