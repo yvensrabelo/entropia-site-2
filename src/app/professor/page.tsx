@@ -24,6 +24,7 @@ interface Professor {
   nome: string;
   cpf: string;
   materia: string;
+  materia_id?: string;
   cor_materia: string;
 }
 
@@ -154,7 +155,7 @@ export default function ProfessorPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           action: 'buscar_topicos', 
-          materia_id: aula.materia_id 
+          materia_id: professor?.materia_id || null
         })
       });
 

@@ -266,6 +266,7 @@ export async function POST(request: NextRequest) {
           nome: professor.nome,
           cpf: professor.cpf,
           materia: professor.materias?.[0]?.nome || 'Não definida',
+          materia_id: professor.materias?.[0]?.id || null,
           cor_materia: professor.materias?.[0]?.cor_hex || '#3B82F6'
         },
         message: `Bem-vindo, ${professor.nome}!`
