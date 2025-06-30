@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, Clock, User, FileText, CheckCircle, AlertCircle, Send, Filter, RefreshCw, X } from 'lucide-react';
 import { turmasService } from '@/services/turmasService';
 import { horariosService } from '@/services/horariosService';
+import type { HorarioAula } from '@/services/horariosService';
 import { professoresService } from '@/services/professoresService';
 
 interface Aula {
@@ -78,14 +79,14 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
       const diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
       const diaSemana = diasSemana[date.getDay()];
 
-      // Filtrar aulas e converter para o formato esperado
-      const aulasFiltradas = horariosDB
-        .filter((h: any) => 
+      // Filtrar aulas
+      const aulasFiltradas: Aula[] = horariosDB
+        .filter((h: HorarioAula) => 
           h.dia_semana === diaSemana &&
           h.turno === turnoSelecionado &&
           h.turma === turmaSelecionada
         )
-        .map((h: any) => ({
+        .map((h: HorarioAula): Aula => ({
           id: h.id,
           tempo: h.tempo,
           materia: h.materia,
@@ -96,10 +97,10 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
           hora_inicio: h.hora_inicio,
           hora_fim: h.hora_fim,
           dia_semana: h.dia_semana,
-          sala: h.sala || ''
+          sala: h.sala
         }));
 
-      setAulas(aulasFiltradas.sort((a: any, b: any) => a.tempo - b.tempo));
+      setAulas(aulasFiltradas.sort((a, b) => a.tempo - b.tempo));
 
       // Carregar descritores do Supabase
       try {

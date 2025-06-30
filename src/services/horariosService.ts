@@ -1,6 +1,6 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
-interface HorarioAula {
+export interface HorarioAula {
   id: string
   dia_semana: string
   hora_inicio: string
