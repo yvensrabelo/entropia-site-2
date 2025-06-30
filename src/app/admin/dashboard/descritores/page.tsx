@@ -1,5 +1,8 @@
 'use client';
 
+// TODO: Esta página foi substituída pela página unificada /admin/dashboard/aulas
+// Esta página permanece para compatibilidade mas deve ser considerada obsoleta
+
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, User, FileText, CheckCircle, AlertCircle, Send } from 'lucide-react';
 import AuthGuard from '@/components/admin/AuthGuard';

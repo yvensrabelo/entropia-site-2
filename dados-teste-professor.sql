@@ -10,7 +10,7 @@ SELECT
     '12345678901',
     m.id,
     '(92) 99999-0001',
-    1.85,
+    1.00,
     true
 FROM materias m 
 WHERE m.nome = 'Matemática'
@@ -27,7 +27,7 @@ SELECT
     '11144477735',
     m.id,
     '(92) 99999-0002', 
-    1.85,
+    1.00,
     true
 FROM materias m
 WHERE m.nome = 'Português'

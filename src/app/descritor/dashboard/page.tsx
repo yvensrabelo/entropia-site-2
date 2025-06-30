@@ -29,6 +29,8 @@ export default function DashboardProfessor() {
   const [aulasHoje, setAulasHoje] = useState<Aula[]>([]);
   const [descritores, setDescritores] = useState<Record<string, Descritor>>({});
   const [descricaoTemp, setDescricaoTemp] = useState<Record<string, string>>({});
+  const [minutosDoMes, setMinutosDoMes] = useState<number>(0);
+  const [loadingMinutos, setLoadingMinutos] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -48,6 +50,9 @@ export default function DashboardProfessor() {
 
       // Carregar descritores já preenchidos
       await carregarDescritores();
+
+      // Carregar minutos do mês
+      await carregarMinutosDoMes(prof.cpf);
     };
     
     inicializar();
@@ -100,14 +105,40 @@ export default function DashboardProfessor() {
     }
   };
 
+  const carregarMinutosDoMes = async (professorCpf: string) => {
+    setLoadingMinutos(true);
+    try {
+      const response = await fetch(`/api/professores/minutos?cpf=${professorCpf}`);
+      if (response.ok) {
+        const data = await response.json();
+        setMinutosDoMes(data.minutos || 0);
+        console.log('⏱️ [DASHBOARD PROFESSOR] Minutos carregados:', {
+          minutos: data.minutos,
+          horas: data.horas_estimada,
+          professor: data.professor,
+          registros: data.periodo?.total_registros
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('Erro ao carregar minutos:', errorData.error);
+        setMinutosDoMes(0);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar minutos do mês:', error);
+      setMinutosDoMes(0);
+    } finally {
+      setLoadingMinutos(false);
+    }
+  };
+
   const podePreencherDescritor = (aula: Aula) => {
     const agora = new Date();
-    const [hora, minuto] = aula.hora_inicio.split(':').map(Number);
-    const inicioAula = new Date();
-    inicioAula.setHours(hora, minuto, 0);
+    const [hora, minuto] = aula.hora_fim.split(':').map(Number);
+    const fimAula = new Date();
+    fimAula.setHours(hora, minuto, 0);
     
-    // Pode preencher se o horário da aula já passou
-    return agora >= inicioAula;
+    // Pode preencher apenas após o horário de fim da aula
+    return agora >= fimAula;
   };
 
   const salvarDescritor = async (aulaId: string) => {
@@ -137,6 +168,9 @@ export default function DashboardProfessor() {
       setDescritores(prev => ({ ...prev, [aulaId]: novoDescritor }));
       setDescricaoTemp({ ...descricaoTemp, [aulaId]: '' });
       
+      // Recarregar minutos do mês
+      await carregarMinutosDoMes(professor.cpf);
+      
       alert('Descritor salvo com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar descritor:', error);
@@ -159,6 +193,18 @@ export default function DashboardProfessor() {
           <div>
             <h1 className="text-2xl font-bold text-gray-800">Portal do Professor</h1>
             <p className="text-gray-600">Olá, {professor.nome}</p>
+            
+            {/* Contador de minutos */}
+            <div className="mt-3 flex items-center gap-2">
+              <div className="bg-green-100 text-green-800 px-3 py-1 rounded-lg text-sm font-medium">
+                ⏱️ Minutos acumulados no mês: {loadingMinutos ? '...' : minutosDoMes}
+              </div>
+              {minutosDoMes > 0 && (
+                <div className="text-xs text-gray-500">
+                  ≈ {Math.round(minutosDoMes / 60 * 10) / 10}h
+                </div>
+              )}
+            </div>
           </div>
           <button
             onClick={logout}

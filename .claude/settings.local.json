@@ -68,7 +68,19 @@
       "Bash(env)",
       "Bash(git --version)",
       "Bash(jq:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "Bash(timeout 15s npm run dev)",
+      "Bash(/bin/rm:*)",
+      "Bash(unlink:*)",
+      "Bash(\"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2/cleanup.sh\")",
+      "Bash(\"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2/remove_conflicting_folder.sh\")",
+      "Bash(git -C \"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2\" status)",
+      "Bash(export ZDOTDIR=/tmp)",
+      "Bash(unset ZDOTDIR)",
+      "Bash(env -i PATH=/usr/local/bin:/usr/bin:/bin git -C \"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2\" status)",
+      "Bash(/usr/bin/git -C \"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2\" status)",
+      "Bash(exec env -i HOME=$HOME PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin bash -c 'cd \"/Users/yvensrabelo/SITE ENTROPIA/VERSAO 0/entropia-site-2\" && git status')",
+      "Bash(exec:*)"
     ],
     "deny": []
   },

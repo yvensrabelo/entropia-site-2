@@ -87,7 +87,7 @@ CREATE TABLE professores (
     materia_id UUID REFERENCES materias(id) ON DELETE SET NULL,
     telefone VARCHAR(20),
     email VARCHAR(255),
-    valor_por_minuto DECIMAL(10,2) DEFAULT 1.85,
+    valor_por_minuto DECIMAL(10,2) DEFAULT 1.00,
     ativo BOOLEAN DEFAULT true,
     observacoes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -350,7 +350,7 @@ INSERT INTO configuracoes_sistema (chave, valor, tipo, descricao) VALUES
 ('auto_refresh_portaria', '5', 'number', 'Intervalo de atualização automática da portaria (segundos)'),
 ('webhook_pais_url', '', 'string', 'URL do webhook para envio aos pais'),
 ('notificacao_antecedencia', '60', 'number', 'Minutos de antecedência para notificar professores'),
-('valor_padrao_minuto', '1.85', 'number', 'Valor padrão por minuto de aula'),
+('valor_padrao_minuto', '1.00', 'number', 'Valor padrão por minuto de aula'),
 ('bloquear_edicao_apos_envio', 'true', 'boolean', 'Bloquear edição de descritores após envio'),
 ('horario_corte_descritores', '23:59', 'string', 'Horário limite para preenchimento de descritores')
 ON CONFLICT (chave) DO UPDATE SET valor = EXCLUDED.valor;
@@ -530,7 +530,7 @@ BEGIN
         NEW.id,
         NEW.data,
         NEW.minutos_aula,
-        COALESCE(v_valor_minuto, 1.85)
+        COALESCE(v_valor_minuto, 1.00)
     )
     ON CONFLICT (descritor_id) DO UPDATE SET
         minutos = EXCLUDED.minutos,
@@ -769,7 +769,7 @@ SELECT
     cpf,
     m.id,
     telefone,
-    1.85
+    1.00
 FROM (VALUES
     ('João Silva', '12345678901', 'Matemática', '(92) 99999-0001'),
     ('Maria Santos', '12345678902', 'Português', '(92) 99999-0002'),

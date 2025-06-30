@@ -22,13 +22,16 @@ class HorariosService {
   async listarHorarios(): Promise<HorarioAula[]> {
     try {
       const { data, error } = await this.supabase
-        .from('horarios')
+        .from('horarios_aulas')
         .select(`
           *,
-          professor:professores(nome)
+          professor:professores(id, nome),
+          turma:turmas_sistema(codigo, nome),
+          materia:materias(nome)
         `)
+        .eq('ativo', true)
         .order('dia_semana', { ascending: true })
-        .order('hora_inicio', { ascending: true })
+        .order('tempo', { ascending: true })
 
       if (error) throw error
 
@@ -37,13 +40,13 @@ class HorariosService {
         dia_semana: horario.dia_semana,
         hora_inicio: horario.hora_inicio,
         hora_fim: horario.hora_fim,
-        professor_id: horario.professor_id,
+        professor_id: horario.professor_id || '',
         professor_nome: horario.professor?.nome || '',
-        materia: horario.disciplina || '',
-        turma: '', // Buscar nome da turma se necessário
+        materia: horario.materia?.nome || '',
+        turma: horario.turma?.nome || horario.turma?.codigo || '',
         sala: horario.sala || '',
         turno: this.definirTurno(horario.hora_inicio),
-        tempo: this.calcularTempo(horario.hora_inicio, horario.hora_fim)
+        tempo: horario.tempo || 1
       }))
     } catch (error) {
       console.error('Erro ao listar horários:', error)
@@ -53,15 +56,31 @@ class HorariosService {
 
   async criarHorario(horario: Omit<HorarioAula, 'id'>): Promise<HorarioAula | null> {
     try {
+      // Buscar IDs das entidades relacionadas
+      const { data: turmaData } = await this.supabase
+        .from('turmas_sistema')
+        .select('id')
+        .or(`nome.eq.${horario.turma},codigo.eq.${horario.turma}`)
+        .single()
+
+      const { data: materiaData } = await this.supabase
+        .from('materias')
+        .select('id')
+        .eq('nome', horario.materia)
+        .single()
+
       const { data, error } = await this.supabase
-        .from('horarios')
+        .from('horarios_aulas')
         .insert([{
           dia_semana: horario.dia_semana,
           hora_inicio: horario.hora_inicio,
           hora_fim: horario.hora_fim,
-          professor_id: horario.professor_id,
-          disciplina: horario.materia,
-          sala: horario.sala
+          professor_id: horario.professor_id || null,
+          turma_id: turmaData?.id,
+          materia_id: materiaData?.id,
+          sala: horario.sala,
+          tempo: horario.tempo || 1,
+          ativo: true
         }])
         .select()
         .single()
@@ -80,21 +99,49 @@ class HorariosService {
 
   async atualizarHorario(id: string, horario: Partial<HorarioAula>): Promise<boolean> {
     try {
+      console.log('🔄 [HORARIOS SERVICE] Atualizando horário:', { id, horario });
+      
       const dadosBanco: any = {}
       
       if (horario.dia_semana !== undefined) dadosBanco.dia_semana = horario.dia_semana
       if (horario.hora_inicio !== undefined) dadosBanco.hora_inicio = horario.hora_inicio
       if (horario.hora_fim !== undefined) dadosBanco.hora_fim = horario.hora_fim
-      if (horario.professor_id !== undefined) dadosBanco.professor_id = horario.professor_id
-      if (horario.materia !== undefined) dadosBanco.disciplina = horario.materia
+      if (horario.professor_id !== undefined) dadosBanco.professor_id = horario.professor_id || null
+      if (horario.tempo !== undefined) dadosBanco.tempo = horario.tempo
       if (horario.sala !== undefined) dadosBanco.sala = horario.sala
 
+      // Buscar IDs se matéria ou turma foram alteradas
+      if (horario.materia !== undefined) {
+        const { data: materiaData } = await this.supabase
+          .from('materias')
+          .select('id')
+          .eq('nome', horario.materia)
+          .single()
+        if (materiaData) dadosBanco.materia_id = materiaData.id
+      }
+
+      if (horario.turma !== undefined) {
+        const { data: turmaData } = await this.supabase
+          .from('turmas_sistema')
+          .select('id')
+          .or(`nome.eq.${horario.turma},codigo.eq.${horario.turma}`)
+          .single()
+        if (turmaData) dadosBanco.turma_id = turmaData.id
+      }
+
+      console.log('💾 [HORARIOS SERVICE] Dados para atualizar:', dadosBanco);
+
       const { error } = await this.supabase
-        .from('horarios')
+        .from('horarios_aulas')
         .update(dadosBanco)
         .eq('id', id)
 
-      if (error) throw error
+      if (error) {
+        console.error('❌ [HORARIOS SERVICE] Erro ao atualizar:', error);
+        throw error;
+      }
+      
+      console.log('✅ [HORARIOS SERVICE] Horário atualizado com sucesso');
       return true
     } catch (error) {
       console.error('Erro ao atualizar horário:', error)
@@ -105,7 +152,7 @@ class HorariosService {
   async excluirHorario(id: string): Promise<boolean> {
     try {
       const { error } = await this.supabase
-        .from('horarios')
+        .from('horarios_aulas')
         .delete()
         .eq('id', id)
 
@@ -120,7 +167,7 @@ class HorariosService {
   async excluirTodosHorarios(): Promise<boolean> {
     try {
       const { error } = await this.supabase
-        .from('horarios')
+        .from('horarios_aulas')
         .delete()
         .gte('id', '00000000-0000-0000-0000-000000000000') // Deleta todos
 

@@ -131,11 +131,17 @@ export async function GET(request: NextRequest) {
         // Combinar grade com descritores
         const aulasDoDia = gradeData.map(aula => {
           const descritor = descritores.find(d => d.horario_id === aula.horario_id);
+          
+          // Verificar se pode preencher: só após o horário de término da aula
+          const agora = new Date();
+          const horarioFim = new Date(`${data}T${aula.hora_fim}`);
+          const podePreencher = agora >= horarioFim;
+          
           return {
             ...aula,
             descritor_preenchido: !!descritor,
             descritor: descritor || null,
-            pode_preencher: new Date(data + 'T' + aula.hora_inicio) <= new Date()
+            pode_preencher: podePreencher
           };
         });
 

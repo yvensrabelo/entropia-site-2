@@ -108,7 +108,7 @@ BEGIN
             materia_id UUID REFERENCES materias(id) ON DELETE SET NULL,
             telefone VARCHAR(20),
             email VARCHAR(255),
-            valor_por_minuto DECIMAL(10,2) DEFAULT 1.85,
+            valor_por_minuto DECIMAL(10,2) DEFAULT 1.00,
             ativo BOOLEAN DEFAULT true,
             observacoes TEXT,
             created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -140,7 +140,7 @@ BEGIN
         END IF;
         
         IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'professores' AND column_name = 'valor_por_minuto') THEN
-            ALTER TABLE professores ADD COLUMN valor_por_minuto DECIMAL(10,2) DEFAULT 1.85;
+            ALTER TABLE professores ADD COLUMN valor_por_minuto DECIMAL(10,2) DEFAULT 1.00;
         END IF;
         
         IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'professores' AND column_name = 'ativo') THEN

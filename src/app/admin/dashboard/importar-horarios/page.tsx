@@ -1,5 +1,8 @@
 'use client';
 
+// TODO: Esta página foi substituída pela página unificada /admin/dashboard/aulas
+// Esta página permanece para compatibilidade mas deve ser considerada obsoleta
+
 import { useState } from 'react';
 import { Upload, FileSpreadsheet, CheckCircle, AlertCircle } from 'lucide-react';
 import * as XLSX from 'xlsx';
@@ -84,7 +87,7 @@ export default function ImportarHorarios() {
 
   const processarDados = (dados: any[]): any[] => {
     const horarios: any[] = [];
-    const diasSemana = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+    const diasSemana = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'];
     const professores = JSON.parse(localStorage.getItem('professores') || '[]');
     
     // Encontrar onde começam os dados (procurar por "HORÁRIO")

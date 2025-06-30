@@ -23,7 +23,7 @@ interface Professor {
   cpf: string;
 }
 
-const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 const horarios = [
   '07:00', '07:50', '08:40', '09:30', '10:20', '11:10',
   '13:00', '13:50', '14:40', '15:30', '16:20', '17:10',

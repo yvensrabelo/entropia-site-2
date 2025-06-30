@@ -1,12 +1,8 @@
 'use client';
 
-// TODO: Esta página foi substituída pela página unificada /admin/dashboard/aulas
-// Esta página permanece para compatibilidade mas deve ser considerada obsoleta
-
 import React, { useState, useEffect } from 'react';
 import { Clock, Plus, Edit2, Trash2, User, MapPin, Calendar, Grid3x3, List, Monitor, CheckCircle, AlertCircle } from 'lucide-react';
 import { detectarTurno, calcularTempo, getDiaAtual, formatDiaName, isAulaAtual } from '@/lib/utils/horario-utils';
-import AuthGuard from '@/components/admin/AuthGuard';
 import { horariosService } from '@/services/horariosService';
 import { professoresService } from '@/services/professoresService';
 import { turmasService } from '@/services/turmasService';
@@ -37,25 +33,20 @@ interface HorarioAula {
   tempo: number;
 }
 
-interface PresencaProfessor {
-  horarioId: string;
-  professorPresente: boolean;
-  horaChegada?: string;
-  timestamp: string;
+interface HorariosTabProps {
+  refetchTrigger: number;
 }
 
-export default function HorariosPage() {
+export default function HorariosTab({ refetchTrigger }: HorariosTabProps) {
   const [horarios, setHorarios] = useState<HorarioAula[]>([]);
   const [professors, setProfessors] = useState<Professor[]>([]);
   const [selectedHorario, setSelectedHorario] = useState<HorarioAula | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [viewMode, setViewMode] = useState<'table' | 'grid' | 'today' | 'turma'>('turma');
+  const [viewMode, setViewMode] = useState<'table' | 'grid' | 'turma'>('turma');
   const [filterDia, setFilterDia] = useState('');
   const [filterTurma, setFilterTurma] = useState('');
-  const [presencas, setPresencas] = useState<PresencaProfessor[]>([]);
-  const [currentTime, setCurrentTime] = useState(new Date());
 
   const diasSemana = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'];
   const diasSemanaDisplay = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
@@ -88,136 +79,58 @@ export default function HorariosPage() {
   };
   
   const [turmasDisponiveis, setTurmasDisponiveis] = useState<string[]>([]);
-
   const [materiasDisponiveis, setMateriasDisponiveis] = useState<string[]>([]);
 
-  useEffect(() => {
-    const carregarDados = async () => {
-      setIsLoading(true);
-      try {
-        // Carregar horários
-        const horariosDB = await horariosService.listarHorarios();
-        setHorarios(horariosDB);
-        
-        // Carregar professores
-        const professoresDB = await professoresService.listarProfessores(true); // apenas ativos
-        setProfessors(professoresDB);
-        
-        // Carregar turmas do sistema
-        const turmasDB = await turmasService.listarTurmasSistema(true);
-        const nomesTurmas = turmasDB.map(t => t.nome || t.codigo);
-        setTurmasDisponiveis(nomesTurmas);
-        
-        // Carregar matérias
-        const materiasDB = await materiasService.listarMaterias(true);
-        const nomesMaterias = materiasDB.map(m => m.nome);
-        setMateriasDisponiveis(nomesMaterias);
-        
-        console.log('📅 [HORARIOS] Dados carregados:', {
-          horarios: horariosDB.length,
-          professores: professoresDB.length,
-          turmas: nomesTurmas.length,
-          materias: nomesMaterias.length,
-          turmasLista: nomesTurmas,
-          materiasLista: nomesMaterias
-        });
-      } catch (error) {
-        console.error('Erro ao carregar dados:', error);
-        alert('Erro ao carregar dados. Tente novamente.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    carregarDados();
-    
-    // Atualizar relógio a cada segundo
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    
-    return () => clearInterval(timer);
-  }, []);
-
-  // Função removida - agora carrega professores no useEffect principal
-
-  // Comentário: Removido useEffect do localStorage - agora usa apenas dados do Supabase
-
-  // Função removida - dados agora carregados via Supabase no useEffect
-
-  // Funções auxiliares para a aba HOJE
-  const getDiaAtualFormatado = () => {
-    return formatDiaName(getDiaAtual());
-  };
-
-  const getDataFormatada = () => {
-    return currentTime.toLocaleDateString('pt-BR', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  const getHoraFormatada = () => {
-    return currentTime.toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-  };
-
-  const getAulasDoDia = () => {
-    const diaAtual = getDiaAtual();
-    return horarios
-      .filter(h => h.dia_semana === diaAtual)
-      .sort((a, b) => a.hora_inicio.localeCompare(b.hora_inicio));
-  };
-
-  const isAulaAtualHoje = (horario: HorarioAula) => {
-    return isAulaAtual(horario.hora_inicio, horario.hora_fim);
-  };
-
-  const getPresencaProfessor = (horarioId: string) => {
-    return presencas.find(p => p.horarioId === horarioId);
-  };
-
-  const togglePresencaProfessor = (horarioId: string) => {
-    const presencaExistente = getPresencaProfessor(horarioId);
-    const novaPresenca: PresencaProfessor = {
-      horarioId,
-      professorPresente: !presencaExistente?.professorPresente,
-      horaChegada: !presencaExistente?.professorPresente ? getHoraFormatada() : undefined,
-      timestamp: new Date().toISOString()
-    };
-
-    const presencasAtualizadas = presencaExistente
-      ? presencas.map(p => p.horarioId === horarioId ? novaPresenca : p)
-      : [...presencas, novaPresenca];
-
-    setPresencas(presencasAtualizadas);
-    localStorage.setItem('presencas_professores', JSON.stringify(presencasAtualizadas));
-  };
-
-  const editarHoraChegada = (horarioId: string) => {
-    const novaHora = prompt('Digite a hora de chegada (HH:MM):');
-    if (novaHora && /^\d{2}:\d{2}$/.test(novaHora)) {
-      const presencaExistente = getPresencaProfessor(horarioId);
-      if (presencaExistente) {
-        const presencaAtualizada = {
-          ...presencaExistente,
-          horaChegada: novaHora
-        };
-        
-        const presencasAtualizadas = presencas.map(p => 
-          p.horarioId === horarioId ? presencaAtualizada : p
-        );
-        
-        setPresencas(presencasAtualizadas);
-        localStorage.setItem('presencas_professores', JSON.stringify(presencasAtualizadas));
-      }
+  const carregarDados = async () => {
+    setIsLoading(true);
+    try {
+      // Carregar horários
+      const horariosDB = await horariosService.listarHorarios();
+      setHorarios(horariosDB);
+      
+      // Carregar professores
+      const professoresDB = await professoresService.listarProfessores(true); // apenas ativos
+      setProfessors(professoresDB);
+      
+      // Carregar turmas do sistema
+      const turmasDB = await turmasService.listarTurmasSistema(true);
+      const nomesTurmas = turmasDB.map(t => t.nome || t.codigo);
+      setTurmasDisponiveis(nomesTurmas);
+      
+      // Carregar matérias
+      const materiasDB = await materiasService.listarMaterias(true);
+      const nomesMaterias = materiasDB.map(m => m.nome);
+      setMateriasDisponiveis(nomesMaterias);
+      
+      console.log('📅 [HORARIOS TAB] Dados carregados:', {
+        horarios: horariosDB.length,
+        professores: professoresDB.length,
+        turmas: nomesTurmas.length,
+        materias: nomesMaterias.length,
+      });
+      
+      // Log detalhado dos horários com professor
+      console.log('📅 [HORARIOS TAB] Horários com detalhes:', 
+        horariosDB.map(h => ({
+          id: h.id,
+          materia: h.materia,
+          professor_id: h.professor_id,
+          professor_nome: h.professor_nome,
+          dia: h.dia_semana,
+          hora: h.hora_inicio
+        }))
+      );
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
+      alert('Erro ao carregar dados. Tente novamente.');
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    carregarDados();
+  }, [refetchTrigger]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -227,7 +140,8 @@ export default function HorariosPage() {
       const formData = new FormData(e.currentTarget);
       
       const professorId = formData.get('professorId') as string;
-      const professor = professors.find(p => p.id === professorId);
+      const professorIdValid = professorId && professorId.trim() !== '' ? professorId : undefined;
+      const professor = professorIdValid ? professors.find(p => p.id === professorIdValid) : undefined;
       const horaInicio = formData.get('horaInicio') as string;
       const horaFim = formData.get('horaFim') as string;
       
@@ -239,8 +153,8 @@ export default function HorariosPage() {
         dia_semana: diaCorreto,
         hora_inicio: horaInicio,
         hora_fim: horaFim,
-        professor_id: professorId || undefined,
-        professor_nome: professor?.nome || undefined,
+        professor_id: professorIdValid,
+        professor_nome: professor?.nome,
         materia: formData.get('materia') as string,
         turma: formData.get('turma') as string,
         sala: formData.get('sala') as string || 'Sala 1',
@@ -248,22 +162,17 @@ export default function HorariosPage() {
         tempo: calcularTempo(horaInicio)
       };
 
-      console.log('📅 [HORARIOS] Salvando aula:', horarioData);
+      console.log('📅 [HORARIOS TAB] Salvando aula:', horarioData);
+      console.log('📅 [HORARIOS TAB] Professor selecionado:', { professorId, professorIdValid, professor });
 
       if (selectedHorario?.id) {
-        // Atualizar horário existente
-        await horariosService.atualizarHorario(selectedHorario.id, horarioData);
+        const resultado = await horariosService.atualizarHorario(selectedHorario.id, horarioData);
+        console.log('📅 [HORARIOS TAB] Resultado da atualização:', resultado);
       } else {
-        // Criar novo horário
         await horariosService.criarHorario(horarioData);
       }
       
-      // Recarregar lista atualizada
-      const horariosAtualizados = await horariosService.listarHorarios();
-      setHorarios(horariosAtualizados);
-      
-      console.log('📅 [HORARIOS] Aula salva com sucesso!', horarioData.materia, '-', horarioData.turma);
-      
+      await carregarDados(); // Aguardar o carregamento
       setShowModal(false);
       setSelectedHorario(null);
       alert('Horário salvo com sucesso!');
@@ -279,8 +188,7 @@ export default function HorariosPage() {
     if (confirm('Tem certeza que deseja excluir este horário?')) {
       try {
         await horariosService.excluirHorario(id);
-        const horariosAtualizados = await horariosService.listarHorarios();
-        setHorarios(horariosAtualizados);
+        carregarDados();
         alert('Horário excluído com sucesso!');
       } catch (error) {
         console.error('Erro ao excluir horário:', error);
@@ -289,7 +197,6 @@ export default function HorariosPage() {
     }
   };
 
-  // Funções para nova visualização por turma
   const handleAddAulaForTempo = (tempo: number, tempoInfo: any) => {
     setSelectedHorario({
       id: '',
@@ -316,14 +223,10 @@ export default function HorariosPage() {
     deleteHorario(id);
   };
 
-  // Get horarios for specific day and time slot
   const getHorarioForSlot = (dia: string, horaInicio: string) => {
-    const aulaEncontrada = horarios.find(h => h.dia_semana === dia && h.hora_inicio === horaInicio);
-    console.log(`📅 [HORARIOS] Buscando aula para ${dia} às ${horaInicio}:`, aulaEncontrada ? 'ENCONTRADA' : 'NÃO ENCONTRADA');
-    return aulaEncontrada;
+    return horarios.find(h => h.dia_semana === dia && h.hora_inicio === horaInicio);
   };
 
-  // Get filtered horarios for table view
   const filteredHorarios = horarios.filter(h => {
     if (filterDia && formatDiaName(h.dia_semana) !== filterDia) return false;
     if (filterTurma && h.turma !== filterTurma) return false;
@@ -335,13 +238,20 @@ export default function HorariosPage() {
     return a.hora_inicio.localeCompare(b.hora_inicio);
   });
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+      </div>
+    );
+  }
+
   return (
-    <AuthGuard>
-      <div className="p-6">
+    <div>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">Horários</h1>
-        <p className="text-gray-600 mt-1">Grade de horários semanal</p>
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-gray-800">Grade de Horários</h2>
+        <p className="text-gray-600 mt-1">Gerencie a grade de horários semanal</p>
       </div>
 
       {/* Stats Cards */}
@@ -417,17 +327,6 @@ export default function HorariosPage() {
                 <List className="w-4 h-4" />
                 Lista
               </button>
-              <button
-                onClick={() => setViewMode('today')}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-                  viewMode === 'today' 
-                    ? 'bg-green-600 text-white' 
-                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                }`}
-              >
-                <Monitor className="w-4 h-4" />
-                HOJE
-              </button>
             </div>
 
             {(viewMode === 'table' || viewMode === 'grid') && (
@@ -457,39 +356,22 @@ export default function HorariosPage() {
             )}
           </div>
           
-          <div className="flex gap-2">
-            <button
-              onClick={() => {
-                console.log('📅 [DEBUG] Horários salvos no localStorage:', localStorage.getItem('horarios_aulas'));
-                console.log('📅 [DEBUG] Estado horários atual:', horarios);
-                console.log('📅 [DEBUG] Total de horários:', horarios.length);
-                if (horarios.length > 0) {
-                  console.log('📅 [DEBUG] Primeiro horário:', horarios[0]);
-                  console.log('📅 [DEBUG] Dias únicos nos horários:', [...new Set(horarios.map(h => h.dia_semana))]);
-                }
-              }}
-              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
-            >
-              Debug Horários
-            </button>
-            
-            <button
-              onClick={() => {
-                setSelectedHorario(null);
-                setShowModal(true);
-              }}
-              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
-            >
-              <Plus className="w-5 h-5" />
-              Adicionar Aula
-            </button>
-          </div>
+          <button
+            onClick={() => {
+              setSelectedHorario(null);
+              setShowModal(true);
+            }}
+            className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+            Adicionar Aula
+          </button>
         </div>
       </div>
 
       {/* Content */}
       {viewMode === 'turma' ? (
-        /* Nova visualização por Turma/Turno/Dia */
+        /* Nova visualização por Turma */
         <div className="space-y-6">
           {/* Filtros */}
           <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -590,7 +472,9 @@ export default function HorariosPage() {
                           <div className="flex items-center gap-4">
                             <div className="text-right">
                               <div className="text-lg font-semibold text-gray-800">{aula.materia}</div>
-                              <div className="text-sm text-gray-600 flex items-center gap-1">
+                              <div className={`text-sm flex items-center gap-1 ${
+                                aula.professor_nome ? 'text-green-600' : 'text-orange-600'
+                              }`}>
                                 <User className="w-4 h-4" />
                                 {aula.professor_nome || 'Professor não atribuído'}
                               </div>
@@ -766,7 +650,7 @@ export default function HorariosPage() {
             </table>
           </div>
         </div>
-      ) : viewMode === 'table' ? (
+      ) : (
         /* Table View */
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
@@ -831,153 +715,6 @@ export default function HorariosPage() {
                 <p className="text-gray-500">Nenhum horário encontrado</p>
               </div>
             )}
-          </div>
-        </div>
-      ) : (
-        /* Today View - Telão friendly */
-        <div className="space-y-6">
-          {/* Header com relógio */}
-          <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg shadow-lg p-8 text-white text-center">
-            <div className="text-6xl font-bold font-mono tracking-wider mb-2">
-              {getHoraFormatada()}
-            </div>
-            <div className="text-xl font-medium opacity-90">
-              {getDataFormatada()}
-            </div>
-          </div>
-
-          {/* Lista de aulas do dia */}
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-            <div className="bg-gray-50 px-6 py-4 border-b">
-              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <Calendar className="w-6 h-6" />
-                Aulas de {getDiaAtualFormatado()}
-              </h2>
-            </div>
-
-            <div className="divide-y divide-gray-200">
-              {getAulasDoDia().length === 0 ? (
-                <div className="text-center py-16">
-                  <Calendar className="mx-auto h-16 w-16 text-gray-400 mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Nenhuma aula hoje</h3>
-                  <p className="text-gray-500">Não há aulas programadas para {getDiaAtualFormatado().toLowerCase()}.</p>
-                </div>
-              ) : (
-                getAulasDoDia().map(horario => {
-                  const professor = professors.find(p => p.id === horario.professor_id);
-                  const presenca = getPresencaProfessor(horario.id);
-                  const isAtual = isAulaAtualHoje(horario);
-                  
-                  return (
-                    <div 
-                      key={horario.id} 
-                      className={`p-6 transition-all duration-300 ${
-                        isAtual 
-                          ? 'bg-green-50 border-l-4 border-green-500 shadow-md' 
-                          : 'hover:bg-gray-50'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          {/* Horário e Status */}
-                          <div className="flex items-center gap-4 mb-3">
-                            <div className={`text-2xl font-bold ${
-                              isAtual ? 'text-green-700' : 'text-gray-700'
-                            }`}>
-                              {horario.hora_inicio} - {horario.hora_fim}
-                            </div>
-                            {isAtual && (
-                              <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
-                                AGORA
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Informações da aula */}
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <div>
-                              <span className="text-sm font-medium text-gray-500">Matéria</span>
-                              <div className="text-lg font-semibold text-gray-800">{horario.materia}</div>
-                            </div>
-                            <div>
-                              <span className="text-sm font-medium text-gray-500">Turma</span>
-                              <div className="text-lg font-semibold text-gray-800">{horario.turma}</div>
-                            </div>
-                            <div>
-                              <span className="text-sm font-medium text-gray-500">Sala</span>
-                              <div className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                                <MapPin className="w-4 h-4" />
-                                {horario.sala}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Professor e presença */}
-                          {professor && (
-                            <div className="flex items-center justify-between bg-gray-50 rounded-lg p-4">
-                              <div className="flex items-center gap-3">
-                                <User className="w-6 h-6 text-blue-600" />
-                                <div>
-                                  <div className="font-semibold text-gray-800">{professor.nome}</div>
-                                  <div className="text-sm text-gray-600">
-                                    {professor.materias?.join(', ') || 'Professor'}
-                                  </div>
-                                </div>
-                              </div>
-                              
-                              {/* Controle de presença */}
-                              <div className="flex items-center gap-3">
-                                {presenca?.professorPresente ? (
-                                  <div className="flex items-center gap-2">
-                                    <CheckCircle className="w-6 h-6 text-green-600" />
-                                    <div className="text-right">
-                                      <div className="text-sm font-medium text-green-700">Presente</div>
-                                      {presenca.horaChegada && (
-                                        <button
-                                          onClick={() => editarHoraChegada(horario.id)}
-                                          className="text-xs text-green-600 hover:text-green-800 underline"
-                                        >
-                                          Chegou às {presenca.horaChegada}
-                                        </button>
-                                      )}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div className="flex items-center gap-2">
-                                    <AlertCircle className="w-6 h-6 text-red-600" />
-                                    <div className="text-sm font-medium text-red-700">Ausente</div>
-                                  </div>
-                                )}
-                                
-                                <button
-                                  onClick={() => togglePresencaProfessor(horario.id)}
-                                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                    presenca?.professorPresente
-                                      ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                                      : 'bg-green-100 text-green-700 hover:bg-green-200'
-                                  }`}
-                                >
-                                  {presenca?.professorPresente ? 'Marcar Ausente' : 'Marcar Presente'}
-                                </button>
-                              </div>
-                            </div>
-                          )}
-
-                          {!professor && (
-                            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                              <div className="flex items-center gap-2 text-yellow-800">
-                                <AlertCircle className="w-5 h-5" />
-                                <span className="font-medium">Professor não atribuído</span>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
           </div>
         </div>
       )}
@@ -1093,29 +830,13 @@ export default function HorariosPage() {
                 />
               </div>
 
-              {/* Mostrar informações pré-preenchidas quando vem da visualização por turma */}
-              {selectedHorario && selectedHorario.tempo && (
-                <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-800 font-medium mb-2">📋 Informações pré-definidas:</p>
-                  <div className="text-sm text-blue-700 space-y-1">
-                    <div>• <strong>Tempo:</strong> {selectedHorario.tempo}° tempo</div>
-                    <div>• <strong>Turno:</strong> {selectedHorario.turno}</div>
-                    <div>• <strong>Dia:</strong> {selectedHorario.dia_semana}</div>
-                    <div>• <strong>Horário:</strong> {selectedHorario.hora_inicio} - {selectedHorario.hora_fim}</div>
-                    {selectedHorario.turma && <div>• <strong>Turma:</strong> {selectedHorario.turma}</div>}
-                  </div>
-                  <p className="text-xs text-blue-600 mt-2">
-                    ℹ️ Estes campos foram preenchidos automaticamente baseados na sua seleção
-                  </p>
-                </div>
-              )}
-
               <div className="flex gap-3 mt-6">
                 <button
                   type="submit"
-                  className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors"
+                  disabled={isSaving}
+                  className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
                 >
-                  Salvar
+                  {isSaving ? 'Salvando...' : 'Salvar'}
                 </button>
                 <button
                   type="button"
@@ -1132,7 +853,6 @@ export default function HorariosPage() {
           </div>
         </div>
       )}
-      </div>
-    </AuthGuard>
+    </div>
   );
 }

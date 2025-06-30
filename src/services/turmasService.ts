@@ -341,6 +341,34 @@ class TurmasService {
       return null
     }
   }
+
+  // NOVO: Listar turmas do sistema de horários
+  async listarTurmasSistema(apenasAtivas = true): Promise<Array<{id: string, codigo: string, nome: string, turno: string}>> {
+    try {
+      let query = this.supabase
+        .from('turmas_sistema')
+        .select('*')
+        .order('codigo', { ascending: true })
+      
+      if (apenasAtivas) {
+        query = query.eq('ativo', true)
+      }
+
+      const { data, error } = await query
+
+      if (error) throw error
+
+      return (data || []).map(turma => ({
+        id: turma.id,
+        codigo: turma.codigo,
+        nome: turma.nome,
+        turno: turma.turno
+      }))
+    } catch (error) {
+      console.error('Erro ao listar turmas do sistema:', error)
+      return []
+    }
+  }
 }
 
 export const turmasService = new TurmasService()

@@ -47,38 +47,122 @@ export async function GET(request: NextRequest) {
     const turmaId = searchParams.get('turma_id');
     const isAdmin = searchParams.get('admin') === 'true';
 
-    let query = supabase
-      .from('vw_descritores_completos')
-      .select('*')
-      .order('data', { ascending: false })
-      .order('tempo', { ascending: true });
+    console.log('🔍 [DESCRITORES API] Parâmetros recebidos:', {
+      professorCpf,
+      data,
+      turmaId,
+      isAdmin
+    });
 
-    // Filtros baseados nos parâmetros
+    // Validações básicas
+    if (!isAdmin && !professorCpf) {
+      return NextResponse.json({ 
+        error: 'professor_cpf é obrigatório para consultas não-admin' 
+      }, { status: 400 });
+    }
+
+    // Se nenhum filtro específico foi fornecido, usar últimos 7 dias
+    let dataInicio = data;
+    let dataFim = data;
+    
+    if (!data) {
+      const agora = new Date();
+      const seteDiasAtras = new Date(agora.getTime() - 7 * 24 * 60 * 60 * 1000);
+      dataInicio = seteDiasAtras.toISOString().split('T')[0];
+      dataFim = agora.toISOString().split('T')[0];
+      
+      console.log('📅 [DESCRITORES API] Usando fallback últimos 7 dias:', { dataInicio, dataFim });
+    }
+
+    // Query principal usando tabelas diretas em vez de view
+    let query = supabase
+      .from('descritores')
+      .select(`
+        id,
+        data,
+        descricao_livre,
+        topico_id,
+        minutos_aula,
+        editavel,
+        enviado,
+        created_at,
+        updated_at,
+        horario_id,
+        professor_id,
+        topico:topicos(id, nome),
+        professores(id, nome, cpf),
+        horarios_aulas(
+          id,
+          tempo,
+          hora_inicio,
+          hora_fim,
+          dia_semana,
+          turma_id,
+          materia_id,
+          materias(id, nome, cor_hex),
+          turmas_sistema(id, codigo, nome)
+        )
+      `)
+      .order('data', { ascending: false })
+      .order('created_at', { ascending: false });
+
+    // Aplicar filtros
     if (data) {
       query = query.eq('data', data);
+    } else {
+      query = query.gte('data', dataInicio).lte('data', dataFim);
     }
 
     if (turmaId) {
-      query = query.eq('turma_id', turmaId);
+      // Filtrar por turma através do relacionamento
+      query = query.eq('horarios_aulas.turma_id', turmaId);
     }
 
-    // Se não for admin, filtrar apenas pelo professor
+    // Se não for admin, filtrar por professor
     if (!isAdmin && professorCpf) {
-      query = query.eq('professor_cpf', professorCpf);
+      // Buscar primeiro o ID do professor pelo CPF
+      const { data: professor, error: profError } = await supabase
+        .from('professores')
+        .select('id')
+        .eq('cpf', professorCpf.replace(/\D/g, ''))
+        .single();
+
+      if (profError || !professor) {
+        console.error('❌ [DESCRITORES API] Professor não encontrado:', profError);
+        return NextResponse.json({ error: 'Professor não encontrado' }, { status: 404 });
+      }
+
+      query = query.eq('professor_id', professor.id);
     }
 
     const { data: descritores, error } = await query;
 
     if (error) {
-      console.error('Erro ao buscar descritores:', error);
-      return NextResponse.json({ error: 'Erro ao buscar descritores' }, { status: 500 });
+      console.error('❌ [DESCRITORES API] Erro na query:', error);
+      return NextResponse.json({ 
+        error: 'Erro ao buscar descritores',
+        details: error.message 
+      }, { status: 500 });
     }
 
-    return NextResponse.json({ descritores });
+    console.log('✅ [DESCRITORES API] Descritores encontrados:', descritores?.length || 0);
+
+    return NextResponse.json({ 
+      descritores: descritores || [],
+      filtros_aplicados: {
+        data: data || `${dataInicio} até ${dataFim}`,
+        turma_id: turmaId,
+        is_admin: isAdmin,
+        professor_cpf: professorCpf
+      }
+    });
 
   } catch (error) {
-    console.error('Erro interno:', error);
-    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 });
+    console.error('💥 [DESCRITORES API] Erro interno:', error);
+    return NextResponse.json({ 
+      error: 'Erro interno do servidor',
+      message: error instanceof Error ? error.message : 'Erro desconhecido'
+    }, { status: 500 });
   }
 }
 
@@ -134,21 +218,24 @@ export async function POST(request: NextRequest) {
 
     // Verificar se pode preencher o descritor (apenas se não for admin)
     if (!is_admin) {
-      const { data: podePreencherResult, error: validacaoError } = await supabase
-        .rpc('fn_pode_preencher_descritor', {
-          p_horario_id: horario_id,
-          p_data: data,
-          p_professor_id: professor.id
-        });
+      // Buscar informações do horário para validar
+      const { data: horarioInfo, error: horarioError } = await supabase
+        .from('horarios_aulas')
+        .select('hora_fim')
+        .eq('id', horario_id)
+        .single();
 
-      if (validacaoError) {
-        console.error('Erro na validação:', validacaoError);
-        return NextResponse.json({ error: 'Erro na validação' }, { status: 500 });
+      if (horarioError || !horarioInfo) {
+        return NextResponse.json({ error: 'Horário não encontrado' }, { status: 404 });
       }
 
-      if (!podePreencherResult) {
+      // Verificar se já passou do horário de fim da aula
+      const agora = new Date();
+      const horarioFim = new Date(`${data}T${horarioInfo.hora_fim}`);
+      
+      if (agora < horarioFim) {
         return NextResponse.json({ 
-          error: 'Descritor só pode ser preenchido após o horário da aula' 
+          error: 'A aula ainda não terminou' 
         }, { status: 403 });
       }
     }

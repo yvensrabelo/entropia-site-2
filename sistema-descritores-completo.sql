@@ -28,11 +28,11 @@ CREATE TYPE dia_semana_enum AS ENUM ('segunda', 'terca', 'quarta', 'quinta', 'se
 ALTER TABLE professores 
 ADD COLUMN IF NOT EXISTS materia VARCHAR(100),
 ADD COLUMN IF NOT EXISTS ativo BOOLEAN DEFAULT true,
-ADD COLUMN IF NOT EXISTS valor_por_minuto DECIMAL(10,2) DEFAULT 1.85;
+ADD COLUMN IF NOT EXISTS valor_por_minuto DECIMAL(10,2) DEFAULT 1.00;
 
 -- Comentários para documentação
 COMMENT ON COLUMN professores.materia IS 'Matéria principal que o professor leciona';
-COMMENT ON COLUMN professores.valor_por_minuto IS 'Valor pago por minuto de aula (padrão R$ 1,85)';
+COMMENT ON COLUMN professores.valor_por_minuto IS 'Valor pago por minuto de aula (padrão R$ 1,00)';
 
 -- ====================================================================
 -- 3. NOVA TABELA DE TÓPICOS POR MATÉRIA
@@ -228,7 +228,7 @@ CREATE TABLE IF NOT EXISTS professor_pagamentos (
     mes_referencia DATE NOT NULL, -- Primeiro dia do mês de referência
     total_minutos INTEGER DEFAULT 0,
     total_aulas INTEGER DEFAULT 0,
-    valor_por_minuto DECIMAL(10,2) DEFAULT 1.85,
+    valor_por_minuto DECIMAL(10,2) DEFAULT 1.00,
     valor_total DECIMAL(10,2) GENERATED ALWAYS AS (total_minutos * valor_por_minuto) STORED,
     status_pagamento VARCHAR(50) DEFAULT 'pendente',
     data_pagamento DATE,
@@ -414,7 +414,7 @@ BEGIN
         COALESCE(SUM(d.minutos_aula), 0)::INTEGER as total_minutos,
         COUNT(d.id)::INTEGER as total_aulas,
         (COALESCE(SUM(d.minutos_aula), 0) * 
-         COALESCE(p.valor_por_minuto, 1.85))::DECIMAL as valor_total
+         COALESCE(p.valor_por_minuto, 1.00))::DECIMAL as valor_total
     FROM descritores d
     JOIN professores p ON d.professor_id = p.id
     WHERE d.professor_id = p_professor_id

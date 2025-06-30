@@ -9,6 +9,7 @@ interface Professor {
   materias?: string[]
   email?: string
   reconhecimento: string
+  valor_por_minuto?: number
   status: 'ativo' | 'inativo'
   created_at?: string
   updated_at?: string
@@ -57,6 +58,7 @@ class ProfessoresService {
         email: professor.email || professor.cpf,
         telefone: professor.whatsapp || professor.numero,
         disciplinas: professor.materias || [],
+        valor_por_minuto: professor.valor_por_minuto || 1.00,
         ativo: professor.status === 'ativo'
       }
 
@@ -77,6 +79,7 @@ class ProfessoresService {
         materias: data.disciplinas || [],
         email: data.email,
         reconhecimento: '',
+        valor_por_minuto: data.valor_por_minuto || 1.00,
         status: data.ativo ? 'ativo' as const : 'inativo' as const
       }
     } catch (error) {
@@ -93,6 +96,7 @@ class ProfessoresService {
       if (professor.email !== undefined) dadosBanco.email = professor.email
       if (professor.whatsapp !== undefined) dadosBanco.telefone = professor.whatsapp
       if (professor.materias !== undefined) dadosBanco.disciplinas = professor.materias
+      if (professor.valor_por_minuto !== undefined) dadosBanco.valor_por_minuto = professor.valor_por_minuto || 1.00
       if (professor.status !== undefined) dadosBanco.ativo = professor.status === 'ativo'
 
       const { error } = await this.supabase

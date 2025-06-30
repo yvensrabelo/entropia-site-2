@@ -15,7 +15,8 @@ import {
   Bookmark,
   GraduationCap,
   Link,
-  Upload
+  Upload,
+  BookOpen
 } from 'lucide-react';
 
 interface MenuItem {
@@ -27,10 +28,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: Home },
   { name: 'Provas', href: '/admin/dashboard/provas', icon: FileText },
-  { name: 'Professores', href: '/admin/dashboard/professores', icon: Users },
-  { name: 'Horários', href: '/admin/dashboard/horarios', icon: Clock },
-  { name: 'Importar Horários', href: '/admin/dashboard/importar-horarios', icon: Upload },
-  { name: 'Descritores', href: '/admin/dashboard/descritores', icon: Bookmark },
+  { name: 'Aulas', href: '/admin/dashboard/aulas', icon: BookOpen },
   { name: 'Turmas', href: '/admin/dashboard/turmas-simples', icon: GraduationCap },
   { name: 'Turmas Ativas', href: '/admin/dashboard/turmas-ativas', icon: Calendar },
   { name: 'Mapeamento Turmas', href: '/admin/dashboard/mapeamento-turmas', icon: Link },

@@ -1,12 +1,8 @@
 'use client';
 
-// TODO: Esta página foi substituída pela página unificada /admin/dashboard/aulas
-// Esta página permanece para compatibilidade mas deve ser considerada obsoleta
-
 import React, { useState, useEffect } from 'react';
 import { User, Edit, Trash, Plus, Search, Phone, BookOpen } from 'lucide-react';
-import { formatWhatsAppMask, validateWhatsApp, cleanPhoneNumber, formatPhoneForDisplay } from '@/lib/utils/phone';
-import AuthGuard from '@/components/admin/AuthGuard';
+import { formatWhatsAppMask, validateWhatsApp, cleanPhoneNumber } from '@/lib/utils/phone';
 import { professoresService } from '@/services/professoresService';
 
 interface Professor {
@@ -17,7 +13,7 @@ interface Professor {
   whatsapp?: string;
   materias?: string[];
   email?: string;
-  reconhecimento: string; // NOVO CAMPO
+  reconhecimento: string;
   valor_por_minuto?: number;
   status: 'ativo' | 'inativo';
 }
@@ -39,10 +35,13 @@ const MATERIAS_DISPONIVEIS = [
   'Sociologia'
 ];
 
-export default function ProfessoresPage() {
+interface ProfessoresTabProps {
+  refetchTrigger: number;
+}
+
+export default function ProfessoresTab({ refetchTrigger }: ProfessoresTabProps) {
   const [professores, setProfessores] = useState<Professor[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -58,76 +57,27 @@ export default function ProfessoresPage() {
   });
   const [whatsappError, setWhatsappError] = useState('');
 
-  useEffect(() => {
-    const carregarProfessores = async () => {
-      setIsLoading(true);
-      try {
-        const professoresDB = await professoresService.listarProfessores();
-        setProfessores(professoresDB);
-      } catch (error) {
-        console.error('Erro ao carregar professores:', error);
-        alert('Erro ao carregar professores. Tente novamente.');
-      } finally {
-        setIsLoading(false);
-        setLoading(false);
-      }
-    };
-    carregarProfessores();
-  }, []);
-
-  // Função para adicionar professores iniciais
-  const adicionarProfessoresIniciais = async () => {
-    const professoresIniciais = [
-      { nome: 'RAUL', materias: ['Linguagens'], numero: '001', reconhecimento: 'RAUL [LIN]' },
-      { nome: 'FÁBIO', materias: ['Física'], numero: '002', reconhecimento: 'FÁBIO [FIS]' },
-      { nome: 'LUCAS', materias: ['História'], numero: '003', reconhecimento: 'LUCAS [HIS]' },
-      { nome: 'ESTEVÃO', materias: ['História'], numero: '004', reconhecimento: 'ESTEVÃO [HIS]' },
-      { nome: 'YVENS', materias: ['Física', 'Matemática'], numero: '005', reconhecimento: 'YVENS [FIS], YVENS [MAT]' },
-      { nome: 'CELSO', materias: ['Química'], numero: '006', reconhecimento: 'CELSO [QUI]' },
-      { nome: 'JOICI', materias: ['Química'], numero: '007', reconhecimento: 'JOICI[QUI]' },
-      { nome: 'HUDSON', materias: ['Química'], numero: '008', reconhecimento: 'HUDSON [QUI]' },
-      { nome: 'RAMON', materias: ['Biologia'], numero: '009', reconhecimento: 'RAMON [BIO]' },
-      { nome: 'JONAS', materias: ['Literatura'], numero: '010', reconhecimento: 'JONAS [LIT]' },
-      { nome: 'BALIEIRO', materias: ['Gramática'], numero: '011', reconhecimento: 'BALIEIRO [GRA]' },
-      { nome: 'BUTEL', materias: ['Geografia'], numero: '012', reconhecimento: 'BUTEL [GEO]' },
-      { nome: 'WALTER LUCAS', materias: ['Matemática'], numero: '013', reconhecimento: 'WALTER [MAT]' },
-      { nome: 'DANILO', materias: ['Matemática'], numero: '014', reconhecimento: 'DANILO [MAT]' },
-      { nome: 'VALESCA', materias: ['Redação'], numero: '015', reconhecimento: 'VALESCA [RED]' },
-      { nome: 'FRAN', materias: ['Redação'], numero: '016', reconhecimento: 'FRAN [RED]' }
-    ];
-
-    const professoresExistentes = await professoresService.listarProfessores();
-    
-    for (const prof of professoresIniciais) {
-      // Verificar se professor já existe
-      const existe = professoresExistentes.find((p: any) => p.nome === prof.nome);
-      if (!existe) {
-        const novoProfessor = {
-          numero: prof.numero,
-          nome: prof.nome,
-          cpf: '000.000.000-00', // Placeholder
-          whatsapp: '(00) 00000-0000', // Placeholder
-          materias: prof.materias,
-          reconhecimento: prof.reconhecimento,
-          email: '',
-          status: 'ativo' as const
-        };
-        await professoresService.criarProfessor(novoProfessor);
-      }
+  // Carregar professores
+  const carregarProfessores = async () => {
+    setLoading(true);
+    try {
+      const professoresDB = await professoresService.listarProfessores();
+      setProfessores(professoresDB);
+    } catch (error) {
+      console.error('Erro ao carregar professores:', error);
+      alert('Erro ao carregar professores. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
-
-    // Recarregar lista
-    const professoresAtualizados = await professoresService.listarProfessores();
-    setProfessores(professoresAtualizados);
-    alert('Professores iniciais adicionados com sucesso!');
   };
 
-  // Função removida - agora usa o carregarProfessores no useEffect
+  useEffect(() => {
+    carregarProfessores();
+  }, [refetchTrigger]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validar WhatsApp se preenchido
     if (formData.whatsapp) {
       const validation = validateWhatsApp(formData.whatsapp);
       if (!validation.isValid) {
@@ -135,8 +85,7 @@ export default function ProfessoresPage() {
         return;
       }
       
-      // Validar formato brasileiro específico
-      const whatsappRegex = /^\(\d{2}\) 9\d{4}-\d{4}$/;
+      const whatsappRegex = /^\\(\\d{2}\\) 9\\d{4}-\\d{4}$/;
       if (!whatsappRegex.test(formData.whatsapp)) {
         setWhatsappError('WhatsApp deve estar no formato (XX) 9XXXX-XXXX');
         return;
@@ -157,27 +106,20 @@ export default function ProfessoresPage() {
       };
 
       if (editingProfessor) {
-        // Atualizar professor existente
         await professoresService.atualizarProfessor(editingProfessor.id!, professorData);
       } else {
-        // Verificar se número já existe
         const professoresExistentes = await professoresService.listarProfessores();
         if (professoresExistentes.some(p => p.numero === formData.numero)) {
           alert('Já existe um professor com este número!');
           return;
         }
-        // Criar novo professor
         await professoresService.criarProfessor(professorData);
       }
       
-      // Recarregar lista atualizada
-      const professoresAtualizados = await professoresService.listarProfessores();
-      setProfessores(professoresAtualizados);
-      
-      // Fechar modal
+      carregarProfessores();
       setShowModal(false);
       setEditingProfessor(null);
-      setFormData({ numero: '', nome: '', cpf: '', whatsapp: '', reconhecimento: '', materias: [] });
+      setFormData({ numero: '', nome: '', cpf: '', whatsapp: '', reconhecimento: '', valor_por_minuto: 1.00, materias: [] });
       setWhatsappError('');
       
       alert(editingProfessor ? 'Professor atualizado com sucesso!' : 'Professor adicionado com sucesso!');
@@ -209,11 +151,9 @@ export default function ProfessoresPage() {
     const formatted = formatWhatsAppMask(e.target.value);
     setFormData({ ...formData, whatsapp: formatted });
     
-    // Limpar erro se campo ficar vazio
     if (!formatted) {
       setWhatsappError('');
     } else {
-      // Validar apenas se tiver 11 dígitos
       const numbers = cleanPhoneNumber(formatted);
       if (numbers.length === 11) {
         const validation = validateWhatsApp(formatted);
@@ -244,8 +184,7 @@ export default function ProfessoresPage() {
 
     try {
       await professoresService.excluirProfessor(id);
-      const professoresAtualizados = await professoresService.listarProfessores();
-      setProfessores(professoresAtualizados);
+      carregarProfessores();
       alert('Professor excluído com sucesso!');
     } catch (error) {
       console.error('Erro ao excluir professor:', error);
@@ -262,48 +201,37 @@ export default function ProfessoresPage() {
   );
 
   const formatCPF = (cpf: string) => {
-    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    return cpf.replace(/(\\d{3})(\\d{3})(\\d{3})(\\d{2})/, '$1.$2.$3-$4');
   };
 
   if (loading) {
     return (
-      <div className="p-6">
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-        </div>
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
       </div>
     );
   }
 
   return (
-    <AuthGuard>
-      <div className="p-6">
+    <div>
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Professores</h1>
+          <h2 className="text-xl font-bold text-gray-900">Professores Cadastrados</h2>
           <p className="text-gray-600">Gerencie o cadastro de professores</p>
         </div>
-        <div className="flex gap-3">
-          <button
-            onClick={adicionarProfessoresIniciais}
-            className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center gap-2"
-          >
-            <User className="w-4 h-4" />
-            Adicionar Professores Iniciais
-          </button>
-          <button
-            onClick={() => {
-              setEditingProfessor(null);
-              setFormData({ numero: '', nome: '', cpf: '', whatsapp: '', reconhecimento: '', valor_por_minuto: 1.00, materias: [] });
-              setWhatsappError('');
-              setShowModal(true);
-            }}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Novo Professor
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            setEditingProfessor(null);
+            setFormData({ numero: '', nome: '', cpf: '', whatsapp: '', reconhecimento: '', valor_por_minuto: 1.00, materias: [] });
+            setWhatsappError('');
+            setShowModal(true);
+          }}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
+          Novo Professor
+        </button>
       </div>
 
       {/* Barra de busca */}
@@ -487,7 +415,7 @@ export default function ProfessoresPage() {
                       type="text"
                       required
                       value={formData.cpf}
-                      onChange={(e) => setFormData({ ...formData, cpf: e.target.value.replace(/\D/g, '') })}
+                      onChange={(e) => setFormData({ ...formData, cpf: e.target.value.replace(/\\D/g, '') })}
                       maxLength={11}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                       placeholder="Apenas números"
@@ -516,7 +444,6 @@ export default function ProfessoresPage() {
                   </div>
                 </div>
 
-                {/* Campo Reconhecimento */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Reconhecimento <span className="text-red-500">*</span>
@@ -582,10 +509,10 @@ export default function ProfessoresPage() {
                   </button>
                   <button
                     type="submit"
-                    disabled={!!whatsappError}
+                    disabled={!!whatsappError || isSaving}
                     className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {editingProfessor ? 'Atualizar' : 'Criar'}
+                    {isSaving ? 'Salvando...' : (editingProfessor ? 'Atualizar' : 'Criar')}
                   </button>
                 </div>
               </form>
@@ -593,7 +520,6 @@ export default function ProfessoresPage() {
           </div>
         </div>
       )}
-      </div>
-    </AuthGuard>
+    </div>
   );
 }
