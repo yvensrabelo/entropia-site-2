@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste API Minutos Professor</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .result { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste API Minutos Professor</h1>
+    
+    <p>Testando endpoint: <code>/api/professores/minutos?cpf=98660608291</code></p>
+    
+    <button onclick="testarAPI()">🚀 Testar API</button>
+    <button onclick="limparResultados()">🧹 Limpar</button>
+    
+    <div id="resultado"></div>
+
+    <script>
+        async function testarAPI() {
+            const cpf = '98660608291';
+            const resultadoDiv = document.getElementById('resultado');
+            
+            resultadoDiv.innerHTML = '<div class="result">⏳ Testando...</div>';
+            
+            try {
+                console.log('🔍 Fazendo requisição para:', `/api/professores/minutos?cpf=${cpf}`);
+                
+                const response = await fetch(`/api/professores/minutos?cpf=${cpf}`);
+                const data = await response.json();
+                
+                console.log('📊 Status:', response.status);
+                console.log('📊 Resultado:', data);
+                
+                if (response.ok) {
+                    const esperado = data.minutos === 100;
+                    const classe = esperado ? 'success' : 'error';
+                    
+                    resultadoDiv.innerHTML = `
+                        <div class="result ${classe}">
+                            <h3>${esperado ? '✅ SUCESSO!' : '⚠️ RESULTADO INESPERADO'}</h3>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Minutos retornados:</strong> ${data.minutos}</p>
+                            <p><strong>Esperado:</strong> 100</p>
+                            <p><strong>Horas estimadas:</strong> ${data.horas_estimada || 'N/A'}</p>
+                            <p><strong>CPF consultado:</strong> ${data.cpf_consultado || cpf}</p>
+                            <p><strong>Mês referência:</strong> ${data.mes_referencia || 'N/A'}</p>
+                            <details>
+                                <summary>📋 Resposta completa</summary>
+                                <pre>${JSON.stringify(data, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
+                } else {
+                    resultadoDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>❌ ERRO NA API</h3>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Erro:</strong> ${data.error}</p>
+                            <details>
+                                <summary>📋 Resposta completa</summary>
+                                <pre>${JSON.stringify(data, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('💥 Erro na requisição:', error);
+                resultadoDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>💥 ERRO DE REDE</h3>
+                        <p><strong>Erro:</strong> ${error.message}</p>
+                        <p>Verifique se o servidor está rodando.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function limparResultados() {
+            document.getElementById('resultado').innerHTML = '';
+        }
+        
+        // Teste automático ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Página carregada. Clique em "Testar API" para executar o teste.');
+        });
+    </script>
+</body>
+</html>
