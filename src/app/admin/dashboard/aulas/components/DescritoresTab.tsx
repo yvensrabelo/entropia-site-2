@@ -78,12 +78,26 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
       const diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
       const diaSemana = diasSemana[date.getDay()];
 
-      // Filtrar aulas
-      const aulasFiltradas = horariosDB.filter((h: any) => 
-        h.dia_semana === diaSemana &&
-        h.turno === turnoSelecionado &&
-        h.turma === turmaSelecionada
-      );
+      // Filtrar aulas e converter para o formato esperado
+      const aulasFiltradas = horariosDB
+        .filter((h: any) => 
+          h.dia_semana === diaSemana &&
+          h.turno === turnoSelecionado &&
+          h.turma === turmaSelecionada
+        )
+        .map((h: any) => ({
+          id: h.id,
+          tempo: h.tempo,
+          materia: h.materia,
+          turma: h.turma,
+          turno: h.turno,
+          professor_nome: h.professor_nome || '',
+          professor_id: h.professor_id || '',
+          hora_inicio: h.hora_inicio,
+          hora_fim: h.hora_fim,
+          dia_semana: h.dia_semana,
+          sala: h.sala || ''
+        }));
 
       setAulas(aulasFiltradas.sort((a: any, b: any) => a.tempo - b.tempo));
 
