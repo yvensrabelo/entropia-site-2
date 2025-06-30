@@ -22,6 +22,7 @@ interface Descritor {
   assunto: string;
   professor_id: string;
   observacoes?: string;
+  horario_id?: string;
 }
 
 export default function DashboardProfessor() {
@@ -157,11 +158,20 @@ export default function DashboardProfessor() {
         descricao: descricao.trim(),
         preenchido_em: new Date().toISOString(),
         assunto: descricao.trim(), // Usar descrição como assunto
-        professor_id: professor.id
+        professor_id: professor.id,
+        horario_id: aulaId // IMPORTANTE: incluir horario_id para mapeamento correto
       };
 
       // Atualizar com o novo descritor
       const descritoresAtualizados = { ...descritoresAtuaisSalvos, [aulaId]: novoDescritor };
+      
+      console.log('💾 [DASHBOARD PROFESSOR] Salvando descritor com horario_id:', {
+        aulaId,
+        horario_id: novoDescritor.horario_id,
+        professor_id: novoDescritor.professor_id,
+        assunto: novoDescritor.assunto.substring(0, 50) + '...'
+      });
+      
       await descritoresService.salvarDescritoresPorData(hoje, descritoresAtualizados);
       
       // Atualizar state local

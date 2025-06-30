@@ -96,6 +96,11 @@ class DescritoresService {
 
       // Processar cada descritor
       for (const [aulaId, descritor] of Object.entries(descritores)) {
+        console.log('🔄 [DESCRITORES SERVICE] Processando descritor:', {
+          aulaId,
+          horario_id: descritor.horario_id,
+          tem_horario_id: !!descritor.horario_id
+        })
         await this.salvarDescritorIndividual(data, aulaId, descritor)
       }
 
@@ -126,6 +131,13 @@ class DescritoresService {
         editavel: true,
         topico_id: null
       }
+      
+      console.log('📝 [DESCRITORES SERVICE] Dados do descritor a salvar:', {
+        horario_id: dadosDescritor.horario_id,
+        professor_id: dadosDescritor.professor_id,
+        data: dadosDescritor.data,
+        minutos_aula: dadosDescritor.minutos_aula
+      })
 
       // Verificar se já existe um descritor para esta aula
       const { data: existente } = await this.supabase
