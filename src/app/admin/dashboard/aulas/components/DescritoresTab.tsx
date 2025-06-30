@@ -124,17 +124,30 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
             filtros: responseData.filtros_aplicados 
           });
           
-          // Converter array para object indexado por horario_id
+          // Converter array para object indexado por horario_id OU id da aula
           const descritoresMap: Record<string, any> = {};
           if (Array.isArray(descritores)) {
             descritores.forEach((desc: any) => {
-              if (desc.horario_id) {
-                descritoresMap[desc.horario_id] = {
-                  aula_id: desc.horario_id,
-                  descricao: desc.descricao_livre || '',
-                  preenchido_em: desc.created_at || desc.updated_at
-                };
-              }
+              // Mapear tanto por horario_id quanto por id
+              const chaves = [desc.horario_id, desc.id].filter(Boolean);
+              
+              const descritorData = {
+                aula_id: desc.horario_id || desc.id,
+                descricao: desc.descricao_livre || desc.descricao || '',
+                preenchido_em: desc.created_at || desc.updated_at,
+                id: desc.id
+              };
+              
+              // Adicionar para todas as chaves possíveis
+              chaves.forEach(chave => {
+                descritoresMap[chave] = descritorData;
+              });
+              
+              console.log('🔗 [DESCRITORES TAB] Mapeando descritor:', {
+                id: desc.id,
+                horario_id: desc.horario_id,
+                chaves_mapeadas: chaves
+              });
             });
           }
           
@@ -404,7 +417,7 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Descritores Preenchidos</p>
               <p className="text-2xl font-bold text-gray-900">
-                {Object.keys(descritores).length}
+                {aulas.filter(aula => descritores[aula.id]).length}
               </p>
             </div>
           </div>
@@ -416,7 +429,7 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Pendentes</p>
               <p className="text-2xl font-bold text-gray-900">
-                {aulas.length - Object.keys(descritores).length}
+                {aulas.filter(aula => !descritores[aula.id]).length}
               </p>
             </div>
           </div>
@@ -429,6 +442,15 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
           {aulas.map((aula) => {
             const descritor = descritores[aula.id];
             const isEditing = editingDescritor === aula.id;
+            
+            // Debug log para verificar mapeamento
+            if (!descritor) {
+              console.log('🔍 [DEBUG] Aula sem descritor:', {
+                aula_id: aula.id,
+                descritores_disponiveis: Object.keys(descritores),
+                procurando_por: aula.id
+              });
+            }
 
             return (
               <div
