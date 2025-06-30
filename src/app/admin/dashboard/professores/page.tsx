@@ -177,7 +177,7 @@ export default function ProfessoresPage() {
       // Fechar modal
       setShowModal(false);
       setEditingProfessor(null);
-      setFormData({ numero: '', nome: '', cpf: '', whatsapp: '', reconhecimento: '', materias: [] });
+      setFormData({ numero: '', nome: '', cpf: '', whatsapp: '', reconhecimento: '', valor_por_minuto: 1.00, materias: [] });
       setWhatsappError('');
       
       alert(editingProfessor ? 'Professor atualizado com sucesso!' : 'Professor adicionado com sucesso!');
