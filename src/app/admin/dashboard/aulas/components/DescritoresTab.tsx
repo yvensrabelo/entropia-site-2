@@ -78,6 +78,15 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
       const date = new Date(data + 'T12:00:00');
       const diasSemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
       const diaSemana = diasSemana[date.getDay()];
+      
+      // Debug: mostrar filtros aplicados
+      console.log('🎯 [DEBUG FILTROS] Aplicando filtros:', {
+        data,
+        diaSemana,
+        turnoSelecionado,
+        turmaSelecionada,
+        totalHorarios: horariosDB.length
+      });
 
       // Filtrar aulas
       const aulasFiltradas: Aula[] = horariosDB
@@ -101,6 +110,16 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
         }));
 
       setAulas(aulasFiltradas.sort((a, b) => a.tempo - b.tempo));
+      
+      console.log('📚 [DEBUG AULAS] Aulas carregadas:', {
+        total: aulasFiltradas.length,
+        aulas: aulasFiltradas.map(a => ({
+          id: a.id,
+          tempo: a.tempo,
+          materia: a.materia,
+          professor_nome: a.professor_nome
+        }))
+      });
 
       // Carregar descritores do Supabase
       try {
@@ -122,6 +141,12 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
           console.log('📋 [DESCRITORES TAB] Resposta da API:', { 
             total: descritores?.length || 0,
             filtros: responseData.filtros_aplicados 
+          });
+          
+          // Debug: mostrar estrutura completa dos descritores
+          console.log('🔍 [DEBUG DESCRITORES] Estrutura completa:', {
+            descritores: descritores,
+            primeiro_descritor: descritores?.[0]
           });
           
           // Converter array para object indexado por horario_id OU id da aula
@@ -153,6 +178,13 @@ export default function DescritoresTab({ refetchTrigger }: DescritoresTabProps) 
           
           setDescritores(descritoresMap);
           console.log('📋 [DESCRITORES TAB] Descritores mapeados:', Object.keys(descritoresMap).length);
+          
+          // Debug final: comparar IDs de aulas com chaves de descritores
+          console.log('🔗 [DEBUG FINAL] Comparação IDs:', {
+            ids_aulas: aulasFiltradas.map(a => a.id),
+            chaves_descritores: Object.keys(descritoresMap),
+            match_encontrado: aulasFiltradas.some(a => descritoresMap[a.id] !== undefined)
+          });
         } else {
           const errorData = await response.json();
           console.error('❌ [DESCRITORES TAB] Erro da API:', errorData);
