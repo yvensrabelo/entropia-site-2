@@ -146,7 +146,7 @@ interface DadosResponsavel {
 }
 
 interface OpcaoPagamento {
-  tipo: 'economico' | 'equilibrado' | 'confortavel'
+  tipo: 'economico' | 'equilibrado' | 'confortavel' | 'unico'
   nome: string
   descricao: string
   parcelas: number
@@ -382,6 +382,8 @@ const EtapaPagamento = ({
   setPagamentoSelecionado,
   dataPrimeiroPagamento,
   setDataPrimeiroPagamento,
+  parcelasSelecionadas,
+  setParcelasSelecionadas,
   enviando,
   onVoltar,
   onFinalizar
@@ -391,6 +393,8 @@ const EtapaPagamento = ({
   setPagamentoSelecionado: (tipo: string) => void
   dataPrimeiroPagamento: string
   setDataPrimeiroPagamento: (data: string) => void
+  parcelasSelecionadas: number
+  setParcelasSelecionadas: (parcelas: number) => void
   enviando: boolean
   onVoltar: () => void
   onFinalizar: () => void
@@ -418,65 +422,103 @@ const EtapaPagamento = ({
         <CreditCard className="w-10 h-10 text-white" />
       </div>
       <h2 className="text-3xl font-bold text-white mb-2">Forma de Pagamento</h2>
-      <p className="text-white/70">Escolha a melhor opção para você</p>
+      <p className="text-white/70">R$ 3.000 com material incluso</p>
     </div>
 
-    <div className="space-y-4">
-      {opcoesPagamento.map((opcao) => {
-        const Icon = opcao.icon
-        const selecionado = pagamentoSelecionado === opcao.tipo
+    {/* Valor Total */}
+    <div className="bg-white/10 rounded-2xl p-6 border border-white/20 mb-6">
+      <div className="text-center">
+        <h3 className="text-2xl font-bold text-white mb-2">Curso Completo</h3>
+        <p className="text-white/70 mb-4">Material didático incluso</p>
         
-        return (
-          <motion.button
-            key={opcao.tipo}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setPagamentoSelecionado(opcao.tipo)}
-            className={`w-full p-6 rounded-2xl border-2 transition-all ${
-              selecionado
-                ? 'bg-white/20 border-white'
-                : 'bg-white/5 border-white/20 hover:bg-white/10'
-            }`}
-          >
-            <div className="flex items-start gap-4">
-              <div className={`w-16 h-16 bg-gradient-to-br ${opcao.cor} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                <Icon className="w-8 h-8 text-white" />
-              </div>
-              
-              <div className="flex-1 text-left">
-                <h3 className="text-xl font-bold text-white mb-1">{opcao.nome}</h3>
-                <p className="text-white/70 mb-3">{opcao.descricao}</p>
+        <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl p-4">
+          <p className="text-3xl font-bold text-white">R$ 3.000,00</p>
+          <p className="text-white/80">Parcelável em até 6x no boleto ou cartão</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Seletor de Parcelas */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-bold text-white text-center">Escolha a forma de pagamento:</h3>
+      
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        {[1, 2, 3, 4, 5, 6].map((parcelas) => {
+          const valorParcela = parcelas === 1 ? 2700 : 3000 / parcelas // 10% desconto à vista
+          const selecionado = parcelasSelecionadas === parcelas
+          
+          return (
+            <motion.button
+              key={parcelas}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                setParcelasSelecionadas(parcelas)
+                setPagamentoSelecionado('unico') // Auto-seleciona o pagamento
+              }}
+              className={`p-4 rounded-xl border-2 transition-all ${
+                selecionado
+                  ? 'bg-white/20 border-white text-white'
+                  : 'bg-white/5 border-white/20 text-white hover:bg-white/10'
+              }`}
+            >
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-2">
+                  {parcelas === 1 && <Gift className="w-5 h-5 mr-1 text-white" />}
+                  {parcelas > 1 && <CreditCard className="w-5 h-5 mr-1 text-white" />}
+                  <span className="font-bold text-white">{parcelas}x</span>
+                </div>
                 
-                <div className="flex items-end justify-between">
-                  <div>
-                    <p className="text-3xl font-bold text-white">
-                      R$ {opcao.valorParcela.toFixed(2)}
-                      {opcao.parcelas > 1 && <span className="text-lg font-normal">/mês</span>}
-                    </p>
-                    <p className="text-sm text-white/50">
-                      Total: R$ {opcao.valorTotal.toFixed(2)}
+                <p className="text-lg font-bold text-white">
+                  R$ {valorParcela.toFixed(2)}
+                </p>
+                
+                <p className="text-xs text-white font-medium">
+                  Boleto ou Cartão
+                </p>
+                
+                {parcelas === 1 && (
+                  <div className="bg-green-500/20 px-2 py-1 rounded mt-2">
+                    <p className="text-green-300 text-xs font-bold">
+                      Economia R$ 300
                     </p>
                   </div>
-                  
-                  {opcao.economia && (
-                    <div className="bg-green-500/20 px-3 py-1 rounded-full">
-                      <p className="text-green-300 text-sm font-bold">
-                        Economia de R$ {opcao.economia.toFixed(2)}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
-              
-              {selecionado && (
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Check className="w-5 h-5 text-white" />
-                </div>
-              )}
+            </motion.button>
+          )
+        })}
+      </div>
+      
+      {/* Resumo do pagamento selecionado */}
+      {pagamentoSelecionado && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/10 rounded-xl p-4 border border-white/20"
+        >
+          <div className="text-center">
+            <h4 className="text-white font-bold mb-2">Resumo do Pagamento</h4>
+            <div className="space-y-1">
+              <p className="text-white">
+                <span className="font-bold">{parcelasSelecionadas}x</span> de 
+                <span className="font-bold text-green-300 ml-1">
+                  R$ {(parcelasSelecionadas === 1 ? 2700 : 3000 / parcelasSelecionadas).toFixed(2)}
+                </span>
+              </p>
+              <p className="text-white/70 text-sm">
+                Total: R$ {(parcelasSelecionadas === 1 ? 2700 : 3000).toFixed(2)}
+                {parcelasSelecionadas === 1 && (
+                  <span className="text-green-300 ml-2">(10% desconto)</span>
+                )}
+              </p>
+              <p className="text-white/70 text-sm font-medium">
+                Boleto ou Cartão de Crédito
+              </p>
             </div>
-          </motion.button>
-        )
-      })}
+          </div>
+        </motion.div>
+      )}
     </div>
 
     {/* Campo de Data do Primeiro Pagamento */}
@@ -530,6 +572,7 @@ function FormularioMatriculaContent() {
   const [dadosResponsavel, setDadosResponsavel] = useState<DadosResponsavel>({})
   const [pagamentoSelecionado, setPagamentoSelecionado] = useState<string>('')
   const [dataPrimeiroPagamento, setDataPrimeiroPagamento] = useState<string>('')
+  const [parcelasSelecionadas, setParcelasSelecionadas] = useState<number>(1)
   const [turmaInfo, setTurmaInfo] = useState<any>(null)
   const [maiorIdade, setMaiorIdade] = useState(false)
   const [enviando, setEnviando] = useState(false)
@@ -630,44 +673,23 @@ function FormularioMatriculaContent() {
       .replace(/(-\d{4})\d+?$/, '$1')
   }, [])
 
-  // Calcular opções de pagamento
+  // Calcular opções de pagamento (novo sistema com valor fixo)
   const calcularOpcoesPagamento = (): OpcaoPagamento[] => {
-    if (!turmaInfo) return []
-    
-    const valorTotal = (turmaInfo.precoMensal || 150) * (turmaInfo.duracaoMeses || 12)
-    const mesesRestantes = turmaInfo.duracaoMeses || 12 // Aqui você pode calcular meses restantes reais
+    const valorBase = 3000 // Valor fixo R$3000
+    const valorComDesconto = valorBase * 0.9 // 10% desconto à vista
+    const valorParcela = valorBase / parcelasSelecionadas
     
     return [
       {
-        tipo: 'economico',
-        nome: 'Econômico',
-        descricao: 'À vista com 10% de desconto',
-        parcelas: 1,
-        valorParcela: valorTotal * 0.9,
-        valorTotal: valorTotal * 0.9,
-        economia: valorTotal * 0.1,
-        icon: Gift,
-        cor: 'from-green-500 to-emerald-600'
-      },
-      {
-        tipo: 'equilibrado',
-        nome: 'Equilibrado',
-        descricao: `${mesesRestantes}x de R$ ${(valorTotal / mesesRestantes).toFixed(2)}`,
-        parcelas: mesesRestantes,
-        valorParcela: valorTotal / mesesRestantes,
-        valorTotal: valorTotal,
-        icon: Calendar,
-        cor: 'from-blue-500 to-indigo-600'
-      },
-      {
-        tipo: 'confortavel',
-        nome: 'Mais Confortável',
-        descricao: `${mesesRestantes + 2}x de R$ ${(valorTotal / (mesesRestantes + 2)).toFixed(2)}`,
-        parcelas: mesesRestantes + 2,
-        valorParcela: valorTotal / (mesesRestantes + 2),
-        valorTotal: valorTotal,
-        icon: DollarSign,
-        cor: 'from-purple-500 to-pink-600'
+        tipo: 'unico', // Mantém tipo único para compatibilidade
+        nome: 'Curso Completo',
+        descricao: `Material incluso - ${parcelasSelecionadas}x no ${parcelasSelecionadas === 1 ? 'boleto ou cartão' : 'cartão'}`,
+        parcelas: parcelasSelecionadas,
+        valorParcela: parcelasSelecionadas === 1 ? valorComDesconto : valorParcela,
+        valorTotal: parcelasSelecionadas === 1 ? valorComDesconto : valorBase,
+        economia: parcelasSelecionadas === 1 ? 300 : undefined, // R$300 de desconto
+        icon: parcelasSelecionadas === 1 ? Gift : CreditCard,
+        cor: parcelasSelecionadas === 1 ? 'from-green-500 to-emerald-600' : 'from-blue-500 to-indigo-600'
       }
     ]
   }
@@ -913,6 +935,8 @@ function FormularioMatriculaContent() {
                 setPagamentoSelecionado={setPagamentoSelecionado}
                 dataPrimeiroPagamento={dataPrimeiroPagamento}
                 setDataPrimeiroPagamento={setDataPrimeiroPagamento}
+                parcelasSelecionadas={parcelasSelecionadas}
+                setParcelasSelecionadas={setParcelasSelecionadas}
                 enviando={false}
                 onVoltar={() => {}}
                 onFinalizar={avancarEtapa}
