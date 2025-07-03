@@ -756,33 +756,8 @@ function FormularioMatriculaContent() {
       }
       
       setEtapaAtual('responsavel')
-    } else if (etapaAtual === 'responsavel') {
-      // Validar dados do responsável (se necessário)
-      if (!maiorIdade || !dadosResponsavel.souResponsavel) {
-        const errosResponsavel: string[] = []
-        
-        if (!dadosResponsavel.nome || dadosResponsavel.nome.trim().length < 3) {
-          errosResponsavel.push('Nome do responsável deve ter pelo menos 3 caracteres')
-        }
-        
-        if (!validarCPF(dadosResponsavel.cpf || '')) {
-          errosResponsavel.push('CPF do responsável inválido')
-        }
-        
-        if (!validarWhatsApp(dadosResponsavel.whatsapp || '')) {
-          errosResponsavel.push('WhatsApp do responsável deve ter 11 dígitos (com DDD)')
-        }
-        
-        if (errosResponsavel.length > 0) {
-          alert('Por favor, corrija:\n' + errosResponsavel.join('\n'))
-          return
-        }
-      }
-      
-      // Se chegou até aqui, todos os dados estão válidos - enviar formulário
-      enviarFormulario()
     }
-  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade, parcelasSelecionadas, dataPrimeiroPagamento, enviarFormulario])
+  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade, parcelasSelecionadas, dataPrimeiroPagamento])
 
   const voltarEtapa = useCallback(() => {
     if (etapaAtual === 'dados-aluno') setEtapaAtual('pagamento')
@@ -802,6 +777,28 @@ function FormularioMatriculaContent() {
     if (!dataPrimeiroPagamento) {
       alert('Selecione a data do primeiro pagamento')
       return
+    }
+
+    // Validar dados do responsável (se necessário)
+    if (!maiorIdade || !dadosResponsavel.souResponsavel) {
+      const errosResponsavel: string[] = []
+      
+      if (!dadosResponsavel.nome || dadosResponsavel.nome.trim().length < 3) {
+        errosResponsavel.push('Nome do responsável deve ter pelo menos 3 caracteres')
+      }
+      
+      if (!validarCPF(dadosResponsavel.cpf || '')) {
+        errosResponsavel.push('CPF do responsável inválido')
+      }
+      
+      if (!validarWhatsApp(dadosResponsavel.whatsapp || '')) {
+        errosResponsavel.push('WhatsApp do responsável deve ter 11 dígitos (com DDD)')
+      }
+      
+      if (errosResponsavel.length > 0) {
+        alert('Por favor, corrija:\n' + errosResponsavel.join('\n'))
+        return
+      }
     }
 
     setEnviando(true)
@@ -915,7 +912,7 @@ function FormularioMatriculaContent() {
     } finally {
       setEnviando(false)
     }
-  }, [parcelasSelecionadas, dataPrimeiroPagamento, dadosAluno, dadosResponsavel, turmaInfo, router])
+  }, [parcelasSelecionadas, dataPrimeiroPagamento, dadosAluno, dadosResponsavel, turmaInfo, router, maiorIdade, validarCPF, validarWhatsApp])
 
   // Indicador de progresso
   const ProgressBar = () => {
@@ -1006,7 +1003,7 @@ function FormularioMatriculaContent() {
                 dadosResponsavel={dadosResponsavel}
                 setDadosResponsavel={setDadosResponsavel}
                 maiorIdade={maiorIdade}
-                onAvancar={avancarEtapa}
+                onAvancar={enviarFormulario}
                 onVoltar={voltarEtapa}
                 mascaraCPF={mascaraCPF}
                 mascaraWhatsApp={mascaraWhatsApp}
