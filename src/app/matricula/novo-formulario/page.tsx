@@ -491,7 +491,7 @@ const EtapaPagamento = ({
       </div>
       
       {/* Resumo do pagamento selecionado */}
-      {pagamentoSelecionado && (
+      {parcelasSelecionadas && parcelasSelecionadas > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -522,7 +522,7 @@ const EtapaPagamento = ({
     </div>
 
     {/* Campo de Data do Primeiro Pagamento */}
-    {pagamentoSelecionado && (
+    {parcelasSelecionadas && parcelasSelecionadas > 0 && (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -547,7 +547,7 @@ const EtapaPagamento = ({
     <div className="flex gap-4">
       <button
         onClick={onFinalizar}
-        disabled={!pagamentoSelecionado || !dataPrimeiroPagamento || enviando}
+        disabled={!parcelasSelecionadas || parcelasSelecionadas < 1 || !dataPrimeiroPagamento || enviando}
         className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {enviando ? 'Enviando...' : 'Próximo'}
@@ -698,7 +698,7 @@ function FormularioMatriculaContent() {
   const avancarEtapa = useCallback(() => {
     if (etapaAtual === 'pagamento') {
       // Validar seleção de pagamento
-      if (!pagamentoSelecionado) {
+      if (!parcelasSelecionadas || parcelasSelecionadas < 1) {
         alert('Por favor, selecione uma forma de pagamento')
         return
       }
@@ -742,7 +742,7 @@ function FormularioMatriculaContent() {
       
       setEtapaAtual('responsavel')
     }
-  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade, pagamentoSelecionado, dataPrimeiroPagamento])
+  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade, parcelasSelecionadas, dataPrimeiroPagamento])
 
   const voltarEtapa = useCallback(() => {
     if (etapaAtual === 'dados-aluno') setEtapaAtual('pagamento')
@@ -754,7 +754,7 @@ function FormularioMatriculaContent() {
 
   // Enviar formulário com useCallback
   const enviarFormulario = useCallback(async () => {
-    if (!pagamentoSelecionado) {
+    if (!parcelasSelecionadas || parcelasSelecionadas < 1) {
       alert('Selecione uma forma de pagamento')
       return
     }
@@ -767,13 +767,17 @@ function FormularioMatriculaContent() {
     setEnviando(true)
     
     try {
-      // Calcular informações de pagamento
-      const opcaoSelecionada = opcoesPagamento.find(opcao => opcao.tipo === pagamentoSelecionado)
+      // Calcular informações de pagamento diretamente das parcelas selecionadas
+      const valorBase = 3000
+      const valorComDesconto = valorBase * 0.9 // 10% desconto à vista
+      const valorParcela = parcelasSelecionadas === 1 ? valorComDesconto : valorBase / parcelasSelecionadas
+      const valorTotal = parcelasSelecionadas === 1 ? valorComDesconto : valorBase
+      
       const infoPagamento = {
-        plano: pagamentoSelecionado,
-        numeroParcelas: opcaoSelecionada?.parcelas || 1,
-        valorParcela: opcaoSelecionada?.valorParcela || 0,
-        valorTotal: opcaoSelecionada?.valorTotal || 0,
+        plano: 'curso_completo',
+        numeroParcelas: parcelasSelecionadas,
+        valorParcela: valorParcela,
+        valorTotal: valorTotal,
         dataPrimeiroPagamento: dataPrimeiroPagamento
       }
 
@@ -799,7 +803,7 @@ function FormularioMatriculaContent() {
         turma_duracao: turmaInfo?.duracaoMeses || 12,
         
         // Pagamento
-        plano_pagamento: pagamentoSelecionado,
+        plano_pagamento: infoPagamento.plano,
         numero_parcelas: infoPagamento.numeroParcelas,
         valor_parcela: infoPagamento.valorParcela.toFixed(2),
         valor_total: infoPagamento.valorTotal.toFixed(2),
@@ -867,7 +871,7 @@ function FormularioMatriculaContent() {
     } finally {
       setEnviando(false)
     }
-  }, [pagamentoSelecionado, dataPrimeiroPagamento, dadosAluno, dadosResponsavel, turmaInfo, opcoesPagamento, router])
+  }, [parcelasSelecionadas, dataPrimeiroPagamento, dadosAluno, dadosResponsavel, turmaInfo, router])
 
   // Indicador de progresso
   const ProgressBar = () => {
