@@ -71,7 +71,7 @@ export interface TurmaVisibilidade {
 
 // Tipos para turno e série
 export type Turno = 'matutino' | 'vespertino' | 'noturno';
-export type Serie = '1' | '2' | '3' | 'formado';
+export type Serie = '1ª série' | '2ª série' | '3ª série' | 'Extensivo';
 
 // Interface simplificada para o sistema de turmas
 export interface TurmaSimples {

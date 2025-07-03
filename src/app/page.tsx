@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TurmaSimples } from '@/lib/types/turma';
 import { cleanupObsoleteStorage } from '@/lib/utils/cleanup-storage';
 import { turmasService } from '@/services/turmasService';
@@ -27,99 +27,54 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
 
   // Mapear série para encontrar turma correspondente (com filtro de turno)
   const getTurmaForSerie = (serie: string) => {
+    // Mapeamento consistente: interface → banco de dados
     const serieMapeamento: Record<string, string> = {
-      '1serie': '1',
-      '2serie': '2', 
-      '3serie': '3',
-      'formado': 'formado'
+      '1serie': '1ª série',
+      '2serie': '2ª série', 
+      '3serie': '3ª série',
+      'formado': 'Extensivo'
     };
 
     const serieCorrespondente = serieMapeamento[serie];
     
-    // Debug: Log para identificar problema no mobile
-    console.log('🔍 [FILTRO TURMAS] Buscando turma:', {
-      serie,
-      serieCorrespondente,
-      turnoSelecionado,
-      totalTurmas: turmas.length
-    });
-    
     // Filtrar turmas por série e turno
     const turmasCandidatas = turmas.filter(turma => {
-      // Verificação específica para EXTENSIVA - deve aparecer apenas no 3º ano e formados
-      if (turma.nome?.toUpperCase().includes('EXTENSIVA')) {
-        const atendeExtensiva = (serieCorrespondente === '3' || serieCorrespondente === 'formado') && 
-                               (turma.seriesAtendidas?.includes('3' as any) || 
-                                turma.seriesAtendidas?.includes('formado' as any));
-        const contemTurno = !turnoSelecionado || turma.turnos?.includes(turnoSelecionado as any);
-        console.log(`[HOMEPAGE EXTENSIVA] ${turma.nome} - série: ${serieCorrespondente}, atende: ${atendeExtensiva}, turno ok: ${contemTurno}`);
-        return atendeExtensiva && contemTurno;
-      }
-      
-      // Lógica normal para outras turmas
-      const contemSerie = turma.seriesAtendidas?.includes(serieCorrespondente as any) || turma.serie === serieCorrespondente;
+      // Verificar tanto serie quanto seriesAtendidas para máxima compatibilidade
+      const contemSerie = turma.serie === serieCorrespondente || 
+                         turma.seriesAtendidas?.includes(serieCorrespondente as any);
       const contemTurno = !turnoSelecionado || turma.turnos?.includes(turnoSelecionado as any);
       
-      // Debug para 1ª série
-      if (serie === '1serie' && contemSerie) {
-        console.log('🎯 [1ª SÉRIE] Turma candidata:', {
-          nome: turma.nome,
-          turnos: turma.turnos,
-          contemTurno,
-          turnoSelecionado
-        });
+      // Correção preventiva: Evitar que turmas "EXTENSIVA" apareçam para 1ª e 2ª série
+      if ((serie === '1serie' || serie === '2serie') && turma.nome?.includes('EXTENSIVA')) {
+        return false;
       }
       
       return contemSerie && contemTurno;
     });
     
-    console.log('📋 [FILTRO TURMAS] Turmas candidatas:', turmasCandidatas.length);
-    
     // Retornar a primeira turma que atende aos critérios
     return turmasCandidatas[0] || null;
   };
 
-  // Fallback para quando não há turmas cadastradas
-  const getFallbackData = (serie: string) => {
-    const fallbacks: Record<string, any> = {
-      '1serie': {
-        titulo: 'PSC UFAM',
-        foco: 'PREPARAÇÃO COMPLETA PARA O PSC',
-        beneficios: [
-          { texto: '3 anos de preparação completa', destaquePlatinado: false },
-          { texto: 'Material específico PSC', destaquePlatinado: true },
-          { texto: 'Simulados mensais', destaquePlatinado: false }
-        ]
-      },
-      '2serie': {
-        titulo: 'ENEM PRO', 
-        foco: 'FOCO TOTAL ENEM',
-        beneficios: [
-          { texto: 'Foco total ENEM', destaquePlatinado: true },
-          { texto: 'Redação nota 1000', destaquePlatinado: false },
-          { texto: 'Mentoria personalizada', destaquePlatinado: false }
-        ]
-      },
-      '3serie': {
-        titulo: 'INTENSIVO MAX',
-        foco: 'REVISÃO COMPLETA PARA VESTIBULAR',
-        beneficios: [
-          { texto: 'Revisão completa', destaquePlatinado: true },
-          { texto: 'Aulões ao vivo', destaquePlatinado: false },
-          { texto: 'Simulados 2x/semana', destaquePlatinado: true }
-        ]
-      },
-      'formado': {
-        titulo: 'MED VIP',
-        foco: 'TURMA EXCLUSIVA PARA MEDICINA',
-        beneficios: [
-          { texto: 'Turma reduzida', destaquePlatinado: true },
-          { texto: 'Professor particular', destaquePlatinado: true },
-          { texto: 'Garantia aprovação', destaquePlatinado: false }
-        ]
-      }
+  // Mensagem quando não há turmas cadastradas (sem dados fictícios)
+  const getMensagemSemTurmas = (serie: string) => {
+    const serieNomes: Record<string, string> = {
+      '1serie': '1ª Série',
+      '2serie': '2ª Série',
+      '3serie': '3ª Série',
+      'formado': 'Extensivo'
     };
-    return fallbacks[serie];
+
+    return {
+      titulo: `Turma ${serieNomes[serie] || 'Esta Série'}`,
+      foco: 'EM BREVE',
+      beneficios: [
+        { texto: 'Turma ainda não disponível', destaquePlatinado: false },
+        { texto: 'Entre em contato para mais informações', destaquePlatinado: true },
+        { texto: 'Novos grupos sendo formados', destaquePlatinado: false }
+      ],
+      semTurma: true // Flag para indicar que não há turma real
+    };
   };
 
   const turmaAtual = getTurmaForSerie(serieAtiva);
@@ -129,7 +84,7 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
     beneficios: turmaAtual.beneficios,
     turmaId: turmaAtual.id,
     serie: turmaAtual.serie
-  } : getFallbackData(serieAtiva);
+  } : getMensagemSemTurmas(serieAtiva);
 
   if (loading) {
     return (
@@ -200,6 +155,12 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
       {/* Botão Reservar Minha Vaga */}
       <button 
         onClick={() => {
+          // Verificar se há turma real disponível
+          if ((dados as any).semTurma) {
+            alert('Esta turma ainda não está disponível. Entre em contato conosco para mais informações.');
+            return;
+          }
+          
           // Sempre redirecionar para o formulário completo
           const params = new URLSearchParams();
           if (dados.turmaId) {
@@ -215,9 +176,14 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
           params.set('origem', 'home');
           window.location.href = `/matricula/novo-formulario?${params.toString()}`;
         }}
-        className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer"
+        className={`w-full font-bold py-4 rounded-full shadow-lg transition-all duration-200 ${
+          (dados as any).semTurma 
+            ? 'bg-gray-400 text-gray-600 cursor-not-allowed' 
+            : 'bg-green-600 hover:bg-green-700 text-white hover:shadow-xl transform hover:scale-105 cursor-pointer'
+        }`}
+        disabled={(dados as any).semTurma}
       >
-        RESERVAR MINHA VAGA
+        {(dados as any).semTurma ? 'TURMA EM BREVE' : 'RESERVAR MINHA VAGA'}
       </button>
 
       {/* CSS para efeito platinado */}
@@ -242,12 +208,12 @@ const FiltroTurnos = ({ turnoSelecionado, onTurnoChange, serieAtiva, turmas }: {
   serieAtiva: string;
   turmas: TurmaSimples[];
 }) => {
-  // Mapear série para buscar turnos disponíveis
+  // Mapear série para buscar turnos disponíveis - MESMO MAPEAMENTO
   const serieMapeamento: Record<string, string> = {
-    '1serie': '1',
-    '2serie': '2', 
-    '3serie': '3',
-    'formado': 'formado'
+    '1serie': '1ª série',
+    '2serie': '2ª série', 
+    '3serie': '3ª série',
+    'formado': 'Extensivo'
   };
   
   const serieCorrespondente = serieMapeamento[serieAtiva];
@@ -255,19 +221,15 @@ const FiltroTurnos = ({ turnoSelecionado, onTurnoChange, serieAtiva, turmas }: {
   // Encontrar turnos disponíveis para a série selecionada
   const turnosDisponiveis = new Set<string>();
   turmas.forEach(turma => {
-    // Verificação específica para EXTENSIVA - deve aparecer apenas no 3º ano e formados
-    if (turma.nome?.toUpperCase().includes('EXTENSIVA')) {
-      const atendeExtensiva = (serieCorrespondente === '3' || serieCorrespondente === 'formado') && 
-                             (turma.seriesAtendidas?.includes('3' as any) || 
-                              turma.seriesAtendidas?.includes('formado' as any));
-      if (atendeExtensiva && turma.turnos) {
-        turma.turnos.forEach(turno => turnosDisponiveis.add(turno));
-      }
-      return;
+    // Verificar tanto serie quanto seriesAtendidas para máxima compatibilidade
+    const contemSerie = turma.serie === serieCorrespondente || 
+                       turma.seriesAtendidas?.includes(serieCorrespondente as any);
+    
+    // Aplicar a mesma correção preventiva do filtro principal
+    if ((serieAtiva === '1serie' || serieAtiva === '2serie') && turma.nome?.includes('EXTENSIVA')) {
+      return; // Pular turmas EXTENSIVA para 1ª e 2ª série
     }
     
-    // Lógica normal para outras turmas
-    const contemSerie = turma.seriesAtendidas?.includes(serieCorrespondente as any) || turma.serie === serieCorrespondente;
     if (contemSerie && turma.turnos) {
       turma.turnos.forEach(turno => turnosDisponiveis.add(turno));
     }
@@ -275,13 +237,16 @@ const FiltroTurnos = ({ turnoSelecionado, onTurnoChange, serieAtiva, turmas }: {
   
   const turnosArray = Array.from(turnosDisponiveis).sort();
   
-  // Auto-selecionar turno único quando há apenas uma opção
+  // Auto-selecionar turno único quando há apenas uma opção (com debounce)
   useEffect(() => {
     if (turnosArray.length === 1 && turnoSelecionado !== turnosArray[0]) {
-      console.log(`🔄 [FILTRO TURNOS] Auto-selecionando turno único: ${turnosArray[0]}`);
-      onTurnoChange(turnosArray[0]);
+      const timer = setTimeout(() => {
+        onTurnoChange(turnosArray[0]);
+      }, 100); // Debounce de 100ms para evitar loops
+      
+      return () => clearTimeout(timer);
     }
-  }, [turnosArray.join(','), turnoSelecionado]); // join para comparar array como string
+  }, [turnosArray.join(','), turnoSelecionado, onTurnoChange]); // Dependências completas
   
   // Se há apenas um turno, mostrar qual é o turno disponível
   if (turnosArray.length === 1) {
@@ -353,7 +318,6 @@ const HomePage = () => {
   const [turnoSelecionado, setTurnoSelecionado] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [turmas, setTurmas] = useState<TurmaSimples[]>([]);
-  const [key, setKey] = useState(0); // Forçar re-render no mobile
 
   // Limpeza de dados obsoletos e carregamento de turmas
   useEffect(() => {
@@ -361,33 +325,59 @@ const HomePage = () => {
     
     const carregarTurmas = async () => {
       try {
+        console.log('🔄 [HOMEPAGE] Carregando turmas...');
         const turmasAtivas = await turmasService.listarTurmas(true);
+        console.log('✅ [HOMEPAGE] Turmas carregadas:', turmasAtivas.length);
+        
+        // Debug detalhado das turmas carregadas
+        turmasAtivas.forEach(turma => {
+          console.log(`📊 [TURMA CARREGADA] ${turma.nome}:`, {
+            serie: turma.serie,
+            seriesAtendidas: turma.seriesAtendidas,
+            turnos: turma.turnos,
+            ativa: turma.ativa
+          });
+        });
+        
         setTurmas(turmasAtivas);
+        
+        // Validar se há pelo menos uma turma
+        if (turmasAtivas.length === 0) {
+          console.warn('⚠️ [HOMEPAGE] Nenhuma turma ativa encontrada');
+        }
       } catch (error) {
-        console.error('Erro ao carregar turmas:', error);
+        console.error('❌ [HOMEPAGE] Erro ao carregar turmas:', error);
+        // Em caso de erro, manter array vazio para mostrar mensagem adequada
+        setTurmas([]);
       }
     };
     carregarTurmas();
   }, []);
   
-  // Reset turno quando mudar série
+  // Reset turno quando mudar série (com debounce para evitar múltiplas chamadas)
   useEffect(() => {
-    setTurnoSelecionado(null);
+    const timer = setTimeout(() => {
+      console.log('🔄 [HOMEPAGE] Resetando turno ao mudar série para:', serieAtiva);
+      setTurnoSelecionado(null);
+    }, 50);
+    
+    return () => clearTimeout(timer);
   }, [serieAtiva]);
 
-  // Função para mudança de série com forçamento de re-render
-  const handleSerieChange = (serie: string) => {
+  // Função para mudança de série (simplificada - sem forçar re-render)
+  const handleSerieChange = useCallback((serie: string) => {
+    console.log('🎯 [HOMEPAGE] Mudando série para:', serie);
     setSerieAtiva(serie);
-    setKey(prev => prev + 1); // Forçar re-render
+    // Removido setKey() - causava problemas de sincronização
     
-    // Forçar atualização do DOM no mobile
-    setTimeout(() => {
+    // Scroll suave para a série selecionada no mobile
+    requestAnimationFrame(() => {
       const elemento = document.querySelector(`[data-serie="${serie}"]`);
       if (elemento) {
         elemento.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
-    }, 100);
-  };
+    });
+  }, []);
 
   return (
     <>
@@ -658,7 +648,7 @@ const HomePage = () => {
                     
                     {/* Bloco 1: Séries do Ensino Médio */}
                     <div className="bg-white/10 backdrop-blur-md rounded-3xl p-2 
-                                  border border-white/20 shadow-xl glass-effect" key={`series-${key}`}>
+                                  border border-white/20 shadow-xl glass-effect">
                       <div className="grid grid-cols-3 gap-2">
                         <button
                           data-serie="1serie"
@@ -706,7 +696,7 @@ const HomePage = () => {
                     
                     {/* Bloco 2: Já Formado */}
                     <div className="bg-white/10 backdrop-blur-md rounded-3xl p-2 
-                                  border border-white/20 shadow-xl glass-effect" key={`formado-${key}`}>
+                                  border border-white/20 shadow-xl glass-effect">
                       <button
                         data-serie="formado"
                         onClick={() => handleSerieChange('formado')}
@@ -733,8 +723,7 @@ const HomePage = () => {
 
                   {/* CARD DE CONTEÚDO */}
                   <div className="mt-8 bg-white/95 backdrop-blur-xl rounded-3xl 
-                                shadow-2xl p-8 border border-white/50 glass-effect" 
-                       key={`content-${serieAtiva}-${turnoSelecionado}-${key}`}>
+                                shadow-2xl p-8 border border-white/50 glass-effect">
                     {/* Conteúdo dinâmico baseado na série e turno */}
                     <ConteudoDinamico serieAtiva={serieAtiva} turnoSelecionado={turnoSelecionado} />
                   </div>

@@ -6,6 +6,18 @@ export interface BeneficioTurma {
   destaquePlatinado: boolean
 }
 
+// Mapear ordem numérica para série formatada
+const mapearSerie = (ordem: number | string): string => {
+  const ordemString = ordem?.toString() || '1';
+  switch (ordemString) {
+    case '1': return '1ª série';
+    case '2': return '2ª série';
+    case '3': return '3ª série';
+    case 'formado': return 'Extensivo';
+    default: return '1ª série';
+  }
+};
+
 // Mapear tipo de turma baseado no nome
 const mapearTipoPorNome = (nome: string): string => {
   const nomeUpper = nome.toUpperCase()
@@ -60,26 +72,16 @@ class TurmasService {
           id: turma.id.toString(),
           nome: turma.nome || '',
           foco: turma.descricao || '',
-          serie: turma.ordem?.toString() || '1' as Serie,
+          serie: mapearSerie(turma.ordem) as Serie,
           turnos: Array.isArray(turma.turnos) ? turma.turnos : ['matutino'],
-          seriesAtendidas: Array.isArray(turma.series_atendidas) ? turma.series_atendidas : [turma.ordem?.toString() || '1'],
+          seriesAtendidas: Array.isArray(turma.series_atendidas) 
+            ? turma.series_atendidas.map((s: string) => mapearSerie(s))
+            : [mapearSerie(turma.ordem?.toString() || '1')],
           beneficios: beneficiosValidos,
           ativa: turma.ativo ?? true,
           precoMensal: turma.preco_mensal || 0,
           duracaoMeses: turma.duracao_meses || 12
         }
-        
-        // ADICIONE ESTE LOG ESPECÍFICO PARA DEBUG
-        if (turma.series_atendidas && turma.series_atendidas.length > 0) {
-          console.log(`[TURMA ${turma.nome}] series_atendidas no banco:`, turma.series_atendidas)
-          console.log(`[TURMA ${turma.nome}] tem "formado"?`, turma.series_atendidas.includes('formado'))
-          console.log(`[TURMA ${turma.nome}] tem "Já Formado"?`, turma.series_atendidas.includes('Já Formado'))
-        }
-        
-        console.log(`[MAPEAMENTO] ${turma.nome}:`, {
-          original: { turnos: turma.turnos, series_atendidas: turma.series_atendidas },
-          mapeado: { turnos: mapped.turnos, seriesAtendidas: mapped.seriesAtendidas }
-        })
         
         return mapped
       })
@@ -146,9 +148,11 @@ class TurmasService {
         id: data.id.toString(),
         nome: data.nome || '',
         foco: data.descricao || '',
-        serie: data.ordem?.toString() || '1' as Serie,
+        serie: mapearSerie(data.ordem) as Serie,
         turnos: data.turnos || ['matutino'], // NOVO - array de turnos
-        seriesAtendidas: data.series_atendidas || [data.ordem?.toString() || '1'], // NOVO - array de séries
+        seriesAtendidas: Array.isArray(data.series_atendidas) 
+          ? data.series_atendidas.map((s: string) => mapearSerie(s))
+          : [mapearSerie(data.ordem?.toString() || '1')], // NOVO - array de séries
         beneficios: beneficiosValidos,
         ativa: data.ativo ?? true,
         // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -284,9 +288,11 @@ class TurmasService {
           id: turma.id.toString(),
           nome: turma.nome || '',
           foco: turma.descricao || '',
-          serie: turma.ordem?.toString() || '1' as Serie,
+          serie: mapearSerie(turma.ordem) as Serie,
           turnos: turma.turnos || ['matutino'],
-          seriesAtendidas: turma.series_atendidas || [turma.ordem?.toString() || '1'],
+          seriesAtendidas: Array.isArray(turma.series_atendidas) 
+            ? turma.series_atendidas.map((s: string) => mapearSerie(s))
+            : [mapearSerie(turma.ordem?.toString() || '1')],
           beneficios: beneficiosValidos,
           ativa: turma.ativo ?? true,
           precoMensal: turma.preco_mensal || 0,
@@ -328,9 +334,11 @@ class TurmasService {
         id: data.id.toString(),
         nome: data.nome || '',
         foco: data.descricao || '',
-        serie: data.ordem?.toString() || '1' as Serie,
+        serie: mapearSerie(data.ordem) as Serie,
         turnos: data.turnos || ['matutino'],
-        seriesAtendidas: data.series_atendidas || [data.ordem?.toString() || '1'],
+        seriesAtendidas: Array.isArray(data.series_atendidas) 
+          ? data.series_atendidas.map((s: string) => mapearSerie(s))
+          : [mapearSerie(data.ordem?.toString() || '1')],
         beneficios: beneficiosValidos,
         ativa: data.ativo ?? true,
         precoMensal: data.preco_mensal || 0,
