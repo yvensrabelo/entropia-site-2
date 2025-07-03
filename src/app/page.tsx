@@ -36,6 +36,14 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
 
     const serieCorrespondente = serieMapeamento[serie];
     
+    // Debug: Log para identificar problema no mobile
+    console.log('🔍 [FILTRO TURMAS] Buscando turma:', {
+      serie,
+      serieCorrespondente,
+      turnoSelecionado,
+      totalTurmas: turmas.length
+    });
+    
     // Filtrar turmas por série e turno
     const turmasCandidatas = turmas.filter(turma => {
       // Verificação específica para EXTENSIVA - deve aparecer apenas no 3º ano e formados
@@ -51,8 +59,21 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
       // Lógica normal para outras turmas
       const contemSerie = turma.seriesAtendidas?.includes(serieCorrespondente as any) || turma.serie === serieCorrespondente;
       const contemTurno = !turnoSelecionado || turma.turnos?.includes(turnoSelecionado as any);
+      
+      // Debug para 1ª série
+      if (serie === '1serie' && contemSerie) {
+        console.log('🎯 [1ª SÉRIE] Turma candidata:', {
+          nome: turma.nome,
+          turnos: turma.turnos,
+          contemTurno,
+          turnoSelecionado
+        });
+      }
+      
       return contemSerie && contemTurno;
     });
+    
+    console.log('📋 [FILTRO TURMAS] Turmas candidatas:', turmasCandidatas.length);
     
     // Retornar a primeira turma que atende aos critérios
     return turmasCandidatas[0] || null;
@@ -254,8 +275,40 @@ const FiltroTurnos = ({ turnoSelecionado, onTurnoChange, serieAtiva, turmas }: {
   
   const turnosArray = Array.from(turnosDisponiveis).sort();
   
-  if (turnosArray.length <= 1) {
-    return null; // Não mostrar filtro se há apenas um turno ou nenhum
+  // Auto-selecionar turno único quando há apenas uma opção
+  useEffect(() => {
+    if (turnosArray.length === 1 && turnoSelecionado !== turnosArray[0]) {
+      console.log(`🔄 [FILTRO TURNOS] Auto-selecionando turno único: ${turnosArray[0]}`);
+      onTurnoChange(turnosArray[0]);
+    }
+  }, [turnosArray.join(','), turnoSelecionado]); // join para comparar array como string
+  
+  // Se há apenas um turno, mostrar qual é o turno disponível
+  if (turnosArray.length === 1) {
+    const turnoUnico = turnosArray[0];
+    const turnoInfo = {
+      'matutino': { label: 'Matutino', icon: Sun, color: 'from-yellow-400 to-orange-500' },
+      'vespertino': { label: 'Vespertino', icon: Cloud, color: 'from-orange-500 to-pink-500' },
+      'noturno': { label: 'Noturno', icon: Moon, color: 'from-blue-500 to-purple-600' }
+    }[turnoUnico];
+    
+    if (turnoInfo) {
+      const Icon = turnoInfo.icon;
+      return (
+        <div className="space-y-3 mt-4">
+          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-3 border border-white/20 shadow-xl">
+            <div className="flex items-center justify-center gap-2 text-white/80">
+              <Icon className="w-5 h-5" />
+              <span className="font-medium">Turno {turnoInfo.label}</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
+  
+  if (turnosArray.length === 0) {
+    return null; // Não mostrar nada se não há turnos
   }
 
   const turnos = [
