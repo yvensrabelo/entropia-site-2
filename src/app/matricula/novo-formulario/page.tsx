@@ -454,7 +454,6 @@ const EtapaPagamento = ({
               whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setParcelasSelecionadas(parcelas)
-                setPagamentoSelecionado('unico') // Auto-seleciona o pagamento
               }}
               className={`p-4 rounded-xl border-2 transition-all ${
                 selecionado
@@ -547,7 +546,7 @@ const EtapaPagamento = ({
     <div className="flex gap-4">
       <button
         onClick={onFinalizar}
-        disabled={!parcelasSelecionadas || parcelasSelecionadas < 1 || !dataPrimeiroPagamento || enviando}
+        disabled={!parcelasSelecionadas || parcelasSelecionadas <= 0 || !dataPrimeiroPagamento || enviando}
         className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold py-4 rounded-xl hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {enviando ? 'Enviando...' : 'Próximo'}
@@ -572,7 +571,7 @@ function FormularioMatriculaContent() {
   const [dadosResponsavel, setDadosResponsavel] = useState<DadosResponsavel>({})
   const [pagamentoSelecionado, setPagamentoSelecionado] = useState<string>('')
   const [dataPrimeiroPagamento, setDataPrimeiroPagamento] = useState<string>('')
-  const [parcelasSelecionadas, setParcelasSelecionadas] = useState<number>(1)
+  const [parcelasSelecionadas, setParcelasSelecionadas] = useState<number>(0)
   const [turmaInfo, setTurmaInfo] = useState<any>(null)
   const [maiorIdade, setMaiorIdade] = useState(false)
   const [enviando, setEnviando] = useState(false)
@@ -677,6 +676,22 @@ function FormularioMatriculaContent() {
   const calcularOpcoesPagamento = (): OpcaoPagamento[] => {
     const valorBase = 3000 // Valor fixo R$3000
     const valorComDesconto = valorBase * 0.9 // 10% desconto à vista
+    
+    // Proteção contra divisão por zero
+    if (!parcelasSelecionadas || parcelasSelecionadas <= 0) {
+      return [{
+        tipo: 'unico',
+        nome: 'Selecione uma opção',
+        descricao: 'Escolha o número de parcelas',
+        parcelas: 0,
+        valorParcela: 0,
+        valorTotal: 0,
+        economia: undefined,
+        icon: CreditCard,
+        cor: 'from-gray-400 to-gray-500'
+      }]
+    }
+    
     const valorParcela = valorBase / parcelasSelecionadas
     
     return [
@@ -698,7 +713,7 @@ function FormularioMatriculaContent() {
   const avancarEtapa = useCallback(() => {
     if (etapaAtual === 'pagamento') {
       // Validar seleção de pagamento
-      if (!parcelasSelecionadas || parcelasSelecionadas < 1) {
+      if (!parcelasSelecionadas || parcelasSelecionadas <= 0) {
         alert('Por favor, selecione uma forma de pagamento')
         return
       }
@@ -741,8 +756,33 @@ function FormularioMatriculaContent() {
       }
       
       setEtapaAtual('responsavel')
+    } else if (etapaAtual === 'responsavel') {
+      // Validar dados do responsável (se necessário)
+      if (!maiorIdade || !dadosResponsavel.souResponsavel) {
+        const errosResponsavel: string[] = []
+        
+        if (!dadosResponsavel.nome || dadosResponsavel.nome.trim().length < 3) {
+          errosResponsavel.push('Nome do responsável deve ter pelo menos 3 caracteres')
+        }
+        
+        if (!validarCPF(dadosResponsavel.cpf || '')) {
+          errosResponsavel.push('CPF do responsável inválido')
+        }
+        
+        if (!validarWhatsApp(dadosResponsavel.whatsapp || '')) {
+          errosResponsavel.push('WhatsApp do responsável deve ter 11 dígitos (com DDD)')
+        }
+        
+        if (errosResponsavel.length > 0) {
+          alert('Por favor, corrija:\n' + errosResponsavel.join('\n'))
+          return
+        }
+      }
+      
+      // Se chegou até aqui, todos os dados estão válidos - enviar formulário
+      enviarFormulario()
     }
-  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade, parcelasSelecionadas, dataPrimeiroPagamento])
+  }, [etapaAtual, dadosAluno, dadosResponsavel, maiorIdade, parcelasSelecionadas, dataPrimeiroPagamento, enviarFormulario])
 
   const voltarEtapa = useCallback(() => {
     if (etapaAtual === 'dados-aluno') setEtapaAtual('pagamento')
@@ -754,7 +794,7 @@ function FormularioMatriculaContent() {
 
   // Enviar formulário com useCallback
   const enviarFormulario = useCallback(async () => {
-    if (!parcelasSelecionadas || parcelasSelecionadas < 1) {
+    if (!parcelasSelecionadas || parcelasSelecionadas <= 0) {
       alert('Selecione uma forma de pagamento')
       return
     }
@@ -784,15 +824,15 @@ function FormularioMatriculaContent() {
       // Reformatar os dados para o formato esperado pelo webhook
       const dadosWebhook = {
         // Dados do aluno
-        nome_aluno: dadosAluno.nomeCompleto,
-        whatsapp_aluno: dadosAluno.whatsapp.replace(/\D/g, ''), // Remove formatação
-        cpf_aluno: dadosAluno.cpf.replace(/\D/g, ''), // Remove formatação
-        data_nascimento_aluno: dadosAluno.dataNascimento,
+        nome_aluno: dadosAluno.nomeCompleto || '',
+        whatsapp_aluno: (dadosAluno.whatsapp || '').replace(/\D/g, ''), // Remove formatação
+        cpf_aluno: (dadosAluno.cpf || '').replace(/\D/g, ''), // Remove formatação
+        data_nascimento_aluno: dadosAluno.dataNascimento || '',
         
         // Dados do responsável
-        nome_responsavel: dadosResponsavel.souResponsavel ? dadosAluno.nomeCompleto : (dadosResponsavel.nome || ''),
-        whatsapp_responsavel: dadosResponsavel.souResponsavel ? dadosAluno.whatsapp.replace(/\D/g, '') : (dadosResponsavel.whatsapp?.replace(/\D/g, '') || ''),
-        cpf_responsavel: dadosResponsavel.souResponsavel ? dadosAluno.cpf.replace(/\D/g, '') : (dadosResponsavel.cpf?.replace(/\D/g, '') || ''),
+        nome_responsavel: dadosResponsavel.souResponsavel ? (dadosAluno.nomeCompleto || '') : (dadosResponsavel.nome || ''),
+        whatsapp_responsavel: dadosResponsavel.souResponsavel ? ((dadosAluno.whatsapp || '').replace(/\D/g, '')) : ((dadosResponsavel.whatsapp || '').replace(/\D/g, '')),
+        cpf_responsavel: dadosResponsavel.souResponsavel ? ((dadosAluno.cpf || '').replace(/\D/g, '')) : ((dadosResponsavel.cpf || '').replace(/\D/g, '')),
         
         // Dados da turma
         turma_id: turmaInfo?.id || '',
@@ -815,7 +855,11 @@ function FormularioMatriculaContent() {
       }
 
       console.log('=== DADOS FORMATADOS PARA WEBHOOK ===');
-      console.log(JSON.stringify(dadosWebhook, null, 2));
+      console.log('Dados do aluno:', dadosAluno);
+      console.log('Dados do responsável:', dadosResponsavel);
+      console.log('Parcelas selecionadas:', parcelasSelecionadas);
+      console.log('Info pagamento:', infoPagamento);
+      console.log('Webhook payload:', JSON.stringify(dadosWebhook, null, 2));
       
       const response = await fetch('https://webhook.cursoentropia.com/webhook/siteentropiaoficial', {
         method: 'POST',
@@ -962,7 +1006,7 @@ function FormularioMatriculaContent() {
                 dadosResponsavel={dadosResponsavel}
                 setDadosResponsavel={setDadosResponsavel}
                 maiorIdade={maiorIdade}
-                onAvancar={enviarFormulario}
+                onAvancar={avancarEtapa}
                 onVoltar={voltarEtapa}
                 mascaraCPF={mascaraCPF}
                 mascaraWhatsApp={mascaraWhatsApp}
