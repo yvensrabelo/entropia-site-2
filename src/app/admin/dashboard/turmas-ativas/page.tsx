@@ -43,11 +43,7 @@ const convertTurmasSimplesToAtivas = (turmasSimples: any[]): TurmaAtiva[] => {
     nome: turma.nome,
     turnos: turma.turnos || ['matutino'],
     tipo: turma.foco as 'intensiva' | 'extensiva' | 'sis-psc',
-    seriesAtendidas: turma.seriesAtendidas?.map((s: string) => 
-      s === '1' ? '1ª série' : 
-      s === '2' ? '2ª série' : 
-      s === '3' ? '3ª série' : 'Extensivo'
-    ) || ['1ª série'],
+    seriesAtendidas: turma.seriesAtendidas || ['1ª série'],
     ativa: turma.ativa || false,
     ordem: index
   }));
@@ -81,11 +77,7 @@ export default function TurmasAtivasPage() {
             foco: turma.tipo, // Mapear tipo para foco
             serie: '1' as Serie, // Default 
             turnos: turma.turnos, // NOVO - array de turnos
-            seriesAtendidas: turma.seriesAtendidas?.map(s => 
-              s === '1ª série' ? '1' : 
-              s === '2ª série' ? '2' : 
-              s === '3ª série' ? '3' : 'formado'
-            ) as Serie[] || ['1'], // NOVO - array de séries
+            seriesAtendidas: turma.seriesAtendidas || ['1ª série'], // NOVO - array de séries
             beneficios: [], // Vazio por padrão
             // NOVOS CAMPOS OBRIGATÓRIOS
             precoMensal: 180.00, // Valor padrão
@@ -111,11 +103,7 @@ export default function TurmasAtivasPage() {
       foco: formData.tipo, // Mapear tipo para foco
       serie: '1' as Serie, // Default
       turnos: formData.turnos, // NOVO - array de turnos
-      seriesAtendidas: formData.seriesAtendidas.filter(s => s !== '').map(s => 
-        s === '1ª série' ? '1' : 
-        s === '2ª série' ? '2' : 
-        s === '3ª série' ? '3' : 'formado'
-      ) as Serie[], // NOVO - array de séries
+      seriesAtendidas: formData.seriesAtendidas.filter(s => s !== '') as Serie[], // NOVO - array de séries
       beneficios: [], // Vazio por padrão
       ativa: formData.ativa,
       // NOVOS CAMPOS OBRIGATÓRIOS
