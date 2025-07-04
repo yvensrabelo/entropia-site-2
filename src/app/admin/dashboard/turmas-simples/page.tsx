@@ -13,9 +13,9 @@ export default function TurmasSimples() {
   const [formData, setFormData] = useState<Omit<TurmaSimples, 'id'>>({
     nome: '',
     foco: '',
-    serie: '3', // mantido para compatibilidade
+    serie: '3ª série', // mantido para compatibilidade
     turnos: ['matutino'], // NOVO - array de turnos
-    seriesAtendidas: ['3'], // NOVO - array de séries - campo principal
+    seriesAtendidas: ['3ª série'], // NOVO - array de séries - campo principal
     beneficios: [],
     ativa: true,
     // NOVOS CAMPOS DE VALOR E DURAÇÃO
@@ -244,9 +244,9 @@ export default function TurmasSimples() {
     setFormData({
       nome: '',
       foco: '',
-      serie: '3',
+      serie: '3ª série',
       turnos: ['matutino'], // NOVO - array de turnos
-      seriesAtendidas: ['3'], // NOVO - array de séries
+      seriesAtendidas: ['3ª série'], // NOVO - array de séries
       beneficios: [],
       ativa: true,
       // NOVOS CAMPOS DE VALOR E DURAÇÃO
