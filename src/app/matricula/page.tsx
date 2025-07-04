@@ -59,6 +59,18 @@ export default function MatriculaPage() {
       console.log(`[FILTRO] Buscando turmas para série:`, serieSelecionada)
       console.log(`🔍 Buscando turnos para série: ${serieSelecionada}`)
       
+      // Mapeamento entre os tipos de Serie
+      const mapearSerie = (serieLocal: Serie): import('@/lib/types/turma').Serie => {
+        switch (serieLocal) {
+          case '1': return '1ª série'
+          case '2': return '2ª série'
+          case '3': return '3ª série'
+          case 'formado': return 'Extensivo'
+        }
+      }
+      
+      const serieFormatada = mapearSerie(serieSelecionada)
+      
       // Filtrar turmas que atendem esta série
       const turmasDaSerie = todasTurmas.filter(turma => {
         console.log(`[FILTRO] ${turma.nome} - seriesAtendidas:`, turma.seriesAtendidas)
@@ -67,16 +79,14 @@ export default function MatriculaPage() {
         if (turma.nome?.toUpperCase().includes('EXTENSIVA')) {
           console.log(`[EXTENSIVA CHECK] ${turma.nome} sendo verificada para série: ${serieSelecionada}`)
           const atendeExtensiva = (serieSelecionada === '3' || serieSelecionada === 'formado') && 
-                                 (turma.seriesAtendidas?.includes('3' as Serie) || 
-                                  turma.seriesAtendidas?.includes('formado' as Serie))
+                                 (turma.seriesAtendidas?.includes('3ª série') || 
+                                  turma.seriesAtendidas?.includes('Extensivo'))
           console.log(`[EXTENSIVA RESULT] ${turma.nome} atende ${serieSelecionada}? ${atendeExtensiva}`)
           return atendeExtensiva
         }
         
-        // Verificar ambos os formatos por segurança para outras turmas
-        const atende = turma.seriesAtendidas?.includes(serieSelecionada) || 
-                      (serieSelecionada === 'formado' && turma.seriesAtendidas?.includes('formado' as Serie)) ||
-                      false
+        // Usar série formatada para comparação
+        const atende = turma.seriesAtendidas?.includes(serieFormatada) || false
         
         console.log(`[FILTRO] ${turma.nome} atende ${serieSelecionada}?`, atende)
         console.log(`   - ${turma.nome}: seriesAtendidas=${JSON.stringify(turma.seriesAtendidas)} | Atende? ${atende}`)
@@ -103,8 +113,20 @@ export default function MatriculaPage() {
     if (serieSelecionada && turnoSelecionado && todasTurmas.length > 0) {
       console.log(`🎯 Filtrando turmas: série=${serieSelecionada}, turno=${turnoSelecionado}`)
       
+      // Mapeamento entre os tipos de Serie
+      const mapearSerie = (serieLocal: Serie): import('@/lib/types/turma').Serie => {
+        switch (serieLocal) {
+          case '1': return '1ª série'
+          case '2': return '2ª série'
+          case '3': return '3ª série'
+          case 'formado': return 'Extensivo'
+        }
+      }
+      
+      const serieFormatada = mapearSerie(serieSelecionada)
+      
       const filtradas = todasTurmas.filter(turma => {
-        const atendeASerie = turma.seriesAtendidas?.includes(serieSelecionada) || false
+        const atendeASerie = turma.seriesAtendidas?.includes(serieFormatada) || false
         const atendeOTurno = turma.turnos?.includes(turnoSelecionado) || false
         const passa = atendeASerie && atendeOTurno
         
