@@ -39,16 +39,8 @@ export default function MapeamentoTurmasPage() {
       
       // Converter para o formato esperado
       const turmasFormatadas: TurmaAtiva[] = turmasDB.map((turma, index) => {
-        // Mapear serie corretamente
-        let serieFormatada: '1ª série' | '2ª série' | '3ª série' | 'Extensivo' | undefined;
-        
-        switch (turma.serie) {
-          case '1': serieFormatada = '1ª série'; break;
-          case '2': serieFormatada = '2ª série'; break;
-          case '3': serieFormatada = '3ª série'; break;
-          case 'formado': serieFormatada = 'Extensivo'; break;
-          default: serieFormatada = undefined;
-        }
+        // Serie já está no formato correto após as correções no turmasService
+        const serieFormatada = turma.serie;
         
         return {
           id: turma.id,
