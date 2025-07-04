@@ -163,11 +163,11 @@ const ConteudoDinamico = ({ serieAtiva, turnoSelecionado }: { serieAtiva: string
           
           // Sempre redirecionar para o formulário completo
           const params = new URLSearchParams();
-          if (dados.turmaId) {
+          if ('turmaId' in dados && dados.turmaId) {
             params.set('turma_id', dados.turmaId.toString());
             params.set('turma', dados.titulo);
           }
-          if (dados.serie) {
+          if ('serie' in dados && dados.serie) {
             params.set('serie', dados.serie);
           }
           if (turnoSelecionado) {
