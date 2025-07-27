@@ -27,6 +27,7 @@ import {
 } from '@/data/vestibular-data';
 import notasDeCorte from '@/data/notas-corte-psc-2024.json';
 import notasCorteMacro from '@/data/notas-corte-macro-2025.json';
+import notasCorteSis from '@/data/notas-corte-sis-2025.json';
 
 type Processo = typeof PROCESSOS[number];
 type Curso = typeof CURSOS[number];
@@ -45,6 +46,23 @@ const cotasMacroMapping: Record<string, string> = {
   'Escola Pública Brasil': 'Estudantes de Escola Pública Brasil',
   'Qualquer Natureza AM': 'Estudantes de Escola de Qualquer Natureza Amazonas',
   'Qualquer Natureza Brasil': 'Estudantes de Escola de Qualquer Natureza Brasil'
+};
+
+// Mapeamento entre nomes de cotas do código e do JSON SIS
+const cotasSisMapping: Record<string, string> = {
+  // Concorrência Geral
+  'GRUPO A': 'GRUPO 01 - A - Escola Pública (Geral)',
+  'GRUPO B': 'GRUPO 02 - B - Qualquer Escola (Geral)',
+  'GRUPO C': 'GRUPO 03 - C - PCD (Geral)',
+  'GRUPO D': 'GRUPO 04 - D - Pretos (Geral)',
+  'GRUPO E': 'GRUPO 05 - E - Indígenas (Geral)',
+  // Reserva de Vagas AM
+  'GRUPO F': 'GRUPO 06 - F - Escola Pública AM',
+  'GRUPO G': 'GRUPO 07 - G - Qualquer Escola AM',
+  'GRUPO H': 'GRUPO 08 - H - PCD AM',
+  'GRUPO I': 'GRUPO 09 - I - Pretos AM',
+  'GRUPO J': 'GRUPO 10 - J - Indígenas AM',
+  'GRUPO K': 'GRUPO 11 - K - Interior AM'
 };
 
 // Função para criar mapa de notas
@@ -80,6 +98,28 @@ const criarNotasMap = () => {
     }
   });
   
+  // Processar SIS
+  notasCorteSis.forEach((item: any) => {
+    if (!map[item.processo]) map[item.processo] = {};
+    
+    // Mapear nome da cota do JSON para nosso nome interno
+    const nomeInterno = Object.keys(cotasSisMapping).find(key => 
+      cotasSisMapping[key] === item.cota
+    ) || item.cota;
+    
+    if (!map[item.processo][nomeInterno]) map[item.processo][nomeInterno] = {};
+    
+    // Para SIS, usar a menor nota se já existe entrada para o curso
+    if (!map[item.processo][nomeInterno][item.curso]) {
+      map[item.processo][nomeInterno][item.curso] = item['nota-corte'];
+    } else {
+      map[item.processo][nomeInterno][item.curso] = Math.min(
+        map[item.processo][nomeInterno][item.curso],
+        item['nota-corte']
+      );
+    }
+  });
+  
   return map;
 };
 
@@ -107,6 +147,30 @@ const obterDadosMacro = (curso: string, cota: string) => {
   };
 };
 
+// Função para obter dados detalhados do SIS
+const obterDadosSis = (curso: string, cota: string) => {
+  // Mapear nome da cota interna para nome do JSON
+  const nomeJsonCota = cotasSisMapping[cota] || cota;
+  
+  // Encontrar todos os registros para este curso e cota
+  const registros = notasCorteSis.filter((item: any) => 
+    item.curso === curso && item.cota === nomeJsonCota
+  );
+  
+  if (registros.length === 0) return null;
+  
+  // Se há múltiplos registros, pegar o com menor nota
+  const melhorRegistro = registros.reduce((menor: any, atual: any) => 
+    atual['nota-corte'] < menor['nota-corte'] ? atual : menor
+  );
+  
+  return {
+    nota: melhorRegistro['nota-corte'],
+    turno: melhorRegistro.turno,
+    campus: melhorRegistro.campus
+  };
+};
+
 // Hook personalizado para debounce
 const useDebounce = (value: string, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -125,7 +189,7 @@ const useDebounce = (value: string, delay: number) => {
 };
 
 // Extrair lista única de cursos do JSON
-const cursosUnicos = [...new Set([...notasDeCorte, ...notasCorteMacro].map(item => item.curso))];
+const cursosUnicos = [...new Set([...notasDeCorte, ...notasCorteMacro, ...notasCorteSis].map(item => item.curso))];
 
 interface DadosCotas {
   escolaPublica: boolean;
@@ -153,6 +217,7 @@ interface ResultadoCurso {
   percentual: number;
   turno?: string;
   cidade?: string;
+  campus?: string;
 }
 
 
@@ -399,7 +464,60 @@ export default function CalculadoraDinamica() {
       else {
         novaCota = dadosCotas.amazonense ? 'Qualquer Natureza AM' : 'Qualquer Natureza Brasil';
       }
-    } else if (processoSelecionado === 'SIS' || processoSelecionado === 'ENEM') {
+    } else if (processoSelecionado === 'SIS') {
+      // Prioridade de grupos conforme edital SIS
+      
+      // GRUPO K - Interior AM (tem prioridade sobre todos os outros)
+      if (dadosCotas.interiorAmazonas && dadosCotas.amazonense) {
+        novaCota = 'GRUPO K';
+      }
+      // Grupos do Amazonas (F, G, H, I, J)
+      else if (dadosCotas.amazonense) {
+        // GRUPO J - Indígenas AM
+        if (dadosCotas.indigena) {
+          novaCota = 'GRUPO J';
+        }
+        // GRUPO I - Pretos AM
+        else if (dadosCotas.preto) {
+          novaCota = 'GRUPO I';
+        }
+        // GRUPO H - PCD AM
+        else if (dadosCotas.pcd) {
+          novaCota = 'GRUPO H';
+        }
+        // GRUPO F - Escola Pública AM
+        else if (dadosCotas.escolaPublica) {
+          novaCota = 'GRUPO F';
+        }
+        // GRUPO G - Qualquer Escola AM
+        else {
+          novaCota = 'GRUPO G';
+        }
+      }
+      // Grupos Gerais (A, B, C, D, E)
+      else {
+        // GRUPO E - Indígenas (Geral)
+        if (dadosCotas.indigena) {
+          novaCota = 'GRUPO E';
+        }
+        // GRUPO D - Pretos (Geral)
+        else if (dadosCotas.preto) {
+          novaCota = 'GRUPO D';
+        }
+        // GRUPO C - PCD (Geral)
+        else if (dadosCotas.pcd) {
+          novaCota = 'GRUPO C';
+        }
+        // GRUPO A - Escola Pública (Geral)
+        else if (dadosCotas.escolaPublica) {
+          novaCota = 'GRUPO A';
+        }
+        // GRUPO B - Qualquer Escola (Geral)
+        else {
+          novaCota = 'GRUPO B';
+        }
+      }
+    } else if (processoSelecionado === 'ENEM') {
       if (dadosCotas.pcd) {
         novaCota = 'PCD';
       } else if (dadosCotas.preto || dadosCotas.indigena) {
@@ -432,11 +550,14 @@ export default function CalculadoraDinamica() {
       const notaFinal = (dia1 + dia2) / 2;
       total = parseFloat(notaFinal.toFixed(3));
     } else if (processoSelecionado === 'SIS') {
-      const resultado = (notas['SIS 1'] || 0) * 10 + 
-                       (notas['SIS 2'] || 0) * 10 + 
-                       (notas['Redação SIS 2'] || 0) * 50 + 
-                       (notas['SIS 3'] || 0) * 10 + 
-                       (notas['Redação SIS 3'] || 0) * 50;
+      // SIS: 3 provas de 60 questões (1 ponto cada) + 2 redações (0-10 com peso 2)
+      const prova1 = notas['SIS 1'] || 0; // 0-60 pontos
+      const prova2 = notas['SIS 2'] || 0; // 0-60 pontos
+      const prova3 = notas['SIS 3'] || 0; // 0-60 pontos
+      const redacao2 = (notas['Redação SIS 2'] || 0) * 2; // 0-10 * peso 2 = 0-20 pontos
+      const redacao3 = (notas['Redação SIS 3'] || 0) * 2; // 0-10 * peso 2 = 0-20 pontos
+      
+      const resultado = prova1 + prova2 + prova3 + redacao2 + redacao3;
       total = parseFloat(resultado.toFixed(3));
     } else if (processoSelecionado === 'ENEM') {
       const somaNotas = Object.values(notas).reduce((acc, nota) => acc + (nota || 0), 0);
@@ -463,6 +584,7 @@ export default function CalculadoraDinamica() {
       let notaCorte = 0;
       let turno: string | undefined = undefined;
       let cidade: string | undefined = undefined;
+      let campus: string | undefined = undefined;
       
       // Para MACRO, obter dados detalhados incluindo turno e cidade
       if (processoSelecionado === 'MACRO') {
@@ -471,6 +593,15 @@ export default function CalculadoraDinamica() {
           notaCorte = dadosMacro.nota;
           turno = dadosMacro.turno;
           cidade = dadosMacro.cidade;
+        }
+      } 
+      // Para SIS, obter dados detalhados incluindo turno e campus
+      else if (processoSelecionado === 'SIS') {
+        const dadosSis = obterDadosSis(curso, cotaDeterminada);
+        if (dadosSis) {
+          notaCorte = dadosSis.nota;
+          turno = dadosSis.turno;
+          campus = dadosSis.campus;
         }
       } else {
         // Para outros processos, usar o mapa existente
@@ -488,7 +619,8 @@ export default function CalculadoraDinamica() {
         aprovado,
         percentual,
         turno,
-        cidade
+        cidade,
+        campus
       };
     });
     
@@ -522,10 +654,15 @@ export default function CalculadoraDinamica() {
     if (campo.includes('PSC')) {
       numero = Math.min(54, Math.max(0, Math.round(numero)));
     }
-    // Validação específica para redação - PSC: 9, MACRO: 28
+    // Validação específica para redação
     else if (campo.includes('Redação')) {
-      const maxRedacao = campo.includes('(0-28)') ? 28 : 9;
-      numero = Math.min(maxRedacao, Math.max(0, numero));
+      if (campo.includes('(0-28)')) {
+        numero = Math.min(28, Math.max(0, numero)); // MACRO
+      } else if (campo.includes('SIS')) {
+        numero = Math.min(10, Math.max(0, numero)); // SIS
+      } else {
+        numero = Math.min(9, Math.max(0, numero)); // PSC
+      }
     }
     // Validação específica para campos MACRO
     else if (campo.includes('Dia 1')) {
@@ -533,6 +670,10 @@ export default function CalculadoraDinamica() {
     }
     else if (campo.includes('Dia 2')) {
       numero = Math.min(36, Math.max(0, numero));
+    }
+    // Validação específica para campos SIS
+    else if (campo.includes('SIS')) {
+      numero = Math.min(60, Math.max(0, Math.round(numero)));
     }
     
     setNotas(prev => ({ ...prev, [campo]: numero }));
@@ -601,7 +742,7 @@ export default function CalculadoraDinamica() {
           <div className="mb-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {PROCESSOS.map(processo => {
-                const isDisabled = processo !== 'PSC' && processo !== 'MACRO';
+                const isDisabled = processo === 'ENEM';
                 return (
                   <button
                     key={processo}
@@ -621,9 +762,7 @@ export default function CalculadoraDinamica() {
                     }`}
                   >
                     {isDisabled && <Lock className="w-4 h-4 mr-2" />}
-                    {processo === 'SIS' ? 'SIS (Em breve)' : 
-                     processo === 'ENEM' ? 'ENEM (Em breve)' : 
-                     processo}
+                    {processo === 'ENEM' ? 'ENEM (Em breve)' : processo}
                   </button>
                 );
               })}
@@ -638,8 +777,8 @@ export default function CalculadoraDinamica() {
             </h3>
             
             <div className="space-y-4">
-              {/* Campos específicos do MACRO */}
-              {processoSelecionado === 'MACRO' && (
+              {/* Campos específicos do MACRO e SIS */}
+              {(processoSelecionado === 'MACRO' || processoSelecionado === 'SIS') && (
                 <div className="space-y-3 pb-4 border-b border-gray-200">
                   {/* Amazonense */}
                   <label className="flex items-center space-x-3 p-3 bg-white rounded-lg hover:bg-green-50 transition-colors cursor-pointer">
@@ -671,16 +810,18 @@ export default function CalculadoraDinamica() {
                     </label>
                   )}
 
-                  {/* Portador de Diploma */}
-                  <label className="flex items-center space-x-3 p-3 bg-white rounded-lg hover:bg-green-50 transition-colors cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={dadosCotas.portadorDiploma}
-                      onChange={(e) => setDadosCotas({...dadosCotas, portadorDiploma: e.target.checked})}
-                      className="w-5 h-5 text-green-600 rounded focus:ring-green-500"
-                    />
-                    <span className="text-gray-700 font-medium">Possuo diploma de graduação</span>
-                  </label>
+                  {/* Portador de Diploma - apenas MACRO */}
+                  {processoSelecionado === 'MACRO' && (
+                    <label className="flex items-center space-x-3 p-3 bg-white rounded-lg hover:bg-green-50 transition-colors cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={dadosCotas.portadorDiploma}
+                        onChange={(e) => setDadosCotas({...dadosCotas, portadorDiploma: e.target.checked})}
+                        className="w-5 h-5 text-green-600 rounded focus:ring-green-500"
+                      />
+                      <span className="text-gray-700 font-medium">Possuo diploma de graduação</span>
+                    </label>
+                  )}
                 </div>
               )}
 
@@ -723,7 +864,7 @@ export default function CalculadoraDinamica() {
                       className="w-5 h-5 text-green-600 rounded focus:ring-green-500"
                     />
                     <span className="text-gray-700">
-                      {processoSelecionado === 'MACRO' ? 'Preto(a)' : 'Preto(a) ou Pardo(a)'}
+                      {processoSelecionado === 'MACRO' || processoSelecionado === 'SIS' ? 'Preto(a)' : 'Preto(a) ou Pardo(a)'}
                     </span>
                   </label>
 
@@ -772,7 +913,7 @@ export default function CalculadoraDinamica() {
                 <span className="font-medium">Sua cota:</span>{' '}
                 <span className="font-bold text-green-800">{cotaDeterminada}</span>
               </p>
-              {processoSelecionado === 'PSC' && DESCRICOES_COTA[cotaDeterminada] && (
+              {(processoSelecionado === 'PSC' || processoSelecionado === 'SIS') && DESCRICOES_COTA[cotaDeterminada] && (
                 <p className="text-xs text-gray-600 mt-1">{DESCRICOES_COTA[cotaDeterminada]}</p>
               )}
             </div>
@@ -952,6 +1093,151 @@ export default function CalculadoraDinamica() {
                   />
                 </div>
               </motion.div>
+            ) : processoSelecionado === 'SIS' ? (
+              // Layout especial para SIS
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-3"
+              >
+                {/* Provas */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      SIS 1 (0-60)
+                    </label>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
+                      min="0"
+                      max="60"
+                      step="1"
+                      value={notas['SIS 1'] || ''}
+                      onChange={(e) => handleNotaChange('SIS 1', e.target.value)}
+                      onFocus={(e) => {
+                        e.target.setAttribute('readonly', 'true');
+                        setTimeout(() => {
+                          e.target.removeAttribute('readonly');
+                        }, 100);
+                      }}
+                      className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="0-60"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      SIS 2 (0-60)
+                    </label>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
+                      min="0"
+                      max="60"
+                      step="1"
+                      value={notas['SIS 2'] || ''}
+                      onChange={(e) => handleNotaChange('SIS 2', e.target.value)}
+                      onFocus={(e) => {
+                        e.target.setAttribute('readonly', 'true');
+                        setTimeout(() => {
+                          e.target.removeAttribute('readonly');
+                        }, 100);
+                      }}
+                      className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="0-60"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      SIS 3 (0-60)
+                    </label>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
+                      min="0"
+                      max="60"
+                      step="1"
+                      value={notas['SIS 3'] || ''}
+                      onChange={(e) => handleNotaChange('SIS 3', e.target.value)}
+                      onFocus={(e) => {
+                        e.target.setAttribute('readonly', 'true');
+                        setTimeout(() => {
+                          e.target.removeAttribute('readonly');
+                        }, 100);
+                      }}
+                      className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="0-60"
+                    />
+                  </div>
+                </div>
+                
+                {/* Redações */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Redação SIS 2 (0-10)
+                    </label>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
+                      min="0"
+                      max="10"
+                      step="0.1"
+                      value={notas['Redação SIS 2'] || ''}
+                      onChange={(e) => handleNotaChange('Redação SIS 2', e.target.value)}
+                      onFocus={(e) => {
+                        e.target.setAttribute('readonly', 'true');
+                        setTimeout(() => {
+                          e.target.removeAttribute('readonly');
+                        }, 100);
+                      }}
+                      className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="0.0-10.0"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Redação SIS 3 (0-10)
+                    </label>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
+                      min="0"
+                      max="10"
+                      step="0.1"
+                      value={notas['Redação SIS 3'] || ''}
+                      onChange={(e) => handleNotaChange('Redação SIS 3', e.target.value)}
+                      onFocus={(e) => {
+                        e.target.setAttribute('readonly', 'true');
+                        setTimeout(() => {
+                          e.target.removeAttribute('readonly');
+                        }, 100);
+                      }}
+                      className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="0.0-10.0"
+                    />
+                  </div>
+                </div>
+              </motion.div>
             ) : (
               // Layout normal para outros processos
               camposNota.map((campo, index) => (
@@ -1059,6 +1345,11 @@ export default function CalculadoraDinamica() {
                       {processoSelecionado === 'MACRO' && resultado.turno && resultado.cidade && (
                         <p className="text-sm text-gray-600 uppercase">
                           {resultado.turno} | {resultado.cidade}
+                        </p>
+                      )}
+                      {processoSelecionado === 'SIS' && resultado.turno && resultado.campus && (
+                        <p className="text-sm text-gray-600 uppercase">
+                          {resultado.turno} | {resultado.campus}
                         </p>
                       )}
                     </div>

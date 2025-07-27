@@ -1,0 +1,2466 @@
+[
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 142.5,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 141.5,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 141.5,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 134.7,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 132.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 132.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 121.9,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 117.2,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 115.5,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 115.5,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 114.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 114.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 112.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 108.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 105.5,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 103.6,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 103.4,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ADMINISTRAÇÃO",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 100.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 106.3,
+    "campus": "Nova Olinda",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 105.9,
+    "campus": "Maués",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 101.3,
+    "campus": "Santo Antonio do Içá",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.6,
+    "campus": "Parintins",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM DANÇA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 111.6,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM DANÇA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 104.1,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM DANÇA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 102.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM MÚSICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 151.5,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM MÚSICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 146.9,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM MÚSICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 117.7,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TEATRO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 121.6,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TEATRO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 105.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 110.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 106.6,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 105.0,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 103.2,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 103.2,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 103.2,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 101.7,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 101.7,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "BACHARELADO EM TURISMO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 101.7,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 142.7,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 138.8,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 138.8,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 134.5,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 130.8,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 123.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 123.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 110.9,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 108.9,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 108.8,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 108.8,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 108.4,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 106.9,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 106.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 106.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 106.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS CONTÁBEIS",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 100.1,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 157.9,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 142.7,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 126.1,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 126.1,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 125.4,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 125.4,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 102.3,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "CIÊNCIAS ECONÔMICAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 101.4,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 186.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 182.8,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 182.8,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 180.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 179.8,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 175.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 175.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 147.8,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 147.8,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 140.7,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 140.2,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 135.5,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 135.5,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 131.8,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 128.6,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 119.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 107.5,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 105.2,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 09 - I - Pretos AM",
+    "nota-corte": 101.4,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "DIREITO",
+    "cota": "GRUPO 09 - I - Pretos AM",
+    "nota-corte": 101.4,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 147.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 140.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 140.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 121.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 121.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 120.4,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 117.6,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 101.7,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENFERMAGEM",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 100.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 156.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 149.2,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 149.2,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 119.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 119.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 118.4,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 104.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 102.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 10 - J - Indígenas AM",
+    "nota-corte": 101.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA CIVIL",
+    "cota": "GRUPO 10 - J - Indígenas AM",
+    "nota-corte": 101.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 192.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 182.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 182.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 149.7,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 143.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 143.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 137.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 08 - H - PCD AM",
+    "nota-corte": 120.4,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 08 - H - PCD AM",
+    "nota-corte": 120.4,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 119.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA COMPUTAÇÃO",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 115.6,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 134.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 106.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 106.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 100.6,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 100.6,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DA PRODUÇÃO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.2,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 149.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 144.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 144.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 132.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 117.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 117.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE CONTROLE E AUTOMAÇÃO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 115.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 132.1,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 114.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 114.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA DE MATERIAIS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 104.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 151.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 134.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 134.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 106.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 106.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELETRÔNICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 102.6,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 154.2,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 139.2,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 139.2,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 120.9,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 101.9,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 101.9,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA ELÉTRICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 101.6,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA FLORESTAL",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 102.5,
+    "campus": "Itacoatiara",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA FLORESTAL",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 100.2,
+    "campus": "Itacoatiara",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA MECÂNICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 170.7,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA MECÂNICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 164.7,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA MECÂNICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 164.7,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA MECÂNICA",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 113.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA MECÂNICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 106.4,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA MECÂNICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 106.4,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA MECÂNICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 103.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 139.7,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 126.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 126.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 112.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 108.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 108.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 104.6,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 09 - I - Pretos AM",
+    "nota-corte": 100.9,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA NAVAL",
+    "cota": "GRUPO 09 - I - Pretos AM",
+    "nota-corte": 100.9,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA QUÍMICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 167.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA QUÍMICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 158.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA QUÍMICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 158.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA QUÍMICA",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 128.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA QUÍMICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 115.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA QUÍMICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 112.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA QUÍMICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 112.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ENGENHARIA QUÍMICA",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 110.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 128.5,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 127.2,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 126.5,
+    "campus": "Parintins",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 124.4,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 123.1,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 120.6,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 120.6,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 114.7,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 114.7,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 113.9,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 113.9,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 109.9,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 106.7,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 104.9,
+    "campus": "Parintins",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 103.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 103.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM CIÊNCIAS BIOLÓGICAS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 103.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 147.0,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 125.2,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 125.2,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 105.6,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 104.7,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 104.7,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 104.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 102.9,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM COMPUTAÇÃO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.9,
+    "campus": "Itacoatiara",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM DANÇA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 109.8,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM DANÇA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 103.3,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM DANÇA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 103.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM DANÇA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 102.4,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 120.5,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 116.9,
+    "campus": "Tefé",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 113.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 113.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 108.6,
+    "campus": "Apuí",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 108.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 105.6,
+    "campus": "Tefé",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 104.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 104.3,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 102.6,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 101.7,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.3,
+    "campus": "Tabatinga",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM EDUCAÇÃO FÍSICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.0,
+    "campus": "Manacapuru",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM FÍSICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 102.6,
+    "campus": "Parintins",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 142.3,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 121.3,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 121.3,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 115.9,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 102.5,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM GEOGRAFIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.7,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 107.1,
+    "campus": "Tefé",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 106.9,
+    "campus": "Parintins",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 100.5,
+    "campus": "Parintins",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM HISTÓRIA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 100.5,
+    "campus": "Parintins",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 140.0,
+    "campus": "Vespertino - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 127.8,
+    "campus": "Noturno - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 123.0,
+    "campus": "Vespertino - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 123.0,
+    "campus": "Vespertino - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 110.3,
+    "campus": "Vespertino - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 110.3,
+    "campus": "Vespertino - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 109.9,
+    "campus": "Matutino - Tabatinga",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 109.5,
+    "campus": "Vespertino - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 106.0,
+    "campus": "Noturno - Ipixuna",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 104.8,
+    "campus": "Vespertino - Parintins",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 104.3,
+    "campus": "Noturno - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 103.7,
+    "campus": "Noturno - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 103.7,
+    "campus": "Noturno - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 103.0,
+    "campus": "Noturno - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM LETRAS",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 103.0,
+    "campus": "Noturno - Manaus",
+    "turno": "Língua Portuguesa"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 130.7,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 129.7,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 119.8,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 119.8,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 107.5,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 106.8,
+    "campus": "Parintins",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 106.1,
+    "campus": "Parintins",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 104.9,
+    "campus": "Manaus",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 103.5,
+    "campus": "Tabatinga",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 100.7,
+    "campus": "Parintins",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM MATEMÁTICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.6,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 145.1,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 119.1,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 117.0,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 117.0,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 107.5,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 106.8,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 106.0,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 105.8,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 105.8,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 101.2,
+    "campus": "Manaus",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 100.6,
+    "campus": "Manaus",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM PEDAGOGIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.0,
+    "campus": "Parintins",
+    "turno": "Noturno"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 113.0,
+    "campus": "Tefé",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM QUÍMICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 111.3,
+    "campus": "Parintins",
+    "turno": "Vespertino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "LICENCIATURA EM TEATRO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 101.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 195.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 192.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 192.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 174.2,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 166.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 165.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 165.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 157.7,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 133.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 09 - I - Pretos AM",
+    "nota-corte": 126.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 09 - I - Pretos AM",
+    "nota-corte": 126.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 05 - E - Indígenas (Geral)",
+    "nota-corte": 116.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 08 - H - PCD AM",
+    "nota-corte": 102.9,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 08 - H - PCD AM",
+    "nota-corte": 102.9,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 10 - J - Indígenas AM",
+    "nota-corte": 101.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "MEDICINA",
+    "cota": "GRUPO 10 - J - Indígenas AM",
+    "nota-corte": 101.1,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "METEOROLOGIA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 117.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "METEOROLOGIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.4,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 165.6,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 158.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 158.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 128.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 125.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 125.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 124.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 03 - C - PCD (Geral)",
+    "nota-corte": 114.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "ODONTOLOGIA",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 106.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 170.9,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 168.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 07 - G - Qualquer Escola AM",
+    "nota-corte": 168.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 137.8,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 04 - D - Pretos (Geral)",
+    "nota-corte": 134.3,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 133.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 06 - F - Escola Pública AM",
+    "nota-corte": 133.0,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 11 - K - Interior AM",
+    "nota-corte": 115.7,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 09 - I - Pretos AM",
+    "nota-corte": 107.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "SISTEMAS DE INFORMAÇÃO",
+    "cota": "GRUPO 09 - I - Pretos AM",
+    "nota-corte": 107.5,
+    "campus": "Manaus",
+    "turno": "Integral"
+  },
+  {
+    "processo": "SIS",
+    "curso": "TECNOLOGIA EM GESTÃO HOSPITALAR",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 114.2,
+    "campus": "Humaitá",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 105.3,
+    "campus": "Humaitá",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "cota": "GRUPO 02 - B - Qualquer Escola (Geral)",
+    "nota-corte": 103.5,
+    "campus": "Humaitá",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 102.7,
+    "campus": "Tabatinga",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "TECNOLOGIA EM LOGÍSTICA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 100.8,
+    "campus": "Itacoatiara",
+    "turno": "Matutino"
+  },
+  {
+    "processo": "SIS",
+    "curso": "TECNOLOGIA EM PRODUÇÃO PESQUEIRA",
+    "cota": "GRUPO 01 - A - Escola Pública (Geral)",
+    "nota-corte": 109.3,
+    "campus": "Careiro Castanho",
+    "turno": "Noturno"
+  }
+]

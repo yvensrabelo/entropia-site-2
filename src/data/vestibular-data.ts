@@ -38,7 +38,19 @@ export const DESCRICOES_COTA: Record<string, string> = {
   'Negros': 'Negros/Pardos',
   'Indígenas': 'Indígenas',
   'PCD': 'Pessoa com Deficiência',
-  'PPI': 'Pretos, Pardos e Indígenas'
+  'PPI': 'Pretos, Pardos e Indígenas',
+  // Grupos SIS
+  'GRUPO A': 'Estudantes de Escola Pública (Geral)',
+  'GRUPO B': 'Estudantes de Escola de Qualquer Natureza (Geral)',
+  'GRUPO C': 'Pessoas com Deficiência - PCD (Geral)',
+  'GRUPO D': 'Pessoas Pretas (Geral)',
+  'GRUPO E': 'Pessoas Indígenas (Geral)',
+  'GRUPO F': 'Estudantes de Escola Pública do Amazonas',
+  'GRUPO G': 'Estudantes de Escola de Qualquer Natureza do Amazonas',
+  'GRUPO H': 'Pessoas com Deficiência - PCD do Amazonas',
+  'GRUPO I': 'Pessoas Pretas do Amazonas',
+  'GRUPO J': 'Pessoas Indígenas do Amazonas',
+  'GRUPO K': 'Estudantes do Interior do Amazonas'
 };
 
 // Campos de nota por processo
