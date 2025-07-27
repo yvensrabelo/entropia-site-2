@@ -74,14 +74,22 @@ const criarNotasMap = () => {
     if (!map[item.processo]) map[item.processo] = {};
     if (!map[item.processo][item.cota]) map[item.processo][item.cota] = {};
     
+    // Debug para Engenharia de Software AC
+    if (item.curso === 'ENGENHARIA DE SOFTWARE' && item.cota === 'AC' && item.processo === 'PSC') {
+      console.log('Processando Engenharia de Software AC:', item);
+    }
+    
     // Para PSC, usar a maior nota se já existe entrada para o curso
     if (!map[item.processo][item.cota][item.curso]) {
       map[item.processo][item.cota][item.curso] = item.nota;
     } else {
-      map[item.processo][item.cota][item.curso] = Math.max(
-        map[item.processo][item.cota][item.curso],
-        item.nota
-      );
+      const notaAnterior = map[item.processo][item.cota][item.curso];
+      map[item.processo][item.cota][item.curso] = Math.max(notaAnterior, item.nota);
+      
+      // Debug adicional
+      if (item.curso === 'ENGENHARIA DE SOFTWARE' && item.cota === 'AC' && item.processo === 'PSC') {
+        console.log('Duplicata encontrada:', { anterior: notaAnterior, nova: item.nota, final: map[item.processo][item.cota][item.curso] });
+      }
     }
   });
   
@@ -128,6 +136,9 @@ const criarNotasMap = () => {
       );
     }
   });
+  
+  // Debug final
+  console.log('Valor final de Engenharia de Software AC no mapa:', map['PSC']?.['AC']?.['ENGENHARIA DE SOFTWARE']);
   
   return map;
 };
@@ -615,6 +626,16 @@ export default function CalculadoraDinamica() {
       } else {
         // Para outros processos, usar o mapa existente
         notaCorte = notasMap[processoSelecionado]?.[cotaDeterminada]?.[curso] || 0;
+        
+        // Debug temporário para Engenharia de Software
+        if (curso === 'ENGENHARIA DE SOFTWARE' && cotaDeterminada === 'AC' && processoSelecionado === 'PSC') {
+          console.log('Debug Engenharia de Software AC:', {
+            notaCorte,
+            processo: processoSelecionado,
+            cota: cotaDeterminada,
+            valorNoMapa: notasMap[processoSelecionado]?.[cotaDeterminada]?.[curso]
+          });
+        }
       }
       
       const diferenca = notaTotal - notaCorte;
