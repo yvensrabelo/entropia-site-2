@@ -73,7 +73,16 @@ const criarNotasMap = () => {
   notasDeCorte.forEach((item: any) => {
     if (!map[item.processo]) map[item.processo] = {};
     if (!map[item.processo][item.cota]) map[item.processo][item.cota] = {};
-    map[item.processo][item.cota][item.curso] = item.nota;
+    
+    // Para PSC, usar a maior nota se já existe entrada para o curso
+    if (!map[item.processo][item.cota][item.curso]) {
+      map[item.processo][item.cota][item.curso] = item.nota;
+    } else {
+      map[item.processo][item.cota][item.curso] = Math.max(
+        map[item.processo][item.cota][item.curso],
+        item.nota
+      );
+    }
   });
   
   // Processar MACRO com novo formato
