@@ -11,15 +11,10 @@ export default function LandingIntroMinimal({ onComplete }: Props) {
   const [show, setShow] = useState(true);
   const [mounted, setMounted] = useState(false);
 
-  // Check localStorage after mount
+  // Mount effect
   useEffect(() => {
     setMounted(true);
-    const introSeen = localStorage.getItem("intro_minimal_seen") === "1";
-    if (introSeen) {
-      setShow(false);
-      onComplete?.();
-    }
-  }, [onComplete]);
+  }, []);
 
   // Auto-hide after animation
   useEffect(() => {
@@ -31,9 +26,6 @@ export default function LandingIntroMinimal({ onComplete }: Props) {
   }, [show, mounted]);
 
   function finish() {
-    try {
-      localStorage.setItem("intro_minimal_seen", "1");
-    } catch {}
     setShow(false);
     onComplete?.();
   }
