@@ -78,6 +78,7 @@ export default function LandingIntro({ onComplete, autoHideMs = 4000 }: Props) {
     }));
 
     function draw() {
+      if (!ctx) return;
       ctx.clearRect(0, 0, w, h);
       for (const p of particles) {
         p.x += p.vx;
@@ -95,6 +96,7 @@ export default function LandingIntro({ onComplete, autoHideMs = 4000 }: Props) {
     }
 
     const onResize = () => {
+      if (!ctx) return;
       w = window.innerWidth;
       h = window.innerHeight;
       canvas.width = w * DPR;
@@ -314,6 +316,7 @@ function FloatingIcon({
     const el = ref.current;
     if (!el) return;
     function onMove(e: MouseEvent) {
+      if (!el) return;
       const { innerWidth: w, innerHeight: h } = window;
       const dx = (e.clientX / w - 0.5) * 10 * depth * (reverse ? -1 : 1);
       const dy = (e.clientY / h - 0.5) * 10 * depth * (reverse ? -1 : 1);
