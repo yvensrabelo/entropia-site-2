@@ -9,10 +9,8 @@ type Props = {
 };
 
 export default function LandingIntro({ onComplete, autoHideMs = 4000 }: Props) {
-  const [show, setShow] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return localStorage.getItem("intro_seen") !== "1";
-  });
+  const [show, setShow] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const prefersReduced =
     typeof window !== "undefined" &&
     window.matchMedia &&
@@ -22,9 +20,19 @@ export default function LandingIntro({ onComplete, autoHideMs = 4000 }: Props) {
   const particlesRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number | null>(null);
 
+  // Check localStorage after mount
+  useEffect(() => {
+    setMounted(true);
+    const introSeen = localStorage.getItem("intro_seen") === "1";
+    if (introSeen) {
+      setShow(false);
+      onComplete?.();
+    }
+  }, [onComplete]);
+
   // Auto-hide
   useEffect(() => {
-    if (!show) return;
+    if (!show || !mounted) return;
     if (prefersReduced) {
       timerRef.current = window.setTimeout(finish, 1800);
     } else {
@@ -34,7 +42,7 @@ export default function LandingIntro({ onComplete, autoHideMs = 4000 }: Props) {
       if (timerRef.current) window.clearTimeout(timerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show]);
+  }, [show, mounted]);
 
   // Finish helper
   function finish() {
@@ -54,7 +62,7 @@ export default function LandingIntro({ onComplete, autoHideMs = 4000 }: Props) {
 
   // Particles
   useEffect(() => {
-    if (!show) return;
+    if (!show || !mounted) return;
     const canvas = particlesRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -123,7 +131,7 @@ export default function LandingIntro({ onComplete, autoHideMs = 4000 }: Props) {
       document.removeEventListener("visibilitychange", onVis);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [show]);
+  }, [show, mounted]);
 
   const stagger = prefersReduced ? 0.04 : 0.12;
 
@@ -135,6 +143,11 @@ export default function LandingIntro({ onComplete, autoHideMs = 4000 }: Props) {
       transition: { delay: 0.4 + i * stagger, duration: prefersReduced ? 0.2 : 0.5, ease: "easeOut" },
     }),
   };
+
+  // Avoid hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
