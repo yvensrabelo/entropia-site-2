@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import CalculadoraDinamicaDark from '@/components/CalculadoraDinamicaDark'
+import CalculadoraDinamica from '@/components/CalculadoraDinamica'
 import LandingIntroDark from '@/components/LandingIntroDark'
 import Layout from '@/components/Layout'
 
@@ -45,7 +45,9 @@ export default function CalculadoraPage() {
       {introComplete && (
         <main className="min-h-screen bg-[#0d0d0d]">
           <div className="container mx-auto px-4 py-8">
-            <CalculadoraDinamicaDark />
+            <div className="calculadora-dark">
+              <CalculadoraDinamica />
+            </div>
           </div>
         </main>
       )}

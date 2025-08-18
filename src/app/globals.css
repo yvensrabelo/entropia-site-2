@@ -44,6 +44,150 @@ html {
   scroll-padding-top: 80px; /* Compensar altura da navbar */
 }
 
+/* Dark theme para calculadora - Design moderno */
+.calculadora-dark {
+  background: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+  min-height: 100vh;
+}
+
+/* Backgrounds principais - tons mais suaves */
+.calculadora-dark .bg-white {
+  background: linear-gradient(145deg, #1a1a1a 0%, #222222 100%) !important;
+  border: 1px solid rgba(104, 160, 99, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.calculadora-dark .bg-gray-50 {
+  background: linear-gradient(135deg, #0f0f0f 0%, #181818 100%) !important;
+}
+
+.calculadora-dark .bg-gray-100 {
+  background: linear-gradient(145deg, #181818 0%, #202020 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.03) !important;
+}
+
+/* Textos - tons mais suaves */
+.calculadora-dark .text-gray-900 {
+  color: #e0e0e0 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.calculadora-dark .text-gray-800 {
+  color: #d0d0d0 !important;
+}
+
+.calculadora-dark .text-gray-700 {
+  color: #b8b8b8 !important;
+}
+
+.calculadora-dark .text-gray-600 {
+  color: #999999 !important;
+}
+
+.calculadora-dark .text-gray-500 {
+  color: #808080 !important;
+}
+
+.calculadora-dark .text-gray-400 {
+  color: #6b6b6b !important;
+}
+
+.calculadora-dark .text-white {
+  color: #e8e8e8 !important;
+}
+
+/* Borders modernos */
+.calculadora-dark .border-gray-200 {
+  border-color: rgba(104, 160, 99, 0.2) !important;
+}
+
+.calculadora-dark .border-gray-300 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.calculadora-dark .border-gray-100 {
+  border-color: rgba(104, 160, 99, 0.15) !important;
+}
+
+/* Verde moderno - tons mais suaves */
+.calculadora-dark .bg-green-600 {
+  background: linear-gradient(135deg, #5a9155 0%, #68a063 100%) !important;
+  box-shadow: 0 3px 12px rgba(104, 160, 99, 0.25) !important;
+}
+
+.calculadora-dark .text-green-600 {
+  color: #6fa56a !important;
+  text-shadow: 0 0 8px rgba(111, 165, 106, 0.2) !important;
+}
+
+.calculadora-dark .bg-green-50 {
+  background: linear-gradient(135deg, rgba(104, 160, 99, 0.08) 0%, rgba(111, 165, 106, 0.04) 100%) !important;
+  border: 1px solid rgba(104, 160, 99, 0.15) !important;
+}
+
+.calculadora-dark .text-green-800 {
+  color: #7ab075 !important;
+}
+
+/* Inputs modernos - tons mais suaves */
+.calculadora-dark input {
+  background: linear-gradient(145deg, #1c1c1c 0%, #252525 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #d8d8d8 !important;
+  transition: all 0.3s ease !important;
+}
+
+.calculadora-dark input:focus {
+  background: linear-gradient(145deg, #202020 0%, #282828 100%) !important;
+  border-color: #5a9155 !important;
+  box-shadow: 0 0 15px rgba(90, 145, 85, 0.2) !important;
+}
+
+.calculadora-dark input::placeholder {
+  color: #757575 !important;
+}
+
+/* Botões modernos - efeitos mais suaves */
+.calculadora-dark button {
+  transition: all 0.3s ease !important;
+}
+
+.calculadora-dark button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(90, 145, 85, 0.3) !important;
+}
+
+/* Cards com glassmorphism */
+.calculadora-dark .rounded-lg,
+.calculadora-dark .rounded-xl {
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* Efeitos de hover modernos */
+.calculadora-dark .hover\:bg-gray-50:hover {
+  background: linear-gradient(145deg, #252525 0%, #303030 100%) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Scrollbars modernos */
+.calculadora-dark ::-webkit-scrollbar {
+  width: 8px !important;
+}
+
+.calculadora-dark ::-webkit-scrollbar-track {
+  background: #1a1a1a !important;
+}
+
+.calculadora-dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #68a063 0%, #7cb377 100%) !important;
+  border-radius: 4px !important;
+}
+
+.calculadora-dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #7cb377 0%, #90d08a 100%) !important;
+}
+
 /* Estilos específicos para o seletor de séries estilo Descomplica */
 .tab-gradient {
   background: linear-gradient(

@@ -110,7 +110,7 @@ export default function LandingIntroDark({ onComplete }: Props) {
                 ease: "easeOut"
               }}
               style={{
-                background: 'radial-gradient(circle, #8cc84b, transparent)',
+                background: 'radial-gradient(circle, #68a063, transparent)',
               }}
             />
 

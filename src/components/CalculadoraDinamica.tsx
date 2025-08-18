@@ -720,22 +720,6 @@ export default function CalculadoraDinamica() {
 
   return (
     <div className={`w-full max-w-7xl mx-auto ${resultadosPorCurso.length > 0 ? 'pb-20 md:pb-0' : ''}`}>
-      {/* Desenvolvido por - Topo */}
-      <div className="w-full py-1.5 text-center bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
-        <div className="relative inline-block">
-          {/* Texto principal - sem quebra de linha */}
-          <h1 className="text-[10px] sm:text-[11px] font-cinzel font-bold tracking-[0.15em] sm:tracking-[0.3em] bg-gradient-to-r from-gray-400 via-gray-600 to-gray-400 bg-clip-text text-transparent uppercase whitespace-nowrap">
-            DESENVOLVIDO POR YVENS RABELO
-          </h1>
-          
-          {/* Linha decorativa abaixo */}
-          <div className="mt-0.5 flex items-center justify-center gap-2">
-            <div className="h-px w-8 bg-gradient-to-r from-transparent to-gray-400"></div>
-            <div className="w-0.5 h-0.5 bg-gray-400 rounded-full"></div>
-            <div className="h-px w-8 bg-gradient-to-l from-transparent to-gray-400"></div>
-          </div>
-        </div>
-      </div>
       {/* Header - removido conforme solicitado */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
@@ -1442,22 +1426,6 @@ export default function CalculadoraDinamica() {
         </p>
       </motion.div>
 
-      {/* Crédito no final da página */}
-      <div className="w-full py-8 text-center bg-gradient-to-t from-gray-50 to-white border-t border-gray-100 mt-12">
-        <div className="relative inline-block">
-          {/* Texto principal - sem quebra de linha */}
-          <h1 className="text-[10px] sm:text-[11px] font-cinzel font-bold tracking-[0.15em] sm:tracking-[0.3em] bg-gradient-to-r from-gray-400 via-gray-600 to-gray-400 bg-clip-text text-transparent uppercase whitespace-nowrap">
-            DESENVOLVIDO POR YVENS RABELO
-          </h1>
-          
-          {/* Linha decorativa abaixo */}
-          <div className="mt-1 flex items-center justify-center gap-2">
-            <div className="h-px w-8 bg-gradient-to-r from-transparent to-gray-400"></div>
-            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-            <div className="h-px w-8 bg-gradient-to-l from-transparent to-gray-400"></div>
-          </div>
-        </div>
-      </div>
 
       {/* Navbar móvel */}
       <MobileNavbar 
