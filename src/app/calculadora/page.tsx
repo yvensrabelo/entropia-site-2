@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import CalculadoraDinamica from '@/components/CalculadoraDinamica'
-import LandingIntro from '@/components/LandingIntro'
+import LandingIntroMinimal from '@/components/LandingIntroMinimal'
 import Layout from '@/components/Layout'
 
 export default function CalculadoraPage() {
@@ -31,7 +31,7 @@ export default function CalculadoraPage() {
   return (
     <>
       {!introComplete && (
-        <LandingIntro onComplete={() => setIntroComplete(true)} />
+        <LandingIntroMinimal onComplete={() => setIntroComplete(true)} />
       )}
       {introComplete && (
         <Layout>
