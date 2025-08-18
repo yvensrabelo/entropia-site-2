@@ -64,21 +64,39 @@ export default function CalculadoraDinamicaDark() {
   // Cálculo da nota final
   const notaFinal = useMemo(() => {
     if (processoSelecionado === 'ENEM') {
-      const valores = Object.values(notas).map(n => parseFloat(n) || 0);
-      if (valores.length === 5) {
-        return valores.reduce((a, b) => a + b, 0) / 5;
+      const linguagens = parseFloat(notas['Linguagens'] || '0');
+      const humanas = parseFloat(notas['Humanas'] || '0');
+      const natureza = parseFloat(notas['Natureza'] || '0');
+      const matematica = parseFloat(notas['Matemática'] || '0');
+      const redacao = parseFloat(notas['Redação'] || '0');
+      
+      if (linguagens && humanas && natureza && matematica && redacao) {
+        return (linguagens + humanas + natureza + matematica + redacao) / 5;
       }
+      return 0;
     } else if (processoSelecionado === 'SIS') {
-      const etapa1 = (parseFloat(notas['Conhecimentos Gerais 1'] || '0') * 2) +
-                     (parseFloat(notas['Conhecimentos Específicos 1'] || '0') * 1.5) +
-                     (parseFloat(notas['Redação 1'] || '0') * 0.5);
-      const etapa2 = (parseFloat(notas['Conhecimentos Gerais 2'] || '0') * 2) +
-                     (parseFloat(notas['Conhecimentos Específicos 2'] || '0') * 1.5) +
-                     (parseFloat(notas['Redação 2'] || '0') * 0.5);
-      return etapa1 + etapa2;
-    } else {
-      return Object.values(notas).reduce((sum, nota) => sum + (parseFloat(nota) || 0), 0);
+      const sis1 = parseFloat(notas['SIS 1'] || '0');
+      const sis2 = parseFloat(notas['SIS 2'] || '0');
+      const redacaoSis2 = parseFloat(notas['Redação SIS 2'] || '0');
+      const sis3 = parseFloat(notas['SIS 3'] || '0');
+      const redacaoSis3 = parseFloat(notas['Redação SIS 3'] || '0');
+      
+      return sis1 + sis2 + redacaoSis2 + sis3 + redacaoSis3;
+    } else if (processoSelecionado === 'PSC') {
+      const psc1 = parseFloat(notas['PSC 1'] || '0');
+      const psc2 = parseFloat(notas['PSC 2'] || '0');
+      const psc3 = parseFloat(notas['PSC 3'] || '0');
+      const redacao = parseFloat(notas['Redação'] || '0');
+      
+      return psc1 + psc2 + psc3 + redacao;
+    } else if (processoSelecionado === 'MACRO') {
+      const dia1 = parseFloat(notas['Dia 1 (0-84)'] || '0');
+      const dia2 = parseFloat(notas['Dia 2 (0-36)'] || '0');
+      const redacao = parseFloat(notas['Redação (0-28)'] || '0');
+      
+      return dia1 + dia2 + redacao;
     }
+    return 0;
   }, [notas, processoSelecionado]);
 
   // Buscar notas de corte
@@ -180,19 +198,21 @@ export default function CalculadoraDinamicaDark() {
             {/* Campos de Nota */}
             <div className="space-y-4 mb-6">
               {CAMPOS_POR_PROCESSO[processoSelecionado].map((campo) => (
-                <div key={campo}>
+                <div key={campo.label}>
                   <label className="block text-gray-400 text-sm mb-2 font-mono">
-                    {campo}
+                    {campo.label}
                   </label>
                   <input
                     type="number"
                     inputMode="decimal"
-                    value={notas[campo] || ''}
+                    value={notas[campo.label] || ''}
                     onChange={(e) => setNotas(prev => ({
                       ...prev,
-                      [campo]: e.target.value
+                      [campo.label]: e.target.value
                     }))}
                     placeholder="0.00"
+                    min={campo.min}
+                    max={campo.max}
                     className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:border-[#68a063] focus:outline-none focus:ring-1 focus:ring-[#68a063]/50"
                   />
                 </div>
