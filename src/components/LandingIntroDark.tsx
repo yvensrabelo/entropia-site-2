@@ -174,32 +174,37 @@ export default function LandingIntroDark({ onComplete }: Props) {
               {/* Title with typewriter effect */}
               <div className="mt-12 mb-4">
                 <h1 className="font-mono text-3xl font-light text-white tracking-tight">
-                  <motion.span
-                    className="block overflow-hidden whitespace-nowrap mx-auto typewriter-line1"
+                  <motion.div
+                    className="overflow-hidden"
                     initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ delay: 0.6, duration: 0.8, ease: "steps(20)" }}
-                    style={{
-                      borderRight: '2px solid #68a063'
-                    }}
+                    animate={{ width: "auto" }}
+                    transition={{ delay: 0.6, duration: 0.8, ease: "linear" }}
                   >
-                    Calculadora
-                  </motion.span>
-                  <motion.span
-                    className="block overflow-hidden whitespace-nowrap mx-auto typewriter-line2 mt-2"
+                    <span className="inline-block whitespace-nowrap typewriter-line1"
+                      style={{
+                        borderRight: '2px solid #68a063',
+                        paddingRight: '2px'
+                      }}
+                    >
+                      Calculadora
+                    </span>
+                  </motion.div>
+                  <motion.div
+                    className="overflow-hidden mt-2"
                     initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ delay: 1.4, duration: 0.8, ease: "steps(20)" }}
-                    style={{
-                      borderRight: '2px solid #68a063'
-                    }}
+                    animate={{ width: "auto" }}
+                    transition={{ delay: 1.4, duration: 0.8, ease: "linear" }}
                   >
-                    <span className="text-green-600 font-semibold" style={{
-                      textShadow: '0 0 30px rgba(104, 160, 99, 0.5)'
-                    }}>
+                    <span className="inline-block whitespace-nowrap typewriter-line2 text-green-600 font-semibold"
+                      style={{
+                        textShadow: '0 0 30px rgba(104, 160, 99, 0.5)',
+                        borderRight: '2px solid #68a063',
+                        paddingRight: '2px'
+                      }}
+                    >
                       ENTROPIA
                     </span>
-                  </motion.span>
+                  </motion.div>
                 </h1>
               </div>
 
