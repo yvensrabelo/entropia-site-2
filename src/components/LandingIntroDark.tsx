@@ -51,7 +51,7 @@ export default function LandingIntroDark({ onComplete }: Props) {
       setShow(false);
       setIsExiting(false);
       onComplete?.();
-    }, 1000);
+    }, 1200);
   };
 
   const handleReopen = () => {
@@ -67,11 +67,22 @@ export default function LandingIntroDark({ onComplete }: Props) {
       <AnimatePresence>
         {show && (
           <motion.div
-            className={`fixed inset-0 z-[9999] grid place-items-center overflow-hidden ${
-              isExiting ? 'portal-exit' : ''
-            }`}
+            className="fixed inset-0 z-[9999] grid place-items-center overflow-hidden"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            animate={isExiting ? {
+              scale: 8,
+              opacity: 0,
+              filter: "blur(15px)"
+            } : {
+              scale: 1,
+              opacity: 1,
+              filter: "blur(0px)"
+            }}
+            transition={isExiting ? {
+              duration: 1,
+              ease: [0.4, 0, 0.6, 1]
+            } : {}}
             style={{
               background: 'radial-gradient(ellipse at center, #1a1a1a 0%, #0d0d0d 100%)',
             }}
@@ -84,32 +95,55 @@ export default function LandingIntroDark({ onComplete }: Props) {
             />
 
             {/* Center light effect */}
-            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full pointer-events-none ${
-              isExiting ? 'animate-light-expand' : 'opacity-0'
-            }`}
+            <motion.div 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full pointer-events-none"
+              initial={{ scale: 1, opacity: 0 }}
+              animate={isExiting ? {
+                scale: [1, 30, 100],
+                opacity: [0, 0.8, 0]
+              } : {
+                scale: 1,
+                opacity: 0
+              }}
+              transition={{
+                duration: 1,
+                ease: "easeOut"
+              }}
               style={{
                 background: 'radial-gradient(circle, #8cc84b, transparent)',
               }}
             />
 
             {/* Portal rings */}
-            <div className={`absolute inset-0 grid place-items-center pointer-events-none ${
-              isExiting ? 'opacity-100' : 'opacity-0'
-            }`}>
+            <motion.div 
+              className="absolute inset-0 grid place-items-center pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isExiting ? 1 : 0 }}
+            >
               {[100, 200, 300].map((size, index) => (
-                <div
+                <motion.div
                   key={index}
-                  className={`absolute border-2 border-green-600 rounded-full ${
-                    isExiting ? 'animate-ring-expand' : 'opacity-0'
-                  }`}
+                  className="absolute border-2 border-green-600 rounded-full"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={isExiting ? {
+                    scale: [0, 2.5],
+                    opacity: [0, 0.5, 0]
+                  } : {
+                    scale: 0,
+                    opacity: 0
+                  }}
+                  transition={{
+                    duration: 1,
+                    delay: index * 0.15,
+                    ease: "easeOut"
+                  }}
                   style={{
                     width: `${size}px`,
                     height: `${size}px`,
-                    animationDelay: `${index * 0.15}s`,
                   }}
                 />
               ))}
-            </div>
+            </motion.div>
 
             {/* Skip button */}
             <motion.button
@@ -259,57 +293,6 @@ export default function LandingIntroDark({ onComplete }: Props) {
       )}
 
       <style jsx>{`
-        @keyframes animate-light-expand {
-          0% {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(1);
-          }
-          50% {
-            opacity: 0.8;
-            transform: translate(-50%, -50%) scale(30);
-          }
-          100% {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(100);
-          }
-        }
-
-        @keyframes animate-ring-expand {
-          0% {
-            transform: scale(0);
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.5;
-          }
-          100% {
-            transform: scale(2.5);
-            opacity: 0;
-          }
-        }
-
-        .portal-exit {
-          animation: portal-zoom 1s cubic-bezier(0.4, 0, 0.6, 1) forwards;
-        }
-
-        @keyframes portal-zoom {
-          0% {
-            transform: scale(1);
-            opacity: 1;
-            filter: blur(0px);
-          }
-          70% {
-            transform: scale(2);
-            opacity: 1;
-            filter: blur(1px);
-          }
-          100% {
-            transform: scale(8);
-            opacity: 0;
-            filter: blur(15px);
-          }
-        }
-
         .typewriter-line1,
         .typewriter-line2 {
           animation: blink 0.8s step-end infinite;
