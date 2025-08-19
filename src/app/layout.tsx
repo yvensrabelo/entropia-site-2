@@ -84,9 +84,13 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=Inter:wght@300;500&display=swap" rel="stylesheet" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192.svg" />
+        {/* Status bar escura para mobile */}
+        <meta name="theme-color" content="#0d0d0d" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0d0d0d" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d0d0d" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="msapplication-navbutton-color" content="#0d0d0d" />
         {/* Desabilitar modo escuro */}
         <meta name="color-scheme" content="only light" />
         <meta name="supported-color-schemes" content="light" />

@@ -1,0 +1,211 @@
+/* ===== Variáveis do tema dark calculadora ===== */
+:root {
+  --calc-bg: #0d0d0d;
+  --calc-card: #1a1a1a;
+  --calc-card-border: #2a2a2a;
+  --calc-text: #ffffff;
+  --calc-text-muted: #9ca3af;
+  --calc-text-dim: #6b7280;
+  --calc-accent: #68a063;  /* Verde Entropia */
+  --calc-accent-glow: #8cc84b;
+  --calc-accent-bg: rgba(104, 160, 99, 0.1);
+  --calc-accent-border: rgba(104, 160, 99, 0.3);
+  --calc-blue: #3b82f6;
+  --calc-input-bg: #111111;
+  --calc-radius: 12px;
+}
+
+/* ===== Reset para a página da calculadora ===== */
+.calculator-page {
+  background: var(--calc-bg) !important;
+  color: var(--calc-text) !important;
+  min-height: 100vh;
+}
+
+/* ===== Card "Sua cota" - Remover verde claro ===== */
+.quota-section,
+.cota-card,
+[class*="cota"],
+[class*="quota"] {
+  background: var(--calc-card) !important;
+  border: 1px solid var(--calc-accent-border) !important;
+  border-radius: var(--calc-radius) !important;
+  padding: 1rem !important;
+  color: var(--calc-text-muted) !important;
+}
+
+.quota-section strong,
+.cota-card strong,
+[class*="cota"] strong {
+  color: var(--calc-accent) !important;
+  font-weight: 600 !important;
+}
+
+.quota-section small,
+.cota-card small {
+  color: var(--calc-text-dim) !important;
+}
+
+/* ===== Checkboxes estilizados ===== */
+input[type="checkbox"] {
+  accent-color: var(--calc-accent) !important;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+  background: var(--calc-accent) !important;
+}
+
+/* ===== Inputs de notas ===== */
+input[type="number"],
+input[type="text"],
+input[placeholder],
+.nota-input,
+[class*="input"] {
+  background: var(--calc-input-bg) !important;
+  color: var(--calc-text) !important;
+  border: 1px solid var(--calc-card-border) !important;
+  border-radius: 8px !important;
+  padding: 0.75rem !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+input:focus {
+  outline: none !important;
+  border-color: var(--calc-accent) !important;
+  box-shadow: 0 0 0 3px var(--calc-accent-bg) !important;
+}
+
+input::placeholder {
+  color: var(--calc-text-dim) !important;
+  opacity: 0.7 !important;
+}
+
+/* ===== Card "Nota Total" - Destaque maior ===== */
+.nota-total,
+.total-card,
+.score-card,
+[class*="total"] {
+  background: linear-gradient(135deg, var(--calc-card) 0%, #1f1f1f 100%) !important;
+  border: 2px solid var(--calc-accent) !important;
+  border-radius: var(--calc-radius) !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 0 30px var(--calc-accent-bg) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.nota-total::before,
+.total-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--calc-accent-bg) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+/* Label "Nota Total:" */
+.nota-total .label,
+.total-card .label,
+[class*="total"] .label,
+.nota-total > span:first-child {
+  color: var(--calc-text-muted) !important;
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* Valor numérico "0.000" */
+.nota-total .value,
+.total-card .value,
+[class*="total"] .value,
+.nota-total > span:last-child,
+.nota-total strong {
+  color: var(--calc-accent-glow) !important;
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 20px var(--calc-accent-bg) !important;
+  letter-spacing: 0.02em !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* ===== Seção "Suas Chances" ===== */
+.chances-section h2,
+.section-title,
+[class*="chances"] h2 {
+  color: var(--calc-text) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.chances-section .icon,
+.section-title .icon {
+  color: var(--calc-accent) !important;
+}
+
+/* ===== Campo de pesquisa ===== */
+input[type="search"],
+.search-input,
+[placeholder*="Pesquisar"] {
+  background: var(--calc-input-bg) !important;
+  color: var(--calc-text) !important;
+  border: 1px solid var(--calc-card-border) !important;
+  border-radius: 999px !important;
+  padding: 0.75rem 1.5rem !important;
+  padding-left: 3rem !important;
+}
+
+/* ===== Contador de cursos ===== */
+.course-count,
+.cursos-count {
+  background: var(--calc-accent-bg) !important;
+  color: var(--calc-accent) !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+}
+
+/* ===== Scrollbar customizada ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--calc-card);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--calc-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--calc-accent-glow);
+}
+
+/* ===== Ajustes mobile ===== */
+@media (max-width: 768px) {
+  .nota-total .value {
+    font-size: 2rem !important;
+  }
+  
+  input[type="number"] {
+    font-size: 1.1rem !important;
+    padding: 1rem !important;
+  }
+}
