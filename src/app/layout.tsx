@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter, Playfair_Display, Cinzel } from 'next/font/google'
 import './globals.css'
+import './intro-globals.css'
 import { ToastProvider } from '@/contexts/ToastContext'
+import IntroPortal from '@/components/IntroPortal'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -77,6 +79,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={inter.variable}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=Inter:wght@300;500&display=swap" rel="stylesheet" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192.svg" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

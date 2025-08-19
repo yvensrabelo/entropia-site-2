@@ -1,0 +1,369 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at center, var(--dark-light) 0%, var(--dark) 100%);
+  opacity: 1;
+  z-index: 9999;
+}
+
+.intro.exit {
+  animation: zoomInPortal 1s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+.portalRings {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.intro.exit .portalRings {
+  opacity: 1;
+}
+
+.ring {
+  position: absolute;
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.intro.exit .ring {
+  animation: ringExpand 1s ease-out forwards;
+}
+
+.ring:nth-child(1) {
+  width: 100px;
+  height: 100px;
+}
+
+.ring:nth-child(2) {
+  width: 200px;
+  height: 200px;
+  animation-delay: 0.15s;
+}
+
+.ring:nth-child(3) {
+  width: 300px;
+  height: 300px;
+  animation-delay: 0.3s;
+}
+
+.noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  z-index: 1;
+  pointer-events: none;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,.01) 2px, rgba(255,255,255,.01) 4px);
+}
+
+.container {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+}
+
+.brackets {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+  animation-delay: 0.2s;
+}
+
+.bracket {
+  position: absolute;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 5rem;
+  font-weight: 300;
+  color: var(--green);
+  opacity: 0.2;
+  line-height: 1;
+}
+
+.bracket.left {
+  left: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: slideLeft 0.6s ease forwards;
+  animation-delay: 0.4s;
+}
+
+.bracket.right {
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: slideRight 0.6s ease forwards;
+  animation-delay: 0.4s;
+}
+
+.icon {
+  width: 60px;
+  height: 60px;
+  color: var(--green);
+  margin: 0 auto;
+  filter: drop-shadow(0 0 20px rgba(104, 160, 99, 0.3));
+  animation: float 4s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.titleWrapper {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+.line1,
+.line2 {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0 auto;
+  width: 0;
+}
+
+.line1 {
+  border-right: 2px solid var(--green);
+  animation: 
+    typing 0.8s steps(20, end) forwards,
+    blink 0.8s step-end infinite;
+  animation-delay: 0.6s;
+}
+
+.line2 {
+  border-right: 2px solid var(--green);
+  animation: 
+    typing 0.8s steps(20, end) forwards,
+    blink 0.8s step-end infinite;
+  animation-delay: 1.4s;
+}
+
+.highlight {
+  color: var(--green);
+  font-weight: 600;
+  text-shadow: 0 0 30px rgba(104, 160, 99, 0.5);
+}
+
+.metadata {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(102, 102, 102, 0.2);
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+  animation-delay: 2s;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 1.5rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.875rem;
+  color: var(--gray-light);
+}
+
+.metaLabel {
+  color: var(--gray);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.metaValue {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.skip {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--gray-light);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+  animation-delay: 2.5s;
+}
+
+.skip:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.progressDots {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+  animation-delay: 0.3s;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.3s ease;
+}
+
+.dot.active {
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(104, 160, 99, 0.5);
+}
+
+.centerLight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, var(--green-glow), transparent);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.intro.exit .centerLight {
+  animation: lightExpand 1s ease-out forwards;
+}
+
+/* Animações */
+@keyframes zoomInPortal {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  70% {
+    transform: scale(2);
+    opacity: 1;
+    filter: blur(1px);
+  }
+  100% {
+    transform: scale(8);
+    opacity: 0;
+    filter: blur(15px);
+  }
+}
+
+@keyframes ringExpand {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(20px);
+  }
+  to {
+    opacity: 0.2;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-20px);
+  }
+  to {
+    opacity: 0.2;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes typing {
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    border-color: var(--green);
+  }
+  51%, 100% {
+    border-color: transparent;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lightExpand {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(30);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(100);
+  }
+}
