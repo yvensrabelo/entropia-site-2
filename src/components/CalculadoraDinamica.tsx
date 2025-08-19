@@ -1389,28 +1389,6 @@ export default function CalculadoraDinamica() {
             </AnimatePresence>
           </div>
 
-          {/* Resumo */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl"
-          >
-            <h4 className="font-semibold text-gray-900 mb-2">Resumo</h4>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="text-center">
-                <p className="text-3xl font-bold text-green-600">
-                  {resultadosPorCurso.filter(r => r.aprovado).length}
-                </p>
-                <p className="text-gray-600">Cursos com aprovação</p>
-              </div>
-              <div className="text-center">
-                <p className="text-3xl font-bold text-orange-600">
-                  {resultadosPorCurso.filter(r => !r.aprovado && r.diferenca > -50).length}
-                </p>
-                <p className="text-gray-600">Muito próximos (&lt;50 pts)</p>
-              </div>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
 
