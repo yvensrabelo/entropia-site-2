@@ -444,10 +444,3 @@
     100% { width: 100%; }
   }
 }
-
-/* Para dispositivos com alto refresh rate */
-@media (min-resolution: 2dppx) {
-  * {
-    -webkit-animation-duration: inherit !important;
-  }
-}
