@@ -12,9 +12,29 @@ export default function IntroPortal({ onComplete, onSkip }: IntroPortalProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
   const [activeDot, setActiveDot] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const introRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<NodeJS.Timeout | null>(null);
   const dotTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Detectar mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor;
+      const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(userAgent) || 
+                             (window.innerWidth <= 768);
+      setIsMobile(isMobileDevice);
+      
+      // Adicionar classe ao body para CSS específico
+      if (isMobileDevice) {
+        document.body.classList.add('is-mobile');
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const closeIntro = () => {
     setIsExiting(true);
@@ -26,10 +46,12 @@ export default function IntroPortal({ onComplete, onSkip }: IntroPortalProps) {
       clearInterval(dotTimerRef.current);
     }
     
+    // Tempo de saída ajustado para mobile
+    const exitDuration = isMobile ? 1500 : 1000;
     setTimeout(() => {
       setIsVisible(false);
       onComplete?.();
-    }, 1000);
+    }, exitDuration);
   };
 
   const handleSkip = () => {
@@ -38,51 +60,34 @@ export default function IntroPortal({ onComplete, onSkip }: IntroPortalProps) {
   };
 
   useEffect(() => {
-    // Força um frame antes de iniciar para sincronizar
-    requestAnimationFrame(() => {
-      // Animar dots com RAF para consistência
-      let dotFrame = 0;
-      const animateDots = () => {
-        dotFrame++;
-        if (dotFrame % 48 === 0) { // ~800ms em 60fps
-          setActiveDot(prev => (prev + 1) % 6);
-        }
-        if (!closeTimerRef.current) return;
-        requestAnimationFrame(animateDots);
-      };
-      animateDots();
+    if (isMobile !== null) {
+      // Intervalo dos dots ajustado para mobile
+      const dotInterval = isMobile ? 1200 : 800;
+      dotTimerRef.current = setInterval(() => {
+        setActiveDot(prev => (prev + 1) % 6);
+      }, dotInterval);
 
-      // Timer para fechar - usa performance.now() para precisão
-      const startTime = performance.now();
-      const checkTime = () => {
-        if (performance.now() - startTime >= 4000) {
-          closeIntro();
-        } else if (!closeTimerRef.current) {
-          return;
-        } else {
-          requestAnimationFrame(checkTime);
-        }
-      };
-      closeTimerRef.current = setTimeout(() => {
-        checkTime();
-      }, 0);
-    });
+      // Timer de fechamento ajustado para mobile
+      const closeDuration = isMobile ? 6000 : 4000;
+      closeTimerRef.current = setTimeout(closeIntro, closeDuration);
+    }
 
     return () => {
       if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
       if (dotTimerRef.current) clearInterval(dotTimerRef.current);
     };
-  }, []);
+  }, [isMobile]);
 
   if (!isVisible) return null;
 
   return (
     <section 
       ref={introRef}
-      className={`${styles.intro} ${isExiting ? styles.exit : ''}`}
+      className={`${styles.intro} ${isExiting ? styles.exit : ''} ${isMobile ? styles.mobile : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label="Introdução"
+      data-mobile={isMobile}
     >
       <div className={styles.noise}></div>
       <div className={styles.centerLight}></div>

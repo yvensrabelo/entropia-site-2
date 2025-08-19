@@ -405,3 +405,49 @@
     transform: translate(-50%, -50%) scale(100);
   }
 }
+
+/* Ajustes específicos para mobile */
+@media (max-width: 768px), (pointer: coarse) {
+  .line1 {
+    animation-duration: 1.2s !important; /* Era 0.8s */
+    animation-delay: 0.9s !important;    /* Era 0.6s */
+  }
+  
+  .line2 {
+    animation-duration: 1.2s !important; /* Era 0.8s */
+    animation-delay: 2.1s !important;    /* Era 1.4s */
+  }
+  
+  .metadata {
+    animation-delay: 3s !important;      /* Era 2s */
+  }
+  
+  .skip {
+    animation-delay: 3.75s !important;   /* Era 2.5s */
+  }
+  
+  .intro.exit {
+    animation-duration: 1.5s !important; /* Era 1s */
+  }
+}
+
+/* Ajuste específico para iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  .line1,
+  .line2 {
+    -webkit-animation-timing-function: linear !important;
+    animation-timing-function: linear !important;
+  }
+  
+  @keyframes typing {
+    0% { width: 0; }
+    100% { width: 100%; }
+  }
+}
+
+/* Para dispositivos com alto refresh rate */
+@media (min-resolution: 2dppx) {
+  * {
+    -webkit-animation-duration: inherit !important;
+  }
+}
