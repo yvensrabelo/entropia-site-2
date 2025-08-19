@@ -188,8 +188,9 @@ export default function ViewCounter({ className = '' }: ViewCounterProps) {
         }
 
         .counter-text {
-          color: #888;
+          color: #ffffff;
           font-size: 16px;
+          text-transform: uppercase;
         }
 
         .digit-container {
@@ -383,7 +384,7 @@ export default function ViewCounter({ className = '' }: ViewCounterProps) {
 
       <div className="live-indicator">
         <div className="live-dot"></div>
-        <span className="live-text">Live</span>
+        <span className="live-text">Atualizado em tempo real</span>
       </div>
     </div>
   )
