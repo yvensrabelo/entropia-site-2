@@ -38,13 +38,35 @@ export default function IntroPortal({ onComplete, onSkip }: IntroPortalProps) {
   };
 
   useEffect(() => {
-    // Animar dots
-    dotTimerRef.current = setInterval(() => {
-      setActiveDot(prev => (prev + 1) % 6);
-    }, 800);
+    // Força um frame antes de iniciar para sincronizar
+    requestAnimationFrame(() => {
+      // Animar dots com RAF para consistência
+      let dotFrame = 0;
+      const animateDots = () => {
+        dotFrame++;
+        if (dotFrame % 48 === 0) { // ~800ms em 60fps
+          setActiveDot(prev => (prev + 1) % 6);
+        }
+        if (!closeTimerRef.current) return;
+        requestAnimationFrame(animateDots);
+      };
+      animateDots();
 
-    // Timer para fechar automaticamente
-    closeTimerRef.current = setTimeout(closeIntro, 4000);
+      // Timer para fechar - usa performance.now() para precisão
+      const startTime = performance.now();
+      const checkTime = () => {
+        if (performance.now() - startTime >= 4000) {
+          closeIntro();
+        } else if (!closeTimerRef.current) {
+          return;
+        } else {
+          requestAnimationFrame(checkTime);
+        }
+      };
+      closeTimerRef.current = setTimeout(() => {
+        checkTime();
+      }, 0);
+    });
 
     return () => {
       if (closeTimerRef.current) clearTimeout(closeTimerRef.current);

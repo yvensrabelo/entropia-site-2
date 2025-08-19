@@ -96,7 +96,7 @@ export default function RootLayout({
         <meta name="apple-touch-fullscreen" content="yes" />
         <meta name="apple-mobile-web-app-title" content="Entropia" />
         {/* Previne zoom no iOS */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         {/* Structured Data */}
         <script
           type="application/ld+json"

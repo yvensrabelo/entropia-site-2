@@ -1,3 +1,4 @@
+/* Força hardware acceleration e timing consistente */
 .intro {
   position: fixed;
   inset: 0;
@@ -6,6 +7,12 @@
   background: radial-gradient(ellipse at center, var(--dark-light) 0%, var(--dark) 100%);
   opacity: 1;
   z-index: 9999;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
 }
 
 .intro.exit {
@@ -129,6 +136,7 @@
   letter-spacing: -0.02em;
 }
 
+/* Adicione will-change para todas as animações */
 .line1,
 .line2 {
   display: block;
@@ -136,6 +144,9 @@
   white-space: nowrap;
   margin: 0 auto;
   width: 0;
+  will-change: width;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
 .line1 {
@@ -258,6 +269,33 @@
 }
 
 /* Animações */
+@-webkit-keyframes typing {
+  to { width: 100%; }
+}
+
+@-webkit-keyframes blink {
+  0%, 50% { border-color: var(--green); }
+  51%, 100% { border-color: transparent; }
+}
+
+@-webkit-keyframes zoomInPortal {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  70% {
+    transform: scale(2);
+    opacity: 1;
+    filter: blur(1px);
+  }
+  100% {
+    transform: scale(8);
+    opacity: 0;
+    filter: blur(15px);
+  }
+}
+
 @keyframes zoomInPortal {
   0% {
     transform: scale(1);
