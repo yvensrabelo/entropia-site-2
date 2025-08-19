@@ -209,3 +209,142 @@ input[type="search"],
     padding: 1rem !important;
   }
 }
+
+/* ===== CORREÇÃO FORÇADA - Card Verde Claro ===== */
+div[style*="background"],
+div[class*="cota"],
+div[class*="quota"],
+div[class*="group"],
+div[class*="categoria"] {
+  background: #1a1a1a !important;
+}
+
+/* Especificamente o card verde claro */
+div:has(> :first-child:contains("Sua cota")),
+div:has(> span:contains("Sua cota")),
+div:has(> p:contains("Sua cota")) {
+  background: #1a1a1a !important;
+  border: 1px solid rgba(104, 160, 99, 0.3) !important;
+}
+
+/* Se o card usa Tailwind/classes inline */
+.bg-green-100,
+.bg-green-200,
+.bg-lime-100,
+.bg-emerald-100,
+[class*="green-1"],
+[class*="green-2"],
+[class*="lime-1"] {
+  background: #1a1a1a !important;
+  border: 1px solid rgba(104, 160, 99, 0.3) !important;
+}
+
+/* Texto dentro do card verde */
+.bg-green-100 *,
+.bg-green-200 *,
+div[style*="background"] span,
+div[style*="background"] p {
+  color: #9ca3af !important;
+}
+
+.bg-green-100 strong,
+.bg-green-200 strong,
+div[style*="background"] strong {
+  color: #68a063 !important;
+}
+
+/* Card Nota Total - Correção Simples */
+.bg-white {
+  background-color: #1a1a1a !important;
+}
+
+.text-blue-600,
+.text-blue-700 {
+  color: #8cc84b !important;
+  font-weight: 800 !important;
+}
+
+/* Se soubermos a classe exata do card */
+.rounded-lg.bg-white,
+.rounded-xl.bg-white {
+  background: #1a1a1a !important;
+  border: 1px solid #68a063 !important;
+}
+
+/* ===== NUCLEAR OPTION - Se nada funcionar ===== */
+body * {
+  background-color: unset;
+}
+
+body {
+  background: #0d0d0d !important;
+}
+
+/* Re-aplicar fundo apenas onde necessário */
+input,
+button,
+select {
+  background: #111111 !important;
+}
+
+/* Cards principais */
+main > div > div,
+.container > div > div {
+  background: #1a1a1a !important;
+}
+
+/* ===== CORREÇÃO DEFINITIVA - Card Nota Total ===== */
+
+/* Card principal com classes exatas */
+.bg-white.rounded-2xl,
+.bg-white.rounded-xl,
+div.bg-white.rounded-2xl.shadow-xl {
+  background: #1a1a1a !important;
+  border: 2px solid #68a063 !important;
+}
+
+/* Texto "Nota Total:" */
+.bg-white.rounded-2xl .text-gray-900,
+.bg-white.rounded-2xl span:first-child {
+  color: #9ca3af !important;
+}
+
+/* Container do valor com fundo azul claro */
+.bg-blue-50,
+.bg-blue-50.rounded-xl,
+div.bg-blue-50 {
+  background: transparent !important;
+}
+
+/* Valor "0.000" */
+.bg-blue-50 .text-blue-500,
+.text-blue-500,
+.bg-blue-50 div,
+.bg-blue-50 span {
+  color: #8cc84b !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 25px rgba(140, 200, 75, 0.6) !important;
+}
+
+/* Específico para o div com mt-4 p-4 */
+.mt-4.p-4.bg-blue-50.rounded-xl {
+  background: rgba(104, 160, 99, 0.1) !important;
+  border: 1px solid rgba(104, 160, 99, 0.3) !important;
+}
+
+/* Override de estilos inline com !important */
+div[style*="background"] {
+  background: #1a1a1a !important;
+}
+
+/* Classes de grid e spacing mantêm intactas */
+.grid.grid-cols-2,
+.gap-4,
+.gap-3 {
+  /* Mantém como está */
+}
+
+/* Garantir que inputs não sejam afetados */
+input.bg-white {
+  background: #111111 !important;
+}
