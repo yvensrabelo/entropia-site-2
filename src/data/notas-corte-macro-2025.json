@@ -640,6 +640,15 @@
   },
   {
     "processo": "MACRO",
+    "curso": "MEDICINA",
+    "nota": 92.047,
+    "cota": "Portador de Diploma",
+    "codigo": "03081",
+    "turno": "INTEGRAL",
+    "cidade": "MANAUS"
+  },
+  {
+    "processo": "MACRO",
     "curso": "METEOROLOGIA",
     "nota": 27.31,
     "cota": "Estudantes de Escola Pública Amazonas",
